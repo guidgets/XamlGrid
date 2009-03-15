@@ -5,11 +5,6 @@
     xmlns:controllers="clr-namespace:Company.DataGrid.Controllers;assembly=Company.DataGrid" 
     Width="400" Height="300">
     <StackPanel x:Name="LayoutRoot" Background="White">
-        <company:DataGrid Name="dataGrid" ItemsSource="{Binding}">
-            <company:DataGrid.Columns>
-                <controllers:Column DataBinding="{Binding Name}" />
-                <controllers:Column DataBinding="{Binding Age}" />
-            </company:DataGrid.Columns>
-        </company:DataGrid>
-    </StackPanel>
+		<company:DataGrid Name="dataGrid" ItemsSource="{Binding}" AutoCreateColumns="True" />
+	</StackPanel>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,10 +83,10 @@ namespace Company.DataGrid.View
 		/// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
 		/// </summary>
 		/// <param name="e">Information about the change.</param>
-		protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
 		{
 			base.OnItemsChanged(e);
-			if (this.Items.Count > 0 && this.AutoCreateColumns)
+			if (e.Action == NotifyCollectionChangedAction.Reset && this.Items.Count > 0 && this.AutoCreateColumns)
 			{
 				// TODO: possible optimization: do not recreate all columns if the new items are from the same type
 				this.Columns.Clear();

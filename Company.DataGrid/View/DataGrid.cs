@@ -51,8 +51,7 @@ namespace Company.DataGrid.View
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			// TODO: think carefully about this (what the container for the data items should be)
-			return new RowPresenter();
+			return new Row();
 		}
 
 		/// <summary>
@@ -64,7 +63,7 @@ namespace Company.DataGrid.View
 		/// </returns>
 		protected override bool IsItemItsOwnContainerOverride(object item)
 		{
-			return item is RowPresenter;
+			return item is Row;
 		}
 
 		/// <summary>
@@ -75,8 +74,10 @@ namespace Company.DataGrid.View
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
 			base.PrepareContainerForItemOverride(element, item);
-			// TODO: this isn't quite correct (even with a type check); needs more thinking
-			((RowPresenter) element).Columns = this.Columns;
+			if (element is ItemsControl)
+			{
+				((ItemsControl) element).ItemsSource = this.Columns;				
+			}
 		}
 
 		/// <summary>

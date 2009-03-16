@@ -20,7 +20,7 @@ namespace Company.DataGrid.Controllers
 		public Column()
 		{
 			// default value
-			this.ActualWidth = 50;
+			this.ActualWidth = 200;
             this.IsFrozen = false;
 		}
 

@@ -48,7 +48,6 @@ namespace Company.DataGrid.View
 			// TODO: this may be better; consider it carefully
 			Cell cell = (Cell) element;
 			Column column = (Column) item;
-			cell.Column = column;
 			cell.Width = column.ActualWidth;
 			cell.DataContext = this.DataContext;
 			cell.SetBinding(Cell.ValueProperty, column.DataBinding);

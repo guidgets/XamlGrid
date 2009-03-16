@@ -1,13 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using Company.DataGrid.Controllers;
+using System.Windows.Input;
 
 namespace Company.DataGrid.View
 {
 	/// <summary>
 	/// Represents an element that displays and manipulates a piece of a data object.
 	/// </summary>
-	public class Cell : ContentControl
+	public class Cell : Control
 	{
 		/// <summary>
 		/// Identifies the property which gets or sets the value contained in a <see cref="Cell"/>.
@@ -40,13 +41,59 @@ namespace Company.DataGrid.View
 		}
 
 		/// <summary>
-		/// Gets or sets the column in which the <see cref="Cell"/> is located.
+		/// Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonUp"/> event occurs.
 		/// </summary>
-		/// <value>The column.</value>
-		public Column Column
+		/// <param name="e">The data for the event.</param>
+		protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
 		{
-			get;
-			set;
+			base.OnMouseLeftButtonUp(e);
+			this.EnterEditMode();
+		}
+
+		/// <summary>
+		/// Called before the <see cref="E:System.Windows.UIElement.KeyUp"/> event occurs.
+		/// </summary>
+		/// <param name="e">The data for the event.</param>
+		protected override void OnKeyUp(KeyEventArgs e)
+		{
+			base.OnKeyUp(e);
+			switch (e.Key)
+			{
+				case Key.Enter:
+					VisualStateManager.GoToState(this, "NoEdit", false);
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
+		/// </summary>
+		/// <param name="e">The data for the event.</param>
+		protected override void OnLostFocus(RoutedEventArgs e)
+		{
+			base.OnLostFocus(e);
+			VisualStateManager.GoToState(this, "NoEdit", false);
+		}
+
+		/// <summary>
+		/// Sets the <see cref="Cell"/> in edit mode.
+		/// </summary>
+		protected virtual bool EnterEditMode()
+		{
+			//VisualStateManager.GoToState(this, "Edited", false);
+			if (this.Value == null)
+			{
+				return VisualStateManager.GoToState(this, "EditText", false);
+			}
+			Type valueType = this.Value.GetType();
+			if (valueType == typeof(bool) || valueType == typeof(bool?))
+			{
+				return VisualStateManager.GoToState(this, "EditBoolean", false);
+			}
+			// TODO: when there is a numeric up-dwon add support for numeric types
+			// TODO: when the date picker works properly, add support for DateTime
+			// TODO: do not always go to editing text; explicitly enumerate all types that can be edited with a text box
+			return VisualStateManager.GoToState(this, "EditText", false);
 		}
 	}
 }

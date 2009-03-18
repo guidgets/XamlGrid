@@ -46,6 +46,7 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Collections\BindableList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />

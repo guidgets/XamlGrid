@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Examples
 {
@@ -8,18 +9,33 @@ namespace Examples
 		{
 			InitializeComponent();
 
-			this.dataGrid.ItemsSource = new[] { 
+			this.DataContext = new[] { 
 				new Customer { Name = "John", Age = 25, HireDate = new DateTime(2008, 1, 14), IsSingle = false }, 
 				new Customer { Name = "Mary", Age = 23, HireDate = new DateTime(2005, 11, 10), IsSingle = true} };
 		}
 	}
 
-	public class Customer
+	public class Customer : INotifyPropertyChanged
 	{
+		private string name;
+
 		public string Name
 		{
-			get;
-			set;
+			get
+			{
+				return this.name;
+			}
+			set
+			{
+				if (this.name != value)
+				{
+					this.name = value;
+					if (this.PropertyChanged != null)
+					{
+						this.PropertyChanged(this, new PropertyChangedEventArgs("Name"));
+					}					
+				}
+			}
 		}
 
 		public int Age
@@ -39,5 +55,7 @@ namespace Examples
 			get;
 			set;
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

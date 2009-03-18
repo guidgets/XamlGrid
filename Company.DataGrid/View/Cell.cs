@@ -80,7 +80,6 @@ namespace Company.DataGrid.View
 		/// </summary>
 		protected virtual bool EnterEditMode()
 		{
-			//VisualStateManager.GoToState(this, "Edited", false);
 			if (this.Value == null)
 			{
 				return VisualStateManager.GoToState(this, "EditText", false);
@@ -90,7 +89,7 @@ namespace Company.DataGrid.View
 			{
 				return VisualStateManager.GoToState(this, "EditBoolean", false);
 			}
-			// TODO: when there is a numeric up-dwon add support for numeric types
+			// TODO: when there is a numeric up-down add support for numeric types
 			// TODO: when the date picker works properly, add support for DateTime
 			// TODO: do not always go to editing text; explicitly enumerate all types that can be edited with a text box
 			return VisualStateManager.GoToState(this, "EditText", false);

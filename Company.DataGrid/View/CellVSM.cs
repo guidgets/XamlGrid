@@ -26,6 +26,10 @@ namespace Company.DataGrid.View
 		protected override bool GoToStateCore(Control control, FrameworkElement templateRoot, string stateName,
 		                                      VisualStateGroup group, VisualState state, bool useTransitions)
 		{
+			if (state == null)
+			{
+				return false;
+			}
 			if (state.Storyboard == null)
 			{
 				return base.GoToStateCore(control, templateRoot, stateName, group, state, useTransitions);

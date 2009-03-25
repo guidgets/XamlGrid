@@ -136,6 +136,10 @@ namespace Company.DataGrid.View
 		protected virtual bool EnterEditMode()
 		{
 			this.Focus();
+			if (VisualStateManager.GoToState(this, "CustomEditor", false))
+			{
+				return true;
+			}
 			// TODO: find a way to check the type and go to the proper state regardless of the null value
 			if (this.Value == null)
 			{

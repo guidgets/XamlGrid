@@ -49,7 +49,7 @@
 						</VisualStateManager.CustomVisualStateManager>
 						<VisualStateManager.VisualStateGroups>
 							<VisualStateGroup>
-								<VisualState Name="NoEdit" />
+								<VisualState Name="View" />
 								<VisualState Name="EditText">
 									<Storyboard>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Cell"

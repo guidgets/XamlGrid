@@ -133,7 +133,7 @@ namespace Company.DataGrid.View
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
-		protected virtual bool EnterEditMode()
+		protected virtual bool GoToEditState()
 		{
 			this.Focus();
 			if (VisualStateManager.GoToState(this, "CustomEditor", false))
@@ -161,9 +161,9 @@ namespace Company.DataGrid.View
 		/// <summary>
 		/// Exits the edit mode of the <see cref="Cell"/>.
 		/// </summary>
-		protected virtual bool ExitEditMode()
+		protected virtual bool GoToViewState()
 		{
-			return VisualStateManager.GoToState(this, "NoEdit", false);
+			return VisualStateManager.GoToState(this, "View", false);
 		}
 
 		private static void OnValueChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -177,11 +177,11 @@ namespace Company.DataGrid.View
 			Cell cell = (Cell) dependencyObject;
 			if ((bool) e.NewValue)
 			{
-				cell.EnterEditMode();
+				cell.GoToEditState();
 			}
 			else
 			{
-				cell.ExitEditMode();
+				cell.GoToViewState();
 			}
 		}
 

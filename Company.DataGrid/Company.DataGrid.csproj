@@ -49,7 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Column.cs" />
+    <Compile Include="Controllers\TypeController.cs" />
+    <Compile Include="Controllers\UIElementExtensions.cs" />
     <Compile Include="View\Cell.cs" />
+    <Compile Include="View\CellVSM.cs" />
     <Compile Include="View\DataGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Row.cs" />

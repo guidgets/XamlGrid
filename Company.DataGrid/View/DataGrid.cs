@@ -25,6 +25,9 @@ namespace Company.DataGrid.View
 			this.Columns = new ObservableCollection<Column>();
 		}
 
+		/// <summary>
+		/// Gets the collection of columns of the <see cref="DataGrid"/>.
+		/// </summary>
 		public ObservableCollection<Column> Columns
 		{
 			get;

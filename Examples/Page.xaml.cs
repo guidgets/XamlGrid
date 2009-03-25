@@ -18,6 +18,8 @@ namespace Examples
 	public class Customer : INotifyPropertyChanged
 	{
 		private string name;
+		private int age;
+		private bool isSingle;
 
 		public string Name
 		{
@@ -40,8 +42,21 @@ namespace Examples
 
 		public int Age
 		{
-			get;
-			set;
+			get
+			{
+				return this.age;
+			}
+			set
+			{
+				if (this.age != value)
+				{
+					this.age = value;
+					if (this.PropertyChanged != null)
+					{
+						this.PropertyChanged(this, new PropertyChangedEventArgs("Age"));
+					}		
+				}
+			}
 		}
 
 		public DateTime HireDate
@@ -52,8 +67,21 @@ namespace Examples
 
 		public bool IsSingle
 		{
-			get;
-			set;
+			get
+			{
+				return this.isSingle;
+			}
+			set
+			{
+				if (this.isSingle != value)
+				{
+					this.isSingle = value;
+					if (this.PropertyChanged != null)
+					{
+						this.PropertyChanged(this, new PropertyChangedEventArgs("IsSingle"));
+					}
+				}
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

@@ -10,6 +10,7 @@
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" />
 						<TextBlock Text="{Binding Age}" />
+						<TextBlock Text="{Binding IsSingle}" />
 					</StackPanel> 
 				</DataTemplate>
 			</ListBox.ItemTemplate>

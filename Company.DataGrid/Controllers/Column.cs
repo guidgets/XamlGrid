@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using Company.DataGrid.View;
 using System.ComponentModel;
 

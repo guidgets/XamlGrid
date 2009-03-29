@@ -40,10 +40,13 @@
     </Style>
 
     <Style TargetType="company:Cell">
-        <Setter Property="Template">
+		<Setter Property="Background" Value="White" />
+		<Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="company:Cell">
-					<ContentPresenter Name="Cell" Content="{TemplateBinding Value}">
+				<ControlTemplate TargetType="company:Cell">
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<ContentPresenter Name="Cell" Content="{TemplateBinding Value}" />
 						<VisualStateManager.CustomVisualStateManager>
 							<company:CellVSM />
 						</VisualStateManager.CustomVisualStateManager>
@@ -52,8 +55,7 @@
 								<VisualState Name="View" />
 								<VisualState Name="EditText">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Cell"
-																	   Storyboard.TargetProperty="Content">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Cell" Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<TextBox Text="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
@@ -64,9 +66,9 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
-					</ContentPresenter>
+					</Border>
 				</ControlTemplate>
-            </Setter.Value>
+			</Setter.Value>
         </Setter>
     </Style>
     

@@ -18,7 +18,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-						<ScrollViewer VerticalScrollBarVisibility="Auto">
+						<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 							<ItemsPresenter />
 						</ScrollViewer>
 					</Border>

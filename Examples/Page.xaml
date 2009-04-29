@@ -73,6 +73,7 @@
 				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" CellStyle="{StaticResource cellStyleAge}" />
 				<controllers:Column Binding="{Binding IsSingle, Mode=TwoWay}" CellStyle="{StaticResource cellStyleIsSingle}" />
 				<controllers:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" CellStyle="{StaticResource cellStyleMaritalStatus}" />
+				<controllers:Column Binding="{Binding HireDate, Mode=TwoWay}" />
 			</company:DataGrid.Columns>
 		</company:DataGrid>
 		<Button Grid.Row="1" HorizontalAlignment="Stretch" Content="GC" Click="Button_Click" />

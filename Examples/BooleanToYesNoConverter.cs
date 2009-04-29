@@ -21,11 +21,7 @@ namespace Examples
 		/// </returns>
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (!(value is bool))
-			{
-				throw new ArgumentException("Boolean value expected", "value");
-			}
-			if ((bool) value)
+			if (value != null && (bool) value)
 			{
 				return "Yes";
 			}

@@ -25,6 +25,10 @@ namespace Company.DataGrid.View
 			this.AutoCreateColumns = true;
 		}
 
+		/// <summary>
+		/// Gets the <see cref="Column"/>s representing the subdata (most often properties) of the objects the <see cref="DataGrid"/> displays.
+		/// </summary>
+		/// <value>The <see cref="Column"/>s representing the subdata (most often properties) of the objects the <see cref="DataGrid"/> displays.</value>
 		public ObservableCollection<Column> Columns
 		{
 			get;

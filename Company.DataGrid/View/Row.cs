@@ -9,6 +9,9 @@ namespace Company.DataGrid.View
 	/// </summary>
 	public class Row : ItemsControl
 	{
+		/// <summary>
+		/// Represents a UI element that displays a data object.
+		/// </summary>
 		public Row()
 		{
 			this.DefaultStyleKey = typeof(Row);

@@ -3,9 +3,9 @@
 namespace Company.DataGrid.Controllers
 {
 	/// <summary>
-	/// Contains methods that supply additional functionality when working with types.
+	/// Contains methods that extend the functionality of <see cref="Type"/>.
 	/// </summary>
-	public static class TypeController
+	public static class TypeExtentions
 	{
 		/// <summary>
 		/// Determines whether the <see cref="Type"/> is a numeric type.

@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Column.cs" />
-    <Compile Include="Controllers\TypeController.cs" />
+    <Compile Include="Controllers\TypeExtentions.cs" />
     <Compile Include="Controllers\UIElementExtensions.cs" />
     <Compile Include="View\Cell.cs" />
     <Compile Include="View\CustomVSM.cs" />

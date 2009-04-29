@@ -8,20 +8,17 @@ namespace Company.DataGrid.Controllers
 	public static class TypeController
 	{
 		/// <summary>
-		/// Determines whether the type of the specified object is numeric.
+		/// Determines whether the <see cref="Type"/> is a numeric type.
 		/// </summary>
-		/// <param name="objectOfTypeToCheck">An object of the type to check.</param>
+		/// <param name="typeToCheck">The <see cref="Type"/> to check.</param>
 		/// <returns>
-		/// 	<c>true</c> if the type of the specified object is numeric; otherwise, <c>false</c>.
+		/// 	<c>true</c> if the <see cref="Type"/> is a numeric type; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsNumeric(object objectOfTypeToCheck)
+		public static bool IsNumeric(this Type typeToCheck)
 		{
-			if (objectOfTypeToCheck is IConvertible)
-			{
-				TypeCode typeCode = ((IConvertible) objectOfTypeToCheck).GetTypeCode();
-				return (TypeCode.Char <= typeCode && typeCode <= TypeCode.Decimal);
-			}
-			return false;
+			Type nulledType = Nullable.GetUnderlyingType(typeToCheck);
+			TypeCode typeCode = nulledType != null ? Type.GetTypeCode(nulledType) : Type.GetTypeCode(typeToCheck);
+			return (TypeCode.Char <= typeCode && typeCode <= TypeCode.Decimal);
 		}
 	}
 }

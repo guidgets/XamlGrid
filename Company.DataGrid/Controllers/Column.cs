@@ -1,77 +1,63 @@
-﻿using System.Windows.Data;
+﻿using System;
+using System.Windows;
+using System.Windows.Data;
 using Company.DataGrid.View;
-using System.ComponentModel;
 
 namespace Company.DataGrid.Controllers
 {
 	/// <summary>
 	/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
 	/// </summary>
-	public class Column : INotifyPropertyChanged
+	public class Column
 	{
-        public event PropertyChangedEventHandler PropertyChanged;
-        private bool isFrozen;
-        private double actualWidth;
-        private Binding dataBinding;
 		/// <summary>
 		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
 		/// </summary>
 		public Column()
 		{
 			// default value
-			this.ActualWidth = 200;
-            this.IsFrozen = false;
+            this.ActualWidth = 200;
+			this.DataType = typeof(object);
 		}
 
 		/// <summary>
-		/// Gets or sets the actual width of the <see cref="Column"/>.
+		/// Gets or sets the actual width of the cells in this <see cref="Column"/>.
 		/// </summary>
-		/// <value>The actual width of the <see cref="Column"/>.</value>
-		public double ActualWidth
-		{
-            get
-            {
-                return this.actualWidth;
-            }
-            set
-            {
-                this.actualWidth = value;
-                this.FirePropertyChangedEvent("ActualWidth");
-            }
-		}
-
-        [DefaultValue(false)]
-		public Binding DataBinding
-		{
-            get
-            {
-                return this.dataBinding;
-            }
-            set
-            {
-                this.dataBinding = value;
-                this.FirePropertyChangedEvent("DataBinding");
-            }
-		}
-
-        public bool IsFrozen
+		/// <value>The actual width of the cells in this <see cref="Column"/>.</value>
+        public double ActualWidth
         {
-            get
-            {
-                return this.isFrozen;
-            }
-            set
-            {
-                this.isFrozen = value;
-                this.FirePropertyChangedEvent("IsFrozen");
-            }
+        	get; 
+			set;
         }
 
-        public void FirePropertyChangedEvent(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+		/// <summary>
+		/// Gets or sets the binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.
+		/// </summary>
+		/// <value>The binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.</value>
+		public Binding Binding
+		{
+        	get; 
+			set;
+		}
 
+		/// <summary>
+		/// Gets or sets the type of the data in the <see cref="Cell"/>s in this <see cref="Column"/>.
+		/// </summary>
+		/// <value>The type of the data in the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
+		public Type DataType
+		{
+			get; 
+			set;
+		}
+
+		/// <summary>
+		/// Gets or sets the style of the <see cref="Cell"/>s in this <see cref="Column"/>.
+		/// </summary>
+		/// <value>The style of the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
+		public Style CellStyle
+		{
+			get; 
+			set;
+		}
     }
 }

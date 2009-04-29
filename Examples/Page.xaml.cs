@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace Examples
 {
@@ -9,17 +10,33 @@ namespace Examples
 		{
 			InitializeComponent();
 
-			this.DataContext = new[] { 
-				new Customer { Name = "John", Age = 25, HireDate = new DateTime(2008, 1, 14), IsSingle = false }, 
-				new Customer { Name = "Mary", Age = 23, HireDate = new DateTime(2005, 11, 10), IsSingle = true} };
+			this.dataGrid.Columns[3].DataType = typeof(bool?);
+
+            List<object> customers = new List<object>();
+            for (int i = 0; i < 10000; i++)
+            {
+            	customers.Add(new Customer()
+            	              	{
+            	              		Name = string.Format("Ivan{0}", i),
+            	              		Age = i,
+            	              		HireDate = DateTime.Now,
+            	              		IsSingle = i % 2 == 0,
+									MaritalStatus = i % 3 == 0? true: (i % 3 == 1? false: (bool?) null)
+            	              	});
+            }
+            this.dataGrid.ItemsSource = customers;
+			this.listBoxCustomers.ItemsSource = customers;
 		}
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
 	}
 
 	public class Customer : INotifyPropertyChanged
 	{
 		private string name;
-		private int age;
-		private bool isSingle;
 
 		public string Name
 		{
@@ -32,38 +49,24 @@ namespace Examples
 				if (this.name != value)
 				{
 					this.name = value;
-					if (this.PropertyChanged != null)
-					{
-						this.PropertyChanged(this, new PropertyChangedEventArgs("Name"));
-					}					
+					this.OnPropertyChanged("Name");
 				}
 			}
 		}
 
-		public int Age
-		{
-			get
-			{
-				return this.age;
-			}
-			set
-			{
-				if (this.age != value)
-				{
-					this.age = value;
-					if (this.PropertyChanged != null)
-					{
-						this.PropertyChanged(this, new PropertyChangedEventArgs("Age"));
-					}		
-				}
-			}
-		}
+        public int Age
+        {
+            get;
+            set;
+        }
 
-		public DateTime HireDate
-		{
-			get;
-			set;
-		}
+        public DateTime HireDate
+        {
+            get;
+            set;
+        }
+
+		private bool isSingle;
 
 		public bool IsSingle
 		{
@@ -76,11 +79,34 @@ namespace Examples
 				if (this.isSingle != value)
 				{
 					this.isSingle = value;
-					if (this.PropertyChanged != null)
-					{
-						this.PropertyChanged(this, new PropertyChangedEventArgs("IsSingle"));
-					}
+					this.OnPropertyChanged("IsSingle");
 				}
+			}
+		}
+
+		private bool? maritalStatus;
+
+		public bool? MaritalStatus
+		{
+			get
+			{
+				return this.maritalStatus;
+			}
+			set
+			{
+				if (this.maritalStatus != value)
+				{
+					this.maritalStatus = value;
+					this.OnPropertyChanged("MaritalStatus");
+				}
+			}
+		}
+
+		private void OnPropertyChanged(string propertyName)
+		{
+			if (this.PropertyChanged != null)
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 

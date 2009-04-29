@@ -20,14 +20,11 @@ namespace Company.DataGrid.View
 		{
 			this.DefaultStyleKey = typeof(DataGrid);
 
-			// TODO: carefully review this line: it may be more appropriate to initialize the columns elsewhere
-			// TODO: or use another collection
+			// TODO: carefully review this line: it may be more appropriate to initialize the columns elsewhere and/or use another collection
 			this.Columns = new ObservableCollection<Column>();
+			this.AutoCreateColumns = true;
 		}
 
-		/// <summary>
-		/// Gets the collection of columns of the <see cref="DataGrid"/>.
-		/// </summary>
 		public ObservableCollection<Column> Columns
 		{
 			get;
@@ -47,10 +44,10 @@ namespace Company.DataGrid.View
 		}
 
 		/// <summary>
-		/// Creates or identifies the element used to display a specified item.
+		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="T:System.Windows.Controls.ListBoxItem"/> corresponding to a specified item.
+		/// The element that is used to display the given item.
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
@@ -58,11 +55,11 @@ namespace Company.DataGrid.View
 		}
 
 		/// <summary>
-		/// Determines if the specified item is (or is eligible to be) its own item container.
+		/// Determines if the specified item is (or is eligible to be) its own container.
 		/// </summary>
-		/// <param name="item">The specified item.</param>
+		/// <param name="item">The item to check.</param>
 		/// <returns>
-		/// true if the item is its own item container; otherwise, false.
+		/// true if the item is (or is eligible to be) its own container; otherwise, false.
 		/// </returns>
 		protected override bool IsItemItsOwnContainerOverride(object item)
 		{
@@ -84,6 +81,20 @@ namespace Company.DataGrid.View
 		}
 
 		/// <summary>
+		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+		/// </summary>
+		/// <param name="element">The container element.</param>
+		/// <param name="item">The item.</param>
+		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
+		{
+			base.ClearContainerForItemOverride(element, item);
+			if (element is ItemsControl)
+			{
+				((ItemsControl) element).ItemsSource = null;
+			}
+		}
+
+		/// <summary>
 		/// Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
 		/// </summary>
 		/// <param name="e">Information about the change.</param>
@@ -98,8 +109,11 @@ namespace Company.DataGrid.View
 				foreach (PropertyInfo property in this.Items[0].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty))
 				{
 					Column column = new Column();
-					column.DataBinding = new Binding(property.Name);
-					column.DataBinding.Mode = property.CanWrite? BindingMode.TwoWay: BindingMode.OneWay;
+					column.Binding = new Binding(property.Name);
+					column.Binding.Mode = property.CanWrite? BindingMode.TwoWay: BindingMode.OneWay;
+					column.Binding.ValidatesOnExceptions = true;
+					column.Binding.NotifyOnValidationError = true;
+					column.DataType = property.PropertyType;
 					this.Columns.Add(column);
 				}
 			}

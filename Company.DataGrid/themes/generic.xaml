@@ -1,39 +1,46 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:company="clr-namespace:Company.DataGrid.View">
+    xmlns:company="clr-namespace:Company.DataGrid.View"
+    xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+    >
 
-	<Style TargetType="company:DataGrid">
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="company:DataGrid">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                        <ItemsPresenter />
-                    </ScrollViewer>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    <Style TargetType="company:DataGrid">
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="company:DataGrid">
+					<Border Background="{TemplateBinding Background}">
+						<ScrollViewer VerticalScrollBarVisibility="Auto">
+							<ItemsPresenter />
+						</ScrollViewer>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
     <Style TargetType="company:Row">
         <Setter Property="ItemsPanel">
             <Setter.Value>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="company:Row">
-                    <ItemsPresenter />
+                    <Border Background="{TemplateBinding Background}">
+                       <ItemsPresenter />
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -46,19 +53,73 @@
 				<ControlTemplate TargetType="company:Cell">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}">
-						<ContentPresenter Name="Cell" Content="{TemplateBinding Value}" />
+						<ContentPresenter Name="Cell" />
 						<VisualStateManager.CustomVisualStateManager>
-							<company:CellVSM />
+							<company:CustomVSM />
 						</VisualStateManager.CustomVisualStateManager>
 						<VisualStateManager.VisualStateGroups>
 							<VisualStateGroup>
-								<VisualState Name="View" />
+								<VisualState Name="View">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<TextBlock Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}}" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="Boolean">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content" Storyboard.TargetName="Cell">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<CheckBox IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="NullableBoolean">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content" Storyboard.TargetName="Cell">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<CheckBox IsThreeState="True" IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
 								<VisualState Name="EditText">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Cell" Storyboard.TargetProperty="Content">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<TextBox Text="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="EditNumber">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<toolkit:NumericUpDown Value="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="EditDate">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<controls:DatePicker SelectedDate="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
@@ -71,5 +132,5 @@
 			</Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>

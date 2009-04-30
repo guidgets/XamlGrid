@@ -201,13 +201,13 @@ namespace Company.DataGrid.View
 			if (!this.IsFocusWithin())
 			{
 				this.IsInEditMode = false;
-				this.CompleteEditing();
 				this.isFocused = false;
 			}
 		}
 
 		private void CompleteEditing()
 		{
+			this.GoToViewState();
 			switch (this.isInEditModeSource)
 			{
 				case IsInEditModeSource.API:
@@ -279,7 +279,7 @@ namespace Company.DataGrid.View
 			}
 			else
 			{
-				cell.GoToViewState();
+				cell.CompleteEditing();
 			}
 		}
 

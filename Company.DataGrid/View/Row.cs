@@ -47,7 +47,12 @@ namespace Company.DataGrid.View
         /// <param name="item">The item to display.</param>
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
+			base.PrepareContainerForItemOverride(element, item);
         	Cell cell = (Cell) element;
+        	if (string.IsNullOrEmpty(this.DisplayMemberPath))
+        	{
+        		cell.ContentTemplate = this.ItemTemplate;
+        	}
         	Column column = (Column) item;
         	cell.Width = column.ActualWidth;
         	cell.DataType = column.DataType;

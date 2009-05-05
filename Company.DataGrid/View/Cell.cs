@@ -205,22 +205,6 @@ namespace Company.DataGrid.View
 			}
 		}
 
-		private void CompleteEditing()
-		{
-			this.GoToViewState();
-			switch (this.isInEditModeSource)
-			{
-				case IsInEditModeSource.API:
-				case IsInEditModeSource.CommitEdit:
-					this.CommitEdit();
-					break;
-				case IsInEditModeSource.CancelEdit:
-					this.CancelEdit();
-					break;
-			}
-			this.isInEditModeSource = IsInEditModeSource.API;
-		}
-
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
@@ -228,13 +212,13 @@ namespace Company.DataGrid.View
 		{
 			if (VisualStateManager.GoToState(this, "CustomEditor", false))
 			{
-				this.HandleEditorLoading(true);
+				this.HandleEditorFocus(true);
 				return true;
 			}
 			bool result = this.GoToEditorForType();
 			if (result)
 			{
-				this.HandleEditorLoading(true);
+				this.HandleEditorFocus(true);
 			}
 			return result;
 		}
@@ -244,12 +228,13 @@ namespace Company.DataGrid.View
 		/// </summary>
 		protected virtual bool GoToViewState()
 		{
-			this.HandleEditorLoading(false);
 			if (this.GoToBoolean())
 			{
 				return true;
 			}
-			return VisualStateManager.GoToState(this, "View", false);
+			bool result = VisualStateManager.GoToState(this, "View", false);
+			this.HandleEditorFocus(false);
+			return result;
 		}
 
 		private static void OnValueChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -279,7 +264,7 @@ namespace Company.DataGrid.View
 			}
 			else
 			{
-				cell.CompleteEditing();
+				cell.GoToViewState();
 			}
 		}
 
@@ -313,7 +298,7 @@ namespace Company.DataGrid.View
 			return false;
 		}
 
-		private void HandleEditorLoading(bool addHandler)
+		private void HandleEditorFocus(bool addHandler)
 		{
 			if (this.Content is Control)
 			{
@@ -327,13 +312,29 @@ namespace Company.DataGrid.View
 				                                   			((TextBox) focusedElement).SelectAll();
 				                                   		}
 				                                   	};
+				RoutedEventHandler lostFocusHandler = (sender, e) =>
+				                                      	{
+				                                      		switch (this.isInEditModeSource)
+				                                      		{
+				                                      			case IsInEditModeSource.API:
+				                                      			case IsInEditModeSource.CommitEdit:
+				                                      				this.CommitEdit();
+				                                      				break;
+				                                      			case IsInEditModeSource.CancelEdit:
+				                                      				this.CancelEdit();
+				                                      				break;
+				                                      		}
+				                                      		this.isInEditModeSource = IsInEditModeSource.API;
+				                                      	};
 				if (addHandler)
 				{
 					editor.Loaded += loadedHandler;
+					editor.LostFocus += lostFocusHandler;
 				}
 				else
 				{
 					editor.Loaded -= loadedHandler;
+					editor.LostFocus -= lostFocusHandler;
 				}
 			}
 		}

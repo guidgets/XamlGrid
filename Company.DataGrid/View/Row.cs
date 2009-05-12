@@ -56,10 +56,7 @@ namespace Company.DataGrid.View
         	Column column = (Column) item;
         	cell.Width = column.ActualWidth;
         	cell.DataType = column.DataType;
-        	if (column.CellStyle != null)
-        	{
-        		cell.Style = column.CellStyle;
-        	}
+        	cell.Style = column.CellStyle;
         	cell.DataContext = this.DataContext;
         	cell.SetBinding(Cell.ValueProperty, column.Binding);
         }

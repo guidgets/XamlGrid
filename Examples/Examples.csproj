@@ -24,7 +24,6 @@
     <ValidateXaml>true</ValidateXaml>
     <UsePlatformExtensions>false</UsePlatformExtensions>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
-    <LinkedServerProject>..\Examples.Web\Examples.Web.csproj</LinkedServerProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

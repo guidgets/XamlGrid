@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:company="clr-namespace:Company.DataGrid.View"
     xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
-    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+    xmlns:toolkitInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
     >
 
     <Style TargetType="company:DataGrid">
@@ -18,7 +19,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-						<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+						<ScrollViewer toolkit:ScrollViewerExtensions.IsMouseWheelScrollingEnabled="True" 
+									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 							<ItemsPresenter />
 						</ScrollViewer>
 					</Border>
@@ -108,7 +110,7 @@
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<toolkit:NumericUpDown Value="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+													<toolkitInput:NumericUpDown Value="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>

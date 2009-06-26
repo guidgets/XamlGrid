@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
@@ -28,7 +29,7 @@ namespace Company.DataGrid.View
 			{
 				return false;
 			}
-			if (state.Storyboard == null)
+			if (state.Storyboard == null || state.Storyboard.GetCurrentState() != ClockState.Stopped)
 			{
 				return base.GoToStateCore(control, templateRoot, stateName, group, state, useTransitions);
 			}

@@ -58,7 +58,6 @@ namespace Company.DataGrid.View
         	cell.Width = column.ActualWidth;
         	cell.DataType = column.DataType;
         	cell.Style = column.CellStyle;
-        	cell.DataContext = this.DataContext;
 			Binding dataBinding = new Binding("DataContext");
         	dataBinding.Source = this;
         	dataBinding.Mode = BindingMode.OneWay;

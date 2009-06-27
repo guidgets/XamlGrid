@@ -18,30 +18,30 @@ namespace Company.DataGrid.Controllers
 		/// </returns>
 		public static bool IsFocusWithin(this UIElement uiElement)
 		{
-			object parent = FocusManager.GetFocusedElement();
-			do
+			object element = FocusManager.GetFocusedElement();
+			while (element is DependencyObject)
 			{
-				if (parent == uiElement)
+				if (element == uiElement)
 				{
 					return true;
 				}
-				if (parent is DependencyObject)
+				DependencyObject parent = VisualTreeHelper.GetParent((DependencyObject) element);
+				if (parent == null)
 				{
-					DependencyObject upperParent = VisualTreeHelper.GetParent((DependencyObject) parent);
-					if (upperParent == null)
+					if (element is FrameworkElement)
 					{
-						if (parent is FrameworkElement)
-						{
-							parent = ((FrameworkElement) parent).Parent;
-						}
+						element = ((FrameworkElement) element).Parent;
 					}
 					else
 					{
-						parent = upperParent;
+						return false;
 					}
 				}
+				else
+				{
+					element = parent;
+				}
 			}
-			while (parent != null);
 			return false;
 		}
 	}

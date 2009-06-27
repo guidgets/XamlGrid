@@ -80,21 +80,11 @@ namespace Company.DataGrid.View
 			base.PrepareContainerForItemOverride(element, item);
 			if (element is ItemsControl)
 			{
-				((ItemsControl) element).ItemsSource = this.Columns;				
-			}
-		}
-
-		/// <summary>
-		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
-		/// </summary>
-		/// <param name="element">The container element.</param>
-		/// <param name="item">The item.</param>
-		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
-		{
-			base.ClearContainerForItemOverride(element, item);
-			if (element is ItemsControl)
-			{
-				((ItemsControl) element).ItemsSource = null;
+				ItemsControl itemsControl = (ItemsControl) element;
+				if (itemsControl.ItemsSource == null)
+				{
+					itemsControl.ItemsSource = this.Columns;
+				}
 			}
 		}
 

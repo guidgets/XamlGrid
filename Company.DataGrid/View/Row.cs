@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Company.DataGrid.Controllers;
 
 namespace Company.DataGrid.View
@@ -58,6 +59,10 @@ namespace Company.DataGrid.View
         	cell.DataType = column.DataType;
         	cell.Style = column.CellStyle;
         	cell.DataContext = this.DataContext;
+			Binding dataBinding = new Binding("DataContext");
+        	dataBinding.Source = this;
+        	dataBinding.Mode = BindingMode.OneWay;
+        	cell.SetBinding(DataContextProperty, dataBinding);
         	cell.SetBinding(Cell.ValueProperty, column.Binding);
         }
 
@@ -70,8 +75,9 @@ namespace Company.DataGrid.View
 		{
 			base.ClearContainerForItemOverride(element, item);
 			Cell cell = (Cell) element;
-			cell.DataContext = null;
 			cell.DataType = null;
+			cell.ClearValue(DataContextProperty);
+			cell.DataContext = null;
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.EditorValueProperty);
 		}

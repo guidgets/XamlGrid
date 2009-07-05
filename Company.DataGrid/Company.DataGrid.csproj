@@ -58,6 +58,8 @@
     <Compile Include="View\CustomVSM.cs" />
     <Compile Include="View\DataGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\OSBrush.cs" />
+    <Compile Include="View\OSColors.cs" />
     <Compile Include="View\Row.cs" />
   </ItemGroup>
   <ItemGroup>

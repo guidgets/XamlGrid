@@ -8,6 +8,11 @@
     >
 
     <Style TargetType="company:DataGrid">
+		<Setter Property="Background">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
+			</Setter.Value>
+		</Setter>
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -30,6 +35,11 @@
 	</Style>
 
     <Style TargetType="company:Row">
+		<Setter Property="Background">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
+			</Setter.Value>
+		</Setter>
         <Setter Property="ItemsPanel">
             <Setter.Value>
 				<ItemsPanelTemplate>
@@ -49,7 +59,7 @@
     </Style>
 
     <Style TargetType="company:Cell">
-		<Setter Property="Background" Value="White" />
+		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="Template">
             <Setter.Value>
 				<ControlTemplate TargetType="company:Cell">

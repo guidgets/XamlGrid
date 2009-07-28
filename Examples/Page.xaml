@@ -20,7 +20,7 @@
 					<Setter.Value>
 						<ControlTemplate TargetType="company:Cell">
 							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
-							BorderThickness="{TemplateBinding BorderThickness}">
+									BorderThickness="{TemplateBinding BorderThickness}">
 								<ContentPresenter />
 								<VisualStateManager.CustomVisualStateManager>
 									<company:CustomVSM />
@@ -63,11 +63,13 @@
 			</Style>
 		</Grid.Resources>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
 			<RowDefinition />
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<company:DataGrid x:Name="dataGrid" AutoCreateColumns="False">
+		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
+		<company:DataGrid x:Name="dataGrid" Grid.Row="1">
 			<company:DataGrid.Columns>
 				<controllers:Column Binding="{Binding Name, Mode=TwoWay}" CellStyle="{StaticResource cellStyleName}" />
 				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" CellStyle="{StaticResource cellStyleAge}" />
@@ -76,8 +78,8 @@
 				<controllers:Column Binding="{Binding HireDate, Mode=TwoWay}" />
 			</company:DataGrid.Columns>
 		</company:DataGrid>
-		<Button Grid.Row="1" HorizontalAlignment="Stretch" Content="GC" Click="Button_Click" />
-		<ListBox Name="listBoxCustomers" Grid.Row="2">
+		<Button Grid.Row="2" HorizontalAlignment="Stretch" Content="GC" Click="Button_Click" />
+		<ListBox Name="listBoxCustomers" Grid.Row="3">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">

@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Notes.doc = Notes.doc
 	EndProjectSection
 EndProject
+Project("{00000000-0000-0000-0000-000000000000}") = "UnitTests", "UnitTests\UnitTests.csproj", "{AA167BD9-6C51-4D72-918F-5F604A890AAC}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -28,6 +30,10 @@ Global
 		{6D97D80E-28E7-4F1C-B1AF-7713F49AA61E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D97D80E-28E7-4F1C-B1AF-7713F49AA61E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D97D80E-28E7-4F1C-B1AF-7713F49AA61E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA167BD9-6C51-4D72-918F-5F604A890AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA167BD9-6C51-4D72-918F-5F604A890AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA167BD9-6C51-4D72-918F-5F604A890AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA167BD9-6C51-4D72-918F-5F604A890AAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

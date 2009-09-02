@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using Company.DataGrid.View;
+using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Controllers
 {

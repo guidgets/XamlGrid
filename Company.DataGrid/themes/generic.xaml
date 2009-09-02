@@ -1,10 +1,10 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:company="clr-namespace:Company.DataGrid.View"
+    xmlns:company="clr-namespace:Company.DataGrid.Views"
     xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
     xmlns:toolkitInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
-    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+	xmlns:controllers="clr-namespace:Company.DataGrid.Controllers"
     >
 
     <Style TargetType="company:DataGrid">
@@ -24,11 +24,11 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-						<ScrollViewer toolkit:ScrollViewerExtensions.IsMouseWheelScrollingEnabled="True" 
-									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-							<ItemsPresenter />
-						</ScrollViewer>
-					</Border>
+                        <ScrollViewer controllers:ScrollExtensions.MouseWheel="True"
+										  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -58,36 +58,30 @@
         </Setter>
     </Style>
 
-    <Style TargetType="company:Cell">
+	<controllers:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
+	
+	<Style TargetType="company:Cell">
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="Template">
             <Setter.Value>
 				<ControlTemplate TargetType="company:Cell">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}">
-						<ContentPresenter Name="Cell" />
+						<company:ValueContentPresenter Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 						<VisualStateManager.CustomVisualStateManager>
 							<company:CustomVSM />
 						</VisualStateManager.CustomVisualStateManager>
 						<VisualStateManager.VisualStateGroups>
 							<VisualStateGroup>
-								<VisualState Name="View">
-									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0">
-												<DiscreteObjectKeyFrame.Value>
-													<TextBlock Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}}" />
-												</DiscreteObjectKeyFrame.Value>
-											</DiscreteObjectKeyFrame>
-										</ObjectAnimationUsingKeyFrames>
-									</Storyboard>
-								</VisualState>
+								<VisualState Name="View" />
 								<VisualState Name="Boolean">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content" Storyboard.TargetName="Cell">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<CheckBox IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+													<DataTemplate>
+														<CheckBox IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
@@ -95,10 +89,26 @@
 								</VisualState>
 								<VisualState Name="NullableBoolean">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content" Storyboard.TargetName="Cell">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<CheckBox IsThreeState="True" IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+													<DataTemplate>
+														<CheckBox IsThreeState="True" IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+													</DataTemplate>
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="Image">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<DataTemplate>
+														<Image Source="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, 
+																		Converter={StaticResource byteArrayToImageConverter}}" />
+													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
@@ -120,7 +130,8 @@
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<toolkitInput:NumericUpDown Value="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+													<toolkitInput:NumericUpDown Value="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
+																				Minimum="-1000000000" Maximum="1000000000" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>

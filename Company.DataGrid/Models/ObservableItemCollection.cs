@@ -19,6 +19,14 @@ namespace Company.DataGrid.Models
 		public ObservableItemCollection()
 		{
 			this.propertyPaths = new List<string>();
+
+			this.ThrowExceptionOnInvalidPath = true;
+		}
+
+		public bool ThrowExceptionOnInvalidPath
+		{
+			get; 
+			set;
 		}
 
 		public void SetEnumerable(IEnumerable<T> newEnumerable)
@@ -169,16 +177,20 @@ namespace Company.DataGrid.Models
 			{
 				return;
 			}
-			ReadOnlyCollection<Property> properties = PropertyPathParser.GetPropertyNames(propertyPath);
+			ReadOnlyCollection<Property> properties = PropertyPathParser.GetPropertyNames(propertyPath, false);
 			for (int index = 0; index < properties.Count - 1; index++)
 			{
 				Type type = value.GetType();
 				PropertyInfo property = type.GetProperty(properties[index].Name);
 				if (property == null)
 				{
-					throw new InvalidOperationException(string.Format("The property {0} contained in the property path {1} " +
-					                                                  "does not exist on the type {2}.", 
-																	  properties[index].Name, propertyPath, type.FullName));
+					if (this.ThrowExceptionOnInvalidPath)
+					{
+						throw new InvalidOperationException(string.Format("The property {0} contained in the property path {1} " +
+																		  "does not exist on the type {2}.",
+																		  properties[index].Name, propertyPath, type.FullName));	
+					}
+					return;
 				}
 				value = property.GetValue(value, properties[index].Arguments);
 				if (value == null)

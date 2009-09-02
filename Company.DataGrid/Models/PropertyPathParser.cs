@@ -11,6 +11,11 @@ namespace Company.DataGrid.Models
 
 		public static ReadOnlyCollection<Property> GetPropertyNames(string propertyPath)
 		{
+			return GetPropertyNames(propertyPath, true);
+		}
+
+		public static ReadOnlyCollection<Property> GetPropertyNames(string propertyPath, bool throwExceptionOnInvalidPath)
+		{
 			// no support for attached properties since the namespaces of their types cannot be resolved
 			if (propertyPath.StartsWith("("))
 			{
@@ -30,7 +35,12 @@ namespace Company.DataGrid.Models
 					// indexers have a "[" (already excluded by string.Split), an integer (bindings support only integer indices) and a "]"
 					if (!Regex.IsMatch(propertyName, @"^[0-9]+\]$"))
 					{
-						ThrowInvalidPropertyPathException(propertyPath, propertyName);
+						if (throwExceptionOnInvalidPath)
+						{
+							throw new ArgumentException(string.Format("The specified property path {0} contains the invalid property {1}.",
+																	  propertyPath, propertyName), "propertyPath");							
+						}
+						return emptyList;
 					}
 					property.Name = "Item";
 					property.Arguments = new object[] { int.Parse(propertyName.Substring(0, propertyName.Length - 1)) };
@@ -40,19 +50,18 @@ namespace Company.DataGrid.Models
 					// identifiers begin with any (Unicode) letter or an underscore and may contain only letters, numbers and underscores
 					if (!Regex.IsMatch(propertyName, @"^(\p{L}|_)\w*$"))
 					{
-						ThrowInvalidPropertyPathException(propertyPath, propertyName);
+						if (throwExceptionOnInvalidPath)
+						{
+							throw new ArgumentException(string.Format("The specified property path {0} contains the invalid property {1}.",
+																	  propertyPath, propertyName), "propertyPath");							
+						}
+						return emptyList;
 					}
 					property.Name = propertyName;
 				}
 				properties.Add(property);
 			}
 			return properties.AsReadOnly();
-		}
-
-		private static void ThrowInvalidPropertyPathException(string propertyPath, string propertyName)
-		{
-			throw new ArgumentException(string.Format("The specified property path {0} contains the invalid property {1}.",
-			                                          propertyPath, propertyName), "propertyPath");
 		}
 	}
 }

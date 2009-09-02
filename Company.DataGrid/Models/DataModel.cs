@@ -18,6 +18,7 @@ namespace Company.DataGrid.Models
 		public DataModel() : base(NAME)
 		{
 			this.observableItemCollection = new ObservableItemCollection<object>();
+			this.observableItemCollection.ThrowExceptionOnInvalidPath = false;
 			this.observableItemCollection.ItemPropertyChanged += this.ObservableItemCollection_ItemPropertyChanged;
 		}
 

@@ -40,6 +40,10 @@ namespace Company.DataGrid.Views
 			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
 			                            new PropertyMetadata(OnValueChanged));
 
+		public static readonly DependencyProperty ColumnProperty =
+			DependencyProperty.Register("Column", typeof(Column), typeof(Cell), new PropertyMetadata(null));
+
+
 		private Type dataType;
 		private IsInEditModeSource isInEditModeSource;
 		private bool isFocused;
@@ -121,6 +125,18 @@ namespace Company.DataGrid.Views
 			set
 			{
 				this.dataType = value;
+			}
+		}
+
+		public Column Column
+		{
+			get
+			{
+				return (Column) this.GetValue(ColumnProperty);
+			}
+			set
+			{
+				this.SetValue(ColumnProperty, value);
 			}
 		}
 
@@ -236,7 +252,11 @@ namespace Company.DataGrid.Views
 			Cell cell = (Cell) dependencyObject;
 			if (cell.Value != null)
 			{
-				cell.DataType = cell.Value.GetType();
+				Type valueType = cell.Value.GetType();
+				if (!cell.DataType.IsAssignableFrom(valueType))
+				{
+					cell.DataType = valueType;
+				}
 			}
 			cell.EditorValue = cell.Value;
 			if (!cell.IsInEditMode)

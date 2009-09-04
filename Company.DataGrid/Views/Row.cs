@@ -55,7 +55,7 @@ namespace Company.DataGrid.Views
         	Cell cell = (Cell) element;
         	Column column = (Column) item;
 			// TODO: this assignment of the width is a bug: it counts on the layout being tabular
-        	cell.Width = column.ActualWidth;
+			cell.Column = column;
         	cell.DataType = column.DataType;
         	cell.Style = column.CellStyle;
         	cell.SetBinding(DataContextProperty, this.dataBinding);
@@ -71,10 +71,12 @@ namespace Company.DataGrid.Views
 		{
 			base.ClearContainerForItemOverride(element, item);
 			Cell cell = (Cell) element;
+			cell.Column = null;
 			cell.ClearValue(DataContextProperty);
 			cell.DataContext = null;
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.EditorValueProperty);
+			cell.ClearValue(WidthProperty);
 		}
 	}
 }

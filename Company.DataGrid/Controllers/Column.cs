@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using Company.DataGrid.Views;
@@ -8,8 +9,12 @@ namespace Company.DataGrid.Controllers
 	/// <summary>
 	/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
 	/// </summary>
-	public class Column
+	public class Column : INotifyPropertyChanged
 	{
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private double actualWidth;
+
 		/// <summary>
 		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
 		/// </summary>
@@ -25,10 +30,20 @@ namespace Company.DataGrid.Controllers
 		/// </summary>
 		/// <value>The actual width of the cells in this <see cref="Column"/>.</value>
         public double ActualWidth
-        {
-        	get; 
-			set;
-        }
+		{
+			get
+			{
+				return this.actualWidth;
+			}
+			set
+			{
+				if (this.actualWidth != value)
+				{
+					this.actualWidth = value;
+					this.OnPropertyChanged("ActualWidth");
+				}
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.
@@ -59,5 +74,14 @@ namespace Company.DataGrid.Controllers
 			get; 
 			set;
 		}
-    }
+
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChanged;
+			if (propertyChangedEventHandler != null)
+			{
+				propertyChangedEventHandler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
 }

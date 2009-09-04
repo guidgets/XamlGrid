@@ -62,7 +62,12 @@
 	
 	<Style TargetType="company:Cell">
 		<Setter Property="Background" Value="Transparent" />
-		<Setter Property="Template">
+        <Setter Property="controllers:StyleBinder.Binding">
+            <Setter.Value>
+                <controllers:StyleBinding Property="Width" Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}}" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
             <Setter.Value>
 				<ControlTemplate TargetType="company:Cell">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 

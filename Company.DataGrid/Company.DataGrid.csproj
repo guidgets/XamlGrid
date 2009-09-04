@@ -55,8 +55,9 @@
     <Compile Include="Controllers\DataCommand.cs" />
     <Compile Include="Controllers\LoadedCommand.cs" />
     <Compile Include="Controllers\ScrollExtensions.cs" />
-    <Compile Include="Controllers\SortDirectionToBooleanConverter.cs" />
     <Compile Include="Controllers\SortingCommand.cs" />
+    <Compile Include="Controllers\StyleBinder.cs" />
+    <Compile Include="Controllers\StyleBinding.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
     <Compile Include="Controllers\UIElementExtensions.cs" />
     <Compile Include="Core\Controller.cs" />

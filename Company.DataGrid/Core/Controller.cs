@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Company.DataGrid.Core
 {
 	/// <summary>
-	/// A base <c>IController/c> implementation
+	/// A base <c>IController</c> implementation
 	/// </summary>
 	/// <see cref="MainController"/>
 	public class Controller : Notifier, IController
@@ -21,7 +21,7 @@ namespace Company.DataGrid.Core
 		#region Constants
 
 		/// <summary>
-		/// The name of the <c>Controller/c>
+		/// The name of the <c>Controller</c>
 		/// </summary>
 		/// <remarks>
 		///     <para>Typically, a <c>Controller</c> will be written to serve one specific control or group controls and so, will not have a need to be dynamically named</para>

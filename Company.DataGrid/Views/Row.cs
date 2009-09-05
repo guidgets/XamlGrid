@@ -54,7 +54,6 @@ namespace Company.DataGrid.Views
         {
         	Cell cell = (Cell) element;
         	Column column = (Column) item;
-			// TODO: this assignment of the width is a bug: it counts on the layout being tabular
 			cell.Column = column;
         	cell.DataType = column.DataType;
         	cell.Style = column.CellStyle;

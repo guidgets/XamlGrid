@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -17,26 +18,37 @@ namespace Company.DataGrid.Views
 	public class DataGrid : ItemsControl
 	{
 		/// <summary>
+		/// Occurs when the current item of the <see cref="DataGrid"/> is changed.
+		/// </summary>
+		public event EventHandler CurrentItemChanged;
+
+		/// <summary>
 		/// The ItemsSourceListener Attached Dependency Property is a private property
 		/// the ItemsSourceChangedBehavior will use silently to bind to the ItemsControl
 		/// ItemsSourceProperty.
 		/// Once bound, the callback method will execute anytime the ItemsSource property changes
 		/// </summary>
-		private static readonly DependencyProperty ItemsSourceListenerProperty =
+		private static readonly DependencyProperty itemsSourceListenerProperty =
 			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
 												new PropertyMetadata(null, OnItemsSourceListenerChanged));
+
+		public static readonly DependencyProperty DataSourceProperty =
+			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
 
 		public static readonly DependencyProperty AutoCreateColumnsProperty =
 			DependencyProperty.Register("AutoCreateColumns", typeof(bool), typeof(DataGrid),
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
 
-		public static readonly DependencyProperty DataSourceProperty =
-			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
+		// Using a DependencyProperty as the backing store for CurrentItem.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty CurrentItemProperty =
+			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
+
 
 		public event DependencyPropertyChangedEventHandler DataSourceChanged;
 		public event DependencyPropertyChangedEventHandler ItemsSourceChanged;
 
 		private readonly SortingModel sortingModel;
+		private readonly SelectionModel selectionModel;
 		private readonly List<Column> otherColumns;
 
 		/// <summary>
@@ -50,13 +62,14 @@ namespace Company.DataGrid.Views
 			this.otherColumns = new List<Column>();
 
 			Binding binding = new Binding("ItemsSource") { Source = this, Mode = BindingMode.OneWay };
-			this.SetBinding(ItemsSourceListenerProperty, binding);
+			this.SetBinding(itemsSourceListenerProperty, binding);
 
 			this.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 
 			// TODO: move these to a startup Controller (page 19 and 20 of "Pure MVC - Best Practices")
 			DataGridFacade.Instance.RegisterController(new DataGridController(this));
 			DataGridFacade.Instance.RegisterModel(this.sortingModel = new SortingModel());
+			DataGridFacade.Instance.RegisterModel(this.selectionModel = new SelectionModel());
 		}
 
 		public object DataSource
@@ -99,6 +112,10 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+		/// <summary>
+		/// Gets the descriptions which tell the <see cref="DataGrid"/> how to sort the data it displays.
+		/// </summary>
+		/// <value>The descriptions which tell the <see cref="DataGrid"/> how to sort the data it displays.</value>
 		public SortDescriptionCollection SortDescriptions
 		{
 			get
@@ -108,26 +125,30 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
-		/// Dependency Property Changed Call Back method. This will be called anytime
-		/// the ItemsSourceListenerProperty value changes on a Dependency Object
+		/// Gets or sets the current item of the <see cref="DataGrid"/>.
 		/// </summary>
-		/// <param name="d">The obj.</param>
-		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-		private static void OnItemsSourceListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		/// <value>The current item of the <see cref="DataGrid"/>.</value>
+		public object CurrentItem
 		{
-			DataGrid dataGrid = (DataGrid) d;
-			if (dataGrid.ItemsSourceChanged != null)
+			get
 			{
-				dataGrid.ItemsSourceChanged(dataGrid, e);
+				return this.GetValue(CurrentItemProperty);
+			}
+			set
+			{
+				this.SetValue(CurrentItemProperty, value);
 			}
 		}
 
-		private static void OnDataSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		/// <summary>
+		/// Gets the list of items which are currently selected in the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The list of items which are currently selected in the <see cref="DataGrid"/>.</value>
+		public ObservableCollection<object> SelectedItems
 		{
-			DataGrid dataGrid = (DataGrid) d;
-			if (dataGrid.DataSourceChanged != null)
+			get
 			{
-				dataGrid.DataSourceChanged(dataGrid, e);
+				return this.selectionModel.SelectedItems;
 			}
 		}
 
@@ -210,6 +231,24 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+		private static void OnItemsSourceListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			DataGrid dataGrid = (DataGrid) d;
+			if (dataGrid.ItemsSourceChanged != null)
+			{
+				dataGrid.ItemsSourceChanged(dataGrid, e);
+			}
+		}
+
+		private static void OnDataSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			DataGrid dataGrid = (DataGrid) d;
+			if (dataGrid.DataSourceChanged != null)
+			{
+				dataGrid.DataSourceChanged(dataGrid, e);
+			}
+		}
+
 		private static void OnAutoCreateColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			DataGrid dataGrid = (DataGrid) d;
@@ -225,6 +264,20 @@ namespace Company.DataGrid.Views
 			if (dataGrid.AutoCreateColumns && dataGrid.Columns.Count == 0)
 			{
 				dataGrid.CreateAutomaticColumns();
+			}
+		}
+
+		private static void OnCurrentItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataGrid) d).OnCurrentItemChanged(EventArgs.Empty);
+		}
+
+		private void OnCurrentItemChanged(EventArgs e)
+		{
+			EventHandler handler = this.CurrentItemChanged;
+			if (handler != null)
+			{
+				handler(this, e);
 			}
 		}
 	}

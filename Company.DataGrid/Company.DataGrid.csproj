@@ -52,9 +52,12 @@
   <ItemGroup>
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
     <Compile Include="Controllers\Column.cs" />
+    <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
     <Compile Include="Controllers\LoadedCommand.cs" />
+    <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\ScrollExtensions.cs" />
+    <Compile Include="Controllers\SelectionCommand.cs" />
     <Compile Include="Controllers\SortingCommand.cs" />
     <Compile Include="Controllers\StyleBinder.cs" />
     <Compile Include="Controllers\StyleBinding.cs" />
@@ -89,6 +92,8 @@
     <Compile Include="Models\ItemPropertyChangedEventArgs.cs" />
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyPathParser.cs" />
+    <Compile Include="Models\CurrentItemModel.cs" />
+    <Compile Include="Models\SelectionModel.cs" />
     <Compile Include="Models\SortingModel.cs" />
     <Compile Include="Notifications.cs" />
     <Compile Include="NotificationTypes.cs" />

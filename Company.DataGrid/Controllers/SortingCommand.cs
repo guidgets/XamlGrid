@@ -11,6 +11,10 @@ namespace Company.DataGrid.Controllers
 			SortingModel sortingModel;
 			switch (notification.Name)
 			{
+				case Notifications.ITEMS_SOURCE_CHANGED:
+					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
+					sortingModel.SetCollectionView(notification.Body as ICollectionView);
+					break;
 				case Notifications.SORTING_REQUESTED:
 					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 					SortDescription sortDescription = (SortDescription) notification.Body;
@@ -26,10 +30,6 @@ namespace Company.DataGrid.Controllers
 				case Notifications.REFRESH_SORTING:
 					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 					sortingModel.RefreshIfSorted((string) notification.Body);
-					break;
-				case Notifications.ITEMS_SOURCE_CHANGED:
-					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
-					sortingModel.SetCollectionView(notification.Body as ICollectionView);
 					break;
 			}
 		}

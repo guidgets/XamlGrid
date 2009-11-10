@@ -24,8 +24,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-                        <ScrollViewer controllers:ScrollExtensions.MouseWheel="True"
-										  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <ScrollViewer controllers:ScrollExtensions.MouseWheel="True" controllers:ScrollExtensions.HandleArrowKeys="False"
+									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
@@ -35,6 +35,7 @@
 	</Style>
 
     <Style TargetType="company:Row">
+        <Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Background">
 			<Setter.Value>
 				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
@@ -50,8 +51,48 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="company:Row">
-                    <Border Background="{TemplateBinding Background}">
-                       <ItemsPresenter />
+                    <Border Name="mainBorder" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter />
+                        <VisualStateManager.CustomVisualStateManager>
+                            <company:CustomVSM />
+                        </VisualStateManager.CustomVisualStateManager>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState x:Name="NotCurrent" />
+                                <VisualState x:Name="Current">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mainBorder" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush company:OSBrush.OSColor="ActiveBorderColor" />
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup>
+                                <VisualState x:Name="Deselected" />
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mainBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightColor" />
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightTextColor" />
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

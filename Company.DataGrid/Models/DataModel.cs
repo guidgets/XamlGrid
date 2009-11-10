@@ -45,7 +45,14 @@ namespace Company.DataGrid.Models
 					this.observableItemCollection.SetEnumerable(from object item in enumerable 
 																select item);
 				}
-				this.collectionView = new CollectionViewSource { Source = enumerable }.View;
+				if (enumerable is ICollectionView)
+				{
+					this.collectionView = (ICollectionView) enumerable;
+				}
+				else
+				{
+					this.collectionView = new CollectionViewSource { Source = enumerable }.View;					
+				}
 			}
 			this.SendNotification(Notifications.DATA_WRAPPED, this.collectionView);
 			return this.collectionView;

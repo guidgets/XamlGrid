@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Input;
 using Company.DataGrid.Core;
 
 namespace Company.DataGrid.Controllers
@@ -12,9 +13,7 @@ namespace Company.DataGrid.Controllers
 
 		public DataGridController(object viewComponent) : base(NAME, viewComponent)
 		{
-			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
-			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsChanged;
-			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
+
 		}
 
 		public Views.DataGrid DataGrid
@@ -25,9 +24,33 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+		public override void OnRegister()
+		{
+			base.OnRegister();
+
+			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
+			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsChanged;
+			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
+			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
+
+			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
+		}
+
+		public override void OnRemove()
+		{
+			base.OnRemove();
+
+			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
+			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsChanged;
+			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
+			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
+
+			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
+		}
+
 		public override IList<string> ListNotificationInterests()
 		{
-			return new List<string> { Notifications.DATA_WRAPPED };
+			return new List<string> { Notifications.DATA_WRAPPED, Notifications.CURRENT_ITEM_CHANGED };
 		}
 
 		public override void HandleNotification(INotification notification)
@@ -36,6 +59,9 @@ namespace Company.DataGrid.Controllers
 			{
 				case Notifications.DATA_WRAPPED:
 					this.DataGrid.ItemsSource = (IEnumerable) notification.Body;
+					break;
+				case Notifications.CURRENT_ITEM_CHANGED:
+					this.DataGrid.CurrentItem = notification.Body;
 					break;
 			}
 		}
@@ -53,9 +79,55 @@ namespace Company.DataGrid.Controllers
 			this.SendNotification(Notifications.ITEMS_SOURCE_CHANGED, this.DataGrid.ItemsSource);
 		}
 
+		private void DataGrid_CurrentItemChanged(object sender, System.EventArgs e)
+		{
+			this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.CurrentItem);
+		}
+
 		private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
+		}
+
+		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
+		{
+			string notification = null;
+			switch (e.Key)
+			{
+				case Key.Up:
+					notification = Notifications.CURRENT_ITEM_UP;
+					break;
+				case Key.Down:
+					notification = Notifications.CURRENT_ITEM_DOWN;
+					break;
+				case Key.Home:
+					notification = Notifications.CURRENT_ITEM_FIRST;
+					break;
+				case Key.End:
+					notification = Notifications.CURRENT_ITEM_LAST;
+					break;
+				case Key.Space:
+					if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+					{
+						if (this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem))
+						{
+							this.SendNotification(Notifications.ITEMS_DESELECTING, this.DataGrid.CurrentItem);
+						}
+						else
+						{
+							this.SendNotification(Notifications.ITEMS_SELECTING, this.DataGrid.CurrentItem);
+						}
+					}
+					break;
+			}
+			if (notification != null)
+			{
+				this.SendNotification(notification);
+				if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+				{
+					this.SendNotification(Notifications.ITEMS_SELECTING, this.DataGrid.CurrentItem);
+				}
+			}
 		}
 	}
 }

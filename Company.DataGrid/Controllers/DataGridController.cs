@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 
@@ -31,6 +33,7 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsChanged;
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
+			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
 
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
@@ -43,6 +46,7 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsChanged;
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
+			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
 
 			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
@@ -50,7 +54,12 @@ namespace Company.DataGrid.Controllers
 
 		public override IList<string> ListNotificationInterests()
 		{
-			return new List<string> { Notifications.DATA_WRAPPED, Notifications.CURRENT_ITEM_CHANGED };
+			return new List<string>
+			       	{
+			       		Notifications.DATA_WRAPPED,
+			       		Notifications.CURRENT_ITEM_CHANGED,
+			       		Notifications.SELECTION_MODE_CHANGED
+			       	};
 		}
 
 		public override void HandleNotification(INotification notification)
@@ -62,6 +71,9 @@ namespace Company.DataGrid.Controllers
 					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.DataGrid.CurrentItem = notification.Body;
+					break;
+				case Notifications.SELECTION_MODE_CHANGED:
+					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
 					break;
 			}
 		}
@@ -79,9 +91,14 @@ namespace Company.DataGrid.Controllers
 			this.SendNotification(Notifications.ITEMS_SOURCE_CHANGED, this.DataGrid.ItemsSource);
 		}
 
-		private void DataGrid_CurrentItemChanged(object sender, System.EventArgs e)
+		private void DataGrid_CurrentItemChanged(object sender, DependencyPropertyChangedEventArgs e1)
 		{
 			this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.CurrentItem);
+		}
+
+		private void DataGrid_SelectionModeChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.SELECTION_MODE_CHANGING, this.DataGrid.SelectionMode);
 		}
 
 		private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -109,23 +126,26 @@ namespace Company.DataGrid.Controllers
 				case Key.Space:
 					if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
 					{
-						if (this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem))
-						{
-							this.SendNotification(Notifications.ITEMS_DESELECTING, this.DataGrid.CurrentItem);
-						}
-						else
-						{
-							this.SendNotification(Notifications.ITEMS_SELECTING, this.DataGrid.CurrentItem);
-						}
+						notification = this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem) ?
+											Notifications.ITEMS_DESELECTING : Notifications.ITEMS_SELECTING;
 					}
 					break;
 			}
 			if (notification != null)
 			{
-				this.SendNotification(notification);
-				if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+				this.SendNotification(notification, this.DataGrid.CurrentItem);
+				switch (this.DataGrid.SelectionMode)
 				{
-					this.SendNotification(Notifications.ITEMS_SELECTING, this.DataGrid.CurrentItem);
+					case SelectionMode.Single:
+						if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+						{
+							this.SendNotification(Notifications.ITEMS_SELECTING, this.DataGrid.CurrentItem);
+						}
+						break;
+					case SelectionMode.Multiple:
+						break;
+					case SelectionMode.Extended:
+						break;
 				}
 			}
 		}

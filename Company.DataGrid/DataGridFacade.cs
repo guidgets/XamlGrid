@@ -65,6 +65,7 @@ namespace Company.DataGrid
 			this.RegisterCommand(Notifications.ITEMS_SELECTING, typeof(SelectionCommand));
 			this.RegisterCommand(Notifications.ITEMS_DESELECTING, typeof(SelectionCommand));
 			this.RegisterCommand(Notifications.IS_ITEM_SELECTED, typeof(SelectionCommand));
+			this.RegisterCommand(Notifications.SELECTION_MODE_CHANGING, typeof(SelectionCommand));
 		}
 	}
 }

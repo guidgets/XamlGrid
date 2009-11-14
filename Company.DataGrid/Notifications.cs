@@ -24,5 +24,7 @@
 		public const string ITEMS_DESELECTED = "itemsDeselected";
 		public const string IS_ITEM_SELECTED = "isItemSelected";
 		public const string ITEM_IS_SELECTED = "itemIsSelected";
+		public const string SELECTION_MODE_CHANGING = "selectionModeChanging";
+		public const string SELECTION_MODE_CHANGED = "selectionModeChanged";
 	}
 }

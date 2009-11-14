@@ -20,7 +20,20 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Occurs when the current item of the <see cref="DataGrid"/> is changed.
 		/// </summary>
-		public event EventHandler CurrentItemChanged;
+		public event DependencyPropertyChangedEventHandler CurrentItemChanged;
+		/// <summary>
+		/// Occurs when the data source of the <see cref="DataGrid"/> is changed.
+		/// </summary>
+		public event DependencyPropertyChangedEventHandler DataSourceChanged;
+		/// <summary>
+		/// Occurs when the source of items for the <see cref="DataGrid"/> is changed.
+		/// </summary>
+		public event DependencyPropertyChangedEventHandler ItemsSourceChanged;
+		/// <summary>
+		/// Occurs when the selection mode of the <see cref="DataGrid"/> is changed.
+		/// </summary>
+		public event DependencyPropertyChangedEventHandler SelectionModeChanged;
+
 
 		/// <summary>
 		/// The ItemsSourceListener Attached Dependency Property is a private property
@@ -39,13 +52,13 @@ namespace Company.DataGrid.Views
 			DependencyProperty.Register("AutoCreateColumns", typeof(bool), typeof(DataGrid),
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
 
-		// Using a DependencyProperty as the backing store for CurrentItem.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty CurrentItemProperty =
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
 
+		public static readonly DependencyProperty SelectionModeProperty =
+			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),
+			                            new PropertyMetadata(SelectionMode.Extended, OnSelectionModeChanged));
 
-		public event DependencyPropertyChangedEventHandler DataSourceChanged;
-		public event DependencyPropertyChangedEventHandler ItemsSourceChanged;
 
 		private readonly SortingModel sortingModel;
 		private readonly SelectionModel selectionModel;
@@ -144,11 +157,27 @@ namespace Company.DataGrid.Views
 		/// Gets the list of items which are currently selected in the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The list of items which are currently selected in the <see cref="DataGrid"/>.</value>
-		public ObservableCollection<object> SelectedItems
+		public SelectedItemsCollection SelectedItems
 		{
 			get
 			{
 				return this.selectionModel.SelectedItems;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.</value>
+		public SelectionMode SelectionMode
+		{
+			get
+			{
+				return (SelectionMode) this.GetValue(SelectionModeProperty);
+			}
+			set
+			{
+				this.SetValue(SelectionModeProperty, value);
 			}
 		}
 
@@ -160,7 +189,7 @@ namespace Company.DataGrid.Views
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			return new Row();
+			return new Row(this);
 		}
 
 		/// <summary>
@@ -269,12 +298,26 @@ namespace Company.DataGrid.Views
 
 		private static void OnCurrentItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			((DataGrid) d).OnCurrentItemChanged(EventArgs.Empty);
+			((DataGrid) d).OnCurrentItemChanged(e);
 		}
 
-		private void OnCurrentItemChanged(EventArgs e)
+		private void OnCurrentItemChanged(DependencyPropertyChangedEventArgs e)
 		{
-			EventHandler handler = this.CurrentItemChanged;
+			DependencyPropertyChangedEventHandler handler = this.CurrentItemChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		private static void OnSelectionModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataGrid) d).OnSelectionModeChanged(e);
+		}
+
+		private void OnSelectionModeChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.SelectionModeChanged;
 			if (handler != null)
 			{
 				handler(this, e);

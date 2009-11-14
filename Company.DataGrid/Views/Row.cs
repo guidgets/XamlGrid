@@ -41,6 +41,17 @@ namespace Company.DataGrid.Views
 			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}
 
+		public Row(DataGrid dataGrid) : this()
+		{
+			this.DataGrid = dataGrid;
+		}
+
+		public DataGrid DataGrid
+		{
+			get; 
+			private set;
+		}
+
 		public bool IsCurrent
 		{
 			get
@@ -64,7 +75,6 @@ namespace Company.DataGrid.Views
 				this.SetValue(IsSelectedProperty, value);
 			}
 		}
-
 
 		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.

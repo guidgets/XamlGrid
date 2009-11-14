@@ -93,6 +93,7 @@
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyPathParser.cs" />
     <Compile Include="Models\CurrentItemModel.cs" />
+    <Compile Include="Models\SelectedItemsCollection.cs" />
     <Compile Include="Models\SelectionModel.cs" />
     <Compile Include="Models\SortingModel.cs" />
     <Compile Include="Notifications.cs" />

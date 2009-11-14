@@ -73,7 +73,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
-		<company:DataGrid x:Name="dataGrid" Grid.Row="1">
+		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Multiple">
 			<company:DataGrid.Columns>
 				<controllers:Column Binding="{Binding Name, Mode=TwoWay}" CellStyle="{StaticResource cellStyleName}" />
 				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" CellStyle="{StaticResource cellStyleAge}" />
@@ -94,7 +94,7 @@
 					<RowDefinition />
 				</Grid.RowDefinitions>
 				<CheckBox HorizontalAlignment="Stretch" Content="Sort by Orders[0].Name" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
-				<ListBox Name="listBoxCustomers" Grid.Row="1">
+				<ListBox Name="listBoxCustomers" Grid.Row="1" SelectionMode="Multiple">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">

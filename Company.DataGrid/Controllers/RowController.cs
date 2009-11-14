@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
@@ -28,15 +30,16 @@ namespace Company.DataGrid.Controllers
 			this.Row.DataContextChanged += this.Row_DataContextChanged;
 			this.Row.IsCurrentChanged += this.Row_IsCurrentChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
-			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.OnRowMouseUp), true);
+			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp), true);
 		}
 
 		public override void OnRemove()
 		{
 			base.OnRemove();
+			this.Row.DataContextChanged -= this.Row_DataContextChanged;
 			this.Row.IsCurrentChanged -= this.Row_IsCurrentChanged;
 			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
-			this.Row.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.OnRowMouseUp));
+			this.Row.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp));
 		}
 
 		public override IList<string> ListNotificationInterests()
@@ -71,7 +74,8 @@ namespace Company.DataGrid.Controllers
 					}
 					break;
 				case Notifications.ITEMS_DESELECTED:
-					if (((IList) notification.Body).Contains(this.Row.DataContext))
+					IList list = (IList) notification.Body;
+					if (list.Contains(this.Row.DataContext) || list.Count == 0)
 					{
 						this.Row.IsSelected = false;
 					}
@@ -111,19 +115,24 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private void OnRowMouseUp(object sender, MouseButtonEventArgs e)
+		private void Row_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			this.Row.IsCurrent = true;
-			if (this.Row.IsSelected)
+			string notification = this.Row.IsSelected ? Notifications.ITEMS_DESELECTING : Notifications.ITEMS_SELECTING;
+			switch (this.Row.DataGrid.SelectionMode)
 			{
-				if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-				{
-					this.Row.IsSelected = false;
-				}
-			}
-			else
-			{
-				this.Row.IsSelected = true;				
+				case SelectionMode.Single:
+					if (!this.Row.IsSelected || 
+						(this.Row.IsSelected && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+					{
+						this.SendNotification(notification, this.Row.DataContext);
+					}
+					break;
+				case SelectionMode.Multiple:
+					this.SendNotification(notification, this.Row.DataContext);
+					break;
+				case SelectionMode.Extended:
+					break;
 			}
 		}
 	}

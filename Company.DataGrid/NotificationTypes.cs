@@ -3,6 +3,6 @@
 	public static class NotificationTypes
 	{
 		public const string SORTED = "sorted";
-		public const string REMOVED_SORTING = "removed sorting";
+		public const string REMOVED_SORTING = "removedSorting";
 	}
 }

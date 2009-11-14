@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows.Controls;
 using Company.DataGrid.Core;
 
 namespace Company.DataGrid.Models
@@ -8,15 +9,34 @@ namespace Company.DataGrid.Models
 	{
 		public new const string NAME = "selectionModel";
 
+		private SelectionMode selectionMode;
+
 		public SelectionModel() : base (NAME)
 		{
-			this.SelectedItems = new ObservableCollection<object>();
+			this.SelectedItems = new SelectedItemsCollection();
 		}
 
-		public ObservableCollection<object> SelectedItems
+		public SelectedItemsCollection SelectedItems
 		{
 			get; 
 			private set;
+		}
+
+		public SelectionMode SelectionMode
+		{
+			get
+			{
+				return this.selectionMode;
+			}
+			set
+			{
+				if (this.selectionMode != value)
+				{
+					this.selectionMode = value;
+					this.SelectedItems.SelectionMode = this.selectionMode;
+					this.SendNotification(Notifications.SELECTION_MODE_CHANGED, this.selectionMode);
+				}
+			}
 		}
 
 		public override void OnRegister()

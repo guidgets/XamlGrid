@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace Company.DataGrid.Models
@@ -8,20 +9,50 @@ namespace Company.DataGrid.Models
 	/// </summary>
 	public class SelectedItemsCollection : ObservableCollection<object>
 	{
-		public SelectedItemsCollection() : this(SelectionMode.Single)
+		private SelectionMode selectionMode;
+
+		/// <summary>
+		/// Represents a <see cref="ObservableCollection{T}"/> of items that are selected.
+		/// </summary>
+		public SelectedItemsCollection() : this(SelectionMode.Extended)
 		{
 
 		}
 
+		/// <summary>
+		/// Represents a <see cref="ObservableCollection{T}"/> of items that are selected.
+		/// </summary>
+		/// <param name="selectionMode">The selection mode of the <see cref="SelectedItemsCollection"/>.</param>
 		public SelectedItemsCollection(SelectionMode selectionMode)
 		{
 			this.SelectionMode = selectionMode;
 		}
 
+		/// <summary>
+		/// Gets or sets the selection mode used by the <see cref="SelectedItemsCollection"/> when it manages its items.
+		/// </summary>
+		/// <value>The selection mode.</value>
 		public SelectionMode SelectionMode
 		{
-			get; 
-			set;
+			get
+			{
+				return this.selectionMode;
+			}
+			set
+			{
+				if (this.selectionMode != value)
+				{
+					this.selectionMode = value;
+					if (this.selectionMode == SelectionMode.Single)
+					{
+						for (int index = this.Count - 2; index >= 0; index--)
+						{
+							this.RemoveAt(index);
+						}
+					}
+					this.OnPropertyChanged(new PropertyChangedEventArgs("SelectionMode"));
+				}
+			}
 		}
 
 		/// <summary>

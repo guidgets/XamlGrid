@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Windows;
 
 namespace Company.DataGrid.Controllers
 {

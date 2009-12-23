@@ -20,11 +20,14 @@ namespace Company.DataGrid.Controllers
 				case Notifications.CURRENT_ITEM_DOWN:
 					currentItemModel.MoveCurrentToNext();
 					break;
+				case Notifications.CURRENT_ITEM_TO_POSITION:
+					currentItemModel.MoveCurrentToPosition((int) notification.Body);
+					break;
 				case Notifications.CURRENT_ITEM_FIRST:
 					currentItemModel.MoveCurrentToFirst();
 					break;
 				case Notifications.CURRENT_ITEM_LAST:
-					currentItemModel.MoveCurrenttoLast();
+					currentItemModel.MoveCurrentToLast();
 					break;
 				case Notifications.CURRENT_ITEM_CHANGING:
 					currentItemModel.MoveCurrentTo(notification.Body);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Company.DataGrid.Controllers;
@@ -15,9 +14,15 @@ namespace Company.DataGrid.Views
 		public event DependencyPropertyChangedEventHandler IsCurrentChanged;
 		public event DependencyPropertyChangedEventHandler IsSelectedChanged;
 
+		/// <summary>
+		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
+		/// </summary>
 		public static readonly DependencyProperty IsCurrentProperty =
 			DependencyProperty.Register("IsCurrent", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsCurrentChanged));
 
+		/// <summary>
+		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
+		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsSelectedChanged));
 
@@ -52,6 +57,12 @@ namespace Company.DataGrid.Views
 			private set;
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Row"/> is the current one.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this <see cref="Row"/> is the current one; otherwise, <c>false</c>.
+		/// </value>
 		public bool IsCurrent
 		{
 			get
@@ -64,6 +75,12 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Row"/> is selected.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this <see cref="Row"/> is selected; otherwise, <c>false</c>.
+		/// </value>
 		public bool IsSelected
 		{
 			get
@@ -74,6 +91,13 @@ namespace Company.DataGrid.Views
 			{
 				this.SetValue(IsSelectedProperty, value);
 			}
+		}
+
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+			this.GoToCurrent();
+			this.GoToSelected();
 		}
 
 		/// <summary>
@@ -149,15 +173,13 @@ namespace Company.DataGrid.Views
 		private static void OnIsCurrentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
-			if (row.IsCurrent)
-			{
-				VisualStateManager.GoToState(row, "Current", false);
-			}
-			else
-			{
-				VisualStateManager.GoToState(row, "NotCurrent", false);
-			}
+			row.GoToCurrent();
 			row.OnIsCurrentChanged(e);
+		}
+
+		private void GoToCurrent()
+		{
+			VisualStateManager.GoToState(this, this.IsCurrent ? "Current" : "NotCurrent", false);
 		}
 
 		private void OnIsCurrentChanged(DependencyPropertyChangedEventArgs e)
@@ -172,15 +194,13 @@ namespace Company.DataGrid.Views
 		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
-			if (row.IsSelected)
-			{
-				VisualStateManager.GoToState(row, "Selected", false);
-			}
-			else
-			{
-				VisualStateManager.GoToState(row, "Deselected", false);
-			}
+			row.GoToSelected();
 			row.OnIsSelectedChanged(e);
+		}
+
+		private void GoToSelected()
+		{
+			VisualStateManager.GoToState(this, this.IsSelected ? "Selected" : "Deselected", false);
 		}
 
 		private void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)

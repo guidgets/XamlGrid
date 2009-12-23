@@ -62,7 +62,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -71,16 +71,15 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Toolkit, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Controls.Input.Toolkit, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
+    <Compile Include="Controllers\ItemsSourceChangedCommand.cs" />
     <Compile Include="Controllers\LoadedCommand.cs" />
     <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\ScrollExtensions.cs" />
@@ -120,6 +119,8 @@
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyPathParser.cs" />
     <Compile Include="Models\CurrentItemModel.cs" />
+    <Compile Include="Models\Range.cs" />
+    <Compile Include="Models\RangeCollection.cs" />
     <Compile Include="Models\SelectedItemsCollection.cs" />
     <Compile Include="Models\SelectionModel.cs" />
     <Compile Include="Models\SortingModel.cs" />

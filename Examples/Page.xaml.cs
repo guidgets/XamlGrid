@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using Company.DataGrid.Views;
 
 namespace Examples
 {

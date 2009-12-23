@@ -6,6 +6,9 @@ using Company.DataGrid.Core;
 
 namespace Company.DataGrid.Models
 {
+	/// <summary>
+	/// Represents a <see cref="Model"/> that executes all sorting logic over a given set of data.
+	/// </summary>
 	public class SortingModel : Model
 	{
 		public new const string NAME = "sortingModel";
@@ -15,6 +18,9 @@ namespace Company.DataGrid.Models
 		private readonly SortDescriptionCollection sortDescriptionsStore;
 		private List<Notification> notificationsStore;
 
+		/// <summary>
+		/// Represents a <see cref="Model"/> that executes all sorting logic over a given set of data.
+		/// </summary>
 		public SortingModel() : base(NAME)
 		{
 			this.sortDescriptionsStore = new SortDescriptionCollection();
@@ -22,6 +28,10 @@ namespace Company.DataGrid.Models
 			this.notificationsStore = new List<Notification>();
 		}
 
+		/// <summary>
+		/// Gets the sort descriptions which the <see cref="SelectionModel"/> currently uses to sort its items.
+		/// </summary>
+		/// <value>The sort descriptions.</value>
 		public SortDescriptionCollection SortDescriptions
 		{
 			get
@@ -30,6 +40,10 @@ namespace Company.DataGrid.Models
 			}
 		}
 
+		/// <summary>
+		/// Sets the collection view which items the <see cref="SortingModel"/> sorts.
+		/// </summary>
+		/// <param name="newCollectionView">The new collection view to be sorted by the <see cref="SelectionModel"/>.</param>
 		public void SetCollectionView(ICollectionView newCollectionView)
 		{
 			if (this.collectionView == newCollectionView)
@@ -53,6 +67,9 @@ namespace Company.DataGrid.Models
 			this.sortDescriptionsStore.Clear();
 		}
 
+		/// <summary>
+		/// Starts the notifications sent when sorting occurs.
+		/// </summary>
 		public void StartNotifications()
 		{
 			if (this.notificationsStore == null)
@@ -85,6 +102,10 @@ namespace Company.DataGrid.Models
 			}
 		}
 
+		/// <summary>
+		/// Refreshes the sorting, if any, by the specified property path.
+		/// </summary>
+		/// <param name="propertyPath">The property path to sort by.</param>
 		public void RefreshIfSorted(string propertyPath)
 		{
 			if (this.collectionView == null)
@@ -100,7 +121,12 @@ namespace Company.DataGrid.Models
 			}
 		}
 
-		public void HandleSortingRequest(string propertyName, ListSortDirection? sortDirection)
+		/// <summary>
+		/// Sorts the items of the <see cref="SelectionModel"/> by the specified property name in the specified direction.
+		/// </summary>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <param name="sortDirection">The sort direction.</param>
+		public void Sort(string propertyName, ListSortDirection? sortDirection)
 		{
 			IEnumerable<SortDescription> sortDescriptions = (from sortDescription in this.SortDescriptions
 															 where sortDescription.PropertyName == propertyName

@@ -14,6 +14,12 @@ namespace Company.DataGrid.Models
 			return GetPropertyNames(propertyPath, true);
 		}
 
+		/// <summary>
+		/// Gets the property names which compose the specified property path.
+		/// </summary>
+		/// <param name="propertyPath">The property path.</param>
+		/// <param name="throwExceptionOnInvalidPath">if set to <c>true</c>, throws an exception on an invalid path.</param>
+		/// <returns>A list of the property names which compose the specified property path.</returns>
 		public static ReadOnlyCollection<Property> GetPropertyNames(string propertyPath, bool throwExceptionOnInvalidPath)
 		{
 			// no support for attached properties since the namespaces of their types cannot be resolved

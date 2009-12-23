@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,8 +47,8 @@ namespace Company.DataGrid.Controllers
 			       	{
 			       		Notifications.CURRENT_ITEM_CHANGED,
 						Notifications.ITEM_IS_CURRENT,
-			       		Notifications.ITEMS_SELECTED,
-			       		Notifications.ITEMS_DESELECTED,
+			       		Notifications.SELECTED_ITEMS,
+			       		Notifications.DESELECTED_ITEMS,
 						Notifications.ITEM_IS_SELECTED
 			       	};
 		}
@@ -67,13 +66,13 @@ namespace Company.DataGrid.Controllers
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.Row.IsCurrent = this.Row.DataContext == notification.Body;
 					break;
-				case Notifications.ITEMS_SELECTED:
+				case Notifications.SELECTED_ITEMS:
 					if (((IList) notification.Body).Contains(this.Row.DataContext))
 					{
 						this.Row.IsSelected = ((IList) notification.Body).Contains(this.Row.DataContext);
 					}
 					break;
-				case Notifications.ITEMS_DESELECTED:
+				case Notifications.DESELECTED_ITEMS:
 					IList list = (IList) notification.Body;
 					if (list.Contains(this.Row.DataContext) || list.Count == 0)
 					{
@@ -105,25 +104,18 @@ namespace Company.DataGrid.Controllers
 
 		private void Row_IsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (this.Row.IsSelected)
-			{
-				this.SendNotification(Notifications.ITEMS_SELECTING, this.Row.DataContext);
-			}
-			else
-			{
-				this.SendNotification(Notifications.ITEMS_DESELECTING, this.Row.DataContext);
-			}
+			this.SendNotification(this.Row.IsSelected ? Notifications.SELECTING_ITEMS : Notifications.DESELECTING_ITEMS,
+			                      this.Row.DataContext);
 		}
 
 		private void Row_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			this.Row.IsCurrent = true;
-			string notification = this.Row.IsSelected ? Notifications.ITEMS_DESELECTING : Notifications.ITEMS_SELECTING;
+			string notification = this.Row.IsSelected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
 			switch (this.Row.DataGrid.SelectionMode)
 			{
 				case SelectionMode.Single:
-					if (!this.Row.IsSelected || 
-						(this.Row.IsSelected && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+					if (!this.Row.IsSelected || (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None)
 					{
 						this.SendNotification(notification, this.Row.DataContext);
 					}
@@ -132,6 +124,22 @@ namespace Company.DataGrid.Controllers
 					this.SendNotification(notification, this.Row.DataContext);
 					break;
 				case SelectionMode.Extended:
+					switch (Keyboard.Modifiers)
+					{
+						case ModifierKeys.None:
+							this.SendNotification(Notifications.SELECTING_ITEMS, this.Row.DataContext, NotificationTypes.CLEAR_SELECTION);
+							break;
+						case ModifierKeys.Control:
+							this.SendNotification(notification, this.Row.DataContext);
+							break;
+						case ModifierKeys.Shift:
+							this.SendNotification(Notifications.SELECT_RANGE, this.Row.DataContext,
+							                      NotificationTypes.CLEAR_SELECTION);
+							break;
+						case ModifierKeys.Control | ModifierKeys.Shift:
+							this.SendNotification(Notifications.SELECT_RANGE, this.Row.DataContext);
+							break;
+					}
 					break;
 			}
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -45,6 +44,9 @@ namespace Company.DataGrid.Views
 			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
 												new PropertyMetadata(null, OnItemsSourceListenerChanged));
 
+		/// <summary>
+		/// Identifies the property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
+		/// </summary>
 		public static readonly DependencyProperty DataSourceProperty =
 			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
 
@@ -52,9 +54,15 @@ namespace Company.DataGrid.Views
 			DependencyProperty.Register("AutoCreateColumns", typeof(bool), typeof(DataGrid),
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
 
+		/// <summary>
+		/// Identifies the property which gets or sets the current item of the <see cref="DataGrid"/>.
+		/// </summary>
 		public static readonly DependencyProperty CurrentItemProperty =
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
 
+		/// <summary>
+		/// Identifies the property which gets or sets the mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.
+		/// </summary>
 		public static readonly DependencyProperty SelectionModeProperty =
 			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),
 			                            new PropertyMetadata(SelectionMode.Extended, OnSelectionModeChanged));
@@ -85,6 +93,10 @@ namespace Company.DataGrid.Views
 			DataGridFacade.Instance.RegisterModel(this.selectionModel = new SelectionModel());
 		}
 
+		/// <summary>
+		/// Gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The data source that provides the data to display in the <see cref="DataGrid"/>.</value>
 		public object DataSource
 		{
 			get

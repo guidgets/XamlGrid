@@ -13,6 +13,11 @@
 				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
 			</Setter.Value>
 		</Setter>
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
+            </Setter.Value>
+        </Setter>
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -24,7 +29,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-                        <ScrollViewer controllers:ScrollExtensions.MouseWheel="True" controllers:ScrollExtensions.HandleArrowKeys="False"
+                        <ScrollViewer controllers:ScrollExtensions.HandleArrowKeys="False"
 									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                             <ItemsPresenter />
                         </ScrollViewer>

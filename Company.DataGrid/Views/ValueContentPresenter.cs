@@ -25,7 +25,7 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
-		/// Identifies the <see cref="Value"/> dependency property.
+		/// Identifies the property which gets or sets an object value to be transfered back and forth between a <see cref="ContentControl"/> and its <see cref="ContentControl.ContentTemplate"/>..
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
 			DependencyProperty.Register("Value", typeof(object), typeof(ValueContentPresenter), new PropertyMetadata(null));

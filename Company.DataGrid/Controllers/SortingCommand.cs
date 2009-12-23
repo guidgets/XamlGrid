@@ -20,11 +20,11 @@ namespace Company.DataGrid.Controllers
 					SortDescription sortDescription = (SortDescription) notification.Body;
 					if (notification.Type == NotificationTypes.REMOVED_SORTING)
 					{
-						sortingModel.HandleSortingRequest(sortDescription.PropertyName, null);
+						sortingModel.Sort(sortDescription.PropertyName, null);
 					}
 					else
 					{
-						sortingModel.HandleSortingRequest(sortDescription.PropertyName, sortDescription.Direction);
+						sortingModel.Sort(sortDescription.PropertyName, sortDescription.Direction);
 					}
 					break;
 				case Notifications.REFRESH_SORTING:

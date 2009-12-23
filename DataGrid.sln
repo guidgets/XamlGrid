@@ -1,14 +1,14 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Company.DataGrid", "Company.DataGrid\Company.DataGrid.csproj", "{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{6D97D80E-28E7-4F1C-B1AF-7713F49AA61E}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCC93A5C-E71D-48E1-A7E6-918A2F9FEBDA}"
 	ProjectSection(SolutionItems) = preProject
 		Notes.doc = Notes.doc
 	EndProjectSection
+EndProject
+Project("{00000000-0000-0000-0000-000000000000}") = "Company.DataGrid", "Company.DataGrid\Company.DataGrid.csproj", "{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}"
+EndProject
+Project("{00000000-0000-0000-0000-000000000000}") = "Examples", "Examples\Examples.csproj", "{6D97D80E-28E7-4F1C-B1AF-7713F49AA61E}"
 EndProject
 Project("{00000000-0000-0000-0000-000000000000}") = "UnitTests", "UnitTests\UnitTests.csproj", "{AA167BD9-6C51-4D72-918F-5F604A890AAC}"
 EndProject

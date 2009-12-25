@@ -78,7 +78,6 @@ namespace Company.DataGrid.Views
 		public DataGrid()
 		{
 			this.DefaultStyleKey = typeof(DataGrid);
-			this.AutoCreateColumns = true;
 			this.Columns = new ObservableCollection<Column>();
 			this.otherColumns = new List<Column>();
 

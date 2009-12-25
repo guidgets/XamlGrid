@@ -112,7 +112,7 @@ namespace Company.DataGrid.Controllers
 		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
 		{
 			this.HandleCurrentItem(e.Key);
-			this.HandleSelection(e);
+			this.HandleSelection(e.Key);
 		}
 
 		private void HandleCurrentItem(Key key)
@@ -142,11 +142,11 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private void HandleSelection(KeyEventArgs e)
+		private void HandleSelection(Key key)
 		{
 			bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
 
-			switch (e.Key)
+			switch (key)
 			{
 				case Key.Up:
 				case Key.Down:

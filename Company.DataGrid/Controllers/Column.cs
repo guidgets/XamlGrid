@@ -14,6 +14,7 @@ namespace Company.DataGrid.Controllers
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private double actualWidth;
+		private object header;
 
 		/// <summary>
 		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
@@ -42,6 +43,22 @@ namespace Company.DataGrid.Controllers
 					this.actualWidth = value;
 					this.OnPropertyChanged("ActualWidth");
 				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the header which displays visual information about the <see cref="Column"/>.
+		/// </summary>
+		/// <value>The header to display the information about the <see cref="Column"/>.</value>
+		public object Header
+		{
+			get
+			{
+				return this.header ?? this.Binding.Path.Path;
+			}
+			set
+			{
+				this.header = value;
 			}
 		}
 

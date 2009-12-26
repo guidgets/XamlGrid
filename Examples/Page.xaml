@@ -77,7 +77,7 @@
 			<company:DataGrid.Columns>
 				<controllers:Column Binding="{Binding Name, Mode=TwoWay}" CellStyle="{StaticResource cellStyleName}" />
 				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" CellStyle="{StaticResource cellStyleAge}" />
-				<controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" />
+				<controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Header="First Order Name" />
 				<controllers:Column Binding="{Binding IsSingle, Mode=TwoWay}" CellStyle="{StaticResource cellStyleIsSingle}" />
 				<controllers:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" CellStyle="{StaticResource cellStyleMaritalStatus}" />
 				<controllers:Column Binding="{Binding HireDate, Mode=TwoWay}" />

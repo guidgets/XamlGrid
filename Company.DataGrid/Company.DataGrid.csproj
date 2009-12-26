@@ -80,6 +80,8 @@
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
     <Compile Include="Controllers\ItemsSourceChangedCommand.cs" />
+    <Compile Include="Controllers\HeaderCellController.cs" />
+    <Compile Include="Controllers\HeaderRowController.cs" />
     <Compile Include="Controllers\LoadedCommand.cs" />
     <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\ScrollExtensions.cs" />
@@ -131,6 +133,8 @@
     <Compile Include="Views\DataGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
+    <Compile Include="Views\HeaderCell.cs" />
+    <Compile Include="Views\HeaderRow.cs" />
     <Compile Include="Views\OSBrush.cs" />
     <Compile Include="Views\OSColors.cs" />
     <Compile Include="Views\Row.cs" />

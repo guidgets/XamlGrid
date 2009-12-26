@@ -29,15 +29,106 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-                        <ScrollViewer controllers:ScrollExtensions.HandleArrowKeys="False"
-									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <ItemsPresenter />
-                        </ScrollViewer>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0"
+                                          controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
+                                <company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </ScrollViewer>
+                            <ScrollViewer Name="mainScroll" Grid.Row="1" controllers:ScrollExtensions.HandleArrowKeys="False"
+    									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Grid>
                     </Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+    <Style TargetType="company:HeaderRow">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="company:HeaderCell">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush company:OSBrush.OSColor="ControlColor" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="8,3,8,3" />
+        <Setter Property="IsChecked" Value="{x:Null}" />
+        <Setter Property="IsThreeState" Value="True" />
+        <Setter Property="controllers:StyleBinder.Binding">
+            <Setter.Value>
+                <controllers:StyleBinding Property="Width" 
+                                          Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="company:HeaderCell">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+							BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Width="{TemplateBinding Width}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Margin="{TemplateBinding Padding}" />
+                            <Path Name="SortArrow" Fill="#FF444444" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
+                                  VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
+                                  Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1">
+                                <Path.RenderTransform>
+                                    <ScaleTransform ScaleX=".9" ScaleY=".9" />
+                                </Path.RenderTransform>
+                            </Path>
+                            <Thumb HorizontalAlignment="Right" Grid.Column="2" 
+                                   Tag="{Binding Column, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="Transparent">
+                                            <Rectangle Width="1" Margin="8,0,0,0">
+                                                <Rectangle.Fill>
+                                                    <SolidColorBrush company:OSBrush.OSColor="ControlDarkColor" />
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard Storyboard.TargetName="SortArrow">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
+                                        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0" To="-.9"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard Storyboard.TargetName="SortArrow">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="company:Row">
         <Setter Property="BorderThickness" Value="1" />
@@ -56,7 +147,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="company:Row">
-                    <Border Name="mainBorder" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
                         <ItemsPresenter />
                         <VisualStateManager.CustomVisualStateManager>
                             <company:CustomVSM />
@@ -66,7 +158,7 @@
                                 <VisualState x:Name="NotCurrent" />
                                 <VisualState x:Name="Current">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mainBorder" Storyboard.TargetProperty="BorderBrush">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <SolidColorBrush company:OSBrush.OSColor="ActiveBorderColor" />
@@ -80,7 +172,7 @@
                                 <VisualState x:Name="Deselected" />
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mainBorder" Storyboard.TargetProperty="Background">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <SolidColorBrush company:OSBrush.OSColor="HighlightColor" />

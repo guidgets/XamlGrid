@@ -130,6 +130,7 @@ namespace Company.DataGrid.Views
         /// <param name="item">The item to display.</param>
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
+			base.PrepareContainerForItemOverride(element, item);
         	Cell cell = (Cell) element;
         	Column column = (Column) item;
 			cell.Column = column;
@@ -148,7 +149,6 @@ namespace Company.DataGrid.Views
 		{
 			base.ClearContainerForItemOverride(element, item);
 			Cell cell = (Cell) element;
-			cell.Column = null;
 			cell.ClearValue(DataContextProperty);
 			cell.DataContext = null;
 			cell.ClearValue(Cell.ValueProperty);

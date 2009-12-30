@@ -69,7 +69,7 @@ namespace Company.DataGrid.Controllers
 			{
 				case Notifications.DATA_WRAPPED:
 					this.DataGrid.ItemsSource = (IEnumerable) notification.Body;
-					this.DataGrid.CurrentItem = this.DataGrid.Items[0];
+					this.DataGrid.CurrentItem = this.DataGrid.Items.FirstOrDefault();
 					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.DataGrid.CurrentItem = notification.Body;

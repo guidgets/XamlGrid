@@ -8,15 +8,13 @@ namespace Company.DataGrid.Controllers
 	{
 		public override void Execute(INotification notification)
 		{
-			SortingModel sortingModel;
+			SortingModel sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 			switch (notification.Name)
 			{
 				case Notifications.ITEMS_SOURCE_CHANGED:
-					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 					sortingModel.SetCollectionView(notification.Body as ICollectionView);
 					break;
 				case Notifications.SORTING_REQUESTED:
-					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 					SortDescription sortDescription = (SortDescription) notification.Body;
 					if (notification.Type == NotificationTypes.REMOVED_SORTING)
 					{
@@ -28,7 +26,6 @@ namespace Company.DataGrid.Controllers
 					}
 					break;
 				case Notifications.REFRESH_SORTING:
-					sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 					sortingModel.RefreshIfSorted((string) notification.Body);
 					break;
 			}

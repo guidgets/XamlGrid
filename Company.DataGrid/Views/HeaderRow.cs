@@ -45,9 +45,7 @@ namespace Company.DataGrid.Views
 		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
 		{
 			base.ClearContainerForItemOverride(element, item);
-			HeaderCell headerCell = (HeaderCell) element;
-			headerCell.Column = null;
-			DataGridFacade.Instance.RemoveController(headerCell.GetHashCode().ToString());
+			DataGridFacade.Instance.RemoveController(element.GetHashCode().ToString());
 		}
 	}
 }

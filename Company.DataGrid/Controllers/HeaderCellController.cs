@@ -77,14 +77,13 @@ namespace Company.DataGrid.Controllers
 			switch (notification.Name)
 			{
 				case Notifications.SORTED:
-					switch (notification.Type)
+					if (notification.Type == NotificationTypes.REMOVED_SORTING)
 					{
-						case NotificationTypes.SORTED:
-							this.HeaderCell.IsChecked = sortDescription.Direction == ListSortDirection.Descending ? true : false;
-							break;
-						case NotificationTypes.REMOVED_SORTING:
-							this.HeaderCell.IsChecked = null;
-							break;
+						this.HeaderCell.IsChecked = null;
+					}
+					else
+					{
+						this.HeaderCell.IsChecked = sortDescription.Direction == ListSortDirection.Descending ? true : false;
 					}
 					break;
 			}

@@ -89,35 +89,31 @@ namespace Company.DataGrid.Models
 		{
 			switch (e.Action)
 			{
-				case NotifyCollectionChangedAction.Remove:
-					this.SendNotificationForSorting(e.OldItems[0], NotificationTypes.REMOVED_SORTING);
-					break;
 				case NotifyCollectionChangedAction.Add:
+					foreach (object sortDescription in e.NewItems)
+					{
+						this.SendNotificationForSorting(sortDescription, null);
+					}
+					break;
+				case NotifyCollectionChangedAction.Remove:
+					for (int index = e.OldItems.Count - 1; index >= 0; index--)
+					{
+						this.SendNotificationForSorting(e.OldItems[index], NotificationTypes.REMOVED_SORTING);
+					}
+					break;
 				case NotifyCollectionChangedAction.Replace:
-					this.SendNotificationForSorting(e.NewItems[0], NotificationTypes.SORTED);
+					for (int index = e.OldItems.Count - 1; index >= 0; index--)
+					{
+						this.SendNotificationForSorting(e.OldItems[index], NotificationTypes.REMOVED_SORTING);
+					}
+					foreach (object sortDescription in e.NewItems)
+					{
+						this.SendNotificationForSorting(sortDescription, null);
+					}
 					break;
 				case NotifyCollectionChangedAction.Reset:
 					this.SendNotificationForSorting(new SortDescription(), NotificationTypes.REMOVED_SORTING);
 					break;
-			}
-		}
-
-		/// <summary>
-		/// Refreshes the sorting, if any, by the specified property path.
-		/// </summary>
-		/// <param name="propertyPath">The property path to sort by.</param>
-		public void RefreshIfSorted(string propertyPath)
-		{
-			if (this.collectionView == null)
-			{
-				return;
-			}
-			bool sortedByPropertyPath = (from sortDescription in this.SortDescriptions
-										 where sortDescription.PropertyName == propertyPath
-										 select sortDescription).Any();
-			if (sortedByPropertyPath)
-			{
-				this.collectionView.Refresh();
 			}
 		}
 
@@ -136,28 +132,39 @@ namespace Company.DataGrid.Models
 			{
 				return;
 			}
-			SortDescription description;
-			string notificationType = NotificationTypes.SORTED;
 			if (isUnsorted)
 			{
-				description = new SortDescription(propertyName, sortDirection.Value);
-				this.SortDescriptions.Add(description);
+				this.SortDescriptions.Add(new SortDescription(propertyName, sortDirection.Value));
 			}
 			else
 			{
 				if (sortDirection == null)
 				{
 					this.SortDescriptions.Remove(sortDescriptions.First());
-					description = new SortDescription();
-					notificationType = NotificationTypes.REMOVED_SORTING;
 				}
 				else
 				{
-					description = new SortDescription(propertyName, sortDirection.Value);
-					this.SortDescriptions[this.SortDescriptions.IndexOf(sortDescriptions.First())] = description;
+					this.SortDescriptions[this.SortDescriptions.IndexOf(sortDescriptions.First())] = new SortDescription(propertyName, sortDirection.Value);
 				}
 			}
-			this.SendNotificationForSorting(description, notificationType);
+		}
+
+		/// <summary>
+		/// Refreshes the sorting, if any, by the specified property path.
+		/// </summary>
+		/// <param name="propertyPath">The property path to sort by.</param>
+		public void RefreshIfSorted(string propertyPath)
+		{
+			if (this.collectionView == null)
+			{
+				return;
+			}
+			if ((from sortDescription in this.SortDescriptions
+				 where sortDescription.PropertyName == propertyPath
+				 select sortDescription).Any())
+			{
+				this.collectionView.Refresh();
+			}
 		}
 
 		private void SendNotificationForSorting(object sortDescription, string notificationType)

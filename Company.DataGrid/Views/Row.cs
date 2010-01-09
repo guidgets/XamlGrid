@@ -10,8 +10,17 @@ namespace Company.DataGrid.Views
 	/// </summary>
 	public class Row : ItemsControl
 	{
+		/// <summary>
+		/// Occurs when the data context of the <see cref="Row"/> is changed.
+		/// </summary>
 		public event DependencyPropertyChangedEventHandler DataContextChanged;
+		/// <summary>
+		/// Occurs when the <see cref="Row"/> changes its currency.
+		/// </summary>
 		public event DependencyPropertyChangedEventHandler IsCurrentChanged;
+		/// <summary>
+		/// Occurs when the <see cref="Row"/> changes its selection state.
+		/// </summary>
 		public event DependencyPropertyChangedEventHandler IsSelectedChanged;
 
 		/// <summary>
@@ -39,18 +48,25 @@ namespace Company.DataGrid.Views
 			this.DefaultStyleKey = typeof(Row);
 
 			this.dataBinding = new Binding { Source = this.DataContext, Mode = BindingMode.OneTime };
-			
+
 			Binding binding = new Binding("DataContext") { Source = this, Mode = BindingMode.OneWay };
 			this.SetBinding(dataContextListenerProperty, binding);
 
 			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}
 
+		/// <summary>
+		/// Represents a UI element that displays a data object.
+		/// </summary>
+		/// <param name="dataGrid">The data grid which contains the <see cref="Row"/>.</param>
 		public Row(DataGrid dataGrid) : this()
 		{
 			this.DataGrid = dataGrid;
 		}
 
+		/// <summary>
+		/// Gets the data grid in which the <see cref="Row"/> is contained.
+		/// </summary>
 		public DataGrid DataGrid
 		{
 			get; 
@@ -93,6 +109,9 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+		/// <summary>
+		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application, but see Remarks for more information.
+		/// </summary>
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
@@ -132,10 +151,21 @@ namespace Company.DataGrid.Views
         {
 			base.PrepareContainerForItemOverride(element, item);
         	Cell cell = (Cell) element;
+        	DataTemplate contentTemplate = cell.ContentTemplate;
+			base.PrepareContainerForItemOverride(element, item);
+        	if (string.IsNullOrEmpty(this.DisplayMemberPath))
+        	{
+        		cell.ContentTemplate = contentTemplate;
+        	}
         	Column column = (Column) item;
 			cell.Column = column;
         	cell.DataType = column.DataType;
-        	cell.Style = column.CellStyle;
+			cell.Style = column.CellStyle;
+			if (cell.ReadLocalValue(Cell.IsEditableProperty) == DependencyProperty.UnsetValue)
+			{
+				cell.SetBinding(Cell.IsEditableProperty,
+								new Binding("Column.IsEditable") { RelativeSource = new RelativeSource(RelativeSourceMode.Self) });
+			}
         	cell.SetBinding(DataContextProperty, this.dataBinding);
         	cell.SetBinding(Cell.ValueProperty, column.Binding);
         }
@@ -152,8 +182,7 @@ namespace Company.DataGrid.Views
 			cell.ClearValue(DataContextProperty);
 			cell.DataContext = null;
 			cell.ClearValue(Cell.ValueProperty);
-			cell.ClearValue(Cell.EditorValueProperty);
-			cell.ClearValue(WidthProperty);
+			cell.ClearValue(Cell.IsEditableProperty);
 		}
 
 		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

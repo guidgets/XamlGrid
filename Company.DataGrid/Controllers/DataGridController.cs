@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Company.DataGrid.Core;
@@ -106,6 +108,19 @@ namespace Company.DataGrid.Controllers
 
 		private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Add:
+				case NotifyCollectionChangedAction.Replace:
+					foreach (Column column in from Column column in e.NewItems
+											  where column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue
+											  select column)
+					{
+						BindingOperations.SetBinding(column, Column.IsEditableProperty,
+													 new Binding("IsEditable") { Source = this.DataGrid });
+					}
+					break;
+			}
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
 		}
 

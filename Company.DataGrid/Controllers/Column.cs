@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using Company.DataGrid.Views;
@@ -9,40 +8,60 @@ namespace Company.DataGrid.Controllers
 	/// <summary>
 	/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
 	/// </summary>
-	public class Column : INotifyPropertyChanged
+	public class Column : DependencyObject
 	{
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private double actualWidth;
-		private object header;
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the actual width of the cells in a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty ActualWidthProperty =
+			DependencyProperty.Register("ActualWidth", typeof(double), typeof(Column), new PropertyMetadata(200d));
 
 		/// <summary>
-		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
+		/// Identifies the dependency property which gets or sets the header which 
+		/// displays visual information about a <see cref="Column"/>.
 		/// </summary>
-		public Column()
-		{
-			// default value
-            this.ActualWidth = 200;
-			this.DataType = typeof(object);
-		}
+		public static readonly DependencyProperty HeaderProperty =
+			DependencyProperty.Register("Header", typeof(object), typeof(Column), new PropertyMetadata(null));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the binding which 
+		/// the <see cref="Cell"/>s in a <see cref="Column"/> use to get the data they display.
+		/// </summary>
+		public static readonly DependencyProperty BindingProperty =
+			DependencyProperty.Register("DataBinding", typeof(Binding), typeof(Column), new PropertyMetadata(OnBindingChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating 
+		/// whether the <see cref="Cell"/>s in a <see cref="Column"/> are read-only.
+		/// </summary>
+		public static readonly DependencyProperty IsEditableProperty =
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the type of the data in the <see cref="Cell"/>s in a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty DataTypeProperty =
+			DependencyProperty.Register("DataType", typeof(Type), typeof(Column), new PropertyMetadata(typeof(object)));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the style of the <see cref="Cell"/>s in a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty CellStyleProperty =
+			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
 
 		/// <summary>
 		/// Gets or sets the actual width of the cells in this <see cref="Column"/>.
 		/// </summary>
 		/// <value>The actual width of the cells in this <see cref="Column"/>.</value>
-        public double ActualWidth
+		public double ActualWidth
 		{
 			get
 			{
-				return this.actualWidth;
+				return (double) this.GetValue(ActualWidthProperty);
 			}
 			set
 			{
-				if (this.actualWidth != value)
-				{
-					this.actualWidth = value;
-					this.OnPropertyChanged("ActualWidth");
-				}
+				this.SetValue(ActualWidthProperty, value);
 			}
 		}
 
@@ -54,11 +73,11 @@ namespace Company.DataGrid.Controllers
 		{
 			get
 			{
-				return this.header ?? this.Binding.Path.Path;
+				return this.GetValue(HeaderProperty);
 			}
 			set
 			{
-				this.header = value;
+				this.SetValue(HeaderProperty, value);
 			}
 		}
 
@@ -68,8 +87,14 @@ namespace Company.DataGrid.Controllers
 		/// <value>The binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.</value>
 		public Binding Binding
 		{
-        	get; 
-			set;
+			get
+			{
+				return (Binding) this.GetValue(BindingProperty);
+			}
+			set
+			{
+				this.SetValue(BindingProperty, value);
+			}
 		}
 
 		/// <summary>
@@ -78,8 +103,32 @@ namespace Company.DataGrid.Controllers
 		/// <value>The type of the data in the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
 		public Type DataType
 		{
-			get; 
-			set;
+			get
+			{
+				return (Type) this.GetValue(DataTypeProperty);
+			}
+			set
+			{
+				this.SetValue(DataTypeProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the <see cref="Cell"/>s in this <see cref="Column"/> are read-only.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if the <see cref="Cell"/>s in this <see cref="Column"/> are read-only; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsEditable
+		{
+			get
+			{
+				return (bool) this.GetValue(IsEditableProperty);
+			}
+			set
+			{
+				this.SetValue(IsEditableProperty, value);
+			}
 		}
 
 		/// <summary>
@@ -88,16 +137,22 @@ namespace Company.DataGrid.Controllers
 		/// <value>The style of the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
 		public Style CellStyle
 		{
-			get; 
-			set;
+			get
+			{
+				return (Style) this.GetValue(CellStyleProperty);
+			}
+			set
+			{
+				this.SetValue(CellStyleProperty, value);
+			}
 		}
 
-		private void OnPropertyChanged(string propertyName)
+		private static void OnBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChanged;
-			if (propertyChangedEventHandler != null)
+			Column column = (Column) d;
+			if (column.Header == null)
 			{
-				propertyChangedEventHandler(this, new PropertyChangedEventArgs(propertyName));
+				column.Header = column.Binding.Path.Path;
 			}
 		}
 	}

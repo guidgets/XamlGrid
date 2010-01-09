@@ -36,9 +36,8 @@ namespace Company.DataGrid.Views
 
 		/// <summary>
 		/// The ItemsSourceListener Attached Dependency Property is a private property
-		/// the ItemsSourceChangedBehavior will use silently to bind to the ItemsControl
-		/// ItemsSourceProperty.
-		/// Once bound, the callback method will execute anytime the ItemsSource property changes
+		/// used to silently bind to the <see cref="ItemsControl"/> ItemsSourceProperty.
+		/// Once bound, the callback method will execute any time the ItemsSource property changes.
 		/// </summary>
 		private static readonly DependencyProperty itemsSourceListenerProperty =
 			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
@@ -50,6 +49,10 @@ namespace Company.DataGrid.Views
 		public static readonly DependencyProperty DataSourceProperty =
 			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
 
+		/// <summary>
+		/// Identifies the property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
+		/// automatically created according to the data source.
+		/// </summary>
 		public static readonly DependencyProperty AutoCreateColumnsProperty =
 			DependencyProperty.Register("AutoCreateColumns", typeof(bool), typeof(DataGrid),
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
@@ -66,6 +69,13 @@ namespace Company.DataGrid.Views
 		public static readonly DependencyProperty SelectionModeProperty =
 			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),
 			                            new PropertyMetadata(SelectionMode.Extended, OnSelectionModeChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating 
+		/// whether the <see cref="Cell"/>s in a <see cref="DataGrid"/> are read-only.
+		/// </summary>
+		public static readonly DependencyProperty IsEditableProperty =
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
 
 		private readonly SortingModel sortingModel;
@@ -109,9 +119,9 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
-		/// Gets the <see cref="Column"/>s representing the subdata (most often properties) of the objects the <see cref="DataGrid"/> displays.
+		/// Gets the <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.
 		/// </summary>
-		/// <value>The <see cref="Column"/>s representing the subdata (most often properties) of the objects the <see cref="DataGrid"/> displays.</value>
+		/// <value>The <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.</value>
 		public ObservableCollection<Column> Columns
 		{
 			get;
@@ -193,6 +203,24 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
+		/// Gets or sets a value indicating whether the <see cref="Cell"/>s in this <see cref="DataGrid"/> are read-only.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if the <see cref="Cell"/>s in this <see cref="DataGrid"/> are read-only; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsEditable
+		{
+			get
+			{
+				return (bool) this.GetValue(IsEditableProperty);
+			}
+			set
+			{
+				this.SetValue(IsEditableProperty, value);
+			}
+		}
+
+		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
 		/// <returns>
@@ -208,7 +236,7 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		/// <param name="item">The item to check.</param>
 		/// <returns>
-		/// true if the item is (or is eligible to be) its own container; otherwise, false.
+		/// <c>true</c> if the item is (or is eligible to be) its own container; otherwise, <c>false</c>.
 		/// </returns>
 		protected override bool IsItemItsOwnContainerOverride(object item)
 		{

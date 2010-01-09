@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
 
@@ -29,6 +31,7 @@ namespace Company.DataGrid.Controllers
 			this.Row.DataContextChanged += this.Row_DataContextChanged;
 			this.Row.IsCurrentChanged += this.Row_IsCurrentChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
+			this.Row.LayoutUpdated += this.Row_LayoutUpdated;
 			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp), true);
 		}
 
@@ -88,6 +91,21 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+		private bool IsInTree()
+		{
+			FrameworkElement element = this.Row;
+			FrameworkElement rootElement = Application.Current.RootVisual as FrameworkElement;
+
+			while (element != null)
+			{
+				if (element == rootElement)
+					return true;
+
+				element = VisualTreeHelper.GetParent(element) as FrameworkElement;
+			}
+			return false;
+		}
+
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.IS_ITEM_CURRENT, this.Row.DataContext);
@@ -106,6 +124,15 @@ namespace Company.DataGrid.Controllers
 		{
 			this.SendNotification(this.Row.IsSelected ? Notifications.SELECTING_ITEMS : Notifications.DESELECTING_ITEMS,
 			                      this.Row.DataContext);
+		}
+
+		private void Row_LayoutUpdated(object sender, EventArgs e)
+		{
+			if (!this.IsInTree())
+			{
+				DataGridFacade.Instance.RemoveController(this.Name);
+				this.Row.ItemsSource = null;
+			}
 		}
 
 		private void Row_MouseUp(object sender, MouseButtonEventArgs e)

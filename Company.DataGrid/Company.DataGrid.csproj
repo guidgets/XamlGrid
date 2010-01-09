@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
     <Compile Include="Controllers\Column.cs" />
+    <Compile Include="Controllers\ControlExtensions.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
     <Compile Include="Controllers\ItemsSourceChangedCommand.cs" />
@@ -138,7 +139,6 @@
     <Compile Include="Views\OSBrush.cs" />
     <Compile Include="Views\OSColors.cs" />
     <Compile Include="Views\Row.cs" />
-    <Compile Include="Views\ValueContentPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="themes\generic.xaml">

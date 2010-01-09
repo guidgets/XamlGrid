@@ -140,7 +140,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal" />
+					<VirtualizingStackPanel Orientation="Horizontal" />
 				</ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -211,20 +211,18 @@
 				<ControlTemplate TargetType="company:Cell">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}">
-						<company:ValueContentPresenter Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-						<VisualStateManager.CustomVisualStateManager>
-							<company:CustomVSM />
-						</VisualStateManager.CustomVisualStateManager>
+						<ContentPresenter Name="Content" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
 						<VisualStateManager.VisualStateGroups>
 							<VisualStateGroup>
 								<VisualState Name="View" />
 								<VisualState Name="Boolean">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
-														<CheckBox IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+														<CheckBox IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                                  IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
@@ -233,11 +231,13 @@
 								</VisualState>
 								<VisualState Name="NullableBoolean">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
-														<CheckBox IsThreeState="True" IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+														<CheckBox IsThreeState="True" 
+                                                                  IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                                  IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
@@ -246,11 +246,11 @@
 								</VisualState>
 								<VisualState Name="Image">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
-														<Image Source="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, 
+														<Image Source="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, 
 																		Converter={StaticResource byteArrayToImageConverter}}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
@@ -260,34 +260,42 @@
 								</VisualState>
 								<VisualState Name="EditText">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<TextBox Text="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-												</DiscreteObjectKeyFrame.Value>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding Tag.EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                                 SelectionLength="1000000000" controllers:ControlExtensions.FocusOnLoad="True" />
+                                                    </DataTemplate>
+                                                </DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
 									</Storyboard>
 								</VisualState>
 								<VisualState Name="EditNumber">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<toolkitInput:NumericUpDown Value="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
-																				Minimum="-1000000000" Maximum="1000000000" />
-												</DiscreteObjectKeyFrame.Value>
+                                                    <DataTemplate>
+                                                        <toolkitInput:NumericUpDown Value="{Binding Tag.EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
+                                                                                    Minimum="-1000000000" Maximum="1000000000" controllers:ControlExtensions.FocusOnLoad="True" />
+                                                    </DataTemplate>
+                                                </DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
 									</Storyboard>
 								</VisualState>
 								<VisualState Name="EditDate">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<controls:DatePicker SelectedDate="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-												</DiscreteObjectKeyFrame.Value>
+                                                    <DataTemplate>
+                                                        <controls:DatePicker SelectedDate="{Binding Tag.EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                                             controllers:ControlExtensions.FocusOnLoad="True" />
+                                                    </DataTemplate>
+                                                </DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
 									</Storyboard>

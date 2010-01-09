@@ -13,18 +13,14 @@ namespace Company.DataGrid.Views
 	/// </summary>
 	public class Cell : ContentControl
 	{
-		private enum IsInEditModeSource
-		{
-			API = 0,
-			CommitEdit = 1,
-			CancelEdit = 2
-		}
-
 		/// <summary>
 		/// Identifies the property which gets or sets value contained in the editor of the <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty EditorValueProperty =
 			DependencyProperty.Register("EditorValue", typeof(object), typeof(Cell), new PropertyMetadata(null));
+
+		public static readonly DependencyProperty IsEditableProperty =
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));		
 
 		/// <summary>
 		/// Identifies the property which gets or sets a value indicating whether this <see cref="Cell"/> is in edit mode.
@@ -45,8 +41,8 @@ namespace Company.DataGrid.Views
 
 
 		private Type dataType;
-		private IsInEditModeSource isInEditModeSource;
 		private bool isFocused;
+		private bool cancelled;
 
 		/// <summary>
 		/// Represents an element that displays and manipulates a piece of a data object.
@@ -54,7 +50,6 @@ namespace Company.DataGrid.Views
 		public Cell()
 		{
 			this.DefaultStyleKey = typeof(Cell);
-			this.isInEditModeSource = IsInEditModeSource.API;
 			this.dataType = typeof(object);
 		}
 
@@ -87,6 +82,18 @@ namespace Company.DataGrid.Views
 			set
 			{
 				this.SetValue(ValueProperty, value);
+			}
+		}
+
+		public bool IsEditable
+		{
+			get
+			{
+				return (bool) this.GetValue(IsEditableProperty);
+			}
+			set
+			{
+				this.SetValue(IsEditableProperty, value);
 			}
 		}
 
@@ -186,12 +193,13 @@ namespace Company.DataGrid.Views
 			switch (e.Key)
 			{
 				case Key.Enter:
-					this.isInEditModeSource = IsInEditModeSource.CommitEdit;
 					this.IsInEditMode = false;
 					break;
 				case Key.Escape:
-					this.isInEditModeSource = IsInEditModeSource.CancelEdit;
 					this.IsInEditMode = false;
+					this.ClearValue(EditorValueProperty);
+					this.EditorValue = this.Value;
+					this.cancelled = true;
 					break;
 			}
 		}
@@ -216,6 +224,14 @@ namespace Company.DataGrid.Views
 			if (!this.IsFocusWithin())
 			{
 				this.IsInEditMode = false;
+				if (this.cancelled)
+				{
+					this.cancelled = false;
+				}
+				else
+				{
+					this.CommitEdit();
+				}
 				this.isFocused = false;
 			}
 		}
@@ -225,26 +241,15 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		protected virtual bool GoToEditState()
 		{
-			bool result = VisualStateManager.GoToState(this, "CustomEditor", false) || this.GoToEditorForType();
-			if (result)
-			{
-				this.HandleEditorFocus(true);
-			}
-			return result;
+			return VisualStateManager.GoToState(this, "CustomEditor", false) || this.GoToEditorForType();
 		}
 
 		/// <summary>
 		/// Exits the edit mode of the <see cref="Cell"/>.
 		/// </summary>
-		protected virtual bool GoToViewstate()
+		protected virtual bool GoToViewState()
 		{
-			if (this.GoToSpecialView())
-			{
-				return true;
-			}
-			bool result = VisualStateManager.GoToState(this, "View", false);
-			this.HandleEditorFocus(false);
-			return result;
+			return this.GoToSpecialView() || VisualStateManager.GoToState(this, "View", false);
 		}
 
 		private static void OnValueChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -269,13 +274,19 @@ namespace Company.DataGrid.Views
 		private static void OnIsInEditModeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			Cell cell = (Cell) dependencyObject;
-			if ((bool) e.NewValue)
+			bool editMode = (bool) e.NewValue;
+			if (!cell.IsEditable && editMode)
+			{
+				cell.IsInEditMode = false;
+				return;
+			}
+			if (editMode)
 			{
 				cell.GoToEditState();
 			}
 			else
 			{
-				cell.GoToViewstate();
+				cell.GoToViewState();
 			}
 		}
 
@@ -333,47 +344,6 @@ namespace Company.DataGrid.Views
 			return false;
 		}
 
-		private void HandleEditorFocus(bool addHandler)
-		{
-			if (this.Content is Control)
-			{
-				Control editor = (Control) this.Content;
-				RoutedEventHandler loadedHandler = (sender, e) =>
-				                                   	{
-				                                   		editor.Focus();
-				                                   		object focusedElement = FocusManager.GetFocusedElement();
-				                                   		if (focusedElement is TextBox)
-				                                   		{
-				                                   			((TextBox) focusedElement).SelectAll();
-				                                   		}
-				                                   	};
-				RoutedEventHandler lostFocusHandler = (sender, e) =>
-				                                      	{
-				                                      		switch (this.isInEditModeSource)
-				                                      		{
-				                                      			case IsInEditModeSource.API:
-				                                      			case IsInEditModeSource.CommitEdit:
-				                                      				this.CommitEdit();
-				                                      				break;
-				                                      			case IsInEditModeSource.CancelEdit:
-				                                      				this.CancelEdit();
-				                                      				break;
-				                                      		}
-				                                      		this.isInEditModeSource = IsInEditModeSource.API;
-				                                      	};
-				if (addHandler)
-				{
-					editor.Loaded += loadedHandler;
-					editor.LostFocus += lostFocusHandler;
-				}
-				else
-				{
-					editor.Loaded -= loadedHandler;
-					editor.LostFocus -= lostFocusHandler;
-				}
-			}
-		}
-
 		private void CommitEdit()
 		{
 			object oldValue = this.Value;
@@ -382,18 +352,6 @@ namespace Company.DataGrid.Views
 			{
 				this.Value = oldValue;
 			}
-			this.ClearEditorValue();
-		}
-
-		private void CancelEdit()
-		{
-			this.ClearEditorValue();
-		}
-
-		private void ClearEditorValue()
-		{
-			this.ClearValue(EditorValueProperty);
-			this.EditorValue = this.Value;
 		}
 	}
 }

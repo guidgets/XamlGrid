@@ -15,24 +15,24 @@ namespace Company.DataGrid.Controllers
 			                                    new PropertyMetadata(0d, OnHorizontalOffsetChanged));
 
 
-		public static bool GetHandleArrowKeys(DependencyObject obj)
+		public static bool GetHandleArrowKeys(ScrollViewer scrollViewer)
 		{
-			return (bool) obj.GetValue(HandleArrowKeysProperty);
+			return (bool) scrollViewer.GetValue(HandleArrowKeysProperty);
 		}
 
-		public static void SetHandleArrowKeys(DependencyObject obj, bool value)
+		public static void SetHandleArrowKeys(ScrollViewer scrollViewer, bool value)
 		{
-			obj.SetValue(HandleArrowKeysProperty, value);
+			scrollViewer.SetValue(HandleArrowKeysProperty, value);
 		}
 
-		public static double GetHorizontalOffset(DependencyObject obj)
+		public static double GetHorizontalOffset(ScrollViewer scrollViewer)
 		{
-			return (double) obj.GetValue(HorizontalOffsetProperty);
+			return (double) scrollViewer.GetValue(HorizontalOffsetProperty);
 		}
 
-		public static void SetHorizontalOffset(DependencyObject obj, double value)
+		public static void SetHorizontalOffset(ScrollViewer scrollViewer, double value)
 		{
-			obj.SetValue(HorizontalOffsetProperty, value);
+			scrollViewer.SetValue(HorizontalOffsetProperty, value);
 		}
 
 		private static void OnHandleArrowKeysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

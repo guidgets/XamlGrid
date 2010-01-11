@@ -5,13 +5,16 @@ using System.Linq;
 
 namespace Company.DataGrid.Models
 {
+	/// <summary>
+	/// Represents an <see cref="ObservableCollection{T}"/> of <see cref="Range"/> objects.
+	/// </summary>
 	public class RangeCollection : ObservableCollection<Range>
 	{
 		/// <summary>
-		/// Inserts the specifed item and merges it with other ranges if necessary.
+		/// Inserts the specified item (<see cref="Range"/>) if it is not already contained in another <see cref="Range"/> object.
 		/// </summary>
 		/// <param name="index">The index to insert the item at.</param>
-		/// <param name="item">The item ot insert.</param>
+		/// <param name="item">The item to insert.</param>
 		protected override void InsertItem(int index, Range item)
 		{
 			if (this.ContainsRange(item))

@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
     xmlns:toolkitInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
 	xmlns:controllers="clr-namespace:Company.DataGrid.Controllers"
+    xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     >
 
     <Style TargetType="company:DataGrid">
@@ -34,12 +35,13 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0"
+                            <ScrollViewer Name="headerScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0"
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
                                 <company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}" />
                             </ScrollViewer>
                             <ScrollViewer Name="mainScroll" Grid.Row="1" controllers:ScrollExtensions.HandleArrowKeys="False"
-    									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                          controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
                                 <ItemsPresenter />
                             </ScrollViewer>
                         </Grid>
@@ -79,26 +81,37 @@
                 <ControlTemplate TargetType="company:HeaderCell">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid Width="{TemplateBinding Width}">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Margin="{TemplateBinding Padding}" />
-                            <Path Name="SortArrow" Fill="#FF444444" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
-                                  VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
-                                  Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1">
-                                <Path.RenderTransform>
-                                    <ScaleTransform ScaleX=".9" ScaleY=".9" />
-                                </Path.RenderTransform>
-                            </Path>
-                            <Thumb HorizontalAlignment="Right" Grid.Column="2" 
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter Margin="{TemplateBinding Padding}" />
+                                <Path Name="SortArrow" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
+                                      VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
+                                      Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1">
+                                    <Path.Fill>
+                                        <SolidColorBrush company:OSBrush.OSColor="ControlDarkDarkColor" />
+                                    </Path.Fill>
+                                    <Path.RenderTransform>
+                                        <ScaleTransform ScaleX=".9" ScaleY=".9" />
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                            <Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8" 
                                    Tag="{Binding Column, RelativeSource={RelativeSource TemplatedParent}}">
+                                <interactivity:Interaction.Behaviors>
+                                    <controllers:ColumnResizingBehavior />
+                                </interactivity:Interaction.Behaviors>
                                 <Thumb.Template>
                                     <ControlTemplate TargetType="Thumb">
                                         <Border Background="Transparent">
-                                            <Rectangle Width="1" Margin="8,0,0,0">
+                                            <Rectangle Width="1" HorizontalAlignment="Right">
                                                 <Rectangle.Fill>
                                                     <SolidColorBrush company:OSBrush.OSColor="ControlDarkColor" />
                                                 </Rectangle.Fill>

@@ -260,6 +260,18 @@ namespace Company.DataGrid.Views
 			{
 				itemsControl.ItemsSource = this.Columns;
 			}
+			DataGridFacade.Instance.RegisterController(new RowController(itemsControl));
+		}
+
+		/// <summary>
+		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+		/// </summary>
+		/// <param name="element">The container element.</param>
+		/// <param name="item">The item.</param>
+		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
+		{
+			base.ClearContainerForItemOverride(element, item);
+			DataGridFacade.Instance.RemoveController(element.GetHashCode().ToString());
 		}
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)

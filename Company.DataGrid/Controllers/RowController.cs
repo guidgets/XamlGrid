@@ -1,22 +1,30 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Controllers
 {
+	/// <summary>
+	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
+	/// </summary>
 	public class RowController : Controller
 	{
+		/// <summary>
+		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
+		/// </summary>
+		/// <param name="viewComponent">The row for which functionality the <see cref="Controller"/> is responsible.</param>
 		public RowController(object viewComponent) : base(viewComponent.GetHashCode().ToString(), viewComponent)
 		{
 
 		}
 
+		/// <summary>
+		/// Gets the row for which functionality the <see cref="Controller"/> is responsible.
+		/// </summary>
 		public Row Row
 		{
 			get
@@ -25,16 +33,21 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is registered.
+		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 			this.Row.DataContextChanged += this.Row_DataContextChanged;
 			this.Row.IsCurrentChanged += this.Row_IsCurrentChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
-			this.Row.LayoutUpdated += this.Row_LayoutUpdated;
 			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp), true);
 		}
 
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is removed.
+		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
@@ -44,6 +57,10 @@ namespace Company.DataGrid.Controllers
 			this.Row.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp));
 		}
 
+		/// <summary>
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of
+		/// </summary>
+		/// <returns>The list of <c>INotification</c> names</returns>
 		public override IList<string> ListNotificationInterests()
 		{
 			return new List<string>
@@ -56,6 +73,13 @@ namespace Company.DataGrid.Controllers
 			       	};
 		}
 
+		/// <summary>
+		/// Handle <c>INotification</c>s
+		/// </summary>
+		/// <param name="notification">The <c>INotification</c> instance to handle</param>
+		/// <remarks>
+		/// Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller</c> is interested in.
+		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
 			switch (notification.Name)
@@ -91,21 +115,6 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private bool IsInTree()
-		{
-			FrameworkElement element = this.Row;
-			FrameworkElement rootElement = Application.Current.RootVisual as FrameworkElement;
-
-			while (element != null)
-			{
-				if (element == rootElement)
-					return true;
-
-				element = VisualTreeHelper.GetParent(element) as FrameworkElement;
-			}
-			return false;
-		}
-
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.IS_ITEM_CURRENT, this.Row.DataContext);
@@ -124,15 +133,6 @@ namespace Company.DataGrid.Controllers
 		{
 			this.SendNotification(this.Row.IsSelected ? Notifications.SELECTING_ITEMS : Notifications.DESELECTING_ITEMS,
 			                      this.Row.DataContext);
-		}
-
-		private void Row_LayoutUpdated(object sender, EventArgs e)
-		{
-			if (!this.IsInTree())
-			{
-				DataGridFacade.Instance.RemoveController(this.Name);
-				this.Row.ItemsSource = null;
-			}
 		}
 
 		private void Row_MouseUp(object sender, MouseButtonEventArgs e)

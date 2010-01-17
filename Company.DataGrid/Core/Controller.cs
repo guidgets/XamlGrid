@@ -65,7 +65,7 @@ namespace Company.DataGrid.Core
 		#region Public Methods
 
 		/// <summary>
-		/// List the <c>INotification</c> names this <c>Controller/c> is interested in being notified of
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names </returns>
 		public virtual IList<string> ListNotificationInterests()
@@ -79,7 +79,7 @@ namespace Company.DataGrid.Core
 		/// <param name="notification">The <c>INotification</c> instance to handle</param>
 		/// <remarks>
 		///     <para>
-		///        Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller/c> is interested in. 
+		///        Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller</c> is interested in. 
 		///     </para>
 		/// </remarks>
 		public virtual void HandleNotification(INotification notification)
@@ -114,7 +114,7 @@ namespace Company.DataGrid.Core
 		}
 
 		/// <summary>
-		/// The <code>IController/code>'s view component.
+		/// The <code>IController</code>'s view component.
 		/// </summary>
 		/// <remarks>
 		///     <para>Additionally, an implicit getter will usually be defined in the subclass that casts the Controller object to a type, like this:</para>

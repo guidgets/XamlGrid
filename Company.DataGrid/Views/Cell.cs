@@ -11,7 +11,7 @@ namespace Company.DataGrid.Views
 	/// <summary>
 	/// Represents an element that displays and manipulates a piece of a data object.
 	/// </summary>
-	public class Cell : ContentControl
+	public class Cell : CellBase
 	{
 		/// <summary>
 		/// Identifies the property which gets or sets value contained in the editor of the <see cref="Cell"/>.
@@ -19,6 +19,9 @@ namespace Company.DataGrid.Views
 		public static readonly DependencyProperty EditorValueProperty =
 			DependencyProperty.Register("EditorValue", typeof(object), typeof(Cell), new PropertyMetadata(null));
 
+		/// <summary>
+		/// Identifies the property which gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable
+		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));		
 
@@ -35,9 +38,6 @@ namespace Company.DataGrid.Views
 		public static readonly DependencyProperty ValueProperty =
 			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
 			                            new PropertyMetadata(OnValueChanged));
-
-		public static readonly DependencyProperty ColumnProperty =
-			DependencyProperty.Register("Column", typeof(Column), typeof(Cell), new PropertyMetadata(null));
 
 
 		private Type dataType;
@@ -85,6 +85,12 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if the content of the <see cref="Cell"/> is editable; otherwise, <c>false</c>.
+		/// </value>
 		public bool IsEditable
 		{
 			get
@@ -132,18 +138,6 @@ namespace Company.DataGrid.Views
 			set
 			{
 				this.dataType = value;
-			}
-		}
-
-		public Column Column
-		{
-			get
-			{
-				return (Column) this.GetValue(ColumnProperty);
-			}
-			set
-			{
-				this.SetValue(ColumnProperty, value);
 			}
 		}
 

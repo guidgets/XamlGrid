@@ -1,6 +1,8 @@
-﻿using System.Windows.Controls.Primitives;
+﻿using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Company.DataGrid.Models;
 using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Controllers
@@ -11,7 +13,7 @@ namespace Company.DataGrid.Controllers
 	public class ColumnResizingBehavior : Behavior<Thumb>
 	{
 		/// <summary>
-		/// Called after the behaviour is attached to an AssociatedObject.
+		/// Called after the behavior is attached to an AssociatedObject.
 		/// </summary>
 		/// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
 		protected override void OnAttached()
@@ -25,7 +27,7 @@ namespace Company.DataGrid.Controllers
 		}
 
 		/// <summary>
-		/// Called when the behaviour is being detached from its AssociatedObject, but before it has actually occurred.
+		/// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
 		/// </summary>
 		/// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
 		protected override void OnDetaching()
@@ -43,8 +45,8 @@ namespace Company.DataGrid.Controllers
 			if (this.AssociatedObject.Tag is Column)
 			{
 				Column columnToResize = (Column) this.AssociatedObject.Tag;
-				double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
-				columnToResize.ActualWidth = newWidth > 1 ? newWidth : 1;
+				double newWidth = columnToResize.Width.Value + e.HorizontalChange;
+				columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1, GridUnitType.Pixel);
 			}
 		}
 

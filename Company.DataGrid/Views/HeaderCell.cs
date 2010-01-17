@@ -1,45 +1,55 @@
-﻿using System.Windows;
-using System.Windows.Controls.Primitives;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 using Company.DataGrid.Controllers;
+using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Views
 {
 	/// <summary>
 	/// Represents a cell that stays as a header for a <see cref="Controllers.Column"/>.
 	/// </summary>
-	public class HeaderCell : ToggleButton
+	public class HeaderCell : CellBase
 	{
-		/// <summary>
-		/// Identifies the property which gets or sets the column to which a <see cref="HeaderCell"/> belongs.
-		/// </summary>
-		public static readonly DependencyProperty ColumnProperty =
-			DependencyProperty.Register("Column", typeof(Column), typeof(HeaderCell), new PropertyMetadata(OnColumnChanged));
+		public event EventHandler<SortDirectionEventArgs> SortDirectionChanged;
 
-		private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+		public static readonly DependencyProperty SortDirectionProperty =
+			DependencyProperty.Register("SortDirection", typeof(ListSortDirection?), typeof(HeaderCell), new PropertyMetadata(null, OnSortDirectionChanged));
+
+		private static void OnSortDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			((HeaderCell) d).Content = ((Column) e.NewValue).Header;
+			((HeaderCell) d).OnSortDirectionChanged(new SortDirectionEventArgs((ListSortDirection?) e.NewValue));
 		}
+
 
 		public HeaderCell()
 		{
 			this.DefaultStyleKey = typeof(HeaderCell);
 
-			DataGridFacade.Instance.RegisterController(new HeaderCellContoller(this));
+			DataGridFacade.Instance.RegisterController(new HeaderCellController(this));
 		}
 
-		/// <summary>
-		/// Gets or sets the column to which the <see cref="HeaderCell"/> belongs.
-		/// </summary>
-		/// <value>The column.</value>
-		public Column Column
+
+		public ListSortDirection? SortDirection
 		{
 			get
 			{
-				return (Column) this.GetValue(ColumnProperty);
+				return (ListSortDirection?) this.GetValue(SortDirectionProperty);
 			}
 			set
 			{
-				this.SetValue(ColumnProperty, value);
+				this.SetValue(SortDirectionProperty, value);
+			}
+		}
+
+
+		private void OnSortDirectionChanged(SortDirectionEventArgs e)
+		{
+			EventHandler<SortDirectionEventArgs> handler = this.SortDirectionChanged;
+			if (handler != null)
+			{
+				handler(this, e);
 			}
 		}
 	}

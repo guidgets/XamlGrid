@@ -38,6 +38,13 @@ namespace Company.DataGrid.Views
 		private static readonly DependencyProperty dataContextListenerProperty =
 			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Row), new PropertyMetadata(OnDataContextListenerChanged));
 
+		private static readonly Binding dataContextBinding = new Binding("DataContext")
+	                                                     	 {
+	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self),
+	                                                     		 Mode = BindingMode.OneWay
+	                                                     	 };
+
+
 		private readonly Binding dataBinding;
 
 		/// <summary>
@@ -49,8 +56,7 @@ namespace Company.DataGrid.Views
 
 			this.dataBinding = new Binding { Source = this.DataContext, Mode = BindingMode.OneTime };
 
-			Binding binding = new Binding("DataContext") { Source = this, Mode = BindingMode.OneWay };
-			this.SetBinding(dataContextListenerProperty, binding);
+			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 
 			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}

@@ -64,7 +64,7 @@ namespace Company.DataGrid.Views
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.
+		/// Identifies the property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty SelectionModeProperty =
 			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),
@@ -77,6 +77,11 @@ namespace Company.DataGrid.Views
 		public static readonly DependencyProperty IsEditableProperty =
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
+		private static readonly Binding itemsSourceBinding = new Binding("ItemsSource")
+	                                                     	 {
+	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self),
+	                                                     		 Mode = BindingMode.OneWay
+	                                                     	 };
 
 		private readonly SortingModel sortingModel;
 		private readonly SelectionModel selectionModel;
@@ -91,8 +96,7 @@ namespace Company.DataGrid.Views
 			this.Columns = new ObservableCollection<Column>();
 			this.otherColumns = new List<Column>();
 
-			Binding binding = new Binding("ItemsSource") { Source = this, Mode = BindingMode.OneWay };
-			this.SetBinding(itemsSourceListenerProperty, binding);
+			this.SetBinding(itemsSourceListenerProperty, itemsSourceBinding);
 
 			this.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 
@@ -187,9 +191,9 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
-		/// Gets or sets the mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.
+		/// Gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
-		/// <value>The mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.</value>
+		/// <value>The mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.</value>
 		public SelectionMode SelectionMode
 		{
 			get

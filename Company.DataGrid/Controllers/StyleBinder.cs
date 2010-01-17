@@ -8,26 +8,26 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Binding Attached Dependency Property
 		/// </summary>
-		public static readonly DependencyProperty BindingProperty =
-			DependencyProperty.RegisterAttached("Binding", typeof(StyleBinding), typeof(StyleBinder),
+		public static readonly DependencyProperty BindingsProperty =
+			DependencyProperty.RegisterAttached("Bindings", typeof(StyleBindingCollection), typeof(StyleBinder),
 			                                    new PropertyMetadata(null, OnBindingChanged));
 
 		/// <summary>
 		/// Gets the Binding property.  This dependency property 
 		/// indicates ....
 		/// </summary>
-		public static StyleBinding GetBinding(FrameworkElement frameworkElement)
+		public static StyleBindingCollection GetBindings(FrameworkElement frameworkElement)
 		{
-			return (StyleBinding) frameworkElement.GetValue(BindingProperty);
+			return (StyleBindingCollection) frameworkElement.GetValue(BindingsProperty);
 		}
 
 		/// <summary>
 		/// Sets the Binding property.  This dependency property 
 		/// indicates ....
 		/// </summary>
-		public static void SetBinding(FrameworkElement frameworkElement, StyleBinding value)
+		public static void SetBindings(FrameworkElement frameworkElement, StyleBindingCollection value)
 		{
-			frameworkElement.SetValue(BindingProperty, value);
+			frameworkElement.SetValue(BindingsProperty, value);
 		}
 
 		/// <summary>
@@ -40,20 +40,18 @@ namespace Company.DataGrid.Controllers
 		{
 			FrameworkElement frameworkElement = (FrameworkElement) d;
 
-			StyleBinding styleBinding = (StyleBinding) e.NewValue;
-			string depPropName = styleBinding.Property + "Property";
-			if (depPropName.IndexOf('.') > -1)
+			StyleBindingCollection styleBindings = (StyleBindingCollection) e.NewValue;
+			foreach (StyleBinding styleBinding in styleBindings)
 			{
-				int index = depPropName.LastIndexOf('.');
-				depPropName = depPropName.Substring(index);
-			}
-			FieldInfo dependencyPropertyField = frameworkElement.GetType().GetField(depPropName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-			if (dependencyPropertyField != null)
-			{
-				DependencyProperty dependencyProperty = dependencyPropertyField.GetValue(null) as DependencyProperty;
-				if (dependencyProperty != null)
+				string depPropName = styleBinding.Property + "Property";
+				FieldInfo dependencyPropertyField = frameworkElement.GetType().GetField(depPropName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+				if (dependencyPropertyField != null)
 				{
-					frameworkElement.SetBinding(dependencyProperty, styleBinding.Binding);
+					DependencyProperty dependencyProperty = dependencyPropertyField.GetValue(null) as DependencyProperty;
+					if (dependencyProperty != null)
+					{
+						frameworkElement.SetBinding(dependencyProperty, styleBinding.Binding);
+					}
 				}
 			}
 		}

@@ -26,7 +26,7 @@ namespace Examples
 			                                         		HireDate = DateTime.Now,
 			                                         		IsSingle = i % 2 == 0,
 			                                         		MaritalStatus = i % 3 == 0 ? true : (i % 3 == 1 ? false : (bool?) null),
-			                                         		Orders = new ObservableCollection<Order> { new Order { Name = "Lego Number " + i } }
+			                                         		Orders = new ObservableCollection<Order> { new Order { Name = "Constructor Lego Number " + Math.Pow(2, i) } }
 			                                         	};
 			List<Customer> list = customers.ToList();
 			int index = 0;

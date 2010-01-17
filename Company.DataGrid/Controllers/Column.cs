@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 using Company.DataGrid.Views;
+using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Controllers
 {
@@ -11,10 +12,12 @@ namespace Company.DataGrid.Controllers
 	public class Column : DependencyObject
 	{
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the actual width of the cells in a <see cref="Column"/>.
+		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
 		/// </summary>
-		public static readonly DependencyProperty ActualWidthProperty =
-			DependencyProperty.Register("ActualWidth", typeof(double), typeof(Column), new PropertyMetadata(200d));
+		public Column()
+		{
+			this.DataType = typeof(object);
+		}
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the header which 
@@ -29,6 +32,12 @@ namespace Company.DataGrid.Controllers
 		/// </summary>
 		public static readonly DependencyProperty BindingProperty =
 			DependencyProperty.Register("DataBinding", typeof(Binding), typeof(Column), new PropertyMetadata(OnBindingChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
+		/// </summary>		
+		public static readonly DependencyProperty WidthProperty =
+			DependencyProperty.Register("Width", typeof(ColumnWidth), typeof(Column), new PropertyMetadata(new ColumnWidth(200, GridUnitType.Pixel)));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating 
@@ -50,18 +59,18 @@ namespace Company.DataGrid.Controllers
 			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Gets or sets the actual width of the cells in this <see cref="Column"/>.
+		/// Gets or sets the width of the cells in this <see cref="Column"/>.
 		/// </summary>
-		/// <value>The actual width of the cells in this <see cref="Column"/>.</value>
-		public double ActualWidth
+		/// <value>The width of the cells in this <see cref="Column"/>.</value>
+		public ColumnWidth Width
 		{
 			get
 			{
-				return (double) this.GetValue(ActualWidthProperty);
+				return (ColumnWidth) this.GetValue(WidthProperty);
 			}
 			set
 			{
-				this.SetValue(ActualWidthProperty, value);
+				this.SetValue(WidthProperty, value);
 			}
 		}
 

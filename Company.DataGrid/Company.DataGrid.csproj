@@ -78,9 +78,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
+    <Compile Include="Controllers\ColumnWidthToDoubleConverter.cs" />
     <Compile Include="Controllers\ControlExtensions.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
@@ -91,9 +93,12 @@
     <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\ScrollExtensions.cs" />
     <Compile Include="Controllers\SelectionCommand.cs" />
+    <Compile Include="Controllers\SortDirectionToBooleanConverter.cs" />
     <Compile Include="Controllers\SortingCommand.cs" />
+    <Compile Include="Controllers\StringToColumnWidthConverter.cs" />
     <Compile Include="Controllers\StyleBinder.cs" />
     <Compile Include="Controllers\StyleBinding.cs" />
+    <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
     <Compile Include="Controllers\UIElementExtensions.cs" />
     <Compile Include="Core\Controller.cs" />
@@ -120,6 +125,7 @@
     <Compile Include="Core\Observer.cs" />
     <Compile Include="Core\Model.cs" />
     <Compile Include="DataGridFacade.cs" />
+    <Compile Include="Models\ColumnWidth.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\ObservableItemCollection.cs" />
     <Compile Include="Models\ItemPropertyChangedEventArgs.cs" />
@@ -130,10 +136,12 @@
     <Compile Include="Models\RangeCollection.cs" />
     <Compile Include="Models\SelectedItemsCollection.cs" />
     <Compile Include="Models\SelectionModel.cs" />
+    <Compile Include="Models\SortDirectionEventArgs.cs" />
     <Compile Include="Models\SortingModel.cs" />
     <Compile Include="Notifications.cs" />
     <Compile Include="NotificationTypes.cs" />
     <Compile Include="Views\Cell.cs" />
+    <Compile Include="Views\CellBase.cs" />
     <Compile Include="Views\CustomVSM.cs" />
     <Compile Include="Views\DataGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

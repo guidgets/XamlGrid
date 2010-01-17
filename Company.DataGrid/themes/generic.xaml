@@ -61,6 +61,9 @@
         </Setter>
     </Style>
 
+    <controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
+    <controllers:ColumnWidthToDoubleConverter x:Key="gridLengthToDoubleConverter" />
+    
     <Style TargetType="company:HeaderCell">
         <Setter Property="Background">
             <Setter.Value>
@@ -68,12 +71,15 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Padding" Value="8,3,8,3" />
-        <Setter Property="IsChecked" Value="{x:Null}" />
-        <Setter Property="IsThreeState" Value="True" />
-        <Setter Property="controllers:StyleBinder.Binding">
+        <Setter Property="controllers:StyleBinder.Bindings">
             <Setter.Value>
-                <controllers:StyleBinding Property="Width" 
-                                          Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+                <controllers:StyleBindingCollection>
+                    <controllers:StyleBinding Property="Content"
+                                              Binding="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+                    <controllers:StyleBinding Property="Width" 
+                                              Binding="{Binding Column.Width, RelativeSource={RelativeSource Self}, 
+                                                        Mode=TwoWay, Converter={StaticResource gridLengthToDoubleConverter}}" />
+                </controllers:StyleBindingCollection>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
@@ -86,27 +92,53 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ContentPresenter Margin="{TemplateBinding Padding}" />
-                                <Path Name="SortArrow" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
-                                      VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
-                                      Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1">
-                                    <Path.Fill>
-                                        <SolidColorBrush company:OSBrush.OSColor="ControlDarkDarkColor" />
-                                    </Path.Fill>
-                                    <Path.RenderTransform>
-                                        <ScaleTransform ScaleX=".9" ScaleY=".9" />
-                                    </Path.RenderTransform>
-                                </Path>
-                            </Grid>
-                            <Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8" 
+                            <ToggleButton IsThreeState="True" Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" Padding="{TemplateBinding Padding}"
+                                          IsChecked="{Binding SortDirection, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
+                                                              Converter={StaticResource sortDirectionToBooleanConverter}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Grid Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ContentPresenter Margin="{TemplateBinding Padding}" />
+                                            <Path Name="SortArrow" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
+                                                  VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
+                                                  Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1">
+                                                <Path.Fill>
+                                                    <SolidColorBrush company:OSBrush.OSColor="ControlDarkDarkColor" />
+                                                </Path.Fill>
+                                                <Path.RenderTransform>
+                                                    <ScaleTransform ScaleX=".9" ScaleY=".9" />
+                                                </Path.RenderTransform>
+                                            </Path>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CheckStates">
+                                                    <VisualState x:Name="Checked">
+                                                        <Storyboard Storyboard.TargetName="SortArrow">
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
+                                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0" To="-.9"/>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Unchecked">
+                                                        <Storyboard Storyboard.TargetName="SortArrow">
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Indeterminate" />
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8"
                                    Tag="{Binding Column, RelativeSource={RelativeSource TemplatedParent}}">
                                 <interactivity:Interaction.Behaviors>
                                     <controllers:ColumnResizingBehavior />
+                                    <controllers:AutoSizeOnDoubleClickBehavior />
                                 </interactivity:Interaction.Behaviors>
                                 <Thumb.Template>
                                     <ControlTemplate TargetType="Thumb">
@@ -121,22 +153,6 @@
                                 </Thumb.Template>
                             </Thumb>
                         </Grid>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CheckStates">
-                                <VisualState x:Name="Checked">
-                                    <Storyboard Storyboard.TargetName="SortArrow">
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
-                                        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0" To="-.9"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unchecked">
-                                    <Storyboard Storyboard.TargetName="SortArrow">
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Indeterminate" />
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -213,10 +229,13 @@
 
 	<Style TargetType="company:Cell">
 		<Setter Property="Background" Value="Transparent" />
-        <Setter Property="controllers:StyleBinder.Binding">
+        <Setter Property="controllers:StyleBinder.Bindings">
             <Setter.Value>
-                <controllers:StyleBinding Property="Width" 
-                                          Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+                <controllers:StyleBindingCollection>
+                    <controllers:StyleBinding Property="Width" 
+                                              Binding="{Binding Column.Width, RelativeSource={RelativeSource Self}, 
+                                                        Mode=TwoWay, Converter={StaticResource gridLengthToDoubleConverter}}" />
+                </controllers:StyleBindingCollection>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">

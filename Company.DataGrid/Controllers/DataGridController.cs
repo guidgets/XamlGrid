@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,15 +11,23 @@ using Company.DataGrid.Core;
 
 namespace Company.DataGrid.Controllers
 {
+	/// <summary>
+	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.DataGrid"/>.
+	/// </summary>
 	public class DataGridController : Controller
 	{
-		public new const string NAME = "DataGridController";
-
-		public DataGridController(object viewComponent) : base(NAME, viewComponent)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DataGridController"/> class.
+		/// </summary>
+		/// <param name="dataGrid">The view component.</param>
+		public DataGridController(Views.DataGrid dataGrid) : base(dataGrid.GetHashCode().ToString(), dataGrid)
 		{
 
 		}
 
+		/// <summary>
+		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="Controller"/> is responsible.
+		/// </summary>
 		public Views.DataGrid DataGrid
 		{
 			get
@@ -29,6 +36,9 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is registered.
+		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
@@ -42,6 +52,9 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 		}
 
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is removed.
+		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
@@ -55,6 +68,10 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 		}
 
+		/// <summary>
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of
+		/// </summary>
+		/// <returns>The list of <c>INotification</c> names</returns>
 		public override IList<string> ListNotificationInterests()
 		{
 			return new List<string>
@@ -65,6 +82,13 @@ namespace Company.DataGrid.Controllers
 			       	};
 		}
 
+		/// <summary>
+		/// Handle <c>INotification</c>s
+		/// </summary>
+		/// <param name="notification">The <c>INotification</c> instance to handle</param>
+		/// <remarks>
+		/// Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller</c> is interested in.
+		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
 			switch (notification.Name)
@@ -112,12 +136,18 @@ namespace Company.DataGrid.Controllers
 			{
 				case NotifyCollectionChangedAction.Add:
 				case NotifyCollectionChangedAction.Replace:
-					foreach (Column column in from Column column in e.NewItems
-											  where column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue
-											  select column)
+					foreach (Column column in e.NewItems)
 					{
-						BindingOperations.SetBinding(column, Column.IsEditableProperty,
-													 new Binding("IsEditable") { Source = this.DataGrid });
+						if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
+						{
+							BindingOperations.SetBinding(column, Column.IsEditableProperty,
+							                             new Binding("IsEditable") { Source = this.DataGrid });
+						}
+						if (column.ReadLocalValue(Column.WidthProperty) == DependencyProperty.UnsetValue)
+						{
+							BindingOperations.SetBinding(column, Column.WidthProperty,
+														 new Binding("ColumnWidth") { Source = this.DataGrid });
+						}
 					}
 					break;
 			}

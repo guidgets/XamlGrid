@@ -14,8 +14,8 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="HeaderCell"/>.
 		/// </summary>
-		/// <param name="viewComponent">The view component.</param>
-		public HeaderCellController(HeaderCell viewComponent) : base(viewComponent.GetHashCode().ToString(), viewComponent)
+		/// <param name="headerCell">The header cell for which functionality the <see cref="Controller"/> is responsible.</param>
+		public HeaderCellController(HeaderCell headerCell) : base(headerCell.GetHashCode().ToString(), headerCell)
 		{
 
 		}
@@ -24,7 +24,6 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the <see cref="HeaderCell"/> for which functionality the <see cref="Controller"/> is responsible.
 		/// </summary>
-		/// <value>The header cell for which functionality the <see cref="Controller"/> is responsible.</value>
 		public HeaderCell HeaderCell
 		{
 			get

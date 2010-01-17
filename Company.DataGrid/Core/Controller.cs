@@ -87,14 +87,14 @@ namespace Company.DataGrid.Core
 		}
 
 		/// <summary>
-		/// Called by the Controller when the Controller is registered
+		/// Called by the <see cref="Controller"/> when it is registered.
 		/// </summary>
 		public virtual void OnRegister()
 		{
 		}
 
 		/// <summary>
-		/// Called by the Controller when the Controller is removed
+		/// Called by the <see cref="Controller"/> when it is removed.
 		/// </summary>
 		public virtual void OnRemove()
 		{

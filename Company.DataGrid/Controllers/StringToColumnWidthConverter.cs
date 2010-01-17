@@ -15,7 +15,7 @@ namespace Company.DataGrid.Controllers
 		/// <param name="context">An object that provides a format context.</param>
 		/// <param name="sourceType">The type you want to convert from.</param>
 		/// <returns>
-		/// true if this converter can perform the conversion; otherwise, false.
+		/// <c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.
 		/// </returns>
 		public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
 		{

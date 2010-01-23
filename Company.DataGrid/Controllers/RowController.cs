@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
@@ -69,7 +71,8 @@ namespace Company.DataGrid.Controllers
 						Notifications.ITEM_IS_CURRENT,
 			       		Notifications.SELECTED_ITEMS,
 			       		Notifications.DESELECTED_ITEMS,
-						Notifications.ITEM_IS_SELECTED
+						Notifications.ITEM_IS_SELECTED,
+						Notifications.GENERATED_ITEMS_CHANGED
 			       	};
 		}
 
@@ -110,6 +113,14 @@ namespace Company.DataGrid.Controllers
 					if (this.Row.DataContext == notification.Body)
 					{
 						this.Row.IsSelected = bool.Parse(notification.Type);
+					}
+					break;
+				case Notifications.GENERATED_ITEMS_CHANGED:
+					switch (((ItemsChangedEventArgs) notification.Body).Action)
+					{
+						case NotifyCollectionChangedAction.Reset:
+							DataGridFacade.Instance.RemoveController(this.Name);
+							break;
 					}
 					break;
 			}

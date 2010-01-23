@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -48,7 +49,7 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
-
+			this.DataGrid.ItemContainerGenerator.ItemsChanged += this.ItemContainerGenerator_ItemsChanged;
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 		}
 
@@ -64,7 +65,7 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
-
+			this.DataGrid.ItemContainerGenerator.ItemsChanged -= this.ItemContainerGenerator_ItemsChanged;
 			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 		}
 
@@ -146,6 +147,11 @@ namespace Company.DataGrid.Controllers
 					break;
 			}
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
+		}
+
+		private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.GENERATED_ITEMS_CHANGED, e);
 		}
 
 		private void DataGrid_KeyDown(object sender, KeyEventArgs e)

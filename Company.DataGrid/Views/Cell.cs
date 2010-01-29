@@ -14,6 +14,19 @@ namespace Company.DataGrid.Views
 	public class Cell : CellBase
 	{
 		/// <summary>
+		/// Identifies the property which gets or sets the value contained in a <see cref="Cell"/>.
+		/// </summary>
+		public static readonly DependencyProperty ValueProperty =
+			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
+										new PropertyMetadata(OnValueChanged));
+
+		/// <summary>
+		/// Identifies the property which gets or sets the type of the data this <see cref="Cell"/> represents..
+		/// </summary>
+		public static readonly DependencyProperty DataTypeProperty =
+			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeof(object)));
+
+		/// <summary>
 		/// Identifies the property which gets or sets value contained in the editor of the <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty EditorValueProperty =
@@ -32,17 +45,10 @@ namespace Company.DataGrid.Views
 			DependencyProperty.Register("IsInEditMode", typeof(bool), typeof(Cell),
 			                            new PropertyMetadata(OnIsInEditModeChanged));
 
-		/// <summary>
-		/// Identifies the property which gets or sets the value contained in a <see cref="Cell"/>.
-		/// </summary>
-		public static readonly DependencyProperty ValueProperty =
-			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
-			                            new PropertyMetadata(OnValueChanged));
 
-
-		private Type dataType;
 		private bool isFocused;
 		private bool cancelled;
+
 
 		/// <summary>
 		/// Represents an element that displays and manipulates a piece of a data object.
@@ -50,7 +56,6 @@ namespace Company.DataGrid.Views
 		public Cell()
 		{
 			this.DefaultStyleKey = typeof(Cell);
-			this.dataType = typeof(object);
 		}
 
 		/// <summary>
@@ -129,17 +134,14 @@ namespace Company.DataGrid.Views
 		{
 			get
 			{
-				if (this.dataType == typeof(object) && this.Value != null)
-				{
-					this.dataType = this.Value.GetType();
-				}
-				return this.dataType;
+				return (Type) this.GetValue(DataTypeProperty);
 			}
 			set
 			{
-				this.dataType = value;
+				this.SetValue(DataTypeProperty, value);
 			}
 		}
+
 
 		/// <summary>
 		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
@@ -251,11 +253,7 @@ namespace Company.DataGrid.Views
 			Cell cell = (Cell) dependencyObject;
 			if (cell.Value != null)
 			{
-				Type valueType = cell.Value.GetType();
-				if (!cell.DataType.IsAssignableFrom(valueType))
-				{
-					cell.DataType = valueType;
-				}
+				cell.DataType = cell.Value.GetType();
 			}
 			cell.EditorValue = cell.Value;
 			if (!cell.IsInEditMode)

@@ -86,6 +86,7 @@
     <Compile Include="Controllers\ControlExtensions.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
+    <Compile Include="Controllers\TypeToAlignmentConverter.cs" />
     <Compile Include="Controllers\ItemsSourceChangedCommand.cs" />
     <Compile Include="Controllers\HeaderCellController.cs" />
     <Compile Include="Controllers\HeaderRowController.cs" />

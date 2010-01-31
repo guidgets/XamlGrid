@@ -76,7 +76,7 @@
 		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="False" AutoCreateColumns="False">
 			<company:DataGrid.Columns>
 				<controllers:Column Binding="{Binding Name, Mode=TwoWay}" CellStyle="{StaticResource cellStyleName}" />
-				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" CellStyle="{StaticResource cellStyleAge}" />
+				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
 				<controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" IsEditable="True" Header="First Order Name" />
 				<controllers:Column Binding="{Binding IsSingle, Mode=TwoWay}" CellStyle="{StaticResource cellStyleIsSingle}" />
 				<controllers:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" CellStyle="{StaticResource cellStyleMaritalStatus}" />

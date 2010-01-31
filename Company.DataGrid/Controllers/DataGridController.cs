@@ -50,7 +50,6 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
 			this.DataGrid.ItemContainerGenerator.ItemsChanged += this.ItemContainerGenerator_ItemsChanged;
-			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 		}
 
 		/// <summary>
@@ -66,7 +65,6 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
 			this.DataGrid.ItemContainerGenerator.ItemsChanged -= this.ItemContainerGenerator_ItemsChanged;
-			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 		}
 
 		/// <summary>
@@ -79,7 +77,8 @@ namespace Company.DataGrid.Controllers
 			       	{
 			       		Notifications.DATA_WRAPPED,
 			       		Notifications.CURRENT_ITEM_CHANGED,
-			       		Notifications.SELECTION_MODE_CHANGED
+			       		Notifications.SELECTION_MODE_CHANGED,
+						Notifications.ITEM_KEY_DOWN
 			       	};
 		}
 
@@ -103,6 +102,11 @@ namespace Company.DataGrid.Controllers
 					break;
 				case Notifications.SELECTION_MODE_CHANGED:
 					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
+					break;
+				case Notifications.ITEM_KEY_DOWN:
+					KeyEventArgs e = (KeyEventArgs) notification.Body;
+					this.HandleCurrentItem(e.Key);
+					this.HandleSelection(e.Key);
 					break;
 			}
 		}
@@ -152,12 +156,6 @@ namespace Company.DataGrid.Controllers
 		private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.GENERATED_ITEMS_CHANGED, e);
-		}
-
-		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
-		{
-			this.HandleCurrentItem(e.Key);
-			this.HandleSelection(e.Key);
 		}
 
 		private void HandleCurrentItem(Key key)

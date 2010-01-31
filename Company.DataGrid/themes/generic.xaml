@@ -39,8 +39,7 @@
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
                                 <company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}" />
                             </ScrollViewer>
-                            <ScrollViewer Name="mainScroll" Grid.Row="1" controllers:ScrollExtensions.HandleArrowKeys="False"
-    									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                            <ScrollViewer Name="mainScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
                                 <ItemsPresenter />
                             </ScrollViewer>

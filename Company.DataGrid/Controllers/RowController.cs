@@ -44,6 +44,7 @@ namespace Company.DataGrid.Controllers
 			this.Row.DataContextChanged += this.Row_DataContextChanged;
 			this.Row.IsCurrentChanged += this.Row_IsCurrentChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
+			this.Row.KeyDown += this.Row_KeyDown;
 			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp), true);
 		}
 
@@ -56,6 +57,7 @@ namespace Company.DataGrid.Controllers
 			this.Row.DataContextChanged -= this.Row_DataContextChanged;
 			this.Row.IsCurrentChanged -= this.Row_IsCurrentChanged;
 			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
+			this.Row.KeyDown -= this.Row_KeyDown;
 			this.Row.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseUp));
 		}
 
@@ -144,6 +146,11 @@ namespace Company.DataGrid.Controllers
 		{
 			this.SendNotification(this.Row.IsSelected ? Notifications.SELECTING_ITEMS : Notifications.DESELECTING_ITEMS,
 			                      this.Row.DataContext);
+		}
+
+		private void Row_KeyDown(object sender, KeyEventArgs e)
+		{
+			this.SendNotification(Notifications.ITEM_KEY_DOWN, e);
 		}
 
 		private void Row_MouseUp(object sender, MouseButtonEventArgs e)

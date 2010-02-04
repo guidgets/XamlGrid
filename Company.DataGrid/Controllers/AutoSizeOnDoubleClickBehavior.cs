@@ -4,7 +4,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Threading;
-using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Controllers
 {
@@ -60,7 +59,8 @@ namespace Company.DataGrid.Controllers
 					if (this.AssociatedObject.Tag is Column)
 					{
 						Column columnToResize = (Column) this.AssociatedObject.Tag;
-						columnToResize.Width = new ColumnWidth(0, GridUnitType.Auto);
+						columnToResize.Width = new GridLength(columnToResize.ActualWidth);
+						columnToResize.Width = new GridLength(1, GridUnitType.Auto);
 					}
 				}
 			}

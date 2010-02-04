@@ -58,6 +58,13 @@ namespace Company.DataGrid.Views
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
 
 		/// <summary>
+		/// Identifies the property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
+		/// </summary>
+		public static readonly DependencyProperty ColumnWidthProperty =
+			DependencyProperty.Register("ColumnWidth", typeof(GridLength), typeof(DataGrid),
+			                            new PropertyMetadata(new GridLength(200)));
+
+		/// <summary>
 		/// Identifies the property which gets or sets the current item of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty CurrentItemProperty =
@@ -147,6 +154,22 @@ namespace Company.DataGrid.Views
 			set
 			{
 				this.SetValue(AutoCreateColumnsProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.</value>
+		public GridLength ColumnWidth
+		{
+			get
+			{
+				return (GridLength) this.GetValue(ColumnWidthProperty);
+			}
+			set
+			{
+				this.SetValue(ColumnWidthProperty, value);
 			}
 		}
 

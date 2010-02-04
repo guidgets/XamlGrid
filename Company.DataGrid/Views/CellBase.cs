@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Company.DataGrid.Controllers;
-using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Views
 {
@@ -45,9 +44,9 @@ namespace Company.DataGrid.Views
 
 		private void Cell_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			if (this.Column.Width.UnitType == GridUnitType.Auto && this.Column.Width.Value < e.NewSize.Width)
+			if (this.Column.Width.IsAuto && (double.IsNaN(this.Column.ActualWidth) || this.Column.ActualWidth < e.NewSize.Width))
 			{
-				this.Column.Width = new ColumnWidth(e.NewSize.Width + 1, this.Column.Width.UnitType);
+				this.Column.ActualWidth = e.NewSize.Width + 1;
 			}
 		}
 	}

@@ -82,7 +82,6 @@
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
-    <Compile Include="Controllers\ColumnWidthToDoubleConverter.cs" />
     <Compile Include="Controllers\ControlExtensions.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
@@ -96,7 +95,6 @@
     <Compile Include="Controllers\SelectionCommand.cs" />
     <Compile Include="Controllers\SortDirectionToBooleanConverter.cs" />
     <Compile Include="Controllers\SortingCommand.cs" />
-    <Compile Include="Controllers\StringToColumnWidthConverter.cs" />
     <Compile Include="Controllers\StyleBinder.cs" />
     <Compile Include="Controllers\StyleBinding.cs" />
     <Compile Include="Controllers\StyleBindingCollection.cs" />
@@ -126,7 +124,6 @@
     <Compile Include="Core\Observer.cs" />
     <Compile Include="Core\Model.cs" />
     <Compile Include="DataGridFacade.cs" />
-    <Compile Include="Models\ColumnWidth.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\ObservableItemCollection.cs" />
     <Compile Include="Models\ItemPropertyChangedEventArgs.cs" />

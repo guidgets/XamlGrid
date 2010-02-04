@@ -2,7 +2,6 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Company.DataGrid.Models;
 using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Controllers
@@ -45,8 +44,8 @@ namespace Company.DataGrid.Controllers
 			if (this.AssociatedObject.Tag is Column)
 			{
 				Column columnToResize = (Column) this.AssociatedObject.Tag;
-				double newWidth = columnToResize.Width.Value + e.HorizontalChange;
-				columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1, GridUnitType.Pixel);
+				double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
+				columnToResize.Width = new GridLength(newWidth > 1 ? newWidth : 1, GridUnitType.Pixel);
 			}
 		}
 

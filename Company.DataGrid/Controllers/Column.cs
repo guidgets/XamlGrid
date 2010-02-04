@@ -37,7 +37,15 @@ namespace Company.DataGrid.Controllers
 		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
 		/// </summary>		
 		public static readonly DependencyProperty WidthProperty =
-			DependencyProperty.Register("Width", typeof(ColumnWidth), typeof(Column), new PropertyMetadata(new ColumnWidth(200, GridUnitType.Pixel)));
+			DependencyProperty.Register("Width", typeof(GridLength), typeof(Column),
+			                            new PropertyMetadata(new GridLength(200), OnWidthChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the absolute width, in pixels, of a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty ActualWidthProperty =
+			DependencyProperty.Register("ActualWidth", typeof(double), typeof(Column),
+			                            new PropertyMetadata(200d, OnActualWidthChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating 
@@ -59,18 +67,34 @@ namespace Company.DataGrid.Controllers
 			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Gets or sets the width of the cells in this <see cref="Column"/>.
+		/// Gets or sets the width of the cells in the <see cref="Column"/>.
 		/// </summary>
-		/// <value>The width of the cells in this <see cref="Column"/>.</value>
-		public ColumnWidth Width
+		/// <value>The width of the cells in the <see cref="Column"/>.</value>
+		public GridLength Width
 		{
 			get
 			{
-				return (ColumnWidth) this.GetValue(WidthProperty);
+				return (GridLength) this.GetValue(WidthProperty);
 			}
 			set
 			{
 				this.SetValue(WidthProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the absolute width, in pixels, of the <see cref="Column"/>.
+		/// </summary>
+		/// <value>The actual width.</value>
+		public double ActualWidth
+		{
+			get
+			{
+				return (double) this.GetValue(ActualWidthProperty);
+			}
+			set
+			{
+				this.SetValue(ActualWidthProperty, value);
 			}
 		}
 
@@ -162,6 +186,30 @@ namespace Company.DataGrid.Controllers
 			if (column.Header == null)
 			{
 				column.Header = column.Binding.Path.Path;
+			}
+		}
+
+		private static void OnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			GridLength columnWidth = (GridLength) e.NewValue;
+			switch (columnWidth.GridUnitType)
+			{
+				case GridUnitType.Auto:
+					((Column) d).ActualWidth = double.NaN;
+					break;
+				case GridUnitType.Pixel:
+					((Column) d).ActualWidth = columnWidth.Value;
+					break;
+			}
+		}
+
+		private static void OnActualWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			Column column = (Column) d;
+			double actualWidth = (double) e.NewValue;
+			if (!column.Width.IsAuto)
+			{
+				column.Width = double.IsNaN(actualWidth) ? new GridLength(1, GridUnitType.Auto) : new GridLength(actualWidth);
 			}
 		}
 	}

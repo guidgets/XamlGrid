@@ -61,7 +61,6 @@
     </Style>
 
     <controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
-    <controllers:ColumnWidthToDoubleConverter x:Key="gridLengthToDoubleConverter" />
     
     <Style TargetType="company:HeaderCell">
         <Setter Property="Background">
@@ -76,8 +75,7 @@
                     <controllers:StyleBinding Property="Content"
                                               Binding="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
                     <controllers:StyleBinding Property="Width" 
-                                              Binding="{Binding Column.Width, RelativeSource={RelativeSource Self}, 
-                                                        Mode=TwoWay, Converter={StaticResource gridLengthToDoubleConverter}}" />
+                                              Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
                 </controllers:StyleBindingCollection>
             </Setter.Value>
         </Setter>
@@ -234,8 +232,7 @@
             <Setter.Value>
                 <controllers:StyleBindingCollection>
                     <controllers:StyleBinding Property="Width" 
-                                              Binding="{Binding Column.Width, RelativeSource={RelativeSource Self}, 
-                                                        Mode=TwoWay, Converter={StaticResource gridLengthToDoubleConverter}}" />
+                                              Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
                     <controllers:StyleBinding Property="HorizontalContentAlignment"
                                               Binding="{Binding DataType, RelativeSource={RelativeSource Self}, 
                                                         Converter={StaticResource typeToAlignmentConverter}}" />

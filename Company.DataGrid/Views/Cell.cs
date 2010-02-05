@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Company.DataGrid.Controllers;
+using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Views
 {
@@ -230,6 +231,17 @@ namespace Company.DataGrid.Views
 				}
 				this.isFocused = false;
 			}
+		}
+
+		/// <summary>
+		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.
+		/// </summary>
+		/// <returns>
+		/// 	<c>true</c> if the <see cref="Cell"/> is automatically sized according to its contents; otherwise, <c>false</c>.
+		/// </returns>
+		protected override bool IsAutoSized()
+		{
+			return this.Column.Width.SizeMode == SizeMode.ToData || base.IsAutoSized();
 		}
 
 		/// <summary>

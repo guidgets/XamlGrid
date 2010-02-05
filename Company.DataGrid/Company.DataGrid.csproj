@@ -124,6 +124,7 @@
     <Compile Include="Core\Observer.cs" />
     <Compile Include="Core\Model.cs" />
     <Compile Include="DataGridFacade.cs" />
+    <Compile Include="Models\ColumnWidth.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\ObservableItemCollection.cs" />
     <Compile Include="Models\ItemPropertyChangedEventArgs.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="Models\SelectionModel.cs" />
     <Compile Include="Models\SortDirectionEventArgs.cs" />
     <Compile Include="Models\SortingModel.cs" />
+    <Compile Include="Controllers\StringToColumnWidthConverter.cs" />
+    <Compile Include="Models\SizeMode.cs" />
     <Compile Include="Notifications.cs" />
     <Compile Include="NotificationTypes.cs" />
     <Compile Include="Views\Cell.cs" />

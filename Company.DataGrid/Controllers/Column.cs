@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
+using Company.DataGrid.Models;
 using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Controllers
@@ -36,8 +37,8 @@ namespace Company.DataGrid.Controllers
 		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
 		/// </summary>		
 		public static readonly DependencyProperty WidthProperty =
-			DependencyProperty.Register("Width", typeof(GridLength), typeof(Column),
-			                            new PropertyMetadata(new GridLength(200), OnWidthChanged));
+			DependencyProperty.Register("Width", typeof(ColumnWidth), typeof(Column),
+			                            new PropertyMetadata(new ColumnWidth(200), OnWidthChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the absolute width, in pixels, of a <see cref="Column"/>.
@@ -69,11 +70,11 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the width of the cells in the <see cref="Column"/>.
 		/// </summary>
 		/// <value>The width of the cells in the <see cref="Column"/>.</value>
-		public GridLength Width
+		public ColumnWidth Width
 		{
 			get
 			{
-				return (GridLength) this.GetValue(WidthProperty);
+				return (ColumnWidth) this.GetValue(WidthProperty);
 			}
 			set
 			{
@@ -185,8 +186,8 @@ namespace Company.DataGrid.Controllers
 		/// </summary>
 		public void AutoSize()
 		{
-			this.Width = new GridLength(this.ActualWidth, GridUnitType.Pixel);
-			this.Width = new GridLength(1, GridUnitType.Auto);
+			this.Width = new ColumnWidth(this.ActualWidth);
+			this.Width = new ColumnWidth(SizeMode.Auto);
 		}
 
 
@@ -201,13 +202,15 @@ namespace Company.DataGrid.Controllers
 
 		private static void OnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			GridLength columnWidth = (GridLength) e.NewValue;
-			switch (columnWidth.GridUnitType)
+			ColumnWidth columnWidth = (ColumnWidth) e.NewValue;
+			switch (columnWidth.SizeMode)
 			{
-				case GridUnitType.Auto:
+				case SizeMode.Auto:
+				case SizeMode.ToHeader:
+				case SizeMode.ToData:
 					((Column) d).ActualWidth = double.NaN;
 					break;
-				case GridUnitType.Pixel:
+				case SizeMode.Absolute:
 					((Column) d).ActualWidth = columnWidth.Value;
 					break;
 			}
@@ -217,9 +220,9 @@ namespace Company.DataGrid.Controllers
 		{
 			Column column = (Column) d;
 			double actualWidth = (double) e.NewValue;
-			if (!column.Width.IsAuto)
+			if (!column.Width.IsAuto())
 			{
-				column.Width = double.IsNaN(actualWidth) ? new GridLength(1, GridUnitType.Auto) : new GridLength(actualWidth);
+				column.Width = double.IsNaN(actualWidth) ? new ColumnWidth(SizeMode.Auto) : new ColumnWidth(actualWidth);
 			}
 		}
 	}

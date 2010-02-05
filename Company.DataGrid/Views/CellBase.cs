@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Company.DataGrid.Controllers;
+using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Views
 {
@@ -42,9 +43,21 @@ namespace Company.DataGrid.Views
 		}
 
 
+		/// <summary>
+		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.
+		/// </summary>
+		/// <returns>
+		/// 	<c>true</c> if the <see cref="Cell"/> is automatically sized according to its contents; otherwise, <c>false</c>.
+		/// </returns>
+		protected virtual bool IsAutoSized()
+		{
+			return this.Column.Width.SizeMode == SizeMode.Auto;
+		}
+
+
 		private void Cell_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			if (this.Column.Width.IsAuto && (double.IsNaN(this.Column.ActualWidth) || this.Column.ActualWidth < e.NewSize.Width))
+			if (this.IsAutoSized() && (double.IsNaN(this.Column.ActualWidth) || this.Column.ActualWidth < e.NewSize.Width))
 			{
 				this.Column.ActualWidth = e.NewSize.Width + 1;
 			}

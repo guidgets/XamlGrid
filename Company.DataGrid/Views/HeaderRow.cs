@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Company.DataGrid.Controllers;
+using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Views
 {
@@ -74,7 +75,9 @@ namespace Company.DataGrid.Views
 		private static void OnVisibilityListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			HeaderRow headerRow = (HeaderRow) d;
-			foreach (Column column in headerRow.Items.Cast<Column>().Where(column => column.Width.IsAuto))
+			foreach (Column column in from Column item in headerRow.Items
+									  where (item.Width.SizeMode == SizeMode.Auto || item.Width.SizeMode == SizeMode.ToHeader)
+									  select item)
 			{
 				column.AutoSize();
 			}

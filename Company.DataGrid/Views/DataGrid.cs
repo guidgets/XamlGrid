@@ -52,8 +52,8 @@ namespace Company.DataGrid.Views
 		/// Identifies the property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty ColumnWidthProperty =
-			DependencyProperty.Register("ColumnWidth", typeof(GridLength), typeof(DataGrid),
-			                            new PropertyMetadata(new GridLength(200)));
+			DependencyProperty.Register("ColumnWidth", typeof(ColumnWidth), typeof(DataGrid),
+			                            new PropertyMetadata(new ColumnWidth(200)));
 
 		/// <summary>
 		/// Identifies the property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
@@ -167,11 +167,11 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.</value>
-		public GridLength ColumnWidth
+		public ColumnWidth ColumnWidth
 		{
 			get
 			{
-				return (GridLength) this.GetValue(ColumnWidthProperty);
+				return (ColumnWidth) this.GetValue(ColumnWidthProperty);
 			}
 			set
 			{

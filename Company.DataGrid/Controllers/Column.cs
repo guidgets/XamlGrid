@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Data;
 using Company.DataGrid.Views;
-using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Controllers
 {

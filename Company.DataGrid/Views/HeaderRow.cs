@@ -1,17 +1,39 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Company.DataGrid.Controllers;
 
 namespace Company.DataGrid.Views
 {
+	/// <summary>
+	/// Represents a header that contains explanatory information about the data in a <see cref="DataGrid"/>.
+	/// </summary>
 	public class HeaderRow : ItemsControl
 	{
+		private static readonly DependencyProperty visibilityListenerProperty =
+			DependencyProperty.Register("visibilityListener", typeof(Visibility), typeof(HeaderRow),
+										new PropertyMetadata(Visibility.Visible, OnVisibilityListenerChanged));
+
+		private static readonly Binding visibilityBinding = new Binding("Visibility")
+	                                                    	{
+	                                                    		RelativeSource = new RelativeSource(RelativeSourceMode.Self),
+	                                                    		Mode = BindingMode.OneWay
+	                                                    	};
+
+
+		/// <summary>
+		/// Represents a header that contains explanatory information about the data in a <see cref="DataGrid"/>.
+		/// </summary>
 		public HeaderRow()
 		{
 			this.DefaultStyleKey = typeof(HeaderRow);
 
+			this.SetBinding(visibilityListenerProperty, visibilityBinding);
+
 			DataGridFacade.Instance.RegisterController(new HeaderRowController(this));
 		}
+
 
 		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
@@ -46,6 +68,16 @@ namespace Company.DataGrid.Views
 		{
 			base.ClearContainerForItemOverride(element, item);
 			DataGridFacade.Instance.RemoveController(element.GetHashCode().ToString());
+		}
+
+
+		private static void OnVisibilityListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			HeaderRow headerRow = (HeaderRow) d;
+			foreach (Column column in headerRow.Items.Cast<Column>().Where(column => column.Width.IsAuto))
+			{
+				column.AutoSize();
+			}
 		}
 	}
 }

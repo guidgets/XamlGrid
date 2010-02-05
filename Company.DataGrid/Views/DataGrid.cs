@@ -35,15 +35,6 @@ namespace Company.DataGrid.Views
 
 
 		/// <summary>
-		/// The ItemsSourceListener Attached Dependency Property is a private property
-		/// used to silently bind to the <see cref="ItemsControl"/> ItemsSourceProperty.
-		/// Once bound, the callback method will execute any time the ItemsSource property changes.
-		/// </summary>
-		private static readonly DependencyProperty itemsSourceListenerProperty =
-			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
-												new PropertyMetadata(null, OnItemsSourceListenerChanged));
-
-		/// <summary>
 		/// Identifies the property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty DataSourceProperty =
@@ -65,6 +56,12 @@ namespace Company.DataGrid.Views
 			                            new PropertyMetadata(new GridLength(200)));
 
 		/// <summary>
+		/// Identifies the property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
+		/// </summary>
+		public static readonly DependencyProperty HeaderVisibilityProperty =
+			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(null));
+
+		/// <summary>
 		/// Identifies the property which gets or sets the current item of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty CurrentItemProperty =
@@ -83,6 +80,15 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
+
+		/// <summary>
+		/// The ItemsSourceListener Attached Dependency Property is a private property
+		/// used to silently bind to the <see cref="ItemsControl"/> ItemsSourceProperty.
+		/// Once bound, the callback method will execute any time the ItemsSource property changes.
+		/// </summary>
+		private static readonly DependencyProperty itemsSourceListenerProperty =
+			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
+												new PropertyMetadata(null, OnItemsSourceListenerChanged));
 
 		private static readonly Binding itemsSourceBinding = new Binding("ItemsSource")
 	                                                     	 {
@@ -170,6 +176,22 @@ namespace Company.DataGrid.Views
 			set
 			{
 				this.SetValue(ColumnWidthProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The visibility of the header row of the <see cref="DataGrid"/>.</value>
+		public Visibility HeaderVisibility
+		{
+			get
+			{
+				return (Visibility) this.GetValue(HeaderVisibilityProperty);
+			}
+			set
+			{
+				this.SetValue(HeaderVisibilityProperty, value);
 			}
 		}
 

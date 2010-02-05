@@ -180,6 +180,17 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+
+		/// <summary>
+		/// Recalculates the automatic size of the <see cref="Cell"/>s in this <see cref="Column"/>.
+		/// </summary>
+		public void AutoSize()
+		{
+			this.Width = new GridLength(this.ActualWidth, GridUnitType.Pixel);
+			this.Width = new GridLength(1, GridUnitType.Auto);
+		}
+
+
 		private static void OnBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Column column = (Column) d;

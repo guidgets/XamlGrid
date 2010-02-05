@@ -42,7 +42,8 @@ namespace Examples
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-			this.dataGrid.ColumnWidth = new GridLength(1, GridUnitType.Auto);
+			//this.dataGrid.HeaderVisibility = this.dataGrid.HeaderVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+			//this.dataGrid.ColumnWidth = new GridLength(1, GridUnitType.Auto);
 			//this.dataGrid.Columns.Clear();
 			//this.dataGrid.DataSource = null;
 			//this.dataGrid.Columns.RemoveAt(0);

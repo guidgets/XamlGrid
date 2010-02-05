@@ -59,8 +59,7 @@ namespace Company.DataGrid.Controllers
 					if (this.AssociatedObject.Tag is Column)
 					{
 						Column columnToResize = (Column) this.AssociatedObject.Tag;
-						columnToResize.Width = new GridLength(columnToResize.ActualWidth);
-						columnToResize.Width = new GridLength(1, GridUnitType.Auto);
+						columnToResize.AutoSize();
 					}
 				}
 			}

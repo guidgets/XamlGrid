@@ -78,6 +78,8 @@
                                               Binding="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
                     <controllers:StyleBinding Property="Width" 
                                               Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+                    <controllers:StyleBinding Property="Visibility" 
+                                              Binding="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
                 </controllers:StyleBindingCollection>
             </Setter.Value>
         </Setter>
@@ -240,6 +242,8 @@
                     <controllers:StyleBinding Property="HorizontalContentAlignment"
                                               Binding="{Binding DataType, RelativeSource={RelativeSource Self}, 
                                                         Converter={StaticResource typeToAlignmentConverter}}" />
+                    <controllers:StyleBinding Property="Visibility" 
+                                              Binding="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
                 </controllers:StyleBindingCollection>
             </Setter.Value>
         </Setter>

@@ -42,6 +42,7 @@ namespace Examples
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+			//this.dataGrid.Columns[1].Visibility = this.dataGrid.Columns[1].Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
 			//this.dataGrid.ResizableColumns = !this.dataGrid.ResizableColumns;
 			//this.dataGrid.HeaderVisibility = this.dataGrid.HeaderVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
 			//this.dataGrid.ColumnWidth = new GridLength(1, GridUnitType.Auto);

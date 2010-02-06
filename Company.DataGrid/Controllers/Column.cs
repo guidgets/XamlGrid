@@ -48,10 +48,16 @@ namespace Company.DataGrid.Controllers
 			                            new PropertyMetadata(200d, OnActualWidthChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether this <see cref="Column"/> is resizable.
+		/// Identifies the property which gets or sets a value indicating whether a <see cref="Column"/> is resizable.
 		/// </summary>
 		public static readonly DependencyProperty ResizableProperty =
 			DependencyProperty.Register("Resizable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+
+		/// <summary>
+		/// Identifies the property which gets or sets the visibility of a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty VisibilityProperty =
+			DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Column), new PropertyMetadata(Visibility.Visible));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating 
@@ -117,6 +123,22 @@ namespace Company.DataGrid.Controllers
 			set
 			{
 				this.SetValue(ResizableProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the visibility of this <see cref="Column"/>.
+		/// </summary>
+		/// <value>The visibility of this <see cref="Column"/>.</value>
+		public Visibility Visibility
+		{
+			get
+			{
+				return (Visibility) this.GetValue(VisibilityProperty);
+			}
+			set
+			{
+				this.SetValue(VisibilityProperty, value);
 			}
 		}
 

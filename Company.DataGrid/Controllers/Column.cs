@@ -48,6 +48,12 @@ namespace Company.DataGrid.Controllers
 			                            new PropertyMetadata(200d, OnActualWidthChanged));
 
 		/// <summary>
+		/// Identifies the property which gets or sets a value indicating whether this <see cref="Column"/> is resizable.
+		/// </summary>
+		public static readonly DependencyProperty ResizableProperty =
+			DependencyProperty.Register("Resizable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+
+		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating 
 		/// whether the <see cref="Cell"/>s in a <see cref="Column"/> are read-only.
 		/// </summary>
@@ -99,9 +105,25 @@ namespace Company.DataGrid.Controllers
 		}
 
 		/// <summary>
-		/// Gets or sets the header which displays visual information about the <see cref="Column"/>.
+		/// Gets or sets a value indicating whether this <see cref="Column"/> is resizable.
 		/// </summary>
-		/// <value>The header to display the information about the <see cref="Column"/>.</value>
+		/// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
+		public bool Resizable
+		{
+			get
+			{
+				return (bool) this.GetValue(ResizableProperty);
+			}
+			set
+			{
+				this.SetValue(ResizableProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the header which displays visual information about this <see cref="Column"/>.
+		/// </summary>
+		/// <value>The header to display the information about this <see cref="Column"/>.</value>
 		public object Header
 		{
 			get

@@ -58,7 +58,10 @@ namespace Company.DataGrid.Controllers
 					if (this.AssociatedObject.Tag is Column)
 					{
 						Column columnToResize = (Column) this.AssociatedObject.Tag;
-						columnToResize.AutoSize();
+						if (columnToResize.Resizable)
+						{
+							columnToResize.AutoSize();							
+						}
 					}
 				}
 			}

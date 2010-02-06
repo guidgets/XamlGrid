@@ -45,8 +45,11 @@ namespace Company.DataGrid.Controllers
 			if (this.AssociatedObject.Tag is Column)
 			{
 				Column columnToResize = (Column) this.AssociatedObject.Tag;
-				double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
-				columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1);
+				if (columnToResize.Resizable)
+				{
+					double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
+					columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1);
+				}
 			}
 		}
 

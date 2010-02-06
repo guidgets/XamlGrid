@@ -143,15 +143,20 @@ namespace Company.DataGrid.Controllers
 				case NotifyCollectionChangedAction.Replace:
 					foreach (Column column in e.NewItems)
 					{
-						if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
-						{
-							BindingOperations.SetBinding(column, Column.IsEditableProperty,
-														 new Binding("IsEditable") { Source = this.DataGrid });
-						}
 						if (column.ReadLocalValue(Column.WidthProperty) == DependencyProperty.UnsetValue)
 						{
 							BindingOperations.SetBinding(column, Column.WidthProperty,
 														 new Binding("ColumnWidth") { Source = this.DataGrid });
+						}
+						if (column.ReadLocalValue(Column.ResizableProperty) == DependencyProperty.UnsetValue)
+						{
+							BindingOperations.SetBinding(column, Column.ResizableProperty,
+														 new Binding("ResizableColumns") { Source = this.DataGrid });
+						}
+						if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
+						{
+							BindingOperations.SetBinding(column, Column.IsEditableProperty,
+														 new Binding("IsEditable") { Source = this.DataGrid });
 						}
 					}
 					break;

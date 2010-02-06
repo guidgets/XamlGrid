@@ -56,6 +56,13 @@ namespace Company.DataGrid.Views
 			                            new PropertyMetadata(new ColumnWidth(200)));
 
 		/// <summary>
+		/// Identifies the property which gets or sets a value indicating whether 
+		/// the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable.
+		/// </summary>
+		public static readonly DependencyProperty ResizableColumnsProperty =
+			DependencyProperty.Register("ResizableColumns", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
+
+		/// <summary>
 		/// Identifies the property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty HeaderVisibilityProperty =
@@ -176,6 +183,22 @@ namespace Company.DataGrid.Views
 			set
 			{
 				this.SetValue(ColumnWidthProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable.
+		/// </summary>
+		/// <value><c>true</c> if the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable; otherwise, <c>false</c>.</value>
+		public bool ResizableColumns
+		{
+			get
+			{
+				return (bool) this.GetValue(ResizableColumnsProperty);
+			}
+			set
+			{
+				this.SetValue(ResizableColumnsProperty, value);
 			}
 		}
 

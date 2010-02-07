@@ -26,8 +26,8 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
 		/// </summary>
-		public static readonly DependencyProperty IsCurrentProperty =
-			DependencyProperty.Register("IsCurrent", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsCurrentChanged));
+		public static readonly DependencyProperty IsFocusedProperty =
+			DependencyProperty.Register("IsCurrent", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsFocusedChanged));
 
 		/// <summary>
 		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
@@ -85,15 +85,15 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if this <see cref="Row"/> is the current one; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsCurrent
+		public bool IsFocused
 		{
 			get
 			{
-				return (bool) this.GetValue(IsCurrentProperty);
+				return (bool) this.GetValue(IsFocusedProperty);
 			}
 			set
 			{
-				this.SetValue(IsCurrentProperty, value);
+				this.SetValue(IsFocusedProperty, value);
 			}
 		}
 
@@ -121,8 +121,31 @@ namespace Company.DataGrid.Views
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
-			this.GoToCurrent();
+			this.GoToFocused();
 			this.GoToSelected();
+		}
+
+		/// <summary>
+		/// Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
+		/// </summary>
+		/// <param name="e">The data for the event.</param>
+		protected override void OnGotFocus(RoutedEventArgs e)
+		{
+			this.IsFocused = true;
+			base.OnGotFocus(e);
+		}
+
+		/// <summary>
+		/// Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
+		/// </summary>
+		/// <param name="e">The data for the event.</param>
+		protected override void OnLostFocus(RoutedEventArgs e)
+		{
+			if (!this.IsFocusWithin())
+			{
+				this.IsFocused = false;
+			}
+			base.OnLostFocus(e);
 		}
 
 		/// <summary>
@@ -141,7 +164,7 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		/// <param name="item">The item to check.</param>
 		/// <returns>
-		/// true if the item is (or is eligible to be) its own container; otherwise, false.
+		/// <c>true</c> if the item is (or is eligible to be) its own container; otherwise, <c>false</c>.
 		/// </returns>
 		protected override bool IsItemItsOwnContainerOverride(object item)
 		{
@@ -205,19 +228,23 @@ namespace Company.DataGrid.Views
 			}
 		}
 
-		private static void OnIsCurrentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static void OnIsFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
-			row.GoToCurrent();
-			row.OnIsCurrentChanged(e);
+			if (row.IsFocused)
+			{
+				row.Focus();
+			}
+			row.GoToFocused();
+			row.OnIsFocusedChanged(e);
 		}
 
-		private void GoToCurrent()
+		private void GoToFocused()
 		{
-			VisualStateManager.GoToState(this, this.IsCurrent ? "Current" : "NotCurrent", false);
+			VisualStateManager.GoToState(this, this.IsFocused ? "Focused" : "Unfocused", false);
 		}
 
-		private void OnIsCurrentChanged(DependencyPropertyChangedEventArgs e)
+		private void OnIsFocusedChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.IsCurrentChanged;
 			if (handler != null)

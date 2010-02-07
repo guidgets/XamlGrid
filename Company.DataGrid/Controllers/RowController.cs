@@ -92,11 +92,11 @@ namespace Company.DataGrid.Controllers
 				case Notifications.ITEM_IS_CURRENT:
 					if (this.Row.DataContext == notification.Body)
 					{
-						this.Row.IsCurrent = bool.Parse(notification.Type);
+						this.Row.IsFocused = bool.Parse(notification.Type);
 					}
 					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
-					this.Row.IsCurrent = this.Row.DataContext == notification.Body;
+					this.Row.IsFocused = this.Row.DataContext == notification.Body;
 					break;
 				case Notifications.SELECTED_ITEMS:
 					if (((IList) notification.Body).Contains(this.Row.DataContext))
@@ -136,7 +136,7 @@ namespace Company.DataGrid.Controllers
 
 		private void Row_IsCurrentChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (this.Row.IsCurrent)
+			if (this.Row.IsFocused)
 			{
 				this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.Row.DataContext);
 			}
@@ -155,7 +155,7 @@ namespace Company.DataGrid.Controllers
 
 		private void Row_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			this.Row.IsCurrent = true;
+			this.Row.IsFocused = true;
 			string notification = this.Row.IsSelected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
 			switch (this.Row.DataGrid.SelectionMode)
 			{

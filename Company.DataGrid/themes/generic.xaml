@@ -35,12 +35,12 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <ScrollViewer Name="headerScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0"
+                            <ScrollViewer Name="headerScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0" Padding="0"
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
                                 <company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
                                                    Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                             </ScrollViewer>
-                            <ScrollViewer Name="mainScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                            <ScrollViewer Name="mainScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="0"
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
                                 <ItemsPresenter />
                             </ScrollViewer>

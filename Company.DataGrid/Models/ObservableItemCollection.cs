@@ -24,6 +24,10 @@ namespace Company.DataGrid.Models
 		private IEnumerable<T> enumerable;
 		private readonly List<string> propertyPaths;
 
+		/// <summary>
+		/// Represents an <see cref="ObservableCollection{T}"/> which fires an event when a 
+		/// contained item implementing <see cref="INotifyPropertyChanged"/> has a property changed.
+		/// </summary>
 		public ObservableItemCollection()
 		{
 			this.propertyPaths = new List<string>();

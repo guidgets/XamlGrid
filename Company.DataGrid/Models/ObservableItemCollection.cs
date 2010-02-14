@@ -35,6 +35,14 @@ namespace Company.DataGrid.Models
 			this.ThrowExceptionOnInvalidPath = true;
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="ObservableItemCollection{T}"/> 
+		/// should throw an exception if it encounters an invalid property path.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this <see cref="ObservableItemCollection{T}"/> should throw an exception 
+		/// if it encounters an invalid property path; otherwise, <c>false</c>.
+		/// </value>
 		public bool ThrowExceptionOnInvalidPath
 		{
 			get; 

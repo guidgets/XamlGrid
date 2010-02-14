@@ -40,9 +40,13 @@ namespace Company.DataGrid.Views
 
 		private static readonly Binding dataContextBinding = new Binding("DataContext")
 	                                                     	 {
-	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self),
-	                                                     		 Mode = BindingMode.OneWay
+	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 	                                                     	 };
+
+		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
+	                                                    	{
+	                                                    		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+	                                                    	};
 
 
 		private readonly Binding dataBinding;
@@ -190,11 +194,7 @@ namespace Company.DataGrid.Views
 			cell.Column = column;
         	cell.DataType = column.DataType;
 			cell.Style = column.CellStyle;
-			if (cell.ReadLocalValue(Cell.IsEditableProperty) == DependencyProperty.UnsetValue)
-			{
-				cell.SetBinding(Cell.IsEditableProperty,
-								new Binding("Column.IsEditable") { RelativeSource = new RelativeSource(RelativeSourceMode.Self) });
-			}
+        	cell.SetBinding(Cell.IsEditableProperty, isEditableBinding);
         	cell.SetBinding(DataContextProperty, this.dataBinding);
         	cell.SetBinding(Cell.ValueProperty, column.Binding);
         }

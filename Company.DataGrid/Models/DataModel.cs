@@ -42,7 +42,7 @@ namespace Company.DataGrid.Models
 			{
 				if (enumerable is ICollection || enumerable.GetType().GetInterface(typeof(ICollection<>).FullName, false) != null)
 				{
-					this.observableItemCollection.SetEnumerable(from object item in enumerable 
+					this.observableItemCollection.SetSource(from object item in enumerable 
 																select item);
 				}
 				if (enumerable is ICollectionView)

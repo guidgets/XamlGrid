@@ -49,7 +49,7 @@ namespace Company.DataGrid.Models
 			set;
 		}
 
-		public void SetEnumerable(IEnumerable<T> newEnumerable)
+		public void SetSource(IEnumerable<T> newEnumerable)
 		{
 			if (this.enumerable == newEnumerable)
 			{

@@ -307,7 +307,7 @@
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
                                                         <TextBox Text="{Binding Tag.EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                 SelectionLength="1000000000" controllers:ControlExtensions.FocusOnLoad="True" />
+                                                                 SelectionLength="1000000000" company:ControlExtensions.FocusOnLoad="True" />
                                                     </DataTemplate>
                                                 </DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
@@ -321,7 +321,7 @@
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
                                                         <toolkitInput:NumericUpDown Value="{Binding Tag.EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
-                                                                                    Minimum="-1000000000" Maximum="1000000000" controllers:ControlExtensions.FocusOnLoad="True" />
+                                                                                    Minimum="-1000000000" Maximum="1000000000" company:ControlExtensions.FocusOnLoad="True" />
                                                     </DataTemplate>
                                                 </DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
@@ -335,7 +335,7 @@
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
                                                         <controls:DatePicker SelectedDate="{Binding Tag.EditorValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                             controllers:ControlExtensions.FocusOnLoad="True" />
+                                                                             company:ControlExtensions.FocusOnLoad="True" />
                                                     </DataTemplate>
                                                 </DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>

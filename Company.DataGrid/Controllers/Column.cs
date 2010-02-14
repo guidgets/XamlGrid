@@ -12,12 +12,14 @@ namespace Company.DataGrid.Controllers
 	public class Column : DependencyObject
 	{
 		/// <summary>
-		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
+		/// Occurs when the <see cref="Width"/> of this <see cref="Column"/> is changed.
 		/// </summary>
-		public Column()
-		{
-			this.DataType = typeof(object);
-		}
+		public event DependencyPropertyChangedEventHandler WidthChanged;
+		/// <summary>
+		/// Occurs when the <see cref="ActualWidth"/> of this <see cref="Column"/> is changed.
+		/// </summary>
+		public event DependencyPropertyChangedEventHandler ActualWidthChanged;
+
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the header which 
@@ -77,6 +79,7 @@ namespace Company.DataGrid.Controllers
 		/// </summary>
 		public static readonly DependencyProperty CellStyleProperty =
 			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
+
 
 		/// <summary>
 		/// Gets or sets the width of the cells in the <see cref="Column"/>.
@@ -258,15 +261,35 @@ namespace Company.DataGrid.Controllers
 					((Column) d).ActualWidth = columnWidth.Value;
 					break;
 			}
+			((Column) d).OnWidthChanged(e);
+		}
+
+		private void OnWidthChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.WidthChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
 		}
 
 		private static void OnActualWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Column column = (Column) d;
 			double actualWidth = (double) e.NewValue;
-			if (!column.Width.IsAuto())
+			if (column.Width.SizeMode == SizeMode.Absolute)
 			{
 				column.Width = double.IsNaN(actualWidth) ? new ColumnWidth(SizeMode.Auto) : new ColumnWidth(actualWidth);
+			}
+			column.OnActualWidthChanged(e);
+		}
+
+		private void OnActualWidthChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.ActualWidthChanged;
+			if (handler != null)
+			{
+				handler(this, e);
 			}
 		}
 	}

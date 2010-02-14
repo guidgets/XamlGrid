@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -9,6 +10,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Company.DataGrid.Core;
+using Company.DataGrid.Models;
+using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Controllers
 {
@@ -17,6 +20,9 @@ namespace Company.DataGrid.Controllers
 	/// </summary>
 	public class DataGridController : Controller
 	{
+		private ItemsPresenter itemsPresenter;
+
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
 		/// </summary>
@@ -25,6 +31,7 @@ namespace Company.DataGrid.Controllers
 		{
 
 		}
+
 
 		/// <summary>
 		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="Controller"/> is responsible.
@@ -37,6 +44,15 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+		private ItemsPresenter ItemsPresenter
+		{
+			get
+			{
+				return this.itemsPresenter ?? (this.itemsPresenter = this.DataGrid.GetItemsPresenter());
+			}
+		}
+
+
 		/// <summary>
 		/// Called by the <see cref="Controller"/> when it is registered.
 		/// </summary>
@@ -44,12 +60,21 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRegister();
 
+			this.DataGrid.Loaded += this.DataGrid_Loaded;
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
 			this.DataGrid.ItemContainerGenerator.ItemsChanged += this.ItemContainerGenerator_ItemsChanged;
+		}
+
+		private void Scroll_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			if (e.NewSize.Width != e.PreviousSize.Width)
+			{
+				this.CalculateRelativeColumnWidths();				
+			}
 		}
 
 		/// <summary>
@@ -59,6 +84,7 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRemove();
 
+			this.DataGrid.Loaded -= this.DataGrid_Loaded;
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
@@ -111,6 +137,13 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+
+		private void DataGrid_Loaded(object sender, EventArgs eventArgs)
+		{
+			this.DataGrid.ApplyTemplate();
+			this.ItemsPresenter.SizeChanged += this.Scroll_SizeChanged;
+		}
+
 		private void DataGrid_DataSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (e.NewValue == null || e.NewValue is IEnumerable)
@@ -158,10 +191,55 @@ namespace Company.DataGrid.Controllers
 							BindingOperations.SetBinding(column, Column.IsEditableProperty,
 														 new Binding("IsEditable") { Source = this.DataGrid });
 						}
+						column.ActualWidthChanged += this.Column_ActualWidthChanged;
+					}
+					if ((from column in this.DataGrid.Columns
+						 where column.Width.SizeMode == SizeMode.Fill
+						 select column).Any())
+					{
+						this.CalculateRelativeColumnWidths();
 					}
 					break;
 			}
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
+		}
+
+		private void Column_ActualWidthChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.CalculateRelativeColumnWidths();
+		}
+
+		private void CalculateRelativeColumnWidths()
+		{
+			if (this.ItemsPresenter == null || (from column in this.DataGrid.Columns
+												where double.IsNaN(column.ActualWidth)
+												select column).Any())
+			{
+				return;
+			}
+			IList<Column> relativeColumns = (from column in this.DataGrid.Columns
+			                                 where column.Width.SizeMode == SizeMode.Fill
+			                                 select column).ToList();
+			double stars = relativeColumns.Sum(column => column.Width.Value);
+			double availableWidth = this.ItemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
+			                                                           where column.Width.SizeMode != SizeMode.Fill
+			                                                           select column.ActualWidth).Sum();
+			for (int index = 0; index < relativeColumns.Count; index++)
+			{
+				Column currentColumn = relativeColumns[index];
+				double width;
+				if (index != relativeColumns.Count - 1)
+				{
+					width = Math.Floor(relativeColumns[index].Width.Value * availableWidth / stars) - 1;
+				}
+				else
+				{
+					width = this.itemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
+					                                           where column != currentColumn
+					                                           select column.ActualWidth).Sum() - 2;
+				}
+				currentColumn.ActualWidth = Math.Max(width, 1);
+			}
 		}
 
 		private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
@@ -253,7 +331,7 @@ namespace Company.DataGrid.Controllers
 		private int GetFirstItemOnCurrentPage(int startingIndex, bool forward)
 		{
 			int step = forward ? 1 : -1;
-			int firstItemIndex = -1;
+			int firstItemIndex = 0;
 			ScrollViewer scroll = this.DataGrid.GetScrollHost();
 			Panel itemsHost = this.DataGrid.GetItemsHost();
 			Orientation orientation = Orientation.Vertical;
@@ -269,14 +347,12 @@ namespace Company.DataGrid.Controllers
 			while (0 <= index && index < this.DataGrid.Items.Count &&
 			       !this.IsOnCurrentPage(index, scroll, orientation))
 			{
-				firstItemIndex = index;
-				index += step;
+				firstItemIndex = index += step;
 			}
 			while (0 <= index && index < this.DataGrid.Items.Count &&
 			       this.IsOnCurrentPage(index, scroll, orientation))
 			{
-				firstItemIndex = index;
-				index += step;
+				firstItemIndex = index += step;
 			}
 			return firstItemIndex >= 0 ? firstItemIndex : 0;
 		}

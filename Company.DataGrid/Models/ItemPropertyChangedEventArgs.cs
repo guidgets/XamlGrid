@@ -11,12 +11,10 @@ namespace Company.DataGrid.Models
 		/// Provides data for the <see cref="ObservableItemCollection{T}.ItemPropertyChanged"/> event.
 		/// </summary>
 		/// <param name="item">The item which had a property changed.</param>
-		/// <param name="propertyPath">The property path in which the name of the changed property is located.</param>
 		/// <param name="propertyName">The name of the property which value changed.</param>
-		public ItemPropertyChangedEventArgs(object item, string propertyPath, string propertyName)
+		public ItemPropertyChangedEventArgs(object item, string propertyName)
 		{
 			this.Item = item;
-			this.PropertyPath = propertyPath;
 			this.PropertyName = propertyName;
 		}
 
@@ -24,16 +22,6 @@ namespace Company.DataGrid.Models
 		/// Gets the item which had a property changed.
 		/// </summary>
 		public object Item
-		{
-			get; 
-			private set;
-		}
-
-		/// <summary>
-		/// Gets the property path in which the name of the changed property is located.
-		/// </summary>
-		/// <value>The property path.</value>
-		public string PropertyPath
 		{
 			get; 
 			private set;

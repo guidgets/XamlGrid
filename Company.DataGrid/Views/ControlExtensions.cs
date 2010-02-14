@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Company.DataGrid.Controllers
+namespace Company.DataGrid.Views
 {
 	/// <summary>
 	/// Contains methods that extend the functionality of <see cref="Control"/>.
@@ -52,3 +52,5 @@ namespace Company.DataGrid.Controllers
 		}
 	}
 }
+
+

@@ -24,12 +24,24 @@ namespace Company.DataGrid.Models
 		/// <param name="sizeMode">The size mode according to which a <see cref="Column"/> gets its width.</param>
 		public ColumnWidth(SizeMode sizeMode) : this()
 		{
+			this.Value = 1;
+			this.SizeMode = sizeMode;
+		}
+
+		/// <summary>
+		/// Represents different ways of specifying the width of a <see cref="Column"/>.
+		/// </summary>
+		/// <param name="value">The number of "star" units the width of a <see cref="Column"/> uses.</param>
+		/// <param name="sizeMode">The size mode according to which a <see cref="Column"/> gets its width.</param>
+		public ColumnWidth(double value, SizeMode sizeMode) : this()
+		{
+			this.Value = value;
 			this.SizeMode = sizeMode;
 		}
 
 		/// <summary>
 		/// Gets or sets the absolute value of the wight of the <see cref="Column"/>; 
-		/// relevant only when the size mode is <see cref="Models.SizeMode.Absolute"/>.
+		/// relevant only when the size mode is <see cref="Models.SizeMode.Absolute"/> or <see cref="Models.SizeMode.Fill"/>.
 		/// </summary>
 		/// <value>The absolute value of the wight of the <see cref="Column"/>.</value>
 		public double Value

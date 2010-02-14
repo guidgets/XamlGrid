@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Globalization;
 using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Controllers
@@ -16,7 +18,7 @@ namespace Company.DataGrid.Controllers
 		/// <returns>
 		/// <c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.
 		/// </returns>
-		public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
 			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 		}
@@ -30,21 +32,40 @@ namespace Company.DataGrid.Controllers
 		/// <returns>The converted value.</returns>
 		/// <exception cref="T:System.NotImplementedException">
 		/// 	<see cref="M:System.ComponentModel.TypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)"/> not implemented in base <see cref="T:System.ComponentModel.TypeConverter"/>.</exception>
-		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			switch ((string) value)
+			string width = (string) value;
+			switch (width)
 			{
-				case "*":
-					return new ColumnWidth(SizeMode.Fill);
 				case "Auto":
 					return new ColumnWidth(SizeMode.Auto);
 				case "Header":
 					return new ColumnWidth(SizeMode.ToHeader);
 				case "Data":
 					return new ColumnWidth(SizeMode.ToData);
-				default:
-					return new ColumnWidth(double.Parse((string) value));
+				case "Fill":
+					return new ColumnWidth(SizeMode.Fill);
 			}
+			if (!string.IsNullOrEmpty(width))
+			{
+				double widthValue;
+				if (width[width.Length - 1] == '*')
+				{
+					if (width.Length == 1)
+					{
+						return new ColumnWidth(SizeMode.Fill);
+					}
+					if (double.TryParse(width.Remove(width.Length - 1), out widthValue))
+					{
+						return new ColumnWidth(widthValue, SizeMode.Fill);
+					}
+				}
+				if (double.TryParse(width, out widthValue))
+				{
+					return new ColumnWidth(widthValue);
+				}
+			}
+			throw new ArgumentException("value");
 		}
 	}
 }

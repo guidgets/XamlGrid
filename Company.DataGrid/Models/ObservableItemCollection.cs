@@ -152,7 +152,7 @@ namespace Company.DataGrid.Models
 
 		private void ManagePropertyChangedHandler(T item, bool addHandler)
 		{
-			this.AddRemoveHandler(item, string.Empty, addHandler);
+			this.AddRemoveHandler(item, addHandler);
 			foreach (string propertyPath in this.propertyPaths)
 			{
 				object value = item;
@@ -197,35 +197,32 @@ namespace Company.DataGrid.Models
 				{
 					break;
 				}
-				this.AddRemoveHandler(value, propertyPath, addHandler);
+				this.AddRemoveHandler(value, addHandler);
 			}
 		}
 
-		private void AddRemoveHandler(object item, string propertyPath, bool add)
+		private void AddRemoveHandler(object item, bool add)
 		{
 			if (!(item is INotifyPropertyChanged))
 			{
 				return;
 			}
-			PropertyChangedEventHandler eventHandler = (sender, e) =>
-			                                           	{
-			                                           		if (this.ItemPropertyChanged != null)
-			                                           		{
-																string correctPropertyPath = string.IsNullOrEmpty(propertyPath) ?
-																									e.PropertyName : propertyPath;
-			                                           			this.ItemPropertyChanged(this,
-			                                           			                         new ItemPropertyChangedEventArgs(sender,
-			                                           			                                                          correctPropertyPath,
-			                                           			                                                          e.PropertyName));
-			                                           		}
-			                                           	};
 			if (add)
 			{
-				((INotifyPropertyChanged) item).PropertyChanged += eventHandler;
+				((INotifyPropertyChanged) item).PropertyChanged += this.ObservableItemCollection_PropertyChanged;
 			}
 			else
 			{
-				((INotifyPropertyChanged) item).PropertyChanged -= eventHandler;
+				((INotifyPropertyChanged) item).PropertyChanged -= this.ObservableItemCollection_PropertyChanged;
+			}
+		}
+
+		private void ObservableItemCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			EventHandler<ItemPropertyChangedEventArgs> handler = this.ItemPropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new ItemPropertyChangedEventArgs(sender, e.PropertyName));
 			}
 		}
 	}

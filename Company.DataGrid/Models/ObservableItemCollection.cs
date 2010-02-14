@@ -123,7 +123,7 @@ namespace Company.DataGrid.Models
 		/// Adds the specified property paths, at which the items in 
 		/// this <see cref="ObservableItemCollection{T}"/> will be listened to for changes.
 		/// </summary>
-		/// <param name="newPropertyPaths">The new property paths, at which the items in 
+		/// <param name="newPropertyPaths">The property paths, at which the items in 
 		/// this <see cref="ObservableItemCollection{T}"/> will be listened to for changes.</param>
 		public void AddPropertyPaths(IEnumerable<string> newPropertyPaths)
 		{
@@ -131,10 +131,16 @@ namespace Company.DataGrid.Models
 			this.propertyPaths.AddRange(newPropertyPaths);
 		}
 
-		public void RemovePropertyPaths(IEnumerable<string> newPropertyPaths)
+		/// <summary>
+		/// Removes the specified property paths, at which the items in
+		/// this <see cref="ObservableItemCollection{T}"/> will no longer be listened to for changes.
+		/// </summary>
+		/// <param name="oldPropertyPaths">The property paths, at which the items in 
+		/// this <see cref="ObservableItemCollection{T}"/> will no longer be listened to for changes.</param>
+		public void RemovePropertyPaths(IEnumerable<string> oldPropertyPaths)
 		{
-			this.TraversePropertyPaths(newPropertyPaths, false);
-			newPropertyPaths.Select(propertyPath => this.propertyPaths.Remove(propertyPath));
+			this.TraversePropertyPaths(oldPropertyPaths, false);
+			oldPropertyPaths.Select(propertyPath => this.propertyPaths.Remove(propertyPath));
 		}
 
 		public void ReplacePropertyPaths(IEnumerable<string> newPropertyPaths, IEnumerable<string> oldPropertyPaths)

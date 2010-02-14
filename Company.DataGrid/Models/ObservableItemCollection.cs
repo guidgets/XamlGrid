@@ -16,6 +16,9 @@ namespace Company.DataGrid.Models
 	/// <typeparam name="T">The type of the items contained in the collection.</typeparam>
 	public class ObservableItemCollection<T> : ObservableCollection<T>
 	{
+		/// <summary>
+		/// Occurs when a contained item implementing <see cref="INotifyPropertyChanged"/> has a property changed.
+		/// </summary>
 		public event EventHandler<ItemPropertyChangedEventArgs> ItemPropertyChanged;
 
 		private IEnumerable<T> enumerable;

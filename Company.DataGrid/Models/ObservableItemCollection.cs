@@ -151,6 +151,10 @@ namespace Company.DataGrid.Models
 			this.propertyPaths.AddRange(newPropertyPaths);
 		}
 
+		/// <summary>
+		/// Clears all property paths at which the items in
+		/// this <see cref="ObservableItemCollection{T}"/> are listened to for changes.
+		/// </summary>
 		public void ClearPropertyPaths()
 		{
 			this.TraversePropertyPaths(this.propertyPaths, false);

@@ -119,6 +119,12 @@ namespace Company.DataGrid.Models
 			base.ClearItems();
 		}
 
+		/// <summary>
+		/// Adds the specified property paths, at which the items in 
+		/// this <see cref="ObservableItemCollection{T}"/> will be listened to for changes.
+		/// </summary>
+		/// <param name="newPropertyPaths">The new property paths, at which the items in 
+		/// this <see cref="ObservableItemCollection{T}"/> will be listened to for changes.</param>
 		public void AddPropertyPaths(IEnumerable<string> newPropertyPaths)
 		{
 			this.TraversePropertyPaths(newPropertyPaths, true);

@@ -9,6 +9,11 @@ using System.Reflection;
 
 namespace Company.DataGrid.Models
 {
+	/// <summary>
+	/// Represents an <see cref="ObservableCollection{T}"/> which fires an event when a 
+	/// contained item implementing <see cref="INotifyPropertyChanged"/> has a property changed.
+	/// </summary>
+	/// <typeparam name="T">The type of the items contained in the collection.</typeparam>
 	public class ObservableItemCollection<T> : ObservableCollection<T>
 	{
 		public event EventHandler<ItemPropertyChangedEventArgs> ItemPropertyChanged;

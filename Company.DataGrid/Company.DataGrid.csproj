@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Company.DataGrid</RootNamespace>
+    <AssemblyName>Company.DataGrid</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Toolkit, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Input.Toolkit, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
+    <Compile Include="Controllers\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
+    <Compile Include="Controllers\Column.cs" />
+    <Compile Include="Controllers\ColumnResizingBehavior.cs" />
+    <Compile Include="Views\ControlExtensions.cs" />
+    <Compile Include="Controllers\CurrentItemCommand.cs" />
+    <Compile Include="Controllers\DataCommand.cs" />
+    <Compile Include="Controllers\TypeToAlignmentConverter.cs" />
+    <Compile Include="Controllers\ItemsSourceChangedCommand.cs" />
+    <Compile Include="Controllers\HeaderCellController.cs" />
+    <Compile Include="Controllers\HeaderRowController.cs" />
+    <Compile Include="Controllers\LoadedCommand.cs" />
+    <Compile Include="Controllers\RowController.cs" />
+    <Compile Include="Controllers\ScrollExtensions.cs" />
+    <Compile Include="Controllers\SelectionCommand.cs" />
+    <Compile Include="Controllers\SortDirectionToBooleanConverter.cs" />
+    <Compile Include="Controllers\SortingCommand.cs" />
+    <Compile Include="Controllers\StyleBinder.cs" />
+    <Compile Include="Controllers\StyleBinding.cs" />
+    <Compile Include="Controllers\StyleBindingCollection.cs" />
+    <Compile Include="Controllers\TypeExtensions.cs" />
+    <Compile Include="Views\DependencyObjectExtensions.cs" />
+    <Compile Include="Views\UIElementExtensions.cs" />
+    <Compile Include="Core\Controller.cs" />
+    <Compile Include="Core\ICommand.cs" />
+    <Compile Include="Core\IMainController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\MacroCommand.cs" />
+    <Compile Include="Core\MainCommand.cs" />
+    <Compile Include="Core\MainController.cs" />
+    <Compile Include="Core\MainModel.cs" />
+    <Compile Include="Core\IMainCommand.cs" />
+    <Compile Include="Core\IFacade.cs" />
+    <Compile Include="Core\IController.cs" />
+    <Compile Include="Core\IMainModel.cs" />
+    <Compile Include="Core\INotification.cs" />
+    <Compile Include="Core\INotifier.cs" />
+    <Compile Include="Core\IObserver.cs" />
+    <Compile Include="Core\IModel.cs" />
+    <Compile Include="Core\Facade.cs" />
+    <Compile Include="Core\SimpleCommand.cs" />
+    <Compile Include="Core\Notification.cs" />
+    <Compile Include="Core\Notifier.cs" />
+    <Compile Include="Core\Observer.cs" />
+    <Compile Include="Core\Model.cs" />
+    <Compile Include="DataGridFacade.cs" />
+    <Compile Include="Models\ColumnWidth.cs" />
+    <Compile Include="Models\DataModel.cs" />
+    <Compile Include="Models\ObservableItemCollection.cs" />
+    <Compile Include="Models\ItemPropertyChangedEventArgs.cs" />
+    <Compile Include="Models\Property.cs" />
+    <Compile Include="Models\PropertyPathParser.cs" />
+    <Compile Include="Models\CurrentItemModel.cs" />
+    <Compile Include="Models\Range.cs" />
+    <Compile Include="Models\RangeCollection.cs" />
+    <Compile Include="Models\SelectedItemsCollection.cs" />
+    <Compile Include="Models\SelectionModel.cs" />
+    <Compile Include="Models\SortDirectionEventArgs.cs" />
+    <Compile Include="Models\SortingModel.cs" />
+    <Compile Include="Controllers\StringToColumnWidthConverter.cs" />
+    <Compile Include="Models\SizeMode.cs" />
+    <Compile Include="Notifications.cs" />
+    <Compile Include="NotificationTypes.cs" />
+    <Compile Include="Views\Cell.cs" />
+    <Compile Include="Views\CellBase.cs" />
+    <Compile Include="Views\CustomVSM.cs" />
+    <Compile Include="Views\DataGrid.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\DataGridController.cs" />
+    <Compile Include="Views\HeaderCell.cs" />
+    <Compile Include="Views\HeaderRow.cs" />
+    <Compile Include="Views\OSBrush.cs" />
+    <Compile Include="Views\OSColors.cs" />
+    <Compile Include="Views\Row.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="themes\generic.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

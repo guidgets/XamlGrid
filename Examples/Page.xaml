@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="Examples.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:company="clr-namespace:Company.DataGrid.Views;assembly=Company.DataGrid" 
+    xmlns:controllers="clr-namespace:Company.DataGrid.Controllers;assembly=Company.DataGrid" 
+    xmlns:Examples="clr-namespace:Examples" 
+    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=System.Windows" 
+    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+    >
+	<Grid Name="layoutRoot" Width="900" VerticalAlignment="Center">
+		<Grid.Resources>
+			<Style TargetType="Button">
+				<Setter Property="Background" Value="Red" />
+			</Style>
+			<Examples:BooleanToYesNoConverter x:Key="booleanToYesNoConverter" />
+			<Style x:Key="cellStyleName" TargetType="company:Cell">
+				<Setter Property="Background" Value="Blue" />
+			</Style>
+			<Style x:Key="cellStyleAge" TargetType="company:Cell">
+				<Setter Property="Background" Value="Red" />
+			</Style>
+			<Style x:Key="cellStyleIsSingle" TargetType="company:Cell">
+				<Setter Property="Background" Value="Green" />
+				<Setter Property="ContentTemplate">
+					<Setter.Value>
+						<DataTemplate>
+							<TextBlock Text="{Binding Converter={StaticResource booleanToYesNoConverter}}" />
+						</DataTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="company:Cell">
+							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+							BorderThickness="{TemplateBinding BorderThickness}">
+								<ContentPresenter />
+								<VisualStateManager.CustomVisualStateManager>
+									<company:CustomVSM />
+								</VisualStateManager.CustomVisualStateManager>
+								<VisualStateManager.VisualStateGroups>
+									<VisualStateGroup>
+										<VisualState Name="Controller" />
+										<VisualState Name="CustomEditor">
+											<Storyboard>
+												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+													<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Null}" />
+												</ObjectAnimationUsingKeyFrames>
+												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+													<DiscreteObjectKeyFrame KeyTime="0:0:0">
+														<DiscreteObjectKeyFrame.Value>
+															<CheckBox IsChecked="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, 
+																				  Mode=TwoWay}" />
+														</DiscreteObjectKeyFrame.Value>
+													</DiscreteObjectKeyFrame>
+												</ObjectAnimationUsingKeyFrames>
+											</Storyboard>
+										</VisualState>
+									</VisualStateGroup>
+								</VisualStateManager.VisualStateGroups>
+							</Border>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style x:Key="cellStyleMaritalStatus" TargetType="company:Cell">
+				<Setter Property="Background" Value="Yellow" />
+			</Style>
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
+		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="False" AutoCreateColumns="False">
+			<company:DataGrid.Columns>
+				<controllers:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
+				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
+				<controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Width="3*" IsEditable="True" Header="First Order Name" />
+				<controllers:Column Binding="{Binding IsSingle, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleIsSingle}" />
+				<controllers:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleMaritalStatus}" />
+				<controllers:Column Binding="{Binding HireDate, Mode=TwoWay}" Width="2*" />
+			</company:DataGrid.Columns>
+			<!--<company:DataGrid.SortDescriptions>
+				<ComponentModel:SortDescription PropertyName="Age" Direction="Descending" />
+			</company:DataGrid.SortDescriptions>-->
+		</company:DataGrid>
+		<Button Grid.Row="2" HorizontalAlignment="Stretch" Content="GC" Click="Button_Click" />
+		<toolkit:Expander Grid.Row="3">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="500" />
+				</Grid.RowDefinitions>
+				<CheckBox HorizontalAlignment="Stretch" Content="Sort by Orders[0].Name" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+				<ListBox Name="listBoxCustomers" Grid.Row="1" SelectionMode="Extended">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Name, Mode=TwoWay}" />
+								<TextBlock Text="{Binding Age, Mode=TwoWay}" />
+								<TextBlock Text="{Binding Orders[0].Name, Mode=TwoWay}" />
+								<CheckBox IsChecked="{Binding IsSingle, Mode=TwoWay}" />
+								<CheckBox IsChecked="{Binding MaritalStatus, Mode=TwoWay}" IsThreeState="True" />
+								<TextBlock Text="{Binding HireDate, Mode=TwoWay}" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</toolkit:Expander>
+	</Grid>
+</UserControl>

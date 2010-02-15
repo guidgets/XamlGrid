@@ -78,6 +78,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automation\CellAutomationPeer.cs" />
+    <Compile Include="Automation\DataGridAutomationPeer.cs" />
+    <Compile Include="Automation\HeaderCellAutomationPeer.cs" />
+    <Compile Include="Automation\HeaderRowAutomationPeer.cs" />
+    <Compile Include="Automation\RowAutomationPeer.cs" />
     <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
     <Compile Include="Controllers\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />

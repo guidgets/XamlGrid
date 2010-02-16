@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Company.DataGrid.Automation;
 using Company.DataGrid.Controllers;
 using Company.DataGrid.Models;
 
@@ -292,6 +294,7 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+
 		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
@@ -329,6 +332,18 @@ namespace Company.DataGrid.Views
 				itemsControl.ItemsSource = this.Columns;
 			}
 		}
+
+		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new DataGridAutomationPeer(this);
+		}
+
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{

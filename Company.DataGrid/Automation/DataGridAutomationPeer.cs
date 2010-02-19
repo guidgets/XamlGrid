@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
@@ -14,6 +15,7 @@ namespace Company.DataGrid.Automation
 	public class DataGridAutomationPeer : ItemsControlAutomationPeer, ITableProvider, ISelectionProvider, IScrollProvider, IMultipleViewProvider
 	{
 		private readonly Views.DataGrid dataGrid;
+
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridAutomationPeer"/> class.
@@ -82,15 +84,29 @@ namespace Company.DataGrid.Automation
 			return base.GetPattern(patternInterface);
 		}
 
-		protected override ItemAutomationPeer CreateItemAutomationPeer(object item)
-		{
-			return base.CreateItemAutomationPeer(item);
-		}
-
-
+		/// <summary>
+		/// Retrieves the UI automation provider for the specified cell.
+		/// </summary>
+		/// <param name="row">The ordinal number of the row that contains the cell.</param>
+		/// <param name="column">The ordinal number of the column that contains the cell.</param>
+		/// <returns>
+		/// The UI automation provider for the specified cell.
+		/// </returns>
 		public IRawElementProviderSimple GetItem(int row, int column)
 		{
-			throw new NotImplementedException();
+			if (row < this.dataGrid.Items.Count && column < this.dataGrid.Columns.Count)
+			{
+				DependencyObject rowElement = this.dataGrid.ItemContainerGenerator.ContainerFromIndex(row);
+				if (rowElement is ItemsControl)
+				{
+					DependencyObject cell = ((ItemsControl) rowElement).ItemContainerGenerator.ContainerFromIndex(column);
+					if (cell is UIElement)
+					{
+						return this.ProviderFromPeer(CreatePeerForElement((UIElement) cell));
+					}
+				}
+			}
+			return null;
 		}
 
 		/// <summary>
@@ -142,9 +158,16 @@ namespace Company.DataGrid.Automation
 			}
 		}
 
+		/// <summary>
+		/// Retrieves a UI automation provider for each child element that is selected.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetSelection()
 		{
-			throw new NotImplementedException();
+			return (from item in this.dataGrid.SelectedItems
+			        let row = this.dataGrid.ItemContainerGenerator.ContainerFromItem(item)
+			        let peer = CreatePeerForElement((UIElement) row)
+			        select this.ProviderFromPeer(peer)).ToArray();
 		}
 
 		/// <summary>

@@ -5,6 +5,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Automation
@@ -197,9 +198,53 @@ namespace Company.DataGrid.Automation
 			}
 		}
 
+		/// <summary>
+		/// Scrolls the visible region of the content area horizontally, vertically, or both.
+		/// </summary>
+		/// <param name="horizontalAmount">The horizontal increment that is specific to the control. Pass <see cref="F:System.Windows.Automation.ScrollPatternIdentifiers.NoScroll"/> if the control cannot be scrolled in this direction.</param>
+		/// <param name="verticalAmount">The vertical increment that is specific to the control. Pass <see cref="F:System.Windows.Automation.ScrollPatternIdentifiers.NoScroll"/> if the control cannot be scrolled in this direction.</param>
 		public void Scroll(ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
-			throw new NotImplementedException();
+			IScrollInfo scrollInfo = this.dataGrid.GetItemsHost() as IScrollInfo;
+			if (scrollInfo == null)
+			{
+				return;
+			}
+			switch (horizontalAmount)
+			{
+				case ScrollAmount.LargeDecrement:
+					scrollInfo.PageLeft();
+					break;
+				case ScrollAmount.SmallDecrement:
+					scrollInfo.LineLeft();
+					break;
+				case ScrollAmount.LargeIncrement:
+					scrollInfo.PageRight();
+					break;
+				case ScrollAmount.SmallIncrement:
+					scrollInfo.LineRight();
+					break;
+			}
+			switch (verticalAmount)
+			{
+				case ScrollAmount.LargeDecrement:
+					scrollInfo.PageUp();
+					break;
+				case ScrollAmount.SmallDecrement:
+					scrollInfo.LineUp();
+					break;
+				case ScrollAmount.LargeIncrement:
+					scrollInfo.PageDown();
+					break;
+				case ScrollAmount.SmallIncrement:
+					scrollInfo.LineDown();
+					break;
+			}
+			ScrollViewer scroll = this.dataGrid.GetScrollHost();
+			if (scroll != null)
+			{
+				scrollInfo.SetVerticalOffset(scroll.VerticalOffset);
+			}
 		}
 
 		public void SetScrollPercent(double horizontalPercent, double verticalPercent)

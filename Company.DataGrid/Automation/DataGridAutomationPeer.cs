@@ -243,7 +243,7 @@ namespace Company.DataGrid.Automation
 			ScrollViewer scroll = this.dataGrid.GetScrollHost();
 			if (scroll != null)
 			{
-				scrollInfo.SetVerticalOffset(scroll.VerticalOffset);
+				scrollInfo.SetVerticalOffset(Math.Min(scroll.ScrollableHeight, scroll.VerticalOffset));
 			}
 		}
 
@@ -252,11 +252,21 @@ namespace Company.DataGrid.Automation
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Gets a value that indicates whether the control can scroll horizontally.
+		/// </summary>
+		/// <value></value>
+		/// <returns><c>true</c> if the control can scroll horizontally; otherwise, <c>false</c>.</returns>
 		public bool HorizontallyScrollable
 		{
 			get
 			{
-				throw new NotImplementedException();
+				Panel itemsHost = this.dataGrid.GetItemsHost();
+				if (itemsHost is IScrollInfo)
+				{
+					return ((IScrollInfo) itemsHost).CanHorizontallyScroll;
+				}
+				return false;
 			}
 		}
 
@@ -265,14 +275,40 @@ namespace Company.DataGrid.Automation
 			get { throw new NotImplementedException(); }
 		}
 
+		/// <summary>
+		/// Gets the current horizontal view size.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The horizontal size of the viewable region as a percentage of the total content area within the control. </returns>
 		public double HorizontalViewSize
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				if (scroll != null)
+				{
+					return Math.Min(100, 100 * scroll.ViewportWidth / scroll.ExtentWidth);
+				}
+				return 100;
+			}
 		}
 
+		/// <summary>
+		/// Gets a value that indicates whether the control can scroll vertically.
+		/// </summary>
+		/// <value></value>
+		/// <returns><c>true</c> if the control can scroll vertically; otherwise, <c>false</c>. </returns>
 		public bool VerticallyScrollable
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				Panel itemsHost = this.dataGrid.GetItemsHost();
+				if (itemsHost is IScrollInfo)
+				{
+					return ((IScrollInfo) itemsHost).CanVerticallyScroll;
+				}
+				return false;
+			}
 		}
 
 		public double VerticalScrollPercent
@@ -280,9 +316,22 @@ namespace Company.DataGrid.Automation
 			get { throw new NotImplementedException(); }
 		}
 
+		/// <summary>
+		/// Gets the vertical view size.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The vertical size of the viewable region as a percentage of the total content area within the control. </returns>
 		public double VerticalViewSize
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				if (scroll != null)
+				{
+					return Math.Min(100, 100 * scroll.ViewportHeight / scroll.ExtentHeight);
+				}
+				return 100;
+			}
 		}
 
 		public int[] GetSupportedViews()

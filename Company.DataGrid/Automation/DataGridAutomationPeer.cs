@@ -13,7 +13,7 @@ namespace Company.DataGrid.Automation
 	/// <summary>
 	/// Exposes the <see cref="DataGrid"/> to UI automation.
 	/// </summary>
-	public class DataGridAutomationPeer : ItemsControlAutomationPeer, ITableProvider, ISelectionProvider, IScrollProvider, IMultipleViewProvider
+	public class DataGridAutomationPeer : ItemsControlAutomationPeer, ITableProvider, ISelectionProvider, IScrollProvider
 	{
 		private readonly Views.DataGrid dataGrid;
 
@@ -210,6 +210,14 @@ namespace Company.DataGrid.Automation
 			{
 				return;
 			}
+			if (horizontalAmount != ScrollAmount.NoAmount && scrollInfo.ExtentWidth <= scrollInfo.ViewportWidth)
+			{
+				throw new InvalidOperationException("Trying to scroll horizontally with horizontal scrolling disabled.");
+			}
+			if (horizontalAmount != ScrollAmount.NoAmount && scrollInfo.ExtentHeight <= scrollInfo.ViewportHeight)
+			{
+				throw new InvalidOperationException("Trying to scroll vertically with vertical scrolling disabled.");
+			}
 			switch (horizontalAmount)
 			{
 				case ScrollAmount.LargeDecrement:
@@ -247,9 +255,48 @@ namespace Company.DataGrid.Automation
 			}
 		}
 
+		/// <summary>
+		/// Sets the horizontal and vertical scroll position as a percentage of the total content area within the control.
+		/// </summary>
+		/// <param name="horizontalPercent">The horizontal position as a percentage of the content area's total range. Pass <see cref="F:System.Windows.Automation.ScrollPatternIdentifiers.NoScroll"/> if the control cannot be scrolled in this direction.</param>
+		/// <param name="verticalPercent">The vertical position as a percentage of the content area's total range. Pass <see cref="F:System.Windows.Automation.ScrollPatternIdentifiers.NoScroll"/> if the control cannot be scrolled in this direction.</param>
 		public void SetScrollPercent(double horizontalPercent, double verticalPercent)
 		{
-			throw new NotImplementedException();
+			ScrollViewer scroll = this.dataGrid.GetScrollHost();
+			if (scroll == null)
+			{
+				return;
+			}
+			if (horizontalPercent != -1)
+			{
+				if (scroll.ExtentWidth <= scroll.ViewportWidth)
+				{
+					throw new InvalidOperationException("Trying to scroll horizontally with horizontal scrolling disabled.");
+				}
+				if (horizontalPercent < 0 || horizontalPercent > 100)
+				{
+					throw new ArgumentOutOfRangeException("horizontalPercent", "The percentage for the horizontal offset must be between 0 and 100.");
+				}
+			}
+			if (verticalPercent != -1)
+			{
+				if (scroll.ExtentHeight <= scroll.ViewportHeight)
+				{
+					throw new InvalidOperationException("Trying to scroll vertically with vertical scrolling disabled.");
+				}
+				if (verticalPercent < 0 || verticalPercent > 100)
+				{
+					throw new ArgumentOutOfRangeException("verticalPercent", "The percentage for vertical offset must be between 0 and 100.");
+				}
+			}
+			if (horizontalPercent != -1)
+			{
+				scroll.ScrollToHorizontalOffset((scroll.ExtentWidth - scroll.ViewportWidth) * horizontalPercent / 100);
+			}
+			if (verticalPercent != -1)
+			{
+				scroll.ScrollToVerticalOffset((scroll.ExtentHeight - scroll.ViewportHeight) * verticalPercent / 100);
+			}
 		}
 
 		/// <summary>
@@ -270,9 +317,22 @@ namespace Company.DataGrid.Automation
 			}
 		}
 
+		/// <summary>
+		/// Gets the current horizontal scroll position.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The horizontal scroll position as a percentage of the total content area within the control.</returns>
 		public double HorizontalScrollPercent
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				if (scroll == null || scroll.ExtentWidth <= scroll.ViewportWidth)
+				{
+					return -1;
+				}
+				return 100 * scroll.HorizontalOffset / (scroll.ExtentWidth - scroll.ViewportWidth);
+			}
 		}
 
 		/// <summary>
@@ -311,9 +371,22 @@ namespace Company.DataGrid.Automation
 			}
 		}
 
+		/// <summary>
+		/// Gets the current vertical scroll position.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The vertical scroll position as a percentage of the total content area within the control. </returns>
 		public double VerticalScrollPercent
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				if (scroll == null || scroll.ExtentHeight <= scroll.ViewportHeight)
+				{
+					return -1;
+				}
+				return 100 * scroll.VerticalOffset / (scroll.ExtentHeight - scroll.ViewportHeight);
+			}
 		}
 
 		/// <summary>
@@ -332,26 +405,6 @@ namespace Company.DataGrid.Automation
 				}
 				return 100;
 			}
-		}
-
-		public int[] GetSupportedViews()
-		{
-			throw new NotImplementedException();
-		}
-
-		public string GetViewName(int viewId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void SetCurrentView(int viewId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int CurrentView
-		{
-			get { throw new NotImplementedException(); }
 		}
 	}
 }

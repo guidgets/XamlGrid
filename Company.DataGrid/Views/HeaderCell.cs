@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using Company.DataGrid.Automation;
 using Company.DataGrid.Controllers;
 using Company.DataGrid.Models;
 
@@ -58,6 +60,17 @@ namespace Company.DataGrid.Views
 			}
 		}
 
+
+		/// <summary>
+		/// Returns a <see cref="HeaderCellAutomationPeer"/> object to use in the automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="HeaderCellAutomationPeer"/> object to automate this <see cref="HeaderCell"/> with.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new HeaderCellAutomationPeer(this);
+		}
 
 		/// <summary>
 		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.

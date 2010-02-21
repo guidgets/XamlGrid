@@ -227,6 +227,16 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the header cell that stays at the top of this <see cref="Column"/> in a table view.
+		/// </summary>
+		/// <value>The header cell that stays at the top of this <see cref="Column"/> in a table view.</value>
+		public HeaderCell HeaderCell
+		{
+			get; 
+			set;
+		}
+
 
 		/// <summary>
 		/// Recalculates the automatic size of the <see cref="Cell"/>s in this <see cref="Column"/>.

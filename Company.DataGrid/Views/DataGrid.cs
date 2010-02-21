@@ -334,10 +334,10 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
-		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// Returns a <see cref="DataGridAutomationPeer"/> object to use in the automation infrastructure.
 		/// </summary>
 		/// <returns>
-		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// The <see cref="DataGridAutomationPeer"/> object to automate this <see cref="DataGrid"/> with.
 		/// </returns>
 		protected override AutomationPeer OnCreateAutomationPeer()
 		{

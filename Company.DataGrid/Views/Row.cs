@@ -1,6 +1,8 @@
 ﻿using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Company.DataGrid.Automation;
 using Company.DataGrid.Controllers;
 
 namespace Company.DataGrid.Views
@@ -153,6 +155,17 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
+		/// Returns a <see cref="RowAutomationPeer"/> object to use in the automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="RowAutomationPeer"/> object to automate this <see cref="Row"/> with.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new RowAutomationPeer(this);
+		}
+
+		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
 		/// <returns>
@@ -213,6 +226,7 @@ namespace Company.DataGrid.Views
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.IsEditableProperty);
 		}
+
 
 		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{

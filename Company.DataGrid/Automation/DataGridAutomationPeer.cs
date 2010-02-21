@@ -78,7 +78,6 @@ namespace Company.DataGrid.Automation
 				case PatternInterface.Selection:
 				case PatternInterface.Scroll:
 				case PatternInterface.Grid:
-				case PatternInterface.MultipleView:
 				case PatternInterface.Table:
 					return this;
 			}
@@ -136,14 +135,23 @@ namespace Company.DataGrid.Automation
 			}
 		}
 
+		/// <summary>
+		/// Returns a collection of UI Automation providers that represents all the column headers in a table.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetColumnHeaders()
 		{
-			throw new NotImplementedException();
+			return (from column in this.dataGrid.Columns
+			        select this.ProviderFromPeer(CreatePeerForElement(column.HeaderCell))).ToArray();
 		}
 
+		/// <summary>
+		/// Returns a collection of UI Automation providers that represents all row headers in the table.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetRowHeaders()
 		{
-			throw new NotImplementedException();
+			return new IRawElementProviderSimple[0];
 		}
 
 		/// <summary>

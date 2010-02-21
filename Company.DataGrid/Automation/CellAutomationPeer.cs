@@ -28,7 +28,7 @@ namespace Company.DataGrid.Automation
 		{
 
 		}
-
+		
 
 		private Cell Cell
 		{
@@ -36,6 +36,18 @@ namespace Company.DataGrid.Automation
 			{
 				return (Cell) this.Owner;
 			}
+		}
+
+
+		/// <summary>
+		/// Returns the class name of the item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
+		/// </summary>
+		/// <returns>
+		/// The name of the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. See Remarks.
+		/// </returns>
+		protected override string GetClassNameCore()
+		{
+			return this.Owner.GetType().Name;
 		}
 
 		/// <summary>

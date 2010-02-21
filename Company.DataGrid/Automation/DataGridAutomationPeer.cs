@@ -90,6 +90,18 @@ namespace Company.DataGrid.Automation
 		}
 
 		/// <summary>
+		/// Creates a new instance of the <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/> for a data item in the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> collection of this <see cref="T:System.Windows.Controls.ItemsControl"/>.
+		/// </summary>
+		/// <param name="item">The data item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>.</param>
+		/// <returns>
+		/// An object that exposes the data item to UI automation.
+		/// </returns>
+		protected override ItemAutomationPeer CreateItemAutomationPeer(object item)
+		{
+			return new RowAutomationPeer(item, this);
+		}
+
+		/// <summary>
 		/// Retrieves the UI automation provider for the specified cell.
 		/// </summary>
 		/// <param name="row">The ordinal number of the row that contains the cell.</param>

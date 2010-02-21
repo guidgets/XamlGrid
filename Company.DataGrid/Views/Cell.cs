@@ -2,8 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Company.DataGrid.Automation;
 using Company.DataGrid.Controllers;
 using Company.DataGrid.Models;
 
@@ -231,6 +233,17 @@ namespace Company.DataGrid.Views
 				}
 				this.isFocused = false;
 			}
+		}
+
+		/// <summary>
+		/// Returns a <see cref="CellAutomationPeer"/> object to use in the automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="CellAutomationPeer"/> object to automate this <see cref="Cell"/> with.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new CellAutomationPeer(this);
 		}
 
 		/// <summary>

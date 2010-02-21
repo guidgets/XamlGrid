@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Company.DataGrid.Automation;
 using Company.DataGrid.Controllers;
 using Company.DataGrid.Models;
 
@@ -35,6 +37,17 @@ namespace Company.DataGrid.Views
 			DataGridFacade.Instance.RegisterController(new HeaderRowController(this));
 		}
 
+
+		/// <summary>
+		/// Returns a <see cref="HeaderRowAutomationPeer"/> object to use in the automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="HeaderRowAutomationPeer"/> object to automate this <see cref="HeaderRow"/> with.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new HeaderRowAutomationPeer(this);
+		}
 
 		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.

@@ -37,13 +37,13 @@ namespace Company.DataGrid.Views
 
 
 		/// <summary>
-		/// Identifies the property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty DataSourceProperty =
 			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
+		/// Identifies the dependency property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
 		/// automatically created according to the data source.
 		/// </summary>
 		public static readonly DependencyProperty AutoCreateColumnsProperty =
@@ -51,33 +51,33 @@ namespace Company.DataGrid.Views
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty ColumnWidthProperty =
 			DependencyProperty.Register("ColumnWidth", typeof(ColumnWidth), typeof(DataGrid),
 			                            new PropertyMetadata(new ColumnWidth(200)));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether 
+		/// Identifies the dependency property which gets or sets a value indicating whether 
 		/// the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable.
 		/// </summary>
 		public static readonly DependencyProperty ResizableColumnsProperty =
 			DependencyProperty.Register("ResizableColumns", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty HeaderVisibilityProperty =
 			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the current item of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the current item of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty CurrentItemProperty =
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty SelectionModeProperty =
 			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),

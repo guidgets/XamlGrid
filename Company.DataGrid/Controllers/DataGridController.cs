@@ -191,6 +191,7 @@ namespace Company.DataGrid.Controllers
 							BindingOperations.SetBinding(column, Column.IsEditableProperty,
 														 new Binding("IsEditable") { Source = this.DataGrid });
 						}
+						column.Index = this.DataGrid.Columns.IndexOf(column);
 						column.ActualWidthChanged += this.Column_ActualWidthChanged;
 					}
 					if ((from column in this.DataGrid.Columns

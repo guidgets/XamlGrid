@@ -36,6 +36,25 @@ namespace Company.DataGrid.Controllers
 			DependencyProperty.Register("DataBinding", typeof(Binding), typeof(Column), new PropertyMetadata(OnBindingChanged));
 
 		/// <summary>
+		/// Identifies the dependency property which gets or sets the type of the data in the <see cref="Cell"/>s in a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty DataTypeProperty =
+			DependencyProperty.Register("DataType", typeof(Type), typeof(Column), new PropertyMetadata(typeof(object)));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating 
+		/// whether the <see cref="Cell"/>s in a <see cref="Column"/> are read-only.
+		/// </summary>
+		public static readonly DependencyProperty IsEditableProperty =
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the index at which this <see cref="Column"/> is located in a collection of columns.
+		/// </summary>
+		public static readonly DependencyProperty IndexProperty =
+			DependencyProperty.Register("Index", typeof(int), typeof(Column), new PropertyMetadata(-1));
+
+		/// <summary>
 		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
 		/// </summary>		
 		public static readonly DependencyProperty WidthProperty =
@@ -50,29 +69,16 @@ namespace Company.DataGrid.Controllers
 			                            new PropertyMetadata(200d, OnActualWidthChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether a <see cref="Column"/> is resizable.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Column"/> is resizable.
 		/// </summary>
 		public static readonly DependencyProperty ResizableProperty =
 			DependencyProperty.Register("Resizable", typeof(bool), typeof(Column), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the visibility of a <see cref="Column"/>.
+		/// Identifies the dependency property which gets or sets the visibility of a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty VisibilityProperty =
 			DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Column), new PropertyMetadata(Visibility.Visible));
-
-		/// <summary>
-		/// Identifies the dependency property which gets or sets a value indicating 
-		/// whether the <see cref="Cell"/>s in a <see cref="Column"/> are read-only.
-		/// </summary>
-		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Column), new PropertyMetadata(true));
-
-		/// <summary>
-		/// Identifies the dependency property which gets or sets the type of the data in the <see cref="Cell"/>s in a <see cref="Column"/>.
-		/// </summary>
-		public static readonly DependencyProperty DataTypeProperty =
-			DependencyProperty.Register("DataType", typeof(Type), typeof(Column), new PropertyMetadata(typeof(object)));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the style of the <see cref="Cell"/>s in a <see cref="Column"/>.
@@ -80,70 +86,6 @@ namespace Company.DataGrid.Controllers
 		public static readonly DependencyProperty CellStyleProperty =
 			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
 
-
-		/// <summary>
-		/// Gets or sets the width of the cells in the <see cref="Column"/>.
-		/// </summary>
-		/// <value>The width of the cells in the <see cref="Column"/>.</value>
-		public ColumnWidth Width
-		{
-			get
-			{
-				return (ColumnWidth) this.GetValue(WidthProperty);
-			}
-			set
-			{
-				this.SetValue(WidthProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the absolute width, in pixels, of the <see cref="Column"/>.
-		/// </summary>
-		/// <value>The actual width.</value>
-		public double ActualWidth
-		{
-			get
-			{
-				return (double) this.GetValue(ActualWidthProperty);
-			}
-			set
-			{
-				this.SetValue(ActualWidthProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="Column"/> is resizable.
-		/// </summary>
-		/// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
-		public bool Resizable
-		{
-			get
-			{
-				return (bool) this.GetValue(ResizableProperty);
-			}
-			set
-			{
-				this.SetValue(ResizableProperty, value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the visibility of this <see cref="Column"/>.
-		/// </summary>
-		/// <value>The visibility of this <see cref="Column"/>.</value>
-		public Visibility Visibility
-		{
-			get
-			{
-				return (Visibility) this.GetValue(VisibilityProperty);
-			}
-			set
-			{
-				this.SetValue(VisibilityProperty, value);
-			}
-		}
 
 		/// <summary>
 		/// Gets or sets the header which displays visual information about this <see cref="Column"/>.
@@ -208,6 +150,86 @@ namespace Company.DataGrid.Controllers
 			set
 			{
 				this.SetValue(IsEditableProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the index at which this <see cref="Column"/> is located in a collection of columns.
+		/// </summary>
+		/// <value>The index at which this <see cref="Column"/> is located in a collection of columns.</value>
+		public int Index
+		{
+			get
+			{
+				return (int) this.GetValue(IndexProperty);
+			}
+			set
+			{
+				this.SetValue(IndexProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the width of the cells in the <see cref="Column"/>.
+		/// </summary>
+		/// <value>The width of the cells in the <see cref="Column"/>.</value>
+		public ColumnWidth Width
+		{
+			get
+			{
+				return (ColumnWidth) this.GetValue(WidthProperty);
+			}
+			set
+			{
+				this.SetValue(WidthProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the absolute width, in pixels, of the <see cref="Column"/>.
+		/// </summary>
+		/// <value>The actual width.</value>
+		public double ActualWidth
+		{
+			get
+			{
+				return (double) this.GetValue(ActualWidthProperty);
+			}
+			set
+			{
+				this.SetValue(ActualWidthProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Column"/> is resizable.
+		/// </summary>
+		/// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
+		public bool Resizable
+		{
+			get
+			{
+				return (bool) this.GetValue(ResizableProperty);
+			}
+			set
+			{
+				this.SetValue(ResizableProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the visibility of this <see cref="Column"/>.
+		/// </summary>
+		/// <value>The visibility of this <see cref="Column"/>.</value>
+		public Visibility Visibility
+		{
+			get
+			{
+				return (Visibility) this.GetValue(VisibilityProperty);
+			}
+			set
+			{
+				this.SetValue(VisibilityProperty, value);
 			}
 		}
 

@@ -6,25 +6,30 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Automation
 {
 	/// <summary>
-	/// Exposes the <see cref="DataGrid"/> to UI automation.
+	/// Exposes a <see cref="DataGrid"/> object to UI automation.
 	/// </summary>
 	public class DataGridAutomationPeer : ItemsControlAutomationPeer, ITableProvider, ISelectionProvider, IScrollProvider
 	{
-		private readonly Views.DataGrid dataGrid;
-
-
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DataGridAutomationPeer"/> class.
+		/// Exposes a <see cref="DataGrid"/> object to UI automation.
 		/// </summary>
 		/// <param name="owner">The <see cref="DataGrid"/> to associate with this <see cref="DataGridAutomationPeer"/>.</param>
 		public DataGridAutomationPeer(Views.DataGrid owner) : base(owner)
 		{
-			this.dataGrid = owner;
+
+		}
+
+
+		private Views.DataGrid DataGrid
+		{
+			get
+			{
+				return (Views.DataGrid) this.Owner;
+			}
 		}
 
 
@@ -56,9 +61,9 @@ namespace Company.DataGrid.Automation
 		/// </returns>
 		protected override string GetNameCore()
 		{
-			if (!string.IsNullOrEmpty(this.dataGrid.Name))
+			if (!string.IsNullOrEmpty(this.DataGrid.Name))
 			{
-				return this.dataGrid.Name;
+				return this.DataGrid.Name;
 			}
 			string name = base.GetNameCore();
 			return string.IsNullOrEmpty(name) ? this.GetClassName() : name;
@@ -94,9 +99,9 @@ namespace Company.DataGrid.Automation
 		/// </returns>
 		public IRawElementProviderSimple GetItem(int row, int column)
 		{
-			if (row < this.dataGrid.Items.Count && column < this.dataGrid.Columns.Count)
+			if (row < this.DataGrid.Items.Count && column < this.DataGrid.Columns.Count)
 			{
-				DependencyObject rowElement = this.dataGrid.ItemContainerGenerator.ContainerFromIndex(row);
+				DependencyObject rowElement = this.DataGrid.ItemContainerGenerator.ContainerFromIndex(row);
 				if (rowElement is ItemsControl)
 				{
 					DependencyObject cell = ((ItemsControl) rowElement).ItemContainerGenerator.ContainerFromIndex(column);
@@ -118,7 +123,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				return this.dataGrid.Columns.Count;
+				return this.DataGrid.Columns.Count;
 			}
 		}
 
@@ -131,7 +136,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				return this.dataGrid.Items.Count;
+				return this.DataGrid.Items.Count;
 			}
 		}
 
@@ -141,8 +146,8 @@ namespace Company.DataGrid.Automation
 		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetColumnHeaders()
 		{
-			return (from column in this.dataGrid.Columns
-			        select this.ProviderFromPeer(CreatePeerForElement(column.HeaderCell))).ToArray();
+			return (from column in this.DataGrid.Columns
+			    select this.ProviderFromPeer(CreatePeerForElement(column.HeaderCell))).ToArray();
 		}
 
 		/// <summary>
@@ -173,10 +178,10 @@ namespace Company.DataGrid.Automation
 		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetSelection()
 		{
-			return (from item in this.dataGrid.SelectedItems
-			        let row = this.dataGrid.ItemContainerGenerator.ContainerFromItem(item)
-			        let peer = CreatePeerForElement((UIElement) row)
-			        select this.ProviderFromPeer(peer)).ToArray();
+			return (from item in this.DataGrid.SelectedItems
+			    let row = this.DataGrid.ItemContainerGenerator.ContainerFromItem(item)
+			    let peer = CreatePeerForElement((UIElement) row)
+			    select this.ProviderFromPeer(peer)).ToArray();
 		}
 
 		/// <summary>
@@ -188,8 +193,8 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				return this.dataGrid.SelectionMode == SelectionMode.Multiple ||
-				       this.dataGrid.SelectionMode == SelectionMode.Extended;
+				return this.DataGrid.SelectionMode == SelectionMode.Multiple ||
+				    this.DataGrid.SelectionMode == SelectionMode.Extended;
 			}
 		}
 
@@ -213,7 +218,7 @@ namespace Company.DataGrid.Automation
 		/// <param name="verticalAmount">The vertical increment that is specific to the control. Pass <see cref="F:System.Windows.Automation.ScrollPatternIdentifiers.NoScroll"/> if the control cannot be scrolled in this direction.</param>
 		public void Scroll(ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
-			IScrollInfo scrollInfo = this.dataGrid.GetItemsHost() as IScrollInfo;
+			IScrollInfo scrollInfo = this.DataGrid.GetItemsHost() as IScrollInfo;
 			if (scrollInfo == null)
 			{
 				return;
@@ -256,7 +261,7 @@ namespace Company.DataGrid.Automation
 					scrollInfo.LineDown();
 					break;
 			}
-			ScrollViewer scroll = this.dataGrid.GetScrollHost();
+			ScrollViewer scroll = this.DataGrid.GetScrollHost();
 			if (scroll != null)
 			{
 				scrollInfo.SetVerticalOffset(Math.Min(scroll.ScrollableHeight, scroll.VerticalOffset));
@@ -270,7 +275,7 @@ namespace Company.DataGrid.Automation
 		/// <param name="verticalPercent">The vertical position as a percentage of the content area's total range. Pass <see cref="F:System.Windows.Automation.ScrollPatternIdentifiers.NoScroll"/> if the control cannot be scrolled in this direction.</param>
 		public void SetScrollPercent(double horizontalPercent, double verticalPercent)
 		{
-			ScrollViewer scroll = this.dataGrid.GetScrollHost();
+			ScrollViewer scroll = this.DataGrid.GetScrollHost();
 			if (scroll == null)
 			{
 				return;
@@ -316,7 +321,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				Panel itemsHost = this.dataGrid.GetItemsHost();
+				Panel itemsHost = this.DataGrid.GetItemsHost();
 				if (itemsHost is IScrollInfo)
 				{
 					return ((IScrollInfo) itemsHost).CanHorizontallyScroll;
@@ -334,7 +339,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				ScrollViewer scroll = this.DataGrid.GetScrollHost();
 				if (scroll == null || scroll.ExtentWidth <= scroll.ViewportWidth)
 				{
 					return -1;
@@ -352,7 +357,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				ScrollViewer scroll = this.DataGrid.GetScrollHost();
 				if (scroll != null)
 				{
 					return Math.Min(100, 100 * scroll.ViewportWidth / scroll.ExtentWidth);
@@ -370,7 +375,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				Panel itemsHost = this.dataGrid.GetItemsHost();
+				Panel itemsHost = this.DataGrid.GetItemsHost();
 				if (itemsHost is IScrollInfo)
 				{
 					return ((IScrollInfo) itemsHost).CanVerticallyScroll;
@@ -388,7 +393,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				ScrollViewer scroll = this.DataGrid.GetScrollHost();
 				if (scroll == null || scroll.ExtentHeight <= scroll.ViewportHeight)
 				{
 					return -1;
@@ -406,7 +411,7 @@ namespace Company.DataGrid.Automation
 		{
 			get
 			{
-				ScrollViewer scroll = this.dataGrid.GetScrollHost();
+				ScrollViewer scroll = this.DataGrid.GetScrollHost();
 				if (scroll != null)
 				{
 					return Math.Min(100, 100 * scroll.ViewportHeight / scroll.ExtentHeight);

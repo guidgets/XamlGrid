@@ -11,8 +11,11 @@ namespace Company.DataGrid.Automation
 {
 	public class RowAutomationPeer : ItemAutomationPeer, ITableProvider, ITableItemProvider, ISelectionProvider, ISelectionItemProvider, IScrollItemProvider, IMultipleViewProvider
 	{
-		public RowAutomationPeer(ItemsControl owner)
-			: base(owner)
+		public RowAutomationPeer(UIElement item) : base(item)
+		{
+		}
+
+		public RowAutomationPeer(object item, ItemsControlAutomationPeer itemsControlAutomationPeer) : base(item, itemsControlAutomationPeer)
 		{
 		}
 

@@ -11,7 +11,7 @@ namespace Company.DataGrid.Views
 	public abstract class CellBase : ContentControl
 	{
 		/// <summary>
-		/// Identifies the property which gets or sets the column to which the <see cref="CellBase"/> belongs.
+		/// Identifies the dependency property which gets or sets the column to which the <see cref="CellBase"/> belongs.
 		/// </summary>
 		public static readonly DependencyProperty ColumnProperty =
 			DependencyProperty.Register("Column", typeof(Column), typeof(CellBase), new PropertyMetadata(null));

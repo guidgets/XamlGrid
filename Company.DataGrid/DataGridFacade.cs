@@ -14,7 +14,7 @@ namespace Company.DataGrid
 		}
 
 		/// <summary>
-		/// Facade Singleton Factory method.  This method is thread safe.
+		/// Facade Singleton Factory method. This method is thread safe.
 		/// </summary>
 		public new static DataGridFacade Instance
 		{

@@ -26,13 +26,13 @@ namespace Company.DataGrid.Views
 		public event DependencyPropertyChangedEventHandler IsSelectedChanged;
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
 		/// </summary>
 		public static readonly DependencyProperty IsFocusedProperty =
 			DependencyProperty.Register("IsCurrent", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsFocusedChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
 		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsSelectedChanged));

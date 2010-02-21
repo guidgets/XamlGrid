@@ -15,32 +15,32 @@ namespace Company.DataGrid.Views
 	public class Cell : CellBase
 	{
 		/// <summary>
-		/// Identifies the property which gets or sets the value contained in a <see cref="Cell"/>.
+		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
 			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
 										new PropertyMetadata(OnValueChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the type of the data this <see cref="Cell"/> represents..
+		/// Identifies the dependency property which gets or sets the type of the data this <see cref="Cell"/> represents..
 		/// </summary>
 		public static readonly DependencyProperty DataTypeProperty =
 			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeof(object)));
 
 		/// <summary>
-		/// Identifies the property which gets or sets value contained in the editor of the <see cref="Cell"/>.
+		/// Identifies the dependency property which gets or sets value contained in the editor of the <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty EditorValueProperty =
 			DependencyProperty.Register("EditorValue", typeof(object), typeof(Cell), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable
+		/// Identifies the dependency property which gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));		
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether this <see cref="Cell"/> is in edit mode.
+		/// Identifies the dependency property which gets or sets a value indicating whether this <see cref="Cell"/> is in edit mode.
 		/// </summary>
 		public static readonly DependencyProperty IsInEditModeProperty =
 			DependencyProperty.Register("IsInEditMode", typeof(bool), typeof(Cell),

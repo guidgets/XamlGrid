@@ -159,7 +159,7 @@ namespace Company.DataGrid.Automation
 		public IRawElementProviderSimple[] GetColumnHeaders()
 		{
 			return (from column in this.DataGrid.Columns
-			    select this.ProviderFromPeer(CreatePeerForElement(column.HeaderCell))).ToArray();
+			        select this.ProviderFromPeer(CreatePeerForElement(column.HeaderCell))).ToArray();
 		}
 
 		/// <summary>
@@ -191,9 +191,9 @@ namespace Company.DataGrid.Automation
 		public IRawElementProviderSimple[] GetSelection()
 		{
 			return (from item in this.DataGrid.SelectedItems
-			    let row = this.DataGrid.ItemContainerGenerator.ContainerFromItem(item)
-			    let peer = CreatePeerForElement((UIElement) row)
-			    select this.ProviderFromPeer(peer)).ToArray();
+			        let row = this.DataGrid.ItemContainerGenerator.ContainerFromItem(item)
+			        let peer = CreatePeerForElement((UIElement) row)
+			        select this.ProviderFromPeer(peer)).ToArray();
 		}
 
 		/// <summary>
@@ -206,7 +206,7 @@ namespace Company.DataGrid.Automation
 			get
 			{
 				return this.DataGrid.SelectionMode == SelectionMode.Multiple ||
-				    this.DataGrid.SelectionMode == SelectionMode.Extended;
+				       this.DataGrid.SelectionMode == SelectionMode.Extended;
 			}
 		}
 

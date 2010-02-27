@@ -1,177 +1,282 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Company.DataGrid.Core;
+using Company.DataGrid.Views;
 
 namespace Company.DataGrid.Automation
 {
-	public class RowAutomationPeer : ItemAutomationPeer, ITableProvider, ITableItemProvider, ISelectionProvider, ISelectionItemProvider, IScrollItemProvider, IMultipleViewProvider
+	/// <summary>
+	/// Exposes a <see cref="Views.Row"/> object to UI automation.
+	/// </summary>
+	public class RowAutomationPeer : ItemAutomationPeer, ITableProvider, ITableItemProvider, ISelectionItemProvider, IScrollItemProvider
 	{
-		public RowAutomationPeer(UIElement item) : base(item)
+		/// <summary>
+		/// Exposes a <see cref="Views.Row"/> object to UI automation.
+		/// </summary>
+		/// <param name="item">The <see cref="DataGrid"/> to associate with this <see cref="RowAutomationPeer"/>.</param>
+		public RowAutomationPeer(Row item) : base(item)
 		{
+
 		}
 
+		/// <summary>
+		/// Exposes a <see cref="Views.Row"/> object to UI automation.
+		/// </summary>
+		/// <param name="item">The data item in the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> collection that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>.</param>
+		/// <param name="itemsControlAutomationPeer">The <see cref="T:System.Windows.Automation.Peers.ItemsControlAutomationPeer"/> that is associated with the <see cref="T:System.Windows.Controls.ItemsControl"/> that holds the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> collection.</param>
 		public RowAutomationPeer(object item, ItemsControlAutomationPeer itemsControlAutomationPeer) : base(item, itemsControlAutomationPeer)
 		{
+
 		}
 
+
+		private Row RowElement
+		{
+			get
+			{
+				return (Row) this.Owner;
+			}
+		}
+
+
+		/// <summary>
+		/// Gets the ordinal number of the column that contains the cell or item.
+		/// </summary>
+		/// <value></value>
+		/// <returns>A zero-based ordinal number that identifies the column that contains the cell or item.</returns>
 		public int Column
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return 0;
+			}
 		}
 
+		/// <summary>
+		/// Gets the number of columns that are spanned by a cell or item.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The number of columns. </returns>
 		public int ColumnSpan
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return 1;
+			}
 		}
 
+		/// <summary>
+		/// Gets a UI automation provider that implements <see cref="T:System.Windows.Automation.Provider.IGridProvider"/> and that represents the container of the cell or item.
+		/// </summary>
+		/// <value></value>
+		/// <returns>A UI automation provider that implements the <see cref="F:System.Windows.Automation.Peers.PatternInterface.Grid"/> control pattern and that represents the cell or item container. </returns>
 		public IRawElementProviderSimple ContainingGrid
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return this.ProviderFromPeer(CreatePeerForElement(this.RowElement.DataGrid));
+			}
 		}
 
+		/// <summary>
+		/// Gets the ordinal number of the row that contains the cell or item.
+		/// </summary>
+		/// <value></value>
+		/// <returns>A zero-based ordinal number that identifies the row that contains the cell or item. </returns>
 		public int Row
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return this.RowElement.DataGrid.Items.IndexOf(this.RowElement.DataContext);
+			}
 		}
 
+		/// <summary>
+		/// Gets the number of rows spanned by a cell or item.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The number of rows. </returns>
 		public int RowSpan
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return 1;
+			}
 		}
 
+		/// <summary>
+		/// Retrieves an array of UI automation providers representing all the column headers associated with a table item or cell.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetColumnHeaderItems()
 		{
-			throw new NotImplementedException();
+			return new IRawElementProviderSimple[0];
 		}
 
+		/// <summary>
+		/// Retrieves an array of UI automation providers representing all the row headers associated with a table item or cell.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetRowHeaderItems()
 		{
-			throw new NotImplementedException();
+			return new IRawElementProviderSimple[0];
 		}
 
+		/// <summary>
+		/// Adds the current element to the collection of selected items.
+		/// </summary>
 		public void AddToSelection()
 		{
-			throw new NotImplementedException();
+			this.RowElement.IsSelected = true;
 		}
 
+		/// <summary>
+		/// Removes the current element from the collection of selected items.
+		/// </summary>
 		public void RemoveFromSelection()
 		{
-			throw new NotImplementedException();
+			this.RowElement.IsSelected = false;
 		}
 
+		/// <summary>
+		/// Clears any existing selection and then selects the current element.
+		/// </summary>
 		public void Select()
 		{
-			throw new NotImplementedException();
+			IController rowController = DataGridFacade.Instance.RetrieveController(this.RowElement.GetHashCode().ToString());
+			if (rowController == null)
+			{
+				return;
+			}
+			((INotifier) rowController).SendNotification(Notifications.SELECTING_ITEMS, this.RowElement.DataContext, NotificationTypes.CLEAR_SELECTION);
 		}
 
+		/// <summary>
+		/// Gets a value that indicates whether an item is selected.
+		/// </summary>
+		/// <value></value>
+		/// <returns><c>true</c> if the element is selected; otherwise, <c>false</c>.</returns>
 		public bool IsSelected
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return this.RowElement.IsSelected;
+			}
 		}
 
+		/// <summary>
+		/// Gets the UI automation provider that implements <see cref="T:System.Windows.Automation.Provider.ISelectionProvider"/> and acts as the container for the calling object.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The UI automation provider.</returns>
 		public IRawElementProviderSimple SelectionContainer
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return this.ProviderFromPeer(CreatePeerForElement(this.RowElement.DataGrid));
+			}
 		}
 
+		/// <summary>
+		/// Scrolls the content area of a container object in order to display the control within the visible region (view-port) of the container.
+		/// </summary>
 		public void ScrollIntoView()
 		{
 			throw new NotImplementedException();
 		}
 
-		public int[] GetSupportedViews()
-		{
-			throw new NotImplementedException();
-		}
-
-		public string GetViewName(int viewId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void SetCurrentView(int viewId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int CurrentView
-		{
-			get { throw new NotImplementedException(); }
-		}
-
+		/// <summary>
+		/// Retrieves the UI automation provider for the specified cell.
+		/// </summary>
+		/// <param name="row">The ordinal number of the row that contains the cell.</param>
+		/// <param name="column">The ordinal number of the column that contains the cell.</param>
+		/// <returns>
+		/// The UI automation provider for the specified cell.
+		/// </returns>
 		public IRawElementProviderSimple GetItem(int row, int column)
 		{
-			throw new NotImplementedException();
+			if (row == 0 && column < this.RowElement.Items.Count)
+			{
+				return this.ProviderFromPeer((from keyValuePair in itemPeerStorage 
+											  where keyValuePair.Key == this.RowElement.Items[column] 
+											  select keyValuePair.Value).First());
+			}
+			return null;
 		}
 
+		/// <summary>
+		/// Gets the total number of columns in a grid.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The total number of columns in a grid.</returns>
 		public int ColumnCount
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return this.RowElement.Items.Count;
+			}
 		}
 
+		/// <summary>
+		/// Gets the total number of rows in a grid.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The total number of rows in a grid.</returns>
 		public int RowCount
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return 1;
+			}
 		}
 
+		/// <summary>
+		/// Returns a collection of UI Automation providers that represents all the column headers in a table.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetColumnHeaders()
 		{
-			throw new NotImplementedException();
+			return new IRawElementProviderSimple[0];
 		}
 
+		/// <summary>
+		/// Returns a collection of UI Automation providers that represents all row headers in the table.
+		/// </summary>
+		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetRowHeaders()
 		{
-			throw new NotImplementedException();
+			return new IRawElementProviderSimple[0];
 		}
 
+		/// <summary>
+		/// Gets the primary direction of traversal for the table.
+		/// </summary>
+		/// <value></value>
+		/// <returns>The primary direction of traversal, as a value of the enumeration. </returns>
 		public RowOrColumnMajor RowOrColumnMajor
 		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public IRawElementProviderSimple[] GetSelection()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool CanSelectMultiple
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public bool IsSelectionRequired
-		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return RowOrColumnMajor.ColumnMajor;
+			}
 		}
 
 
 		private IList<KeyValuePair<object, ItemAutomationPeer>> itemPeerStorage;
 
-		private static ItemAutomationPeer CreateItemAutomationPeer(object item)
-		{
-			ItemAutomationPeer peer = null;
-			if (item is UIElement)
-			{
-				peer = CreatePeerForElement((UIElement) item) as ItemAutomationPeer;
-			}
-			return peer;
-		}
-
-		private ItemAutomationPeer CreatePeerForIndex(object item, int index)
+		private ItemAutomationPeer CreatePeerForIndex(int index)
 		{
 			ItemsControl owner = (ItemsControl) this.Owner;
 			UIElement element = owner.ItemContainerGenerator.ContainerFromIndex(index) as UIElement;
-			ItemAutomationPeer peer;
-			if (element == null)
-			{
-				peer = CreateItemAutomationPeer(item);
-			}
-			else
+			ItemAutomationPeer peer = null;
+			if (element != null)
 			{
 				peer = CreatePeerForElement(element) as ItemAutomationPeer;
 			}
@@ -201,7 +306,7 @@ namespace Company.DataGrid.Automation
 					if (this.itemPeerStorage.Count > i)
 					{
 						KeyValuePair<object, ItemAutomationPeer> pair = this.itemPeerStorage[i];
-						ItemAutomationPeer peer = this.CreatePeerForIndex(item, i);
+						ItemAutomationPeer peer = this.CreatePeerForIndex(i);
 						if (peer != pair.Value)
 						{
 							if (((peer != null) && (pair.Value != null)) && (peer.Owner == pair.Value.Owner))
@@ -224,7 +329,7 @@ namespace Company.DataGrid.Automation
 					}
 					else
 					{
-						ItemAutomationPeer peer2 = this.CreatePeerForIndex(item, i);
+						ItemAutomationPeer peer2 = this.CreatePeerForIndex(i);
 						KeyValuePair<object, ItemAutomationPeer> pair2 =
 							new KeyValuePair<object, ItemAutomationPeer>(item, peer2);
 						this.itemPeerStorage.Add(pair2);
@@ -263,10 +368,10 @@ namespace Company.DataGrid.Automation
 				}
 				if (viewer != null)
 				{
-					AutomationPeer orCreateAutomationPeer = CreatePeerForElement(viewer);
-					if ((orCreateAutomationPeer != null) && (orCreateAutomationPeer is IScrollProvider))
+					AutomationPeer automationPeer = CreatePeerForElement(viewer);
+					if ((automationPeer != null) && (automationPeer is IScrollProvider))
 					{
-						return (IScrollProvider) orCreateAutomationPeer;
+						return (IScrollProvider) automationPeer;
 					}
 				}
 			}

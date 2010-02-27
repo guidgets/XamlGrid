@@ -119,7 +119,7 @@ namespace Company.DataGrid.Automation
 		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetColumnHeaderItems()
 		{
-			return new IRawElementProviderSimple[0];
+			return new[] { this.ProviderFromPeer(this) };
 		}
 
 		/// <summary>

@@ -79,7 +79,7 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		public DataGrid DataGrid
 		{
-			get; 
+			get;
 			private set;
 		}
 
@@ -175,29 +175,29 @@ namespace Company.DataGrid.Views
 			return item is Cell;
 		}
 
-        /// <summary>
-        /// Prepares the specified element to display the specified item.
-        /// </summary>
-        /// <param name="element">The element used to display the specified item.</param>
-        /// <param name="item">The item to display.</param>
+		/// <summary>
+		/// Prepares the specified element to display the specified item.
+		/// </summary>
+		/// <param name="element">The element used to display the specified item.</param>
+		/// <param name="item">The item to display.</param>
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-        {
+		{
 			base.PrepareContainerForItemOverride(element, item);
-        	Cell cell = (Cell) element;
-        	DataTemplate contentTemplate = cell.ContentTemplate;
-			base.PrepareContainerForItemOverride(element, item);
-        	if (string.IsNullOrEmpty(this.DisplayMemberPath))
-        	{
-        		cell.ContentTemplate = contentTemplate;
-        	}
-        	Column column = (Column) item;
+			Cell cell = (Cell) element;
+			Column column = (Column) item;
 			cell.Column = column;
-        	cell.DataType = column.DataType;
-			cell.Style = column.CellStyle;
-        	cell.SetBinding(Cell.IsEditableProperty, isEditableBinding);
-        	cell.SetBinding(DataContextProperty, this.dataBinding);
-        	cell.SetBinding(Cell.ValueProperty, column.Binding);
-        }
+			cell.DataType = column.DataType;
+			if (cell.ReadLocalValue(StyleProperty) == DependencyProperty.UnsetValue)
+			{
+				cell.Style = column.CellStyle;
+			}
+			if (cell.ReadLocalValue(Cell.IsEditableProperty) == DependencyProperty.UnsetValue)
+			{
+				cell.SetBinding(Cell.IsEditableProperty, isEditableBinding);
+			}
+			cell.SetBinding(DataContextProperty, this.dataBinding);
+			cell.SetBinding(Cell.ValueProperty, column.Binding);
+		}
 
 		/// <summary>
 		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.

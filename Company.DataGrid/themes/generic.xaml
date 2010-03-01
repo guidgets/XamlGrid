@@ -244,7 +244,7 @@
 
 	<Style TargetType="company:Cell">
 		<Setter Property="Background" Value="Transparent" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="controllers:StyleBinder.Bindings">
             <Setter.Value>
                 <controllers:StyleBindingCollection>
@@ -271,7 +271,8 @@
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
 						<ContentPresenter Name="Content" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 						<VisualStateManager.VisualStateGroups>
 							<VisualStateGroup>
 								<VisualState Name="View" />

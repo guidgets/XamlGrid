@@ -50,13 +50,13 @@ namespace Company.DataGrid.Controllers
 			                            new PropertyMetadata(200d, OnActualWidthChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether a <see cref="Column"/> is resizable.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Column"/> is resizable.
 		/// </summary>
 		public static readonly DependencyProperty ResizableProperty =
 			DependencyProperty.Register("Resizable", typeof(bool), typeof(Column), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the visibility of a <see cref="Column"/>.
+		/// Identifies the dependency property which gets or sets the visibility of a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty VisibilityProperty =
 			DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Column), new PropertyMetadata(Visibility.Visible));
@@ -73,6 +73,12 @@ namespace Company.DataGrid.Controllers
 		/// </summary>
 		public static readonly DependencyProperty DataTypeProperty =
 			DependencyProperty.Register("DataType", typeof(Type), typeof(Column), new PropertyMetadata(typeof(object)));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Column"/> is selected.
+		/// </summary>
+		public static readonly DependencyProperty IsSelectedProperty =
+			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Column), new PropertyMetadata(false));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the style of the <see cref="Cell"/>s in a <see cref="Column"/>.
@@ -190,6 +196,24 @@ namespace Company.DataGrid.Controllers
 			set
 			{
 				this.SetValue(DataTypeProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Column"/> is selected.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this <see cref="Column"/> is selected; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsSelected
+		{
+			get
+			{
+				return (bool) this.GetValue(IsSelectedProperty);
+			}
+			set
+			{
+				this.SetValue(IsSelectedProperty, value);
 			}
 		}
 

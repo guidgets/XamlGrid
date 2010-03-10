@@ -81,6 +81,7 @@
     <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
     <Compile Include="Controllers\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
+    <Compile Include="Controllers\CellController.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
     <Compile Include="Views\ControlExtensions.cs" />

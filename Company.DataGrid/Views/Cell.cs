@@ -15,36 +15,42 @@ namespace Company.DataGrid.Views
 	public class Cell : CellBase
 	{
 		/// <summary>
-		/// Identifies the property which gets or sets the value contained in a <see cref="Cell"/>.
+		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
 			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
 										new PropertyMetadata(OnValueChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the type of the data this <see cref="Cell"/> represents..
+		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
 		/// </summary>
 		public static readonly DependencyProperty DataTypeProperty =
 			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeof(object)));
 
 		/// <summary>
-		/// Identifies the property which gets or sets value contained in the editor of the <see cref="Cell"/>.
+		/// Identifies the dependency property which gets or sets value contained in the editor of a <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty EditorValueProperty =
 			DependencyProperty.Register("EditorValue", typeof(object), typeof(Cell), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable
+		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));		
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether this <see cref="Cell"/> is in edit mode.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is in edit mode.
 		/// </summary>
 		public static readonly DependencyProperty IsInEditModeProperty =
 			DependencyProperty.Register("IsInEditMode", typeof(bool), typeof(Cell),
 			                            new PropertyMetadata(OnIsInEditModeChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is selected.
+		/// </summary>
+		public static readonly DependencyProperty IsSelectedProperty =
+			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
 
 
 		private bool isFocused;
@@ -128,6 +134,24 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Cell"/> is selected.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this <see cref="Cell"/> is selected; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsSelected
+		{
+			get
+			{
+				return (bool) this.GetValue(IsSelectedProperty);
+			}
+			set
+			{
+				this.SetValue(IsSelectedProperty, value);
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets the type of the data this <see cref="Cell"/> represents.
 		/// </summary>
 		/// <value>The type of the data this <see cref="Cell"/> represent.</value>
@@ -151,6 +175,7 @@ namespace Company.DataGrid.Views
 		{
 			base.OnApplyTemplate();
 			this.GoToSpecialView();
+			this.GoToSelected();
 		}
 
 		/// <summary>
@@ -244,22 +269,6 @@ namespace Company.DataGrid.Views
 			return this.Column.Width.SizeMode == SizeMode.ToData || base.IsAutoSized();
 		}
 
-		/// <summary>
-		/// Sets the <see cref="Cell"/> in edit mode.
-		/// </summary>
-		protected virtual bool GoToEditState()
-		{
-			return VisualStateManager.GoToState(this, "CustomEditor", false) || this.GoToEditorForType();
-		}
-
-		/// <summary>
-		/// Exits the edit mode of the <see cref="Cell"/>.
-		/// </summary>
-		protected virtual bool GoToViewState()
-		{
-			return this.GoToSpecialView() || VisualStateManager.GoToState(this, "View", false);
-		}
-
 		private static void OnValueChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			Cell cell = (Cell) dependencyObject;
@@ -286,12 +295,44 @@ namespace Company.DataGrid.Views
 			}
 			if (editMode)
 			{
-				cell.GoToEditState();
+				cell.GoToEdit();
 			}
 			else
 			{
-				cell.GoToViewState();
+				cell.GoToView();
 			}
+		}
+
+		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).GoToSelected();
+		}
+
+		/// <summary>
+		/// Sets the <see cref="Cell"/> in edit mode.
+		/// </summary>
+		private void GoToEdit()
+		{
+			if (!VisualStateManager.GoToState(this, "CustomEditor", false))
+			{
+				this.GoToEditorForType();
+			}
+		}
+
+		/// <summary>
+		/// Exits the edit mode of the <see cref="Cell"/>.
+		/// </summary>
+		private void GoToView()
+		{
+			if (!this.GoToSpecialView())
+			{
+				VisualStateManager.GoToState(this, "View", false);
+			}
+		}
+
+		private void GoToSelected()
+		{
+			VisualStateManager.GoToState(this, this.IsSelected ? "Selected" : "Deselected", false);
 		}
 
 		private bool GoToSpecialView()
@@ -331,21 +372,24 @@ namespace Company.DataGrid.Views
 			return false;
 		}
 
-		private bool GoToEditorForType()
+		private void GoToEditorForType()
 		{
 			if (this.DataType == typeof(string))
 			{
-				return VisualStateManager.GoToState(this, "EditText", false);
+				VisualStateManager.GoToState(this, "EditText", false);
+				return;
 			}
 			if (this.DataType.IsNumeric())
 			{
-				return VisualStateManager.GoToState(this, "EditNumber", false);
+				VisualStateManager.GoToState(this, "EditNumber", false);
+				return;
 			}
 			if (this.DataType == typeof(DateTime) || this.DataType == typeof(DateTime?))
 			{
-				return VisualStateManager.GoToState(this, "EditDate", false);
+				VisualStateManager.GoToState(this, "EditDate", false);
+				return;
 			}
-			return false;
+			return;
 		}
 
 		private void CommitEdit()

@@ -3,7 +3,7 @@
 	public static class Notifications
 	{
 		public const string ITEM_KEY_DOWN = "itemsKeyDown";
-		public const string GENERATED_ITEMS_CHANGED = "generatedItemsChanged";
+		public const string ITEM_CLICKED = "itemClicked";
 		public const string ITEMS_SOURCE_CHANGED = "itemsSourceChanged";
 		public const string ITEMS_CHANGED = "itemsChanged";
 		public const string COLUMNS_CHANGED = "columnsChanged";

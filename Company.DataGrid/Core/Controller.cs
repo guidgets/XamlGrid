@@ -65,16 +65,16 @@ namespace Company.DataGrid.Core
 		#region Public Methods
 
 		/// <summary>
-		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
-		/// <returns>The list of <c>INotification</c> names </returns>
+		/// <returns>The list of <c>INotification</c> names.</returns>
 		public virtual IList<string> ListNotificationInterests()
 		{
 			return new List<string>();
 		}
 
 		/// <summary>
-		/// Handle <c>INotification</c>s
+		/// Handle <c>INotification</c>s.
 		/// </summary>
 		/// <param name="notification">The <c>INotification</c> instance to handle</param>
 		/// <remarks>

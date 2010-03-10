@@ -35,13 +35,13 @@ namespace Company.DataGrid.Views
 
 
 		/// <summary>
-		/// Identifies the property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty DataSourceProperty =
 			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
+		/// Identifies the dependency property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
 		/// automatically created according to the data source.
 		/// </summary>
 		public static readonly DependencyProperty AutoCreateColumnsProperty =
@@ -49,33 +49,33 @@ namespace Company.DataGrid.Views
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty ColumnWidthProperty =
 			DependencyProperty.Register("ColumnWidth", typeof(ColumnWidth), typeof(DataGrid),
 			                            new PropertyMetadata(new ColumnWidth(200)));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether 
+		/// Identifies the dependency property which gets or sets a value indicating whether 
 		/// the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable.
 		/// </summary>
 		public static readonly DependencyProperty ResizableColumnsProperty =
 			DependencyProperty.Register("ResizableColumns", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty HeaderVisibilityProperty =
 			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the current item of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the current item of the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty CurrentItemProperty =
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty SelectionModeProperty =
 			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),
@@ -300,7 +300,7 @@ namespace Company.DataGrid.Views
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			return new Row(this);
+			return new Row();
 		}
 
 		/// <summary>
@@ -323,11 +323,23 @@ namespace Company.DataGrid.Views
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
 			base.PrepareContainerForItemOverride(element, item);
-			ItemsControl itemsControl = (ItemsControl) element;
-			if (itemsControl.ItemsSource == null)
+			Row row = (Row) element;
+			if (row.ItemsSource == null)
 			{
-				itemsControl.ItemsSource = this.Columns;
+				row.ItemsSource = this.Columns;
 			}
+			DataGridFacade.Instance.RegisterController(new RowController(row));
+		}
+
+		/// <summary>
+		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+		/// </summary>
+		/// <param name="element">The container element.</param>
+		/// <param name="item">The item.</param>
+		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
+		{
+			base.ClearContainerForItemOverride(element, item);
+			DataGridFacade.Instance.RemoveController(element.GetHashCode().ToString());
 		}
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)

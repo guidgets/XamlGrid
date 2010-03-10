@@ -5,7 +5,7 @@ using System.Windows.Media.Animation;
 namespace Company.DataGrid.Views
 {
 	/// <summary>
-	/// Represents a VisualStateManager that is able to directly affect the control in which template it is used.
+	/// Represents a <see cref="VisualStateManager"/> that is able to directly affect the control in which template it is used.
 	/// To employ this functionality, the Storyboard.TargetName property of an animation needs simply to be skipped or set to the empty string.
 	/// </summary>
 	public class CustomVSM : VisualStateManager

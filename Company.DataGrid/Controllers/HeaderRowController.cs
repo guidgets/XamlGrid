@@ -8,7 +8,7 @@ namespace Company.DataGrid.Controllers
 	{
 		public new const string NAME = "HeaderRowController";
 
-		public HeaderRowController(object viewComponent) : base(NAME, viewComponent)
+		public HeaderRowController(object headerRow) : base(NAME, headerRow)
 		{
 			this.HeaderRow.Loaded += this.HeaderRow_Loaded;
 		}

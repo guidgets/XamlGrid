@@ -24,13 +24,13 @@ namespace Company.DataGrid.Views
 		public event DependencyPropertyChangedEventHandler IsSelectedChanged;
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
 		/// </summary>
 		public static readonly DependencyProperty IsFocusedProperty =
 			DependencyProperty.Register("IsCurrent", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsFocusedChanged));
 
 		/// <summary>
-		/// Identifies the property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
 		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsSelectedChanged));
@@ -61,27 +61,8 @@ namespace Company.DataGrid.Views
 			this.dataBinding = new Binding { Source = this.DataContext, Mode = BindingMode.OneTime };
 
 			this.SetBinding(dataContextListenerProperty, dataContextBinding);
-
-			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}
 
-		/// <summary>
-		/// Represents a UI element that displays a data object.
-		/// </summary>
-		/// <param name="dataGrid">The data grid which contains the <see cref="Row"/>.</param>
-		public Row(DataGrid dataGrid) : this()
-		{
-			this.DataGrid = dataGrid;
-		}
-
-		/// <summary>
-		/// Gets the data grid in which the <see cref="Row"/> is contained.
-		/// </summary>
-		public DataGrid DataGrid
-		{
-			get;
-			private set;
-		}
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="Row"/> is the current one.
@@ -197,6 +178,8 @@ namespace Company.DataGrid.Views
 			}
 			cell.SetBinding(DataContextProperty, this.dataBinding);
 			cell.SetBinding(Cell.ValueProperty, column.Binding);
+
+			DataGridFacade.Instance.RegisterController(new CellController(cell));
 		}
 
 		/// <summary>
@@ -212,6 +195,8 @@ namespace Company.DataGrid.Views
 			cell.DataContext = null;
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.IsEditableProperty);
+
+			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
 		}
 
 		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -18,7 +18,7 @@ namespace Company.DataGrid.Views
 
 
 		/// <summary>
-		/// Identifies the property which gets or sets the direction, if any, in which the data 
+		/// Identifies the dependency property which gets or sets the direction, if any, in which the data 
 		/// under the <see cref="Column"/>, to which the <see cref="HeaderCell"/> belong, is sorted.
 		/// </summary>
 		public static readonly DependencyProperty SortDirectionProperty =

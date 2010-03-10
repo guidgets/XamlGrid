@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -34,7 +33,7 @@ namespace Company.DataGrid.Controllers
 
 
 		/// <summary>
-		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="Controller"/> is responsible.
+		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="DataGridController"/> is responsible.
 		/// </summary>
 		public Views.DataGrid DataGrid
 		{
@@ -66,7 +65,6 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
-			this.DataGrid.ItemContainerGenerator.ItemsChanged += this.ItemContainerGenerator_ItemsChanged;
 		}
 
 		private void Scroll_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -90,11 +88,10 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
-			this.DataGrid.ItemContainerGenerator.ItemsChanged -= this.ItemContainerGenerator_ItemsChanged;
 		}
 
 		/// <summary>
-		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names</returns>
 		public override IList<string> ListNotificationInterests()
@@ -104,7 +101,8 @@ namespace Company.DataGrid.Controllers
 			       		Notifications.DATA_WRAPPED,
 			       		Notifications.CURRENT_ITEM_CHANGED,
 			       		Notifications.SELECTION_MODE_CHANGED,
-						Notifications.ITEM_KEY_DOWN
+						Notifications.ITEM_KEY_DOWN,
+						Notifications.ITEM_CLICKED
 			       	};
 		}
 
@@ -133,6 +131,10 @@ namespace Company.DataGrid.Controllers
 					KeyEventArgs e = (KeyEventArgs) notification.Body;
 					this.HandleCurrentItem(e.Key);
 					this.HandleSelection(e.Key);
+					break;
+				case Notifications.ITEM_CLICKED:
+					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, notification.Body);
+					this.SelectItems(true);
 					break;
 			}
 		}
@@ -191,6 +193,7 @@ namespace Company.DataGrid.Controllers
 							BindingOperations.SetBinding(column, Column.IsEditableProperty,
 														 new Binding("IsEditable") { Source = this.DataGrid });
 						}
+						column.IsSelected = true;
 						column.ActualWidthChanged += this.Column_ActualWidthChanged;
 					}
 					if ((from column in this.DataGrid.Columns
@@ -242,11 +245,6 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
-		{
-			this.SendNotification(Notifications.GENERATED_ITEMS_CHANGED, e);
-		}
-
 		private void HandleCurrentItem(Key key)
 		{
 			switch (key)
@@ -286,30 +284,7 @@ namespace Company.DataGrid.Controllers
 				case Key.PageDown:
 				case Key.Home:
 				case Key.End:
-					switch (this.DataGrid.SelectionMode)
-					{
-						case SelectionMode.Single:
-							if (!control)
-							{
-								this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem);
-							}
-							break;
-						case SelectionMode.Extended:
-							if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.None)
-							{
-								if (!control)
-								{
-									this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
-														  NotificationTypes.CLEAR_SELECTION);
-								}
-							}
-							else
-							{
-								this.SendNotification(Notifications.SELECT_RANGE,
-													  this.DataGrid.CurrentItem, control ? null : NotificationTypes.CLEAR_SELECTION);
-							}
-							break;
-					}
+					this.SelectItems(false);
 					break;
 				case Key.Space:
 					if (control)
@@ -323,6 +298,48 @@ namespace Company.DataGrid.Controllers
 					if (control && this.DataGrid.SelectionMode == SelectionMode.Extended)
 					{
 						this.SendNotification(Notifications.SELECT_ALL);
+					}
+					break;
+			}
+		}
+
+		private void SelectItems(bool clickedItem)
+		{
+			bool selected = this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem);
+			string notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
+			switch (this.DataGrid.SelectionMode)
+			{
+				case SelectionMode.Single:
+					if (!selected || (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None)
+					{
+						this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
+					}
+					break;
+				case SelectionMode.Multiple:
+					if (clickedItem)
+					{
+						this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
+					}
+					break;
+				case SelectionMode.Extended:
+					switch (Keyboard.Modifiers)
+					{
+						case ModifierKeys.None:
+							this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem, NotificationTypes.CLEAR_SELECTION);
+							break;
+						case ModifierKeys.Control:
+							if (clickedItem)
+							{
+								this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
+							}
+							break;
+						case ModifierKeys.Shift:
+							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem,
+												  NotificationTypes.CLEAR_SELECTION);
+							break;
+						case ModifierKeys.Control | ModifierKeys.Shift:
+							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem);
+							break;
 					}
 					break;
 			}

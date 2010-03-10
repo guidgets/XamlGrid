@@ -54,7 +54,7 @@ namespace Company.DataGrid.Controllers
 		}
 
 		/// <summary>
-		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names</returns>
 		public override IList<string> ListNotificationInterests()

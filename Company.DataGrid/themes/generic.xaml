@@ -191,9 +191,9 @@
                             <company:CustomVSM />
                         </VisualStateManager.CustomVisualStateManager>
                         <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState x:Name="Unfocused" />
-                                <VisualState x:Name="Focused">
+                            <VisualStateGroup Name="Focus">
+                                <VisualState Name="Unfocused" />
+                                <VisualState Name="Focused">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
@@ -211,9 +211,9 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
-                            <VisualStateGroup>
-                                <VisualState x:Name="Deselected" />
-                                <VisualState x:Name="Selected">
+                            <VisualStateGroup Name="Selection">
+                                <VisualState Name="Deselected" />
+                                <VisualState Name="Selected">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
@@ -273,12 +273,36 @@
 						<ContentPresenter Name="Content" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <VisualStateManager.CustomVisualStateManager>
+                            <company:CustomVSM />
+                        </VisualStateManager.CustomVisualStateManager>
 						<VisualStateManager.VisualStateGroups>
-							<VisualStateGroup>
+                            <VisualStateGroup Name="Selection">
+								<VisualState Name="Deselected" />
+                                <VisualState Name="Selected">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightColor" />
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightTextColor" />
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+							<VisualStateGroup Name="Editing">
 								<VisualState Name="View" />
 								<VisualState Name="Boolean">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -292,7 +316,7 @@
 								</VisualState>
 								<VisualState Name="NullableBoolean">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -307,7 +331,7 @@
 								</VisualState>
 								<VisualState Name="Image">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -321,7 +345,7 @@
 								</VisualState>
 								<VisualState Name="EditText">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
@@ -335,7 +359,7 @@
 								</VisualState>
 								<VisualState Name="EditNumber">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
@@ -349,7 +373,7 @@
 								</VisualState>
 								<VisualState Name="EditDate">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>

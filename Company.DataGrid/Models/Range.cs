@@ -24,18 +24,23 @@
 		}
 
 		/// <summary>
-		/// Gets the start (the index of the first item) of the <see cref="Range"/>.
+		/// Gets the start (the index of the first item) of this <see cref="Range"/>.
 		/// </summary>
-		public int Start { get; private set; }
-
-		public int End { get; private set; }
+		public int Start
+		{
+			get; 
+			private set;
+		}
 
 		/// <summary>
-		/// Implements the operator ==.
+		/// Gets or sets the end (the index of the first item) of this <see cref="Range"/>..
 		/// </summary>
-		/// <param name="left">The left <see cref="Range"/>.</param>
-		/// <param name="right">The right <see cref="Range"/>.</param>
-		/// <returns>The result of the operator.</returns>
+		public int End
+		{
+			get; 
+			private set;
+		}
+
 		public static bool operator ==(Range left, Range right)
 		{
 			return left.Start == right.Start && left.End == right.End;

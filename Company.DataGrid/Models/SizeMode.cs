@@ -1,12 +1,12 @@
 ﻿namespace Company.DataGrid.Models
 {
 	/// <summary>
-	/// Provides values fro different types of sizing.
+	/// Provides values for different types of sizing.
 	/// </summary>
 	public enum SizeMode
 	{
 		/// <summary>
-		/// The size is an absoulte value.
+		/// The size is an absolute value.
 		/// </summary>
 		Absolute,
 		/// <summary>

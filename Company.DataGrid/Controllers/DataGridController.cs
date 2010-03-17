@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,6 +21,7 @@ namespace Company.DataGrid.Controllers
 	public class DataGridController : Controller
 	{
 		private ItemsPresenter itemsPresenter;
+		private Panel itemsHost;
 
 
 		/// <summary>
@@ -48,6 +50,14 @@ namespace Company.DataGrid.Controllers
 			get
 			{
 				return this.itemsPresenter ?? (this.itemsPresenter = this.DataGrid.GetItemsPresenter());
+			}
+		}
+
+		private Panel ItemsHost
+		{
+			get
+			{
+				return this.itemsHost ?? (this.itemsHost = this.DataGrid.GetItemsHost());
 			}
 		}
 
@@ -102,7 +112,8 @@ namespace Company.DataGrid.Controllers
 			       		Notifications.CURRENT_ITEM_CHANGED,
 			       		Notifications.SELECTION_MODE_CHANGED,
 						Notifications.ITEM_KEY_DOWN,
-						Notifications.ITEM_CLICKED
+						Notifications.ITEM_CLICKED,
+						Notifications.CELL_FOCUSED
 			       	};
 		}
 
@@ -135,6 +146,15 @@ namespace Company.DataGrid.Controllers
 				case Notifications.ITEM_CLICKED:
 					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, notification.Body);
 					this.SelectItems(true);
+					break;
+				case Notifications.CELL_FOCUSED:
+					UIElement uiElement = (UIElement) notification.Body;
+					if (this.ItemsHost is IScrollInfo)
+					{
+						((IScrollInfo) this.ItemsHost).MakeVisible(uiElement,
+						                                           new Rect(0, 0, uiElement.RenderSize.Width,
+						                                                    uiElement.RenderSize.Height));
+					}
 					break;
 			}
 		}
@@ -233,13 +253,13 @@ namespace Company.DataGrid.Controllers
 				double width;
 				if (index != relativeColumns.Count - 1)
 				{
-					width = Math.Floor(relativeColumns[index].Width.Value * availableWidth / stars) - 1;
+					width = Math.Floor(currentColumn.Width.Value * availableWidth / stars);
 				}
 				else
 				{
 					width = this.itemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
 					                                           where column != currentColumn
-					                                           select column.ActualWidth).Sum() - 2;
+					                                           select column.ActualWidth).Sum();
 				}
 				currentColumn.ActualWidth = Math.Max(width, 1);
 			}
@@ -350,15 +370,14 @@ namespace Company.DataGrid.Controllers
 			int step = forward ? 1 : -1;
 			int firstItemIndex = 0;
 			ScrollViewer scroll = this.DataGrid.GetScrollHost();
-			Panel itemsHost = this.DataGrid.GetItemsHost();
 			Orientation orientation = Orientation.Vertical;
-			if (itemsHost is StackPanel)
+			if (this.ItemsHost is StackPanel)
 			{
-				orientation = ((StackPanel) itemsHost).Orientation;
+				orientation = ((StackPanel) this.ItemsHost).Orientation;
 			}
-			if (itemsHost is VirtualizingStackPanel)
+			if (this.ItemsHost is VirtualizingStackPanel)
 			{
-				orientation = ((VirtualizingStackPanel) itemsHost).Orientation;
+				orientation = ((VirtualizingStackPanel) this.ItemsHost).Orientation;
 			}
 			int index = startingIndex;
 			while (0 <= index && index < this.DataGrid.Items.Count &&

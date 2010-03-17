@@ -2,6 +2,7 @@
 {
 	public static class Notifications
 	{
+		public const string CELL_FOCUSED = "cellFocused";
 		public const string ITEM_KEY_DOWN = "itemsKeyDown";
 		public const string ITEM_CLICKED = "itemClicked";
 		public const string ITEMS_SOURCE_CHANGED = "itemsSourceChanged";

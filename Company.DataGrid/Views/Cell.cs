@@ -233,6 +233,7 @@ namespace Company.DataGrid.Views
 		protected override void OnGotFocus(RoutedEventArgs e)
 		{
 			base.OnGotFocus(e);
+			VisualStateManager.GoToState(this, "Focused", false);
 			this.isFocused = true;
 		}
 
@@ -243,6 +244,7 @@ namespace Company.DataGrid.Views
 		protected override void OnLostFocus(RoutedEventArgs e)
 		{
 			base.OnLostFocus(e);
+			VisualStateManager.GoToState(this, "Unfocused", false);
 			if (!this.IsFocusWithin())
 			{
 				this.IsInEditMode = false;

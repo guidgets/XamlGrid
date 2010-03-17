@@ -216,10 +216,6 @@ namespace Company.DataGrid.Views
 		private static void OnIsFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
-			if (row.IsFocused)
-			{
-				row.Focus();
-			}
 			row.GoToFocused();
 			row.OnIsFocusedChanged(e);
 		}

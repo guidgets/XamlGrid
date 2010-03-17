@@ -29,13 +29,6 @@ namespace Company.DataGrid.Controllers
 			DependencyProperty.Register("Header", typeof(object), typeof(Column), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the binding which 
-		/// the <see cref="Cell"/>s in a <see cref="Column"/> use to get the data they display.
-		/// </summary>
-		public static readonly DependencyProperty BindingProperty =
-			DependencyProperty.Register("DataBinding", typeof(Binding), typeof(Column), new PropertyMetadata(OnBindingChanged));
-
-		/// <summary>
 		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
 		/// </summary>		
 		public static readonly DependencyProperty WidthProperty =
@@ -85,6 +78,9 @@ namespace Company.DataGrid.Controllers
 		/// </summary>
 		public static readonly DependencyProperty CellStyleProperty =
 			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
+
+
+		private Binding binding;
 
 
 		/// <summary>
@@ -175,11 +171,18 @@ namespace Company.DataGrid.Controllers
 		{
 			get
 			{
-				return (Binding) this.GetValue(BindingProperty);
+				return this.binding;
 			}
 			set
 			{
-				this.SetValue(BindingProperty, value);
+				if (this.binding != value)
+				{
+					this.binding = value;
+					if (this.ReadLocalValue(HeaderProperty) == DependencyProperty.UnsetValue)
+					{
+						this.Header = this.binding.Path.Path;
+					}
+				}
 			}
 		}
 
@@ -261,15 +264,6 @@ namespace Company.DataGrid.Controllers
 			this.Width = new ColumnWidth(SizeMode.Auto);
 		}
 
-
-		private static void OnBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			Column column = (Column) d;
-			if (column.Header == null)
-			{
-				column.Header = column.Binding.Path.Path;
-			}
-		}
 
 		private static void OnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{

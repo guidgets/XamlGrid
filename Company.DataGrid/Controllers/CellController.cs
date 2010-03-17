@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Windows;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
 
@@ -38,7 +39,19 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRegister();
 
+			this.Cell.GotFocus += this.Cell_GotFocus;
+
 			this.SendNotification(Notifications.IS_ITEM_SELECTED, this.Cell.DataContext);
+		}
+
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is removed.
+		/// </summary>
+		public override void OnRemove()
+		{
+			base.OnRemove();
+
+			this.Cell.GotFocus -= this.Cell_GotFocus;
 		}
 
 		/// <summary>
@@ -87,6 +100,12 @@ namespace Company.DataGrid.Controllers
 					}
 					break;
 			}
+		}
+
+
+		private void Cell_GotFocus(object sender, RoutedEventArgs e)
+		{
+			this.SendNotification(Notifications.CELL_FOCUSED, this.Cell);
 		}
 	}
 }

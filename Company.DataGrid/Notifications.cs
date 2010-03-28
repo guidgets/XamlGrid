@@ -3,10 +3,13 @@
 	public static class Notifications
 	{
 		public const string CELL_FOCUSED = "cellFocused";
+		public const string CELL_EDIT_MODE_CHANGED = "cellEditModeChanged";
+		public const string CELL_EDITING_CANCELLED = "cellEditingCancelled";
 		public const string ITEM_KEY_DOWN = "itemsKeyDown";
 		public const string ITEM_CLICKED = "itemClicked";
 		public const string ITEMS_SOURCE_CHANGED = "itemsSourceChanged";
 		public const string ITEMS_CHANGED = "itemsChanged";
+		public const string ITEMS_COLLECTION_CHANGED = "itemsCollectionChanged";
 		public const string COLUMNS_CHANGED = "columnsChanged";
 		public const string DATA_WRAPPED = "dataWrapped";
 		public const string DATA_WRAPPING_REQUESTED = "collectionViewRequested";

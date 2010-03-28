@@ -15,6 +15,17 @@ namespace Company.DataGrid.Views
 	public class Cell : CellBase
 	{
 		/// <summary>
+		/// Occurs when the edit mode of this <see cref="Cell"/> is changed.
+		/// </summary>
+		public event DependencyPropertyChangedEventHandler IsInEditModeChanged;
+
+		/// <summary>
+		/// Occurs when the editing of this <see cref="Cell"/> is cancelled.
+		/// </summary>
+		public event EventHandler EditingCancelled;
+
+
+		/// <summary>
 		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
@@ -206,27 +217,6 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
-		/// Called before the <see cref="UIElement.KeyUp"/> event occurs.
-		/// </summary>
-		/// <param name="e">The data for the event.</param>
-		protected override void OnKeyUp(KeyEventArgs e)
-		{
-			base.OnKeyUp(e);
-			switch (e.Key)
-			{
-				case Key.Enter:
-					this.IsInEditMode = false;
-					break;
-				case Key.Escape:
-					this.IsInEditMode = false;
-					this.ClearValue(EditorValueProperty);
-					this.EditorValue = this.Value;
-					this.cancelled = true;
-					break;
-			}
-		}
-
-		/// <summary>
 		/// Called before the <see cref="UIElement.GotFocus"/> event occurs.
 		/// </summary>
 		/// <param name="e">The data for the event.</param>
@@ -251,12 +241,14 @@ namespace Company.DataGrid.Views
 				if (this.cancelled)
 				{
 					this.cancelled = false;
+					// HACK: moving from edit state to view state causes the cell to lose focus somehow
+					this.Focus();
 				}
 				else
 				{
 					this.CommitEdit();
+					this.isFocused = false;
 				}
-				this.isFocused = false;
 			}
 		}
 
@@ -274,7 +266,7 @@ namespace Company.DataGrid.Views
 		private static void OnValueChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			Cell cell = (Cell) dependencyObject;
-			if (cell.Value != null)
+			if (cell.Value != null && cell.DataType == DataTypeProperty.GetMetadata(typeof(Cell)).DefaultValue)
 			{
 				cell.DataType = cell.Value.GetType();
 			}
@@ -295,13 +287,35 @@ namespace Company.DataGrid.Views
 				cell.IsInEditMode = false;
 				return;
 			}
+			cell.OnIsInEditModeChanged(e);
 			if (editMode)
 			{
-				cell.GoToEdit();
+				if (!cell.GoToEdit())
+				{
+					cell.IsInEditMode = false;
+				}
 			}
 			else
 			{
 				cell.GoToView();
+			}
+		}
+
+		private void OnIsInEditModeChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.IsInEditModeChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		private void OnEditingCancelled(EventArgs e)
+		{
+			EventHandler handler = this.EditingCancelled;
+			if (handler != null)
+			{
+				handler(this, e);
 			}
 		}
 
@@ -313,12 +327,9 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
-		private void GoToEdit()
+		private bool GoToEdit()
 		{
-			if (!VisualStateManager.GoToState(this, "CustomEditor", false))
-			{
-				this.GoToEditorForType();
-			}
+			return VisualStateManager.GoToState(this, "CustomEditor", false) || this.GoToEditorForType();
 		}
 
 		/// <summary>
@@ -374,24 +385,21 @@ namespace Company.DataGrid.Views
 			return false;
 		}
 
-		private void GoToEditorForType()
+		private bool GoToEditorForType()
 		{
 			if (this.DataType == typeof(string))
 			{
-				VisualStateManager.GoToState(this, "EditText", false);
-				return;
+				return VisualStateManager.GoToState(this, "EditText", false);
 			}
 			if (this.DataType.IsNumeric())
 			{
-				VisualStateManager.GoToState(this, "EditNumber", false);
-				return;
+				return VisualStateManager.GoToState(this, "EditNumber", false);
 			}
 			if (this.DataType == typeof(DateTime) || this.DataType == typeof(DateTime?))
 			{
-				VisualStateManager.GoToState(this, "EditDate", false);
-				return;
+				return VisualStateManager.GoToState(this, "EditDate", false);
 			}
-			return;
+			return false;
 		}
 
 		private void CommitEdit()
@@ -402,6 +410,18 @@ namespace Company.DataGrid.Views
 			{
 				this.Value = oldValue;
 			}
+		}
+
+		/// <summary>
+		/// Cancels the editing of this <see cref="Cell"/>.
+		/// </summary>
+		public void CancelEdit()
+		{
+			this.IsInEditMode = false;
+			this.ClearValue(EditorValueProperty);
+			this.EditorValue = this.Value;
+			this.cancelled = true;
+			this.OnEditingCancelled(EventArgs.Empty);
 		}
 	}
 }

@@ -323,23 +323,11 @@ namespace Company.DataGrid.Views
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
 			base.PrepareContainerForItemOverride(element, item);
-			Row row = (Row) element;
+			ItemsControl row = (ItemsControl) element;
 			if (row.ItemsSource == null)
 			{
 				row.ItemsSource = this.Columns;
 			}
-			DataGridFacade.Instance.RegisterController(new RowController(row));
-		}
-
-		/// <summary>
-		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
-		/// </summary>
-		/// <param name="element">The container element.</param>
-		/// <param name="item">The item.</param>
-		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
-		{
-			base.ClearContainerForItemOverride(element, item);
-			DataGridFacade.Instance.RemoveController(element.GetHashCode().ToString());
 		}
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)

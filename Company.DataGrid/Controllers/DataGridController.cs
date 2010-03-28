@@ -22,7 +22,7 @@ namespace Company.DataGrid.Controllers
 	{
 		private ItemsPresenter itemsPresenter;
 		private Panel itemsHost;
-
+		private bool continuousEditing;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
@@ -74,15 +74,8 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
+			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged += this.DataGridItems_CollectionChanged;
 			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
-		}
-
-		private void Scroll_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			if (e.NewSize.Width != e.PreviousSize.Width)
-			{
-				this.CalculateRelativeColumnWidths();				
-			}
 		}
 
 		/// <summary>
@@ -97,6 +90,7 @@ namespace Company.DataGrid.Controllers
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
+			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged -= this.DataGridItems_CollectionChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
 		}
 
@@ -113,7 +107,9 @@ namespace Company.DataGrid.Controllers
 			       		Notifications.SELECTION_MODE_CHANGED,
 						Notifications.ITEM_KEY_DOWN,
 						Notifications.ITEM_CLICKED,
-						Notifications.CELL_FOCUSED
+						Notifications.CELL_FOCUSED,
+						Notifications.CELL_EDIT_MODE_CHANGED,
+						Notifications.CELL_EDITING_CANCELLED
 			       	};
 		}
 
@@ -155,15 +151,32 @@ namespace Company.DataGrid.Controllers
 						                                           new Rect(0, 0, uiElement.RenderSize.Width,
 						                                                    uiElement.RenderSize.Height));
 					}
+					((Cell) uiElement).IsInEditMode = continuousEditing;
+					break;
+				case Notifications.CELL_EDIT_MODE_CHANGED:
+					bool isInEditMode = (bool) notification.Body;
+					if (isInEditMode)
+					{
+						continuousEditing = true;
+					}
+					break;
+				case Notifications.CELL_EDITING_CANCELLED:
+					continuousEditing = false;
 					break;
 			}
 		}
 
 
-		private void DataGrid_Loaded(object sender, EventArgs eventArgs)
+		private void DataGrid_Loaded(object sender, EventArgs e)
 		{
 			this.DataGrid.ApplyTemplate();
-			this.ItemsPresenter.SizeChanged += this.Scroll_SizeChanged;
+			this.ItemsPresenter.SizeChanged += (o, args) =>
+			                                   {
+			                                   	   if (args.NewSize.Width != args.PreviousSize.Width)
+			                                   	   {
+			                                   	  	   this.CalculateRelativeColumnWidths();
+			                                   	   }
+			                                   };
 		}
 
 		private void DataGrid_DataSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -188,6 +201,11 @@ namespace Company.DataGrid.Controllers
 		private void DataGrid_SelectionModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.SELECTION_MODE_CHANGING, this.DataGrid.SelectionMode);
+		}
+
+		private void DataGridItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.ITEMS_COLLECTION_CHANGED, e);
 		}
 
 		private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

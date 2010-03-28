@@ -43,6 +43,11 @@ namespace Company.DataGrid.Views
 	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 	                                                     	 };
 
+		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
+		                                                  {
+		                                                  	  RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                  };
+
 		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
 	                                                    	{
 	                                                    		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
@@ -50,6 +55,7 @@ namespace Company.DataGrid.Views
 
 
 		private readonly Binding dataBinding;
+		private readonly Binding isSelectedBinding;
 
 		/// <summary>
 		/// Represents a UI element that displays a data object.
@@ -59,8 +65,11 @@ namespace Company.DataGrid.Views
 			this.DefaultStyleKey = typeof(Row);
 
 			this.dataBinding = new Binding { Source = this.DataContext, Mode = BindingMode.OneTime };
+			this.isSelectedBinding = new Binding("IsSelected") { Source = this, Mode = BindingMode.OneWay };
 
 			this.SetBinding(dataContextListenerProperty, dataContextBinding);
+
+			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}
 
 
@@ -167,7 +176,10 @@ namespace Company.DataGrid.Views
 			Cell cell = (Cell) element;
 			Column column = (Column) item;
 			cell.Column = column;
-			cell.DataType = column.DataType;
+			if (cell.ReadLocalValue(Cell.DataTypeProperty) == DependencyProperty.UnsetValue)
+			{
+				cell.SetBinding(Cell.DataTypeProperty, dataTypeBinding);
+			}
 			if (cell.ReadLocalValue(StyleProperty) == DependencyProperty.UnsetValue)
 			{
 				cell.Style = column.CellStyle;
@@ -178,6 +190,7 @@ namespace Company.DataGrid.Views
 			}
 			cell.SetBinding(DataContextProperty, this.dataBinding);
 			cell.SetBinding(Cell.ValueProperty, column.Binding);
+			cell.SetBinding(Cell.IsSelectedProperty, isSelectedBinding);
 
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 		}
@@ -193,8 +206,10 @@ namespace Company.DataGrid.Views
 			Cell cell = (Cell) element;
 			cell.ClearValue(DataContextProperty);
 			cell.DataContext = null;
-			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.IsEditableProperty);
+			cell.ClearValue(Cell.ValueProperty);
+			cell.ClearValue(Cell.DataTypeProperty);
+			cell.ClearValue(Cell.IsSelectedProperty);
 
 			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
 		}

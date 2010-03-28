@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
@@ -44,9 +44,6 @@ namespace Company.DataGrid.Controllers
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
 			this.Row.KeyDown += this.Row_KeyDown;
 			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp), true);
-
-			this.SendNotification(Notifications.IS_ITEM_CURRENT, this.Row.DataContext);
-			this.SendNotification(Notifications.IS_ITEM_SELECTED, this.Row.DataContext);
 		}
 
 		/// <summary>
@@ -71,10 +68,11 @@ namespace Company.DataGrid.Controllers
 			return new List<string>
 			       	{
 			       		Notifications.CURRENT_ITEM_CHANGED,
-						Notifications.ITEM_IS_CURRENT,
+			       		Notifications.ITEM_IS_CURRENT,
 			       		Notifications.SELECTED_ITEMS,
 			       		Notifications.DESELECTED_ITEMS,
-						Notifications.ITEM_IS_SELECTED,
+			       		Notifications.ITEM_IS_SELECTED,
+			       		Notifications.ITEMS_COLLECTION_CHANGED
 			       	};
 		}
 
@@ -99,8 +97,7 @@ namespace Company.DataGrid.Controllers
 					this.Row.IsFocused = this.Row.DataContext == notification.Body;
 					break;
 				case Notifications.SELECTED_ITEMS:
-					bool isSelected = ((IList) notification.Body).Contains(this.Row.DataContext);
-					if (isSelected)
+					if (((IList) notification.Body).Contains(this.Row.DataContext))
 					{
 						this.Row.IsSelected = true;
 					}
@@ -116,6 +113,21 @@ namespace Company.DataGrid.Controllers
 					if (this.Row.DataContext == notification.Body)
 					{
 						this.Row.IsSelected = bool.Parse(notification.Type);
+					}
+					break;
+				case Notifications.ITEMS_COLLECTION_CHANGED:
+					NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs) notification.Body;
+					switch (args.Action)
+					{
+						case NotifyCollectionChangedAction.Remove:
+						case NotifyCollectionChangedAction.Replace:
+						case NotifyCollectionChangedAction.Reset:
+							if (args.Action == NotifyCollectionChangedAction.Reset || args.OldItems.Contains(this.Row.DataContext))
+							{
+								DataGridFacade.Instance.RemoveController(this.Name);
+								this.Row.ItemsSource = null;
+							}
+							break;
 					}
 					break;
 			}

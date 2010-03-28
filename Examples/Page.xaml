@@ -73,7 +73,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
-		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="False" AutoCreateColumns="False">
+		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="True" AutoCreateColumns="False">
 			<company:DataGrid.Columns>
 				<controllers:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
 				<controllers:Column Binding="{Binding Age, Mode=TwoWay}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />

@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
 
@@ -40,8 +40,9 @@ namespace Company.DataGrid.Controllers
 			base.OnRegister();
 
 			this.Cell.GotFocus += this.Cell_GotFocus;
-
-			this.SendNotification(Notifications.IS_ITEM_SELECTED, this.Cell.DataContext);
+			this.Cell.KeyUp += this.Cell_KeyUp;
+			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
+			this.Cell.EditingCancelled += this.Cell_EditingCancelled;
 		}
 
 		/// <summary>
@@ -52,60 +53,42 @@ namespace Company.DataGrid.Controllers
 			base.OnRemove();
 
 			this.Cell.GotFocus -= this.Cell_GotFocus;
-		}
-
-		/// <summary>
-		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
-		/// </summary>
-		/// <returns>The list of <c>INotification</c> names.</returns>
-		public override IList<string> ListNotificationInterests()
-		{
-			return new List<string>
-			       	{
-			       		Notifications.SELECTED_ITEMS,
-			       		Notifications.DESELECTED_ITEMS,
-			       		Notifications.ITEM_IS_SELECTED
-			       	};
-		}
-
-		/// <summary>
-		/// Handle <c>INotification</c>s.
-		/// </summary>
-		/// <param name="notification">The <c>INotification</c> instance to handle</param>
-		/// <remarks>
-		/// Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller</c> is interested in.
-		/// </remarks>
-		public override void HandleNotification(INotification notification)
-		{
-			switch (notification.Name)
-			{
-				case Notifications.SELECTED_ITEMS:
-					bool isSelected = ((IList) notification.Body).Contains(this.Cell.DataContext);
-					if (isSelected)
-					{
-						this.Cell.IsSelected = this.Cell.Column.IsSelected;						
-					}
-					break;
-				case Notifications.DESELECTED_ITEMS:
-					IList list = (IList) notification.Body;
-					if (list.Contains(this.Cell.DataContext) || list.Count == 0)
-					{
-						this.Cell.IsSelected = false;
-					}
-					break;
-				case Notifications.ITEM_IS_SELECTED:
-					if (this.Cell.DataContext == notification.Body)
-					{
-						this.Cell.IsSelected = bool.Parse(notification.Type);
-					}
-					break;
-			}
+			this.Cell.KeyUp -= this.Cell_KeyUp;
+			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
+			this.Cell.EditingCancelled -= this.Cell_EditingCancelled;
 		}
 
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
 			this.SendNotification(Notifications.CELL_FOCUSED, this.Cell);
+		}
+
+		private void Cell_KeyUp(object sender, KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Enter:
+					this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
+					if (!this.Cell.IsInEditMode)
+					{
+						this.Cell.FocusNext();
+					}
+					break;
+				case Key.Escape:
+					this.Cell.CancelEdit();
+					break;
+			}
+		}
+
+		private void Cell_IsInEditModeChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.CELL_EDIT_MODE_CHANGED, this.Cell.IsInEditMode);
+		}
+
+		private void Cell_EditingCancelled(object sender, EventArgs e)
+		{
+			this.SendNotification(Notifications.CELL_EDITING_CANCELLED);
 		}
 	}
 }

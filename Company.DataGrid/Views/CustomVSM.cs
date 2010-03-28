@@ -18,9 +18,9 @@ namespace Company.DataGrid.Views
 		/// <param name="stateName">The name of the state to transition to.</param>
 		/// <param name="group">The <see cref="T:System.Windows.VisualStateGroup"/> that the state belongs to.</param>
 		/// <param name="state">The representation of the state to transition to.</param>
-		/// <param name="useTransitions">true to use a <see cref="T:System.Windows.VisualTransition"/> to transition between states; otherwise, false.</param>
+		/// <param name="useTransitions"><c>true</c> to use a <see cref="T:System.Windows.VisualTransition"/> to transition between states; otherwise, <c>false</c>.</param>
 		/// <returns>
-		/// true if the control successfully transitioned to the new state; otherwise, false.
+		/// <c>true</c> if the control successfully transitioned to the new state; otherwise, <c>false</c>.
 		/// </returns>
 		protected override bool GoToStateCore(Control control, FrameworkElement templateRoot, string stateName, VisualStateGroup group, VisualState state, bool useTransitions)
 		{

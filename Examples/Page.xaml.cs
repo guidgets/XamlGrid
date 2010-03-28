@@ -36,12 +36,13 @@ namespace Examples
 				customer.OrderThumbnail = new Uri(string.Format("/Images/p{0}.png", index), UriKind.Relative);
 				++index;
 			}
-			this.dataGrid.DataSource = list;
+			this.dataGrid.DataSource = new ObservableCollection<Customer>(list);
 			this.listBoxCustomers.ItemsSource = this.collectionView = new CollectionViewSource { Source = list }.View;
 		}
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+			//((ObservableCollection<Customer>) this.dataGrid.DataSource).RemoveAt(3);
 			//this.dataGrid.Columns[1].Visibility = this.dataGrid.Columns[1].Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
 			//this.dataGrid.ResizableColumns = !this.dataGrid.ResizableColumns;
 			//this.dataGrid.HeaderVisibility = this.dataGrid.HeaderVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;

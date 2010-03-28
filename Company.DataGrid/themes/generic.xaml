@@ -374,8 +374,11 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch" />
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
@@ -391,8 +394,11 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch" />
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
@@ -455,8 +461,11 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch" />
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>

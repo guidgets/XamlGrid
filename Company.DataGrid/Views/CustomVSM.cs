@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
@@ -33,12 +34,9 @@ namespace Company.DataGrid.Views
 			{
 				return base.GoToStateCore(control, templateRoot, stateName, group, state, useTransitions);
 			}
-			foreach (Timeline timeline in state.Storyboard.Children)
+			foreach (Timeline timeline in state.Storyboard.Children.Where(timeline => string.IsNullOrEmpty(Storyboard.GetTargetName(timeline))))
 			{
-				if (string.IsNullOrEmpty(Storyboard.GetTargetName(timeline)))
-				{
-					Storyboard.SetTarget(timeline, control);
-				}
+				Storyboard.SetTarget(timeline, control);
 			}
 			return base.GoToStateCore(control, templateRoot, stateName, group, state, useTransitions);
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
@@ -19,6 +18,7 @@ namespace Company.DataGrid.Controllers
 		{
 
 		}
+
 
 		/// <summary>
 		/// Gets the cell for which functionality the <see cref="CellController"/> is responsible.
@@ -42,7 +42,6 @@ namespace Company.DataGrid.Controllers
 			this.Cell.GotFocus += this.Cell_GotFocus;
 			this.Cell.KeyUp += this.Cell_KeyUp;
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
-			this.Cell.EditingCancelled += this.Cell_EditingCancelled;
 		}
 
 		/// <summary>
@@ -55,7 +54,6 @@ namespace Company.DataGrid.Controllers
 			this.Cell.GotFocus -= this.Cell_GotFocus;
 			this.Cell.KeyUp -= this.Cell_KeyUp;
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
-			this.Cell.EditingCancelled -= this.Cell_EditingCancelled;
 		}
 
 
@@ -76,7 +74,12 @@ namespace Company.DataGrid.Controllers
 					}
 					break;
 				case Key.Escape:
-					this.Cell.CancelEdit();
+					if (this.Cell.IsInEditMode)
+					{
+						this.Cell.IsInEditMode = false;
+						// HACK: moving from edit state to view state causes the cell to lose focus somehow
+						this.Cell.Focus();
+					}
 					break;
 			}
 		}
@@ -84,11 +87,6 @@ namespace Company.DataGrid.Controllers
 		private void Cell_IsInEditModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.CELL_EDIT_MODE_CHANGED, this.Cell.IsInEditMode);
-		}
-
-		private void Cell_EditingCancelled(object sender, EventArgs e)
-		{
-			this.SendNotification(Notifications.CELL_EDITING_CANCELLED);
 		}
 	}
 }

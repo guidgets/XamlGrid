@@ -2,9 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using Company.DataGrid.Controllers;
 using Company.DataGrid.Models;
 
 namespace Company.DataGrid.Views
@@ -19,30 +17,18 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		public event DependencyPropertyChangedEventHandler IsInEditModeChanged;
 
-		/// <summary>
-		/// Occurs when the editing of this <see cref="Cell"/> is cancelled.
-		/// </summary>
-		public event EventHandler EditingCancelled;
-
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
-			DependencyProperty.Register("Value", typeof(object), typeof(Cell),
-										new PropertyMetadata(OnValueChanged));
+			DependencyProperty.Register("Value", typeof(object), typeof(Cell), new PropertyMetadata(OnValueChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
 		/// </summary>
 		public static readonly DependencyProperty DataTypeProperty =
 			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeof(object)));
-
-		/// <summary>
-		/// Identifies the dependency property which gets or sets value contained in the editor of a <see cref="Cell"/>.
-		/// </summary>
-		public static readonly DependencyProperty EditorValueProperty =
-			DependencyProperty.Register("EditorValue", typeof(object), typeof(Cell), new PropertyMetadata(null));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
@@ -54,18 +40,13 @@ namespace Company.DataGrid.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is in edit mode.
 		/// </summary>
 		public static readonly DependencyProperty IsInEditModeProperty =
-			DependencyProperty.Register("IsInEditMode", typeof(bool), typeof(Cell),
-			                            new PropertyMetadata(OnIsInEditModeChanged));
+			DependencyProperty.Register("IsInEditMode", typeof(bool), typeof(Cell), new PropertyMetadata(OnIsInEditModeChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is selected.
 		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
-
-
-		private bool isFocused;
-		private bool cancelled;
 
 
 		/// <summary>
@@ -76,21 +57,6 @@ namespace Company.DataGrid.Views
 			this.DefaultStyleKey = typeof(Cell);
 		}
 
-		/// <summary>
-		/// Gets or sets value contained in the editor of the <see cref="Cell"/>.
-		/// </summary>
-		/// <value>The value contained in the editor of the <see cref="Cell"/>.</value>
-		public object EditorValue
-		{
-			get
-			{
-				return this.GetValue(EditorValueProperty);
-			}
-			set
-			{
-				this.SetValue(EditorValueProperty, value);
-			}
-		}
 
 		/// <summary>
 		/// Gets or sets the value contained in the <see cref="Cell"/>.
@@ -206,14 +172,7 @@ namespace Company.DataGrid.Views
 		protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
 		{
 			base.OnMouseLeftButtonUp(e);
-			if (this.isFocused)
-			{
-				this.IsInEditMode = true;				
-			}
-			else
-			{
-				this.isFocused = this.Focus();
-			}
+			this.Focus();
 		}
 
 		/// <summary>
@@ -224,7 +183,6 @@ namespace Company.DataGrid.Views
 		{
 			base.OnGotFocus(e);
 			VisualStateManager.GoToState(this, "Focused", false);
-			this.isFocused = true;
 		}
 
 		/// <summary>
@@ -238,17 +196,6 @@ namespace Company.DataGrid.Views
 			if (!this.IsFocusWithin())
 			{
 				this.IsInEditMode = false;
-				if (this.cancelled)
-				{
-					this.cancelled = false;
-					// HACK: moving from edit state to view state causes the cell to lose focus somehow
-					this.Focus();
-				}
-				else
-				{
-					this.CommitEdit();
-					this.isFocused = false;
-				}
 			}
 		}
 
@@ -270,12 +217,9 @@ namespace Company.DataGrid.Views
 			{
 				cell.DataType = cell.Value.GetType();
 			}
-			cell.EditorValue = cell.Value;
-			if (!cell.IsInEditMode)
-			{
-				cell.Content = cell.Value;
-				cell.GoToSpecialView();
-			}
+			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
+			cell.Content = cell.Value;
+			cell.GoToSpecialView();
 		}
 
 		private static void OnIsInEditModeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -310,15 +254,6 @@ namespace Company.DataGrid.Views
 			}
 		}
 
-		private void OnEditingCancelled(EventArgs e)
-		{
-			EventHandler handler = this.EditingCancelled;
-			if (handler != null)
-			{
-				handler(this, e);
-			}
-		}
-
 		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			((Cell) d).GoToSelected();
@@ -329,7 +264,7 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		private bool GoToEdit()
 		{
-			return VisualStateManager.GoToState(this, "CustomEditor", false) || this.GoToEditorForType();
+			return !this.GoToSpecialView() && VisualStateManager.GoToState(this, "Editor", false);
 		}
 
 		/// <summary>
@@ -383,45 +318,6 @@ namespace Company.DataGrid.Views
 				}
 			}
 			return false;
-		}
-
-		private bool GoToEditorForType()
-		{
-			if (this.DataType == typeof(string))
-			{
-				return VisualStateManager.GoToState(this, "EditText", false);
-			}
-			if (this.DataType.IsNumeric())
-			{
-				return VisualStateManager.GoToState(this, "EditNumber", false);
-			}
-			if (this.DataType == typeof(DateTime) || this.DataType == typeof(DateTime?))
-			{
-				return VisualStateManager.GoToState(this, "EditDate", false);
-			}
-			return false;
-		}
-
-		private void CommitEdit()
-		{
-			object oldValue = this.Value;
-			this.Value = this.EditorValue;
-			if (Validation.GetHasError(this))
-			{
-				this.Value = oldValue;
-			}
-		}
-
-		/// <summary>
-		/// Cancels the editing of this <see cref="Cell"/>.
-		/// </summary>
-		public void CancelEdit()
-		{
-			this.IsInEditMode = false;
-			this.ClearValue(EditorValueProperty);
-			this.EditorValue = this.Value;
-			this.cancelled = true;
-			this.OnEditingCancelled(EventArgs.Empty);
 		}
 	}
 }

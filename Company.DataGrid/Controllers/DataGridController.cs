@@ -147,15 +147,14 @@ namespace Company.DataGrid.Controllers
 					UIElement uiElement = (UIElement) notification.Body;
 					if (this.ItemsHost is IScrollInfo)
 					{
-						((IScrollInfo) this.ItemsHost).MakeVisible(uiElement,
-						                                           new Rect(0, 0, uiElement.RenderSize.Width,
-						                                                    uiElement.RenderSize.Height));
+						Rect bounds = new Rect(0, 0, uiElement.RenderSize.Width, uiElement.RenderSize.Height);
+						((IScrollInfo) this.ItemsHost).MakeVisible(uiElement, bounds);
 					}
+					// TODO: this should be replaced by sending a notification because it tightens the coupling
 					((Cell) uiElement).IsInEditMode = continuousEditing;
 					break;
 				case Notifications.CELL_EDIT_MODE_CHANGED:
-					bool isInEditMode = (bool) notification.Body;
-					if (isInEditMode)
+					if ((bool) notification.Body)
 					{
 						continuousEditing = true;
 					}

@@ -84,6 +84,7 @@
     <Compile Include="Controllers\CellController.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
+    <Compile Include="Controllers\EditorController.cs" />
     <Compile Include="Views\ControlExtensions.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
     <Compile Include="Views\DependencyObjectExtensions.cs" />
+    <Compile Include="Views\Editor.cs" />
     <Compile Include="Views\UIElementExtensions.cs" />
     <Compile Include="Core\Controller.cs" />
     <Compile Include="Core\ICommand.cs" />

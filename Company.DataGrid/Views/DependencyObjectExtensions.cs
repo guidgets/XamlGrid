@@ -1,47 +1,50 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Linq;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Company.DataGrid.Views
 {
 	/// <summary>
-	/// Extends the functionality of an <see cref="ItemsControl"/>.
+	/// Contains methods that extend the functionality of <see cref="DependencyObject"/>.
 	/// </summary>
-	public static class ItemsControlExtensions
+	public static class DependencyObjectExtensions
 	{
 		/// <summary>
-		/// Gets the <see cref="ItemsPresenter"/>, if any, of the specified <see cref="DependencyObject"/>.
+		/// Determines whether the focus is within the <see cref="DependencyObject"/>.
 		/// </summary>
-		/// <param name="dependencyObject">The <see cref="DependencyObject"/> to get the <see cref="ItemsPresenter"/> of.</param>
-		/// <returns>The <see cref="ItemsPresenter"/>, if any, of the specified <see cref="DependencyObject"/></returns>
-		public static ItemsPresenter GetItemsPresenter(this DependencyObject dependencyObject)
+		/// <param name="dependencyObject">The <see cref="DependencyObject"/> to check for focus possession.</param>
+		/// <returns>
+		/// 	<c>true</c> if the focus is within the <see cref="DependencyObject"/>; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsFocusWithin(this DependencyObject dependencyObject)
 		{
-			if (dependencyObject is ItemsPresenter)
+			object element = FocusManager.GetFocusedElement();
+			while (element is DependencyObject)
 			{
-				return (ItemsPresenter) dependencyObject;
-			}
-			DependencyObject content = null;
-			if (dependencyObject is ContentControl)
-			{
-				content = ((ContentControl) dependencyObject).Content as DependencyObject;
-			}
-			if (dependencyObject is ContentPresenter)
-			{
-				content = ((ContentPresenter) dependencyObject).Content as DependencyObject;
-			}
-			if (content != null)
-			{
-				ItemsPresenter itemsPresenter = GetItemsPresenter(content);
-				if (itemsPresenter != null)
+				if (element == dependencyObject)
 				{
-					return itemsPresenter;
+					return true;
 				}
+				element = ((DependencyObject) element).GetParent();
 			}
-			return (from descendantControl in dependencyObject.GetVisualDescendants()
-					let itemsPresenter = GetItemsPresenter(descendantControl)
-					where itemsPresenter != null
-					select itemsPresenter).FirstOrDefault();
+			return false;
+		}
+
+		/// <summary>
+		/// Gets the visual, if none, the logical, parent of the specified <paramref name="element"/> .
+		/// </summary>
+		/// <param name="element">The element to get the parent of.</param>
+		/// <returns>The visual, if any, or, if none, the logical, if any, parent.</returns>
+		public static DependencyObject GetParent(this DependencyObject element)
+		{
+			DependencyObject parent = VisualTreeHelper.GetParent(element);
+			if (parent == null && element is FrameworkElement)
+			{
+				return ((FrameworkElement) element).Parent;
+			}
+			return parent;
 		}
 	}
 }
+
+

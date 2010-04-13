@@ -38,7 +38,7 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRegister();
 
-			this.Editor.KeyUp += this.Editor_KeyUp;
+			this.Editor.KeyDown += this.Editor_KeyDown;
 			this.Editor.Unloaded += this.Editor_Unloaded;
 		}
 
@@ -49,12 +49,12 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRemove();
 
-			this.Editor.KeyUp -= this.Editor_KeyUp;
+			this.Editor.KeyDown -= this.Editor_KeyDown;
 			this.Editor.Unloaded -= this.Editor_Unloaded;
 		}
 
 
-		private void Editor_KeyUp(object sender, KeyEventArgs e)
+		private void Editor_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.Key)
 			{

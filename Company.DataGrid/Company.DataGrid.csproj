@@ -102,9 +102,9 @@
     <Compile Include="Controllers\StyleBinding.cs" />
     <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
-    <Compile Include="Views\DependencyObjectExtensions.cs" />
+    <Compile Include="Views\ItemsControlExtensions.cs" />
     <Compile Include="Views\Editor.cs" />
-    <Compile Include="Views\UIElementExtensions.cs" />
+    <Compile Include="Views\DependencyObjectExtensions.cs" />
     <Compile Include="Core\Controller.cs" />
     <Compile Include="Core\ICommand.cs" />
     <Compile Include="Core\IMainController.cs">

@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Controls.Primitives;
 
 namespace Company.DataGrid.Views
 {
@@ -38,40 +34,6 @@ namespace Company.DataGrid.Views
 			control.SetValue(FocusOnLoadProperty, value);
 		}
 
-		/// <summary>
-		/// Focuses the <see cref="Control"/> which is next to the specified control by tab order .
-		/// </summary>
-		/// <param name="control">The control which neighbor to focus.</param>
-		/// <returns>A value indicating if the next control successfully received focus.</returns>
-		public static bool FocusNext(this Control control)
-		{
-			DependencyObject child = control;
-			while (true)
-			{
-				DependencyObject parent = VisualTreeHelper.GetParent(child);
-				if (parent == null && child is FrameworkElement)
-				{
-					parent = ((FrameworkElement) child).Parent;
-				}
-				if (parent == null)
-				{
-					return false;
-				}
-				IList<DependencyObject> children = parent.GetVisualChildren().ToList();
-				DependencyObject localChild = child;
-				if ((from dependencyObject in children
-				     where dependencyObject is Control
-				     let childControl = (Control) dependencyObject
-				     where childControl.TabIndex > control.TabIndex || children.IndexOf(childControl) > children.IndexOf(localChild)
-				     orderby childControl.TabIndex
-				     select childControl).Any(nextControl => nextControl.Focus()))
-				{
-					return true;
-				}
-				child = parent;
-			}
-		}
-
 		private static void OnFocusOnLoadChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if ((bool) e.NewValue)
@@ -80,7 +42,7 @@ namespace Company.DataGrid.Views
 			}
 			else
 			{
-				((FrameworkElement) d).Loaded -= Control_Loaded;			
+				((FrameworkElement) d).Loaded -= Control_Loaded;
 			}
 		}
 
@@ -90,5 +52,3 @@ namespace Company.DataGrid.Views
 		}
 	}
 }
-
-

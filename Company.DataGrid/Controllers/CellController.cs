@@ -1,4 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
@@ -40,7 +45,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRegister();
 
 			this.Cell.GotFocus += this.Cell_GotFocus;
-			this.Cell.KeyUp += this.Cell_KeyUp;
+			this.Cell.KeyDown += this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
 		}
 
@@ -52,8 +57,59 @@ namespace Company.DataGrid.Controllers
 			base.OnRemove();
 
 			this.Cell.GotFocus -= this.Cell_GotFocus;
-			this.Cell.KeyUp -= this.Cell_KeyUp;
+			this.Cell.KeyDown -= this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
+		}
+
+
+		private void FocusNeighbor(bool next)
+		{
+			DependencyObject dependencyObject = this.Cell;
+			while (true)
+			{
+				IEnumerable<Control> siblingsEnumerable = from sibling in dependencyObject.GetVisualSiblingsAndSelf()
+														  where sibling is Control
+														  let siblingControl = (Control) sibling
+														  orderby siblingControl.TabIndex
+														  select siblingControl;
+				List<Control> siblings = next ? siblingsEnumerable.ToList() : siblingsEnumerable.Reverse().ToList();
+				Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
+				                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
+				if (dependencyObject is Control)
+				{
+					Control childControl = (Control) dependencyObject;
+					if ((from sibling in siblings
+						 where sibling != childControl && sibling.TabIndex == childControl.TabIndex &&
+							   siblings.IndexOf(sibling) > siblings.IndexOf(childControl)
+						 select sibling).Any(focus) ||
+						(from sibling in siblings
+						 where sibling.TabIndex > childControl.TabIndex
+						 select sibling).Any(focus))
+					{
+						return;
+					}
+				}
+
+				dependencyObject = dependencyObject.GetParent();
+				if (dependencyObject == null)
+				{
+					return;
+				}
+			}
+		}
+
+		private static IEnumerable<Control> GetChildControls(DependencyObject parent)
+		{
+			List<Control> childControls = new List<Control>();
+			if (parent is Control)
+			{
+				childControls.Add((Control) parent);
+			}
+			foreach (DependencyObject dependencyObject in parent.GetVisualChildren())
+			{
+				childControls.AddRange(GetChildControls(dependencyObject));
+			}
+			return childControls;
 		}
 
 
@@ -62,7 +118,7 @@ namespace Company.DataGrid.Controllers
 			this.SendNotification(Notifications.CELL_FOCUSED, this.Cell);
 		}
 
-		private void Cell_KeyUp(object sender, KeyEventArgs e)
+		private void Cell_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.Key)
 			{
@@ -70,7 +126,7 @@ namespace Company.DataGrid.Controllers
 					this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
 					if (!this.Cell.IsInEditMode)
 					{
-						this.Cell.FocusNext();
+						FocusNeighbor(true);
 					}
 					break;
 				case Key.Escape:
@@ -80,6 +136,12 @@ namespace Company.DataGrid.Controllers
 						// HACK: moving from edit state to view state causes the cell to lose focus somehow
 						this.Cell.Focus();
 					}
+					break;
+				case Key.Left:
+					FocusNeighbor(false);
+					break;
+				case Key.Right:
+					FocusNeighbor(true);
 					break;
 			}
 		}

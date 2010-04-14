@@ -45,7 +45,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRegister();
 
 			this.Cell.GotFocus += this.Cell_GotFocus;
-			this.Cell.KeyDown += this.Cell_KeyDown;
+			this.Cell.AddHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Cell_KeyDown), true);
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
 		}
 
@@ -57,7 +57,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRemove();
 
 			this.Cell.GotFocus -= this.Cell_GotFocus;
-			this.Cell.KeyDown -= this.Cell_KeyDown;
+			this.Cell.RemoveHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Cell_KeyDown));
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
 		}
 
@@ -138,10 +138,11 @@ namespace Company.DataGrid.Controllers
 					}
 					break;
 				case Key.Left:
-					FocusNeighbor(false);
-					break;
 				case Key.Right:
-					FocusNeighbor(true);
+					if (!e.Handled)
+					{
+						FocusNeighbor(e.Key == Key.Right);						
+					}
 					break;
 			}
 		}

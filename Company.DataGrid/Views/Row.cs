@@ -232,6 +232,12 @@ namespace Company.DataGrid.Views
 		{
 			Row row = (Row) d;
 			row.GoToFocused();
+			// the row must receive focus otherwise the up arrow won't scroll; however, thus 2 clicks are necessary to focus a cell (except the first one)
+			// the proper solution is to focus the cell from the column in the new row when the up or down arrows are pressed which is needed anyway
+			if (row.IsFocused)
+			{
+				row.Focus();
+			}
 			row.OnIsFocusedChanged(e);
 		}
 

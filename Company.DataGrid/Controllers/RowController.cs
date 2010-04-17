@@ -155,7 +155,7 @@ namespace Company.DataGrid.Controllers
 
 		private void Row_KeyDown(object sender, KeyEventArgs e)
 		{
-			this.SendNotification(Notifications.ITEM_KEY_DOWN, e);
+			this.SendNotification(Notifications.ITEM_KEY_DOWN, new object[] { this.Row, e });
 		}
 
 		private void Row_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

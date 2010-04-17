@@ -35,4 +35,6 @@ using System.Windows.Markup;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: XmlnsPrefix("http://schemas.company.com", "company")]
-[assembly: XmlnsDefinition("http://schemas.company.com", "Company.DataGrid.View")]
+[assembly: XmlnsDefinition("http://schemas.company.com", "Company.DataGrid.Views")]
+[assembly: XmlnsDefinition("http://schemas.company.com", "Company.DataGrid.Controllers")]
+[assembly: XmlnsDefinition("http://schemas.company.com", "Company.DataGrid.Models")]

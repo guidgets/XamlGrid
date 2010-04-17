@@ -135,7 +135,18 @@ namespace Company.DataGrid.Controllers
 					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
 					break;
 				case Notifications.ITEM_KEY_DOWN:
-					KeyEventArgs e = (KeyEventArgs) notification.Body;
+					object[] data = (object[]) notification.Body;
+					FrameworkElement row = (FrameworkElement) data[0];
+					KeyEventArgs e = (KeyEventArgs) data[1];
+					switch (e.Key)
+					{
+						case Key.Up:
+							e.Handled = !IsFirstOnPage(this.ItemsPresenter, row, this.GetOrientation());
+							break;
+						case Key.Down:
+							e.Handled = !IsLastOnPage(this.ItemsPresenter, row, this.GetOrientation());
+							break;
+					}
 					this.HandleCurrentItem(e.Key);
 					this.HandleSelection(e.Key);
 					break;
@@ -257,28 +268,25 @@ namespace Company.DataGrid.Controllers
 			{
 				return;
 			}
-			IList<Column> relativeColumns = (from column in this.DataGrid.Columns
-			                                 where column.Width.SizeMode == SizeMode.Fill
-			                                 select column).ToList();
+			IEnumerable<Column> relativeColumns = from column in this.DataGrid.Columns
+			                                      where column.Width.SizeMode == SizeMode.Fill
+			                                      select column;
 			double stars = relativeColumns.Sum(column => column.Width.Value);
 			double availableWidth = this.ItemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
 			                                                           where column.Width.SizeMode != SizeMode.Fill
 			                                                           select column.ActualWidth).Sum();
-			for (int index = 0; index < relativeColumns.Count; index++)
+			foreach (Column column in relativeColumns.Skip(1))
 			{
-				Column currentColumn = relativeColumns[index];
-				double width;
-				if (index != relativeColumns.Count - 1)
-				{
-					width = Math.Floor(currentColumn.Width.Value * availableWidth / stars);
-				}
-				else
-				{
-					width = this.itemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
-					                                           where column != currentColumn
-					                                           select column.ActualWidth).Sum();
-				}
-				currentColumn.ActualWidth = Math.Max(width, 1);
+				double width = Math.Floor(column.Width.Value * availableWidth / stars);
+				column.ActualWidth = Math.Max(width, 1);
+			}
+			Column firstColumn = relativeColumns.FirstOrDefault();
+			if (firstColumn != null)
+			{
+				double width = this.ItemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
+				                                                  where column != firstColumn
+				                                                  select column.ActualWidth).Sum();
+				firstColumn.ActualWidth = Math.Max(width, 1);
 			}
 		}
 
@@ -385,51 +393,89 @@ namespace Company.DataGrid.Controllers
 		private int GetFirstItemOnCurrentPage(int startingIndex, bool forward)
 		{
 			int step = forward ? 1 : -1;
-			int firstItemIndex = 0;
-			ScrollViewer scroll = this.DataGrid.GetScrollHost();
-			Orientation orientation = Orientation.Vertical;
-			if (this.ItemsHost is StackPanel)
-			{
-				orientation = ((StackPanel) this.ItemsHost).Orientation;
-			}
-			if (this.ItemsHost is VirtualizingStackPanel)
-			{
-				orientation = ((VirtualizingStackPanel) this.ItemsHost).Orientation;
-			}
+			int firstItemIndex = -1;
+			Orientation orientation = this.GetOrientation();
 			int index = startingIndex;
 			while (0 <= index && index < this.DataGrid.Items.Count &&
-			       !this.IsOnCurrentPage(index, scroll, orientation))
+			       !this.IsOnCurrentPage(index, orientation))
 			{
-				firstItemIndex = index += step;
+				firstItemIndex = index;
+				index += step;
 			}
 			while (0 <= index && index < this.DataGrid.Items.Count &&
-			       this.IsOnCurrentPage(index, scroll, orientation))
+			       this.IsOnCurrentPage(index, orientation))
 			{
-				firstItemIndex = index += step;
+				firstItemIndex = index;
+				index += step;
 			}
 			return firstItemIndex >= 0 ? firstItemIndex : 0;
 		}
 
-		private bool IsOnCurrentPage(int index, FrameworkElement scroll, Orientation orientation)
+		private Orientation GetOrientation()
 		{
-			if (scroll == null)
+			Orientation orientation = Orientation.Vertical;
+			if (itemsHost is StackPanel)
+			{
+				orientation = ((StackPanel) this.ItemsHost).Orientation;
+			}
+			if (itemsHost is VirtualizingStackPanel)
+			{
+				orientation = ((VirtualizingStackPanel) this.ItemsHost).Orientation;
+			}
+			return orientation;
+		}
+
+		private bool IsOnCurrentPage(int index, Orientation orientation)
+		{
+			if (this.ItemsPresenter == null)
 			{
 				return true;
 			}
-			Rect scrollRect = new Rect(0.0, 0.0, scroll.ActualWidth, scroll.ActualHeight);
 			FrameworkElement item = (FrameworkElement) this.DataGrid.ItemContainerGenerator.ContainerFromIndex(index);
 			if (item == null)
 			{
 				return false;
 			}
-			GeneralTransform transform = item.TransformToVisual(scroll);
-			Rect itemRect = new Rect(transform.Transform(new Point()),
-			                         transform.Transform(new Point(item.ActualWidth, item.ActualHeight)));
+			Rect scrollRect;
+			Rect itemRect;
+			GetRectangles(this.ItemsPresenter, item, out scrollRect, out itemRect);
 			if (orientation == Orientation.Horizontal)
 			{
 				return (scrollRect.Left <= itemRect.Left && itemRect.Right <= scrollRect.Right);
 			}
 			return (scrollRect.Top <= itemRect.Top && itemRect.Bottom <= scrollRect.Bottom);
+		}
+
+		private static bool IsFirstOnPage(FrameworkElement content, FrameworkElement row, Orientation orientation)
+		{
+			Rect scrollRect;
+			Rect itemRect;
+			GetRectangles(content, row, out scrollRect, out itemRect);
+			if (orientation == Orientation.Horizontal)
+			{
+				return scrollRect.Left >= itemRect.Left;
+			}
+			return scrollRect.Top >= itemRect.Top;
+		}
+
+		private static bool IsLastOnPage(FrameworkElement content, FrameworkElement row, Orientation orientation)
+		{
+			Rect scrollRect;
+			Rect itemRect;
+			GetRectangles(content, row, out scrollRect, out itemRect);
+			if (orientation == Orientation.Horizontal)
+			{
+				return itemRect.Right >= scrollRect.Right;
+			}
+			return itemRect.Bottom >= scrollRect.Bottom;
+		}
+
+		private static void GetRectangles(FrameworkElement parent, FrameworkElement item, out Rect parentRectangle, out Rect itemRectangle)
+		{
+			parentRectangle = new Rect(0.0, 0.0, parent.ActualWidth, parent.ActualHeight);
+			GeneralTransform transform = item.TransformToVisual(parent);
+			itemRectangle = new Rect(transform.Transform(new Point()),
+			                         transform.Transform(new Point(item.ActualWidth, item.ActualHeight)));
 		}
 	}
 }

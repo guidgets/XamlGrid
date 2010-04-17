@@ -2,9 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:company="clr-namespace:Company.DataGrid.Views"
-    xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
-    xmlns:toolkitInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
-	xmlns:controllers="clr-namespace:Company.DataGrid.Controllers"
+    xmlns:controllers="clr-namespace:Company.DataGrid.Controllers"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
     xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     >
 
@@ -429,10 +429,10 @@
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
-														<toolkitInput:NumericUpDown Value="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
+														<toolkit:NumericUpDown Value="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
                                                                                     Minimum="-1000000000" Maximum="1000000000" IsTabStop="False" company:ControlExtensions.FocusOnLoad="True">
-                                                            <toolkitInput:NumericUpDown.Template>
-                                                                <ControlTemplate TargetType="toolkitInput:NumericUpDown">
+                                                            <toolkit:NumericUpDown.Template>
+                                                                <ControlTemplate TargetType="toolkit:NumericUpDown">
                                                                     <Grid>
                                                                         <VisualStateManager.VisualStateGroups>
                                                                             <VisualStateGroup x:Name="CommonStates">
@@ -457,7 +457,7 @@
                                                                                 <VisualState x:Name="Unfocused" />
                                                                             </VisualStateGroup>
                                                                         </VisualStateManager.VisualStateGroups>
-                                                                        <toolkitInput:ButtonSpinner IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                                                        <toolkit:ButtonSpinner IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                             <TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
                                                                                 <TextBox.Style>
                                                                                     <Style TargetType="TextBox">
@@ -471,13 +471,13 @@
                                                                                     </Style>
                                                                                 </TextBox.Style>
                                                                             </TextBox>
-                                                                        </toolkitInput:ButtonSpinner>
+                                                                        </toolkit:ButtonSpinner>
                                                                         <Border x:Name="DisabledVisualElement" IsHitTestVisible="false" Opacity="0" Background="#A5FFFFFF" CornerRadius="2.5,2.5,2.5,2.5" />
                                                                         <Border x:Name="FocusVisualElement" IsHitTestVisible="False" Opacity="0" BorderBrush="#FF45D6FA" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
                                                                     </Grid>
                                                                 </ControlTemplate>
-                                                            </toolkitInput:NumericUpDown.Template>
-                                                        </toolkitInput:NumericUpDown>
+                                                            </toolkit:NumericUpDown.Template>
+                                                        </toolkit:NumericUpDown>
                                                     </DataTemplate>
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
@@ -490,7 +490,7 @@
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
-														<controls:DatePicker SelectedDate="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+														<sdk:DatePicker SelectedDate="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                              company:ControlExtensions.FocusOnLoad="True" />
                                                     </DataTemplate>
                                                 </DiscreteObjectKeyFrame.Value>

@@ -135,18 +135,7 @@ namespace Company.DataGrid.Controllers
 					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
 					break;
 				case Notifications.ITEM_KEY_DOWN:
-					object[] data = (object[]) notification.Body;
-					FrameworkElement row = (FrameworkElement) data[0];
-					KeyEventArgs e = (KeyEventArgs) data[1];
-					switch (e.Key)
-					{
-						case Key.Up:
-							e.Handled = !IsFirstOnPage(this.ItemsPresenter, row, this.GetOrientation());
-							break;
-						case Key.Down:
-							e.Handled = !IsLastOnPage(this.ItemsPresenter, row, this.GetOrientation());
-							break;
-					}
+					KeyEventArgs e = (KeyEventArgs) notification.Body;
 					this.HandleCurrentItem(e.Key);
 					this.HandleSelection(e.Key);
 					break;
@@ -444,30 +433,6 @@ namespace Company.DataGrid.Controllers
 				return (scrollRect.Left <= itemRect.Left && itemRect.Right <= scrollRect.Right);
 			}
 			return (scrollRect.Top <= itemRect.Top && itemRect.Bottom <= scrollRect.Bottom);
-		}
-
-		private static bool IsFirstOnPage(FrameworkElement content, FrameworkElement row, Orientation orientation)
-		{
-			Rect scrollRect;
-			Rect itemRect;
-			GetRectangles(content, row, out scrollRect, out itemRect);
-			if (orientation == Orientation.Horizontal)
-			{
-				return scrollRect.Left >= itemRect.Left;
-			}
-			return scrollRect.Top >= itemRect.Top;
-		}
-
-		private static bool IsLastOnPage(FrameworkElement content, FrameworkElement row, Orientation orientation)
-		{
-			Rect scrollRect;
-			Rect itemRect;
-			GetRectangles(content, row, out scrollRect, out itemRect);
-			if (orientation == Orientation.Horizontal)
-			{
-				return itemRect.Right >= scrollRect.Right;
-			}
-			return itemRect.Bottom >= scrollRect.Bottom;
 		}
 
 		private static void GetRectangles(FrameworkElement parent, FrameworkElement item, out Rect parentRectangle, out Rect itemRectangle)

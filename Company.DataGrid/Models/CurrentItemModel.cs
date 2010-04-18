@@ -74,7 +74,8 @@ namespace Company.DataGrid.Models
 		/// <returns>A value indicating if the moving was successful.</returns>
 		public bool MoveCurrentToPrevious()
 		{
-			return this.collectionView.MoveCurrentToPrevious();
+			this.collectionView.MoveCurrentToPrevious();
+			return !this.collectionView.IsCurrentBeforeFirst || this.MoveCurrentToFirst();
 		}
 
 		/// <summary>
@@ -83,7 +84,8 @@ namespace Company.DataGrid.Models
 		/// <returns>A value indicating if the moving was successful.</returns>
 		public bool MoveCurrentToNext()
 		{
-			return this.collectionView.MoveCurrentToNext();
+			this.collectionView.MoveCurrentToNext();
+			return !this.collectionView.IsCurrentAfterLast || this.MoveCurrentToLast();
 		}
 
 		/// <summary>

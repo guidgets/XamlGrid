@@ -67,23 +67,23 @@ namespace Company.DataGrid.Controllers
 			DependencyObject dependencyObject = this.Cell;
 			while (true)
 			{
-				IEnumerable<Control> siblings = from sibling in dependencyObject.GetVisualSiblingsAndSelf().OfType<Control>()
-				                                orderby sibling.TabIndex
-				                                select sibling;
-				List<Control> siblingList = next ? siblings.ToList() : siblings.Reverse().ToList();
-				Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
-				                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
 				Control control = dependencyObject as Control;
 				if (control != null)
 				{
+					IEnumerable<Control> siblings = from sibling in control.GetVisualSiblingsAndSelf().OfType<Control>()
+					                                orderby sibling.TabIndex
+					                                select sibling;
+					List<Control> siblingList = next ? siblings.ToList() : siblings.Reverse().ToList();
+					Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
+					                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
 					Control childControl = control;
 					if ((from sibling in siblingList
-						 where sibling != childControl && sibling.TabIndex == childControl.TabIndex &&
-							   siblingList.IndexOf(sibling) > siblingList.IndexOf(childControl)
-						 select sibling).Any(focus) ||
-						(from sibling in siblingList
-						 where sibling.TabIndex > childControl.TabIndex
-						 select sibling).Any(focus))
+					     where sibling != childControl && sibling.TabIndex == childControl.TabIndex &&
+					           siblingList.IndexOf(sibling) > siblingList.IndexOf(childControl)
+					     select sibling).Any(focus) ||
+					    (from sibling in siblingList
+					     where sibling.TabIndex > childControl.TabIndex
+					     select sibling).Any(focus))
 					{
 						return;
 					}
@@ -126,7 +126,7 @@ namespace Company.DataGrid.Controllers
 					this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
 					if (!this.Cell.IsInEditMode)
 					{
-						FocusNeighbor(true);
+						this.FocusNeighbor(true);
 					}
 					break;
 				case Key.Escape:
@@ -141,7 +141,7 @@ namespace Company.DataGrid.Controllers
 				case Key.Right:
 					if (!e.Handled)
 					{
-						FocusNeighbor(e.Key == Key.Right);						
+						this.FocusNeighbor(e.Key == Key.Right);						
 					}
 					break;
 			}

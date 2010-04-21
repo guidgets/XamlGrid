@@ -25,9 +25,10 @@ namespace Company.DataGrid.Controllers
 		/// </returns>
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is byte[])
+			byte[] bytes = value as byte[];
+			if (bytes != null)
 			{
-				using (MemoryStream memoryStream = new MemoryStream((byte[]) value))
+				using (MemoryStream memoryStream = new MemoryStream(bytes))
 				{
 					BitmapImage image = new BitmapImage();
 					image.SetSource(memoryStream);

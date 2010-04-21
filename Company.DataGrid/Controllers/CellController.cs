@@ -67,22 +67,21 @@ namespace Company.DataGrid.Controllers
 			DependencyObject dependencyObject = this.Cell;
 			while (true)
 			{
-				IEnumerable<Control> siblingsEnumerable = from sibling in dependencyObject.GetVisualSiblingsAndSelf()
-														  where sibling is Control
-														  let siblingControl = (Control) sibling
-														  orderby siblingControl.TabIndex
-														  select siblingControl;
-				List<Control> siblings = next ? siblingsEnumerable.ToList() : siblingsEnumerable.Reverse().ToList();
+				IEnumerable<Control> siblings = from sibling in dependencyObject.GetVisualSiblingsAndSelf().OfType<Control>()
+				                                orderby sibling.TabIndex
+				                                select sibling;
+				List<Control> siblingList = next ? siblings.ToList() : siblings.Reverse().ToList();
 				Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
 				                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
-				if (dependencyObject is Control)
+				Control control = dependencyObject as Control;
+				if (control != null)
 				{
-					Control childControl = (Control) dependencyObject;
-					if ((from sibling in siblings
+					Control childControl = control;
+					if ((from sibling in siblingList
 						 where sibling != childControl && sibling.TabIndex == childControl.TabIndex &&
-							   siblings.IndexOf(sibling) > siblings.IndexOf(childControl)
+							   siblingList.IndexOf(sibling) > siblingList.IndexOf(childControl)
 						 select sibling).Any(focus) ||
-						(from sibling in siblings
+						(from sibling in siblingList
 						 where sibling.TabIndex > childControl.TabIndex
 						 select sibling).Any(focus))
 					{
@@ -101,9 +100,10 @@ namespace Company.DataGrid.Controllers
 		private static IEnumerable<Control> GetChildControls(DependencyObject parent)
 		{
 			List<Control> childControls = new List<Control>();
-			if (parent is Control)
+			Control control = parent as Control;
+			if (control != null)
 			{
-				childControls.Add((Control) parent);
+				childControls.Add(control);
 			}
 			foreach (DependencyObject dependencyObject in parent.GetVisualChildren())
 			{

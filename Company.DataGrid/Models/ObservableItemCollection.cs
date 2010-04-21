@@ -55,15 +55,17 @@ namespace Company.DataGrid.Models
 			{
 				return;
 			}
-			if (this.enumerable is INotifyCollectionChanged)
+			INotifyCollectionChanged oldNotifyCollectionChanged = this.enumerable as INotifyCollectionChanged;
+			if (oldNotifyCollectionChanged != null)
 			{
-				((INotifyCollectionChanged) this.enumerable).CollectionChanged -= this.Enumerable_CollectionChanged;
+				oldNotifyCollectionChanged.CollectionChanged -= this.Enumerable_CollectionChanged;
 			}
 			this.Clear();
 			this.enumerable = newEnumerable;
-			if (this.enumerable is INotifyCollectionChanged)
+			INotifyCollectionChanged newNotifyCollectionChanged = this.enumerable as INotifyCollectionChanged;
+			if (newNotifyCollectionChanged != null)
 			{
-				((INotifyCollectionChanged) this.enumerable).CollectionChanged += this.Enumerable_CollectionChanged;
+				newNotifyCollectionChanged.CollectionChanged += this.Enumerable_CollectionChanged;
 			}
 			if (this.enumerable != null)
 			{
@@ -239,17 +241,18 @@ namespace Company.DataGrid.Models
 
 		private void AddRemoveHandler(object item, bool add)
 		{
-			if (!(item is INotifyPropertyChanged))
+			INotifyPropertyChanged notifyPropertyChanged = item as INotifyPropertyChanged;
+			if (notifyPropertyChanged == null)
 			{
 				return;
 			}
 			if (add)
 			{
-				((INotifyPropertyChanged) item).PropertyChanged += this.ObservableItemCollection_PropertyChanged;
+				notifyPropertyChanged.PropertyChanged += this.ObservableItemCollection_PropertyChanged;
 			}
 			else
 			{
-				((INotifyPropertyChanged) item).PropertyChanged -= this.ObservableItemCollection_PropertyChanged;
+				notifyPropertyChanged.PropertyChanged -= this.ObservableItemCollection_PropertyChanged;
 			}
 		}
 

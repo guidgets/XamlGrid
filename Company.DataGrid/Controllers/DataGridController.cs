@@ -145,10 +145,11 @@ namespace Company.DataGrid.Controllers
 					break;
 				case Notifications.CELL_FOCUSED:
 					UIElement uiElement = (UIElement) notification.Body;
-					if (this.ItemsHost is IScrollInfo)
+					IScrollInfo scrollInfo = this.ItemsHost as IScrollInfo;
+					if (scrollInfo != null)
 					{
 						Rect bounds = new Rect(0, 0, uiElement.RenderSize.Width, uiElement.RenderSize.Height);
-						((IScrollInfo) this.ItemsHost).MakeVisible(uiElement, bounds);
+						scrollInfo.MakeVisible(uiElement, bounds);
 					}
 					// TODO: this should be replaced by sending a notification because it tightens the coupling
 					((Cell) uiElement).IsInEditMode = continuousEditing;
@@ -403,11 +404,13 @@ namespace Company.DataGrid.Controllers
 		private Orientation GetOrientation()
 		{
 			Orientation orientation = Orientation.Vertical;
-			if (itemsHost is StackPanel)
+			StackPanel stackPanel = this.itemsHost as StackPanel;
+			if (stackPanel != null)
 			{
 				orientation = ((StackPanel) this.ItemsHost).Orientation;
 			}
-			if (itemsHost is VirtualizingStackPanel)
+			VirtualizingStackPanel virtualizingStackPanel = this.itemsHost as VirtualizingStackPanel;
+			if (virtualizingStackPanel != null)
 			{
 				orientation = ((VirtualizingStackPanel) this.ItemsHost).Orientation;
 			}

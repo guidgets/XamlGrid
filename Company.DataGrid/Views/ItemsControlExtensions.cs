@@ -17,18 +17,21 @@ namespace Company.DataGrid.Views
 		/// <returns>The <see cref="ItemsPresenter"/>, if any, of the specified <see cref="DependencyObject"/></returns>
 		public static ItemsPresenter GetItemsPresenter(this DependencyObject dependencyObject)
 		{
-			if (dependencyObject is ItemsPresenter)
+			ItemsPresenter presenter = dependencyObject as ItemsPresenter;
+			if (presenter != null)
 			{
-				return (ItemsPresenter) dependencyObject;
+				return presenter;
 			}
 			DependencyObject content = null;
-			if (dependencyObject is ContentControl)
+			ContentControl contentControl = dependencyObject as ContentControl;
+			if (contentControl != null)
 			{
-				content = ((ContentControl) dependencyObject).Content as DependencyObject;
+				content = contentControl.Content as DependencyObject;
 			}
-			if (dependencyObject is ContentPresenter)
+			ContentPresenter contentPresenter = dependencyObject as ContentPresenter;
+			if (contentPresenter != null)
 			{
-				content = ((ContentPresenter) dependencyObject).Content as DependencyObject;
+				content = contentPresenter.Content as DependencyObject;
 			}
 			if (content != null)
 			{

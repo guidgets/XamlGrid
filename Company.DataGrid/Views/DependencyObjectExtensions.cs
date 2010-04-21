@@ -10,24 +10,28 @@ namespace Company.DataGrid.Views
 	public static class DependencyObjectExtensions
 	{
 		/// <summary>
-		/// Determines whether the focus is within the <see cref="DependencyObject"/>.
+		/// Determines whether the focus is within the <paramref name="element"/>.
 		/// </summary>
-		/// <param name="dependencyObject">The <see cref="DependencyObject"/> to check for focus possession.</param>
+		/// <param name="element">The <see cref="DependencyObject"/> to check for focus possession.</param>
 		/// <returns>
 		/// 	<c>true</c> if the focus is within the <see cref="DependencyObject"/>; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsFocusWithin(this DependencyObject dependencyObject)
+		public static bool IsFocusWithin(this DependencyObject element)
 		{
-			object element = FocusManager.GetFocusedElement();
-			while (element is DependencyObject)
+			object currentElement = FocusManager.GetFocusedElement();
+			while (true)
 			{
-				if (element == dependencyObject)
+				if (currentElement == element)
 				{
 					return true;
 				}
-				element = ((DependencyObject) element).GetParent();
+				DependencyObject dependencyObject = currentElement as DependencyObject;
+				if (dependencyObject == null)
+				{
+					return false;
+				}
+				currentElement = dependencyObject.GetParent();
 			}
-			return false;
 		}
 
 		/// <summary>
@@ -38,9 +42,13 @@ namespace Company.DataGrid.Views
 		public static DependencyObject GetParent(this DependencyObject element)
 		{
 			DependencyObject parent = VisualTreeHelper.GetParent(element);
-			if (parent == null && element is FrameworkElement)
+			if (parent == null)
 			{
-				return ((FrameworkElement) element).Parent;
+				FrameworkElement frameworkElement = element as FrameworkElement;
+				if (frameworkElement != null)
+				{
+					return frameworkElement.Parent;
+				}
 			}
 			return parent;
 		}

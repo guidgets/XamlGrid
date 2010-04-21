@@ -42,14 +42,11 @@ namespace Company.DataGrid.Controllers
 
 		private void AssociatedObject_DragDelta(object sender, DragDeltaEventArgs e)
 		{
-			if (this.AssociatedObject.Tag is Column)
+			Column columnToResize = this.AssociatedObject.Tag as Column;
+			if (columnToResize != null && columnToResize.Resizable)
 			{
-				Column columnToResize = (Column) this.AssociatedObject.Tag;
-				if (columnToResize.Resizable)
-				{
-					double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
-					columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1);
-				}
+				double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
+				columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1);
 			}
 		}
 

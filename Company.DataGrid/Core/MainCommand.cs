@@ -75,9 +75,10 @@ namespace Company.DataGrid.Core
 
 			object commandInstance = Activator.CreateInstance(commandType);
 
-			if (commandInstance is ICommand)
+			ICommand command = commandInstance as ICommand;
+			if (command != null)
 			{
-				((ICommand) commandInstance).Execute(note);
+				command.Execute(note);
 			}
 		}
 

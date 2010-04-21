@@ -60,9 +60,10 @@ namespace Company.DataGrid.Core
 				Type commandType = this.m_subCommands[0];
 				object commandInstance = Activator.CreateInstance(commandType);
 
-				if (commandInstance is ICommand)
+				ICommand command = commandInstance as ICommand;
+				if (command != null)
 				{
-					((ICommand) commandInstance).Execute(notification);
+					command.Execute(notification);
 				}
 
 				this.m_subCommands.RemoveAt(0);

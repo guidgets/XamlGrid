@@ -42,17 +42,10 @@ namespace Company.DataGrid.Models
 			{
 				if (enumerable is ICollection || enumerable.GetType().GetInterface(typeof(ICollection<>).FullName, false) != null)
 				{
-					this.observableItemCollection.SetSource(from object item in enumerable 
-																select item);
+					this.observableItemCollection.SetSource(from object item in enumerable
+					                                        select item);
 				}
-				if (enumerable is ICollectionView)
-				{
-					this.collectionView = (ICollectionView) enumerable;
-				}
-				else
-				{
-					this.collectionView = new CollectionViewSource { Source = enumerable }.View;					
-				}
+				this.collectionView = enumerable as ICollectionView ?? new CollectionViewSource { Source = enumerable }.View;
 			}
 			this.SendNotification(Notifications.DATA_WRAPPED, this.collectionView);
 			return this.collectionView;

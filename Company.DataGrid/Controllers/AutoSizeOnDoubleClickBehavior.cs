@@ -55,13 +55,10 @@ namespace Company.DataGrid.Controllers
 				if ((DateTime.Now - this.waitingSince).TotalMilliseconds < TIME_BETWEEN_CLICKS)
 				{
 					this.waiting = false;
-					if (this.AssociatedObject.Tag is Column)
+					Column columnToResize = this.AssociatedObject.Tag as Column;
+					if (columnToResize != null && columnToResize.Resizable)
 					{
-						Column columnToResize = (Column) this.AssociatedObject.Tag;
-						if (columnToResize.Resizable)
-						{
-							columnToResize.AutoSize();							
-						}
+						columnToResize.AutoSize();
 					}
 				}
 			}

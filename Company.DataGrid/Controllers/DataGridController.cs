@@ -276,7 +276,7 @@ namespace Company.DataGrid.Controllers
 				double width = this.ItemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
 				                                                  where column != firstColumn
 				                                                  select column.ActualWidth).Sum();
-				firstColumn.ActualWidth = Math.Max(width, 1);
+				firstColumn.ActualWidth = Math.Max(width - 1, 1);
 			}
 		}
 

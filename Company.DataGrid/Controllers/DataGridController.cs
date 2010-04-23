@@ -210,37 +210,44 @@ namespace Company.DataGrid.Controllers
 
 		private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			switch (e.Action)
+			if (e.NewItems != null)
 			{
-				case NotifyCollectionChangedAction.Add:
-				case NotifyCollectionChangedAction.Replace:
-					foreach (Column column in e.NewItems)
+				foreach (Column column in e.NewItems)
+				{
+					if (column.ReadLocalValue(Column.WidthProperty) == DependencyProperty.UnsetValue)
 					{
-						if (column.ReadLocalValue(Column.WidthProperty) == DependencyProperty.UnsetValue)
-						{
-							BindingOperations.SetBinding(column, Column.WidthProperty,
-														 new Binding("ColumnWidth") { Source = this.DataGrid });
-						}
-						if (column.ReadLocalValue(Column.ResizableProperty) == DependencyProperty.UnsetValue)
-						{
-							BindingOperations.SetBinding(column, Column.ResizableProperty,
-														 new Binding("ResizableColumns") { Source = this.DataGrid });
-						}
-						if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
-						{
-							BindingOperations.SetBinding(column, Column.IsEditableProperty,
-														 new Binding("IsEditable") { Source = this.DataGrid });
-						}
-						column.IsSelected = true;
-						column.ActualWidthChanged += this.Column_ActualWidthChanged;
+						BindingOperations.SetBinding(column, Column.WidthProperty,
+						                             new Binding("ColumnWidth") { Source = this.DataGrid });
 					}
-					if ((from column in this.DataGrid.Columns
-						 where column.Width.SizeMode == SizeMode.Fill
-						 select column).Any())
+					if (column.ReadLocalValue(Column.ResizableProperty) == DependencyProperty.UnsetValue)
 					{
-						this.CalculateRelativeColumnWidths();
+						BindingOperations.SetBinding(column, Column.ResizableProperty,
+						                             new Binding("ResizableColumns") { Source = this.DataGrid });
 					}
-					break;
+					if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
+					{
+						BindingOperations.SetBinding(column, Column.IsEditableProperty,
+						                             new Binding("IsEditable") { Source = this.DataGrid });
+					}
+					column.IsSelected = true;
+					column.ActualWidthChanged += this.Column_ActualWidthChanged;
+				}
+			}
+			if (e.OldItems != null)
+			{
+				foreach (Column column in e.OldItems)
+				{
+					column.ClearValue(Column.WidthProperty);
+					column.ClearValue(Column.ResizableProperty);
+					column.ClearValue(Column.IsEditableProperty);
+					column.ActualWidthChanged -= this.Column_ActualWidthChanged;
+				}
+			}
+			if ((from column in this.DataGrid.Columns
+			     where column.Width.SizeMode == SizeMode.Fill
+			     select column).Any())
+			{
+				this.CalculateRelativeColumnWidths();
 			}
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
 		}

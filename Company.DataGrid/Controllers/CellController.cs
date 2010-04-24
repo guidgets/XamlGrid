@@ -62,36 +62,61 @@ namespace Company.DataGrid.Controllers
 		}
 
 
-		private void FocusNeighbor(bool next)
+		private void FocusHorizontalNeighbor(bool next)
 		{
 			DependencyObject dependencyObject = this.Cell;
-			while (true)
+			while (dependencyObject != null)
 			{
 				Control control = dependencyObject as Control;
-				if (control != null)
+				if (control == null)
 				{
-					IEnumerable<Control> siblings = from sibling in control.GetVisualSiblingsAndSelf().OfType<Control>()
-					                                orderby sibling.TabIndex
-					                                select sibling;
-					List<Control> siblingList = next ? siblings.ToList() : siblings.Reverse().ToList();
-					Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
-					                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
-					Control childControl = control;
-					if ((from sibling in siblingList
-					     where sibling != childControl && sibling.TabIndex == childControl.TabIndex &&
-					           siblingList.IndexOf(sibling) > siblingList.IndexOf(childControl)
-					     select sibling).Any(focus) ||
-					    (from sibling in siblingList
-					     where sibling.TabIndex > childControl.TabIndex
-					     select sibling).Any(focus))
-					{
-						return;
-					}
+					dependencyObject = dependencyObject.GetParent();
+					continue;
 				}
-
-				dependencyObject = dependencyObject.GetParent();
-				if (dependencyObject == null)
+				IEnumerable<Control> siblings = from sibling in control.GetVisualSiblingsAndSelf().OfType<Control>()
+				                                orderby sibling.TabIndex
+				                                select sibling;
+				if (!next)
 				{
+					siblings = siblings.Reverse();
+				}
+				Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
+				                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
+				if (siblings.SkipWhile(s => s != control).Skip(1).Any(focus))
+				{
+					return;
+				}
+			}
+		}
+
+		private void FocusVerticalNeighbor(bool next)
+		{
+			DependencyObject parent = this.Cell.GetParent();
+			while (parent != null)
+			{
+				ItemsControl itemsControl = parent as ItemsControl;
+				if (itemsControl == null)
+				{
+					parent = parent.GetParent();
+					continue;
+				}
+				IEnumerable<ItemsControl> siblings = from sibling in itemsControl.GetVisualSiblingsAndSelf().OfType<ItemsControl>()
+				                                     orderby sibling.TabIndex
+				                                     select sibling;
+				if (!next)
+				{
+					siblings = siblings.Reverse();
+				}
+				ItemsControl neighbor = siblings.SkipWhile(sibling => sibling != itemsControl).Skip(1).FirstOrDefault();
+				if (neighbor == null)
+				{
+					return;
+				}
+				int index = neighbor.Items.IndexOf(this.Cell.Column);
+				Control cell = neighbor.ItemContainerGenerator.ContainerFromIndex(index) as Control;
+				if (cell != null)
+				{
+					cell.Focus();
 					return;
 				}
 			}
@@ -126,7 +151,7 @@ namespace Company.DataGrid.Controllers
 					this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
 					if (!this.Cell.IsInEditMode)
 					{
-						this.FocusNeighbor(true);
+						this.FocusHorizontalNeighbor(true);
 					}
 					break;
 				case Key.Escape:
@@ -141,7 +166,14 @@ namespace Company.DataGrid.Controllers
 				case Key.Right:
 					if (!e.Handled)
 					{
-						this.FocusNeighbor(e.Key == Key.Right);						
+						this.FocusHorizontalNeighbor(e.Key == Key.Right);						
+					}
+					break;
+				case Key.Up:
+				case Key.Down:
+					if (!e.Handled)
+					{
+						this.FocusVerticalNeighbor(e.Key == Key.Down);
 					}
 					break;
 			}

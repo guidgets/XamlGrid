@@ -68,24 +68,23 @@ namespace Company.DataGrid.Controllers
 			while (dependencyObject != null)
 			{
 				Control control = dependencyObject as Control;
-				if (control == null)
+				if (control != null)
 				{
-					dependencyObject = dependencyObject.GetParent();
-					continue;
+					IEnumerable<Control> siblings = from sibling in control.GetVisualSiblingsAndSelf().OfType<Control>()
+					                                orderby sibling.TabIndex
+					                                select sibling;
+					if (!next)
+					{
+						siblings = siblings.Reverse();
+					}
+					Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
+					                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
+					if (siblings.SkipWhile(s => s != control).Skip(1).Any(focus))
+					{
+						return;
+					}
 				}
-				IEnumerable<Control> siblings = from sibling in control.GetVisualSiblingsAndSelf().OfType<Control>()
-				                                orderby sibling.TabIndex
-				                                select sibling;
-				if (!next)
-				{
-					siblings = siblings.Reverse();
-				}
-				Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
-				                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
-				if (siblings.SkipWhile(s => s != control).Skip(1).Any(focus))
-				{
-					return;
-				}
+				dependencyObject = dependencyObject.GetParent();
 			}
 		}
 
@@ -95,30 +94,29 @@ namespace Company.DataGrid.Controllers
 			while (parent != null)
 			{
 				ItemsControl itemsControl = parent as ItemsControl;
-				if (itemsControl == null)
+				if (itemsControl != null)
 				{
-					parent = parent.GetParent();
-					continue;
+					IEnumerable<ItemsControl> siblings = from sibling in itemsControl.GetVisualSiblingsAndSelf().OfType<ItemsControl>()
+					                                     orderby sibling.TabIndex
+					                                     select sibling;
+					if (!next)
+					{
+						siblings = siblings.Reverse();
+					}
+					ItemsControl neighbor = siblings.SkipWhile(sibling => sibling != itemsControl).Skip(1).FirstOrDefault();
+					if (neighbor == null)
+					{
+						return;
+					}
+					int index = neighbor.Items.IndexOf(this.Cell.Column);
+					Control cell = neighbor.ItemContainerGenerator.ContainerFromIndex(index) as Control;
+					if (cell != null)
+					{
+						cell.Focus();
+						return;
+					}
 				}
-				IEnumerable<ItemsControl> siblings = from sibling in itemsControl.GetVisualSiblingsAndSelf().OfType<ItemsControl>()
-				                                     orderby sibling.TabIndex
-				                                     select sibling;
-				if (!next)
-				{
-					siblings = siblings.Reverse();
-				}
-				ItemsControl neighbor = siblings.SkipWhile(sibling => sibling != itemsControl).Skip(1).FirstOrDefault();
-				if (neighbor == null)
-				{
-					return;
-				}
-				int index = neighbor.Items.IndexOf(this.Cell.Column);
-				Control cell = neighbor.ItemContainerGenerator.ContainerFromIndex(index) as Control;
-				if (cell != null)
-				{
-					cell.Focus();
-					return;
-				}
+				parent = parent.GetParent();
 			}
 		}
 
@@ -147,6 +145,9 @@ namespace Company.DataGrid.Controllers
 		{
 			switch (e.Key)
 			{
+				case Key.F2:
+					this.Cell.IsInEditMode = true;
+					break;
 				case Key.Enter:
 					this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
 					if (!this.Cell.IsInEditMode)

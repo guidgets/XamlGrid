@@ -135,6 +135,25 @@ namespace Company.DataGrid.Controllers
 			return childControls;
 		}
 
+		private void ProcessEnterKey(RoutedEventArgs e)
+		{
+			TextBox textBox = e.OriginalSource as TextBox;
+			if (textBox != null && textBox.AcceptsReturn)
+			{
+				return;
+			}
+			RichTextBox richTextBox = e.OriginalSource as RichTextBox;
+			if (richTextBox != null && richTextBox.AcceptsReturn)
+			{
+				return;
+			}
+			this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
+			if (!this.Cell.IsInEditMode)
+			{
+				this.FocusHorizontalNeighbor(true);
+			}
+		}
+
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
@@ -149,11 +168,7 @@ namespace Company.DataGrid.Controllers
 					this.Cell.IsInEditMode = true;
 					break;
 				case Key.Enter:
-					this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
-					if (!this.Cell.IsInEditMode)
-					{
-						this.FocusHorizontalNeighbor(true);
-					}
+					ProcessEnterKey(e);
 					break;
 				case Key.Escape:
 					if (this.Cell.IsInEditMode)

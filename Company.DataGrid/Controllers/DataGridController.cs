@@ -243,9 +243,7 @@ namespace Company.DataGrid.Controllers
 					column.ActualWidthChanged -= this.Column_ActualWidthChanged;
 				}
 			}
-			if ((from column in this.DataGrid.Columns
-			     where column.Width.SizeMode == SizeMode.Fill
-			     select column).Any())
+			if (this.DataGrid.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
 			{
 				this.CalculateRelativeColumnWidths();
 			}
@@ -259,9 +257,7 @@ namespace Company.DataGrid.Controllers
 
 		private void CalculateRelativeColumnWidths()
 		{
-			if (this.ItemsPresenter == null || (from column in this.DataGrid.Columns
-												where double.IsNaN(column.ActualWidth)
-												select column).Any())
+			if (this.ItemsPresenter == null || this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
 			{
 				return;
 			}

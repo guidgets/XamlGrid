@@ -431,7 +431,13 @@
                                                     <DataTemplate>
 														<toolkit:NumericUpDown Value="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
                                                                                     Minimum="-1000000000" Maximum="1000000000" IsTabStop="False" company:ControlExtensions.FocusOnLoad="True">
-                                                            <toolkit:NumericUpDown.Template>
+															<toolkit:NumericUpDown.Background>
+																<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
+															</toolkit:NumericUpDown.Background>
+															<toolkit:NumericUpDown.Foreground>
+																<SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
+															</toolkit:NumericUpDown.Foreground>
+															<toolkit:NumericUpDown.Template>
                                                                 <ControlTemplate TargetType="toolkit:NumericUpDown">
                                                                     <Grid>
                                                                         <VisualStateManager.VisualStateGroups>
@@ -457,7 +463,7 @@
                                                                                 <VisualState x:Name="Unfocused" />
                                                                             </VisualStateGroup>
                                                                         </VisualStateManager.VisualStateGroups>
-                                                                        <toolkit:ButtonSpinner IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                                                        <toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                             <TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
                                                                                 <TextBox.Style>
                                                                                     <Style TargetType="TextBox">
@@ -491,7 +497,11 @@
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <DataTemplate>
 														<sdk:DatePicker SelectedDate="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                             company:ControlExtensions.FocusOnLoad="True" />
+                                                                        company:ControlExtensions.FocusOnLoad="True">
+															<sdk:DatePicker.Foreground>
+																<SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
+															</sdk:DatePicker.Foreground>
+														</sdk:DatePicker>
                                                     </DataTemplate>
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>

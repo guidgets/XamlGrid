@@ -123,10 +123,12 @@ namespace Company.DataGrid.Models
 		{
 			int step = start <= end ? 1 : -1;
 			this.ranges.AddRange(start, end);
+			List<object> selectedItems = new List<object>();
 			for (int index = start; index != end + step; index += step)
 			{
-				this.SelectedItems.Add(this.items[index]);
+				selectedItems.Add(this.items[index]);
 			}
+			this.SelectedItems.AddRange(selectedItems);
 		}
 
 		/// <summary>
@@ -135,10 +137,7 @@ namespace Company.DataGrid.Models
 		public void SelectAll()
 		{
 			List<Range> backup = new List<Range>(this.ranges);
-			foreach (object item in this.items)
-			{
-				this.SelectedItems.Add(item);
-			}
+			this.SelectRange(0, this.items.Count - 1);
 			this.ranges.Clear();
 			foreach (Range range in backup)
 			{
@@ -151,12 +150,7 @@ namespace Company.DataGrid.Models
 			switch (e.Action)
 			{
 				case NotifyCollectionChangedAction.Add:
-					foreach (int indexOfItem in from object selectedItem in e.NewItems
-												select this.items.IndexOf(selectedItem))
-					{
-						this.ranges.AddRange(indexOfItem, indexOfItem);
-					}
-					this.SendNotification(Notifications.SELECTED_ITEMS, e.NewItems);
+					this.ProcessAddition(e);
 					break;
 				case NotifyCollectionChangedAction.Remove:
 					foreach (int indexOfItem in from object selectedItem in e.OldItems
@@ -185,6 +179,30 @@ namespace Company.DataGrid.Models
 					this.SendNotification(Notifications.DESELECTED_ITEMS, this.SelectedItems);
 					break;
 			}
+		}
+
+		private void ProcessAddition(NotifyCollectionChangedEventArgs e)
+		{
+			List<object> selectedItems = new List<object>();
+			foreach (object newItem in e.NewItems)
+			{
+				IEnumerable<object> enumerable = newItem as IEnumerable<object>;
+				if (enumerable != null)
+				{
+					selectedItems.AddRange(enumerable);
+				}
+				else
+				{
+					int index = this.items.IndexOf(newItem);
+					this.ranges.AddRange(index, index);						
+				}
+			}
+			if (selectedItems.Count > 0)
+			{
+				int index = this.items.IndexOf(selectedItems[0]);
+				this.ranges.AddRange(index, index + selectedItems.Count);
+			}
+			this.SendNotification(Notifications.SELECTED_ITEMS, selectedItems.Count > 0 ? selectedItems : e.NewItems);
 		}
 
 		private void SelectionModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

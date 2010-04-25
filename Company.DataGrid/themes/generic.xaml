@@ -8,17 +8,17 @@
     xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     >
 
-    <Style TargetType="company:DataGrid">
+	<Style TargetType="company:DataGrid">
 		<Setter Property="Background">
 			<Setter.Value>
 				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
 			</Setter.Value>
 		</Setter>
-        <Setter Property="Foreground">
-            <Setter.Value>
-                <SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
-            </Setter.Value>
-        </Setter>
+		<Setter Property="Foreground">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
+			</Setter.Value>
+		</Setter>
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -30,218 +30,218 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="company:DataGrid">
 					<Border Background="{TemplateBinding Background}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <ScrollViewer Name="headerScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0" Padding="0"
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<ScrollViewer Name="headerScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0" Padding="0"
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
-                                <company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
+								<company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
                                                    Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-                            </ScrollViewer>
-                            <ScrollViewer Name="mainScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="0"
+							</ScrollViewer>
+							<ScrollViewer Name="mainScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="0"
                                           controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
-                                <ItemsPresenter />
-                            </ScrollViewer>
-                        </Grid>
-                    </Border>
+								<ItemsPresenter />
+							</ScrollViewer>
+						</Grid>
+					</Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
 
-    <Style TargetType="company:HeaderRow">
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+	<Style TargetType="company:HeaderRow">
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
-    <controllers:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
-    
-    <Style TargetType="company:HeaderCell">
-        <Setter Property="Background">
-            <Setter.Value>
-                <SolidColorBrush company:OSBrush.OSColor="ControlColor" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Padding" Value="6,3,6,3" />
-        <Setter Property="controllers:StyleBinder.Bindings">
-            <Setter.Value>
-                <controllers:StyleBindingCollection>
-                    <controllers:StyleBinding Property="Content"
+	<controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
+	<controllers:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+
+	<Style TargetType="company:HeaderCell">
+		<Setter Property="Background">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="ControlColor" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Padding" Value="6,3,6,3" />
+		<Setter Property="controllers:StyleBinder.Bindings">
+			<Setter.Value>
+				<controllers:StyleBindingCollection>
+					<controllers:StyleBinding Property="Content"
                                               Binding="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-                    <controllers:StyleBinding Property="Width" 
+					<controllers:StyleBinding Property="Width" 
                                               Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-                    <controllers:StyleBinding Property="Visibility" 
+					<controllers:StyleBinding Property="Visibility" 
                                               Binding="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-                </controllers:StyleBindingCollection>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="company:HeaderCell">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+				</controllers:StyleBindingCollection>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="company:HeaderCell">
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <ToggleButton IsThreeState="True" Content="{TemplateBinding Content}"
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<ToggleButton IsThreeState="True" Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}" Padding="{TemplateBinding Padding}"
                                           IsChecked="{Binding SortDirection, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
                                                               Converter={StaticResource sortDirectionToBooleanConverter}}">
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="ToggleButton">
-                                        <Grid Background="Transparent">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <ContentPresenter Margin="{TemplateBinding Padding}" />
-                                            <Path Name="SortArrow" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
+								<ToggleButton.Template>
+									<ControlTemplate TargetType="ToggleButton">
+										<Grid Background="Transparent">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition />
+												<ColumnDefinition Width="Auto" />
+											</Grid.ColumnDefinitions>
+											<ContentPresenter Margin="{TemplateBinding Padding}" />
+											<Path Name="SortArrow" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
                                                   VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
                                                   Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1">
-                                                <Path.Fill>
-                                                    <SolidColorBrush company:OSBrush.OSColor="ControlDarkDarkColor" />
-                                                </Path.Fill>
-                                                <Path.RenderTransform>
-                                                    <ScaleTransform ScaleX=".9" ScaleY=".9" />
-                                                </Path.RenderTransform>
-                                            </Path>
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CheckStates">
-                                                    <VisualState x:Name="Checked">
-                                                        <Storyboard Storyboard.TargetName="SortArrow">
-                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
-                                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0" To="-.9"/>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Unchecked">
-                                                        <Storyboard Storyboard.TargetName="SortArrow">
-                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Indeterminate" />
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8"
+												<Path.Fill>
+													<SolidColorBrush company:OSBrush.OSColor="ControlDarkDarkColor" />
+												</Path.Fill>
+												<Path.RenderTransform>
+													<ScaleTransform ScaleX=".9" ScaleY=".9" />
+												</Path.RenderTransform>
+											</Path>
+											<VisualStateManager.VisualStateGroups>
+												<VisualStateGroup x:Name="CheckStates">
+													<VisualState x:Name="Checked">
+														<Storyboard Storyboard.TargetName="SortArrow">
+															<DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
+															<DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0" To="-.9"/>
+														</Storyboard>
+													</VisualState>
+													<VisualState x:Name="Unchecked">
+														<Storyboard Storyboard.TargetName="SortArrow">
+															<DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0" To="1.0" />
+														</Storyboard>
+													</VisualState>
+													<VisualState x:Name="Indeterminate" />
+												</VisualStateGroup>
+											</VisualStateManager.VisualStateGroups>
+										</Grid>
+									</ControlTemplate>
+								</ToggleButton.Template>
+							</ToggleButton>
+							<Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8"
                                    Tag="{Binding Column, RelativeSource={RelativeSource TemplatedParent}}"
                                    Visibility="{Binding Tag.Resizable, RelativeSource={RelativeSource Self}, 
                                                         Converter={StaticResource booleanToVisibilityConverter}}">
-                                <interactivity:Interaction.Behaviors>
-                                    <controllers:ColumnResizingBehavior />
-                                    <controllers:AutoSizeOnDoubleClickBehavior />
-                                </interactivity:Interaction.Behaviors>
-                                <Thumb.Template>
-                                    <ControlTemplate TargetType="Thumb">
-                                        <Border Background="Transparent" />
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
-                            <Rectangle Width="1" HorizontalAlignment="Right" Grid.Column="2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush company:OSBrush.OSColor="ControlDarkColor" />
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+								<interactivity:Interaction.Behaviors>
+									<controllers:ColumnResizingBehavior />
+									<controllers:AutoSizeOnDoubleClickBehavior />
+								</interactivity:Interaction.Behaviors>
+								<Thumb.Template>
+									<ControlTemplate TargetType="Thumb">
+										<Border Background="Transparent" />
+									</ControlTemplate>
+								</Thumb.Template>
+							</Thumb>
+							<Rectangle Width="1" HorizontalAlignment="Right" Grid.Column="2">
+								<Rectangle.Fill>
+									<SolidColorBrush company:OSBrush.OSColor="ControlDarkColor" />
+								</Rectangle.Fill>
+							</Rectangle>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <Style TargetType="company:Row">
-        <Setter Property="BorderThickness" Value="0,0,0,1" />
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <SolidColorBrush company:OSBrush.OSColor="ActiveBorderColor" />
-            </Setter.Value>
-        </Setter>
+	<Style TargetType="company:Row">
+		<Setter Property="BorderThickness" Value="0,0,0,1" />
+		<Setter Property="BorderBrush">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="ActiveBorderColor" />
+			</Setter.Value>
+		</Setter>
 		<Setter Property="Background">
 			<Setter.Value>
 				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
 			</Setter.Value>
 		</Setter>
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
 				<ItemsPanelTemplate>
 					<VirtualizingStackPanel Orientation="Horizontal" />
 				</ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="company:Row">
-                    <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+			</Setter.Value>
+		</Setter>
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="company:Row">
+					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
-                        <ItemsPresenter />
-                        <VisualStateManager.CustomVisualStateManager>
-                            <company:CustomVSM />
-                        </VisualStateManager.CustomVisualStateManager>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup Name="Focus">
-                                <VisualState Name="Unfocused" />
-                                <VisualState Name="Focused">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightColor" />
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="1" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="-1,-1,-1,0" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup Name="Selection">
-                                <VisualState Name="Deselected" />
-                                <VisualState Name="Selected">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightColor" />
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <SolidColorBrush company:OSBrush.OSColor="HighlightTextColor" />
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+						<ItemsPresenter />
+						<VisualStateManager.CustomVisualStateManager>
+							<company:CustomVSM />
+						</VisualStateManager.CustomVisualStateManager>
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup Name="Focus">
+								<VisualState Name="Unfocused" />
+								<VisualState Name="Focused">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<SolidColorBrush company:OSBrush.OSColor="HighlightColor" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="1" />
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="-1,-1,-1,0" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+							<VisualStateGroup Name="Selection">
+								<VisualState Name="Deselected" />
+								<VisualState Name="Selected">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<SolidColorBrush company:OSBrush.OSColor="HighlightColor" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<SolidColorBrush company:OSBrush.OSColor="HighlightTextColor" />
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
 	<controllers:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
-    <controllers:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
+	<controllers:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
 
 	<Style TargetType="company:Cell">
 		<Setter Property="Background" Value="Transparent" />
@@ -401,34 +401,34 @@
 
 	<Style TargetType="company:Editor">
 		<Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="company:Editor">
-                    <Border>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="company:Editor">
+					<Border>
 						<ContentPresenter Name="Content" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup Name="Editing">
-                                <VisualState Name="None" />
-                                <VisualState Name="EditText">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <DataTemplate>
-                                                        <TextBox Text="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup Name="Editing">
+								<VisualState Name="None" />
+								<VisualState Name="EditText">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<DataTemplate>
+														<TextBox Text="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                  SelectionLength="1000000000" company:ControlExtensions.FocusOnLoad="True" />
-                                                    </DataTemplate>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState Name="EditNumber">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <DataTemplate>
+													</DataTemplate>
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="EditNumber">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<DataTemplate>
 														<toolkit:NumericUpDown Value="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
                                                                                     Minimum="-1000000000" Maximum="1000000000" IsTabStop="False" company:ControlExtensions.FocusOnLoad="True">
 															<toolkit:NumericUpDown.Background>
@@ -438,82 +438,82 @@
 																<SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
 															</toolkit:NumericUpDown.Foreground>
 															<toolkit:NumericUpDown.Template>
-                                                                <ControlTemplate TargetType="toolkit:NumericUpDown">
-                                                                    <Grid>
-                                                                        <VisualStateManager.VisualStateGroups>
-                                                                            <VisualStateGroup x:Name="CommonStates">
-                                                                                <VisualStateGroup.Transitions>
-                                                                                    <VisualTransition GeneratedDuration="0" />
-                                                                                </VisualStateGroup.Transitions>
-                                                                                <VisualState x:Name="Normal" />
-                                                                                <VisualState x:Name="Disabled">
-                                                                                    <Storyboard>
-                                                                                        <DoubleAnimation Duration="0" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)" To="1" />
-                                                                                    </Storyboard>
-                                                                                </VisualState>
-                                                                            </VisualStateGroup>
-                                                                            <VisualStateGroup x:Name="FocusStates">
-                                                                                <VisualState x:Name="Focused">
-                                                                                    <Storyboard>
-                                                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity">
-                                                                                            <SplineDoubleKeyFrame KeyTime="0" Value="1" />
-                                                                                        </DoubleAnimationUsingKeyFrames>
-                                                                                    </Storyboard>
-                                                                                </VisualState>
-                                                                                <VisualState x:Name="Unfocused" />
-                                                                            </VisualStateGroup>
-                                                                        </VisualStateManager.VisualStateGroups>
-                                                                        <toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                                                            <TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
-                                                                                <TextBox.Style>
-                                                                                    <Style TargetType="TextBox">
-                                                                                        <Setter Property="Template">
-                                                                                            <Setter.Value>
-                                                                                                <ControlTemplate TargetType="TextBox">
-                                                                                                    <ScrollViewer x:Name="ContentElement" Padding="0" BorderThickness="0" />
-                                                                                                </ControlTemplate>
-                                                                                            </Setter.Value>
-                                                                                        </Setter>
-                                                                                    </Style>
-                                                                                </TextBox.Style>
-                                                                            </TextBox>
-                                                                        </toolkit:ButtonSpinner>
-                                                                        <Border x:Name="DisabledVisualElement" IsHitTestVisible="false" Opacity="0" Background="#A5FFFFFF" CornerRadius="2.5,2.5,2.5,2.5" />
-                                                                        <Border x:Name="FocusVisualElement" IsHitTestVisible="False" Opacity="0" BorderBrush="#FF45D6FA" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
-                                                                    </Grid>
-                                                                </ControlTemplate>
-                                                            </toolkit:NumericUpDown.Template>
-                                                        </toolkit:NumericUpDown>
-                                                    </DataTemplate>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState Name="EditDate">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <DataTemplate>
+																<ControlTemplate TargetType="toolkit:NumericUpDown">
+																	<Grid>
+																		<VisualStateManager.VisualStateGroups>
+																			<VisualStateGroup x:Name="CommonStates">
+																				<VisualStateGroup.Transitions>
+																					<VisualTransition GeneratedDuration="0" />
+																				</VisualStateGroup.Transitions>
+																				<VisualState x:Name="Normal" />
+																				<VisualState x:Name="Disabled">
+																					<Storyboard>
+																						<DoubleAnimation Duration="0" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)" To="1" />
+																					</Storyboard>
+																				</VisualState>
+																			</VisualStateGroup>
+																			<VisualStateGroup x:Name="FocusStates">
+																				<VisualState x:Name="Focused">
+																					<Storyboard>
+																						<DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity">
+																							<SplineDoubleKeyFrame KeyTime="0" Value="1" />
+																						</DoubleAnimationUsingKeyFrames>
+																					</Storyboard>
+																				</VisualState>
+																				<VisualState x:Name="Unfocused" />
+																			</VisualStateGroup>
+																		</VisualStateManager.VisualStateGroups>
+																		<toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+																			<TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
+																				<TextBox.Style>
+																					<Style TargetType="TextBox">
+																						<Setter Property="Template">
+																							<Setter.Value>
+																								<ControlTemplate TargetType="TextBox">
+																									<ScrollViewer x:Name="ContentElement" Padding="0" BorderThickness="0" />
+																								</ControlTemplate>
+																							</Setter.Value>
+																						</Setter>
+																					</Style>
+																				</TextBox.Style>
+																			</TextBox>
+																		</toolkit:ButtonSpinner>
+																		<Border x:Name="DisabledVisualElement" IsHitTestVisible="false" Opacity="0" Background="#A5FFFFFF" CornerRadius="2.5,2.5,2.5,2.5" />
+																		<Border x:Name="FocusVisualElement" IsHitTestVisible="False" Opacity="0" BorderBrush="#FF45D6FA" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
+																	</Grid>
+																</ControlTemplate>
+															</toolkit:NumericUpDown.Template>
+														</toolkit:NumericUpDown>
+													</DataTemplate>
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState Name="EditDate">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<DataTemplate>
 														<sdk:DatePicker SelectedDate="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                         company:ControlExtensions.FocusOnLoad="True">
 															<sdk:DatePicker.Foreground>
 																<SolidColorBrush company:OSBrush.OSColor="ControlTextColor" />
 															</sdk:DatePicker.Foreground>
 														</sdk:DatePicker>
-                                                    </DataTemplate>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+													</DataTemplate>
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
 </ResourceDictionary>

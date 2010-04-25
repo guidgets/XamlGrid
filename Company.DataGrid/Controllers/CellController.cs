@@ -79,7 +79,7 @@ namespace Company.DataGrid.Controllers
 					}
 					Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
 					                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
-					if (siblings.SkipWhile(s => s != control).Skip(1).Any(focus))
+					if (siblings.SkipWhile(sibling => sibling != control).Skip(1).Any(focus))
 					{
 						return;
 					}

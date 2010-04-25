@@ -21,8 +21,11 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		public event EventHandler<ItemPropertyChangedEventArgs> ItemPropertyChanged;
 
+
 		private IEnumerable<T> enumerable;
 		private readonly List<string> propertyPaths;
+		private readonly Dictionary<string, List<object>> propertyPathsItems;
+
 
 		/// <summary>
 		/// Represents an <see cref="ObservableCollection{T}"/> which fires an event when a 
@@ -31,6 +34,7 @@ namespace Company.DataGrid.Models
 		public ObservableItemCollection()
 		{
 			this.propertyPaths = new List<string>();
+			this.propertyPathsItems = new Dictionary<string, List<object>>();
 
 			this.ThrowExceptionOnInvalidPath = true;
 		}
@@ -142,13 +146,19 @@ namespace Company.DataGrid.Models
 		public void RemovePropertyPaths(IEnumerable<string> oldPropertyPaths)
 		{
 			this.TraversePropertyPaths(oldPropertyPaths, false);
-			oldPropertyPaths.Select(propertyPath => this.propertyPaths.Remove(propertyPath));
+			foreach (string oldPropertyPath in oldPropertyPaths)
+			{
+				this.propertyPaths.Remove(oldPropertyPath);
+			}
 		}
 
 		public void ReplacePropertyPaths(IEnumerable<string> newPropertyPaths, IEnumerable<string> oldPropertyPaths)
 		{
 			this.TraversePropertyPaths(oldPropertyPaths, false);
-			oldPropertyPaths.Select(propertyPath => this.propertyPaths.Remove(propertyPath));
+			foreach (string oldPropertyPath in oldPropertyPaths)
+			{
+				this.propertyPaths.Remove(oldPropertyPath);
+			}
 			this.TraversePropertyPaths(newPropertyPaths, true);
 			this.propertyPaths.AddRange(newPropertyPaths);
 		}
@@ -190,7 +200,7 @@ namespace Company.DataGrid.Models
 
 		private void ManagePropertyChangedHandler(T item, bool addHandler)
 		{
-			this.AddRemoveHandler(item, addHandler);
+			this.AddRemoveHandler(item, string.Empty, addHandler);
 			foreach (string propertyPath in this.propertyPaths)
 			{
 				object value = item;
@@ -235,11 +245,11 @@ namespace Company.DataGrid.Models
 				{
 					break;
 				}
-				this.AddRemoveHandler(value, addHandler);
+				this.AddRemoveHandler(value, propertyPath, addHandler);
 			}
 		}
 
-		private void AddRemoveHandler(object item, bool add)
+		private void AddRemoveHandler(object item, string propertyPath, bool add)
 		{
 			INotifyPropertyChanged notifyPropertyChanged = item as INotifyPropertyChanged;
 			if (notifyPropertyChanged == null)
@@ -248,10 +258,34 @@ namespace Company.DataGrid.Models
 			}
 			if (add)
 			{
+				if (!string.IsNullOrEmpty(propertyPath))
+				{
+					if (propertyPathsItems.ContainsKey(propertyPath))
+					{
+						List<object> items = propertyPathsItems[propertyPath];
+						if (!items.Contains(item))
+						{
+							items.Add(item);
+						}
+					}
+					else
+					{
+						propertyPathsItems.Add(propertyPath, new List<object> { item });
+					}
+				}
 				notifyPropertyChanged.PropertyChanged += this.ObservableItemCollection_PropertyChanged;
 			}
 			else
 			{
+				if (!string.IsNullOrEmpty(propertyPath))
+				{
+					List<object> items = propertyPathsItems[propertyPath];
+					items.Remove(item);
+					if (items.Count == 0)
+					{
+						propertyPathsItems.Remove(propertyPath);
+					}
+				}
 				notifyPropertyChanged.PropertyChanged -= this.ObservableItemCollection_PropertyChanged;
 			}
 		}
@@ -261,7 +295,10 @@ namespace Company.DataGrid.Models
 			EventHandler<ItemPropertyChangedEventArgs> handler = this.ItemPropertyChanged;
 			if (handler != null)
 			{
-				handler(this, new ItemPropertyChangedEventArgs(sender, e.PropertyName));
+				string propertyPath = (from propertyPathsItem in propertyPathsItems
+				                       where propertyPathsItem.Value.Contains(sender)
+				                       select propertyPathsItem.Key).FirstOrDefault();
+				handler(this, new ItemPropertyChangedEventArgs(sender, propertyPath ?? e.PropertyName, e.PropertyName));
 			}
 		}
 	}

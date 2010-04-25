@@ -24,7 +24,7 @@ namespace Company.DataGrid.Models
 
 		private void ObservableItemCollection_ItemPropertyChanged(object sender, ItemPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.REFRESH_SORTING, e.PropertyName);
+			this.SendNotification(Notifications.REFRESH_SORTING, e.PropertyPath);
 		}
 
 		public ICollectionView Create(IEnumerable enumerable)

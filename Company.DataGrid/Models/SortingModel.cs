@@ -160,7 +160,7 @@ namespace Company.DataGrid.Models
 				return;
 			}
 			if ((from sortDescription in this.SortDescriptions
-				 where sortDescription.PropertyName.Contains(propertyPath)
+				 where sortDescription.PropertyName == propertyPath
 				 select sortDescription).Any())
 			{
 				this.collectionView.Refresh();

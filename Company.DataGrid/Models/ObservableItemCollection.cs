@@ -23,7 +23,6 @@ namespace Company.DataGrid.Models
 
 
 		private IEnumerable<T> enumerable;
-		private readonly List<string> propertyPaths;
 		private readonly Dictionary<string, List<object>> propertyPathsItems;
 
 
@@ -33,7 +32,6 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		public ObservableItemCollection()
 		{
-			this.propertyPaths = new List<string>();
 			this.propertyPathsItems = new Dictionary<string, List<object>>();
 
 			this.ThrowExceptionOnInvalidPath = true;
@@ -134,7 +132,6 @@ namespace Company.DataGrid.Models
 		public void AddPropertyPaths(IEnumerable<string> newPropertyPaths)
 		{
 			this.TraversePropertyPaths(newPropertyPaths, true);
-			this.propertyPaths.AddRange(newPropertyPaths);
 		}
 
 		/// <summary>
@@ -146,21 +143,12 @@ namespace Company.DataGrid.Models
 		public void RemovePropertyPaths(IEnumerable<string> oldPropertyPaths)
 		{
 			this.TraversePropertyPaths(oldPropertyPaths, false);
-			foreach (string oldPropertyPath in oldPropertyPaths)
-			{
-				this.propertyPaths.Remove(oldPropertyPath);
-			}
 		}
 
 		public void ReplacePropertyPaths(IEnumerable<string> newPropertyPaths, IEnumerable<string> oldPropertyPaths)
 		{
 			this.TraversePropertyPaths(oldPropertyPaths, false);
-			foreach (string oldPropertyPath in oldPropertyPaths)
-			{
-				this.propertyPaths.Remove(oldPropertyPath);
-			}
 			this.TraversePropertyPaths(newPropertyPaths, true);
-			this.propertyPaths.AddRange(newPropertyPaths);
 		}
 
 		/// <summary>
@@ -169,8 +157,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		public void ClearPropertyPaths()
 		{
-			this.TraversePropertyPaths(this.propertyPaths, false);
-			this.propertyPaths.Clear();
+			this.TraversePropertyPaths(new List<string>(this.propertyPathsItems.Keys), false);
 		}
 
 		private void Enumerable_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -201,7 +188,7 @@ namespace Company.DataGrid.Models
 		private void ManagePropertyChangedHandler(T item, bool addHandler)
 		{
 			this.AddRemoveHandler(item, string.Empty, addHandler);
-			foreach (string propertyPath in this.propertyPaths)
+			foreach (string propertyPath in new List<string>(this.propertyPathsItems.Keys))
 			{
 				object value = item;
 				this.TraversePropertyPath(addHandler, propertyPath, value);
@@ -212,6 +199,18 @@ namespace Company.DataGrid.Models
 		{
 			foreach (string propertyPath in changedPropertyPaths)
 			{
+				if (addedColumns)
+				{
+					if (this.propertyPathsItems.ContainsKey(propertyPath))
+					{
+						continue;
+					}
+					this.propertyPathsItems.Add(propertyPath, new List<object>());
+				}
+				else
+				{
+					this.propertyPathsItems.Remove(propertyPath);
+				}
 				foreach (T item in this)
 				{
 					this.TraversePropertyPath(addedColumns, propertyPath, item);
@@ -260,32 +259,17 @@ namespace Company.DataGrid.Models
 			{
 				if (!string.IsNullOrEmpty(propertyPath))
 				{
-					if (propertyPathsItems.ContainsKey(propertyPath))
+					List<object> items = this.propertyPathsItems[propertyPath];
+					if (!items.Contains(item))
 					{
-						List<object> items = propertyPathsItems[propertyPath];
-						if (!items.Contains(item))
-						{
-							items.Add(item);
-						}
-					}
-					else
-					{
-						propertyPathsItems.Add(propertyPath, new List<object> { item });
+						items.Add(item);
 					}
 				}
 				notifyPropertyChanged.PropertyChanged += this.ObservableItemCollection_PropertyChanged;
 			}
 			else
 			{
-				if (!string.IsNullOrEmpty(propertyPath))
-				{
-					List<object> items = propertyPathsItems[propertyPath];
-					items.Remove(item);
-					if (items.Count == 0)
-					{
-						propertyPathsItems.Remove(propertyPath);
-					}
-				}
+				this.propertyPathsItems.Remove(propertyPath);
 				notifyPropertyChanged.PropertyChanged -= this.ObservableItemCollection_PropertyChanged;
 			}
 		}
@@ -295,7 +279,7 @@ namespace Company.DataGrid.Models
 			EventHandler<ItemPropertyChangedEventArgs> handler = this.ItemPropertyChanged;
 			if (handler != null)
 			{
-				string propertyPath = (from propertyPathsItem in propertyPathsItems
+				string propertyPath = (from propertyPathsItem in this.propertyPathsItems
 				                       where propertyPathsItem.Value.Contains(sender)
 				                       select propertyPathsItem.Key).FirstOrDefault();
 				handler(this, new ItemPropertyChangedEventArgs(sender, propertyPath ?? e.PropertyName, e.PropertyName));

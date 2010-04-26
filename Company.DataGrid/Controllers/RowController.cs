@@ -97,7 +97,10 @@ namespace Company.DataGrid.Controllers
 					this.Row.IsFocused = this.Row.DataContext == notification.Body;
 					break;
 				case Notifications.SELECTED_ITEMS:
-					this.Row.IsSelected = ((IList) notification.Body).Contains(this.Row.DataContext);
+					if (((IList) notification.Body).Contains(this.Row.DataContext))
+					{
+						this.Row.IsSelected = true;
+					}
 					break;
 				case Notifications.DESELECTED_ITEMS:
 					IList list = (IList) notification.Body;

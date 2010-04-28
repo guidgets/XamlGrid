@@ -20,7 +20,7 @@ namespace Company.DataGrid.Controllers
 	/// </summary>
 	public class DataGridController : Controller
 	{
-		private ItemsPresenter itemsPresenter;
+		private ScrollViewer scroll;
 		private Panel itemsHost;
 		private bool continuousEditing;
 
@@ -45,11 +45,11 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private ItemsPresenter ItemsPresenter
+		private ScrollViewer Scroll
 		{
 			get
 			{
-				return this.itemsPresenter ?? (this.itemsPresenter = this.DataGrid.GetItemsPresenter());
+				return this.scroll ?? (this.scroll = this.DataGrid.GetScroll());
 			}
 		}
 
@@ -170,13 +170,13 @@ namespace Company.DataGrid.Controllers
 		private void DataGrid_Loaded(object sender, EventArgs e)
 		{
 			this.DataGrid.ApplyTemplate();
-			this.ItemsPresenter.SizeChanged += (o, args) =>
-			                                   {
-			                                   	   if (args.NewSize.Width != args.PreviousSize.Width)
-			                                   	   {
-			                                   	  	   this.CalculateRelativeColumnWidths();
-			                                   	   }
-			                                   };
+			this.Scroll.SizeChanged += (o, args) =>
+			                           {
+										   if (args.NewSize.Width != args.PreviousSize.Width)
+										   {
+										   	   this.CalculateRelativeColumnWidths();
+										   }
+			                           };
 		}
 
 		private void DataGrid_DataSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -257,7 +257,7 @@ namespace Company.DataGrid.Controllers
 
 		private void CalculateRelativeColumnWidths()
 		{
-			if (this.ItemsPresenter == null || this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
+			if (this.Scroll == null || this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
 			{
 				return;
 			}
@@ -265,9 +265,9 @@ namespace Company.DataGrid.Controllers
 			                                      where column.Width.SizeMode == SizeMode.Fill
 			                                      select column;
 			double stars = relativeColumns.Sum(column => column.Width.Value);
-			double availableWidth = this.ItemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
-			                                                           where column.Width.SizeMode != SizeMode.Fill
-			                                                           select column.ActualWidth).Sum();
+			double availableWidth = this.Scroll.ViewportWidth - (from column in this.DataGrid.Columns
+			                                                     where column.Width.SizeMode != SizeMode.Fill
+			                                                     select column.ActualWidth).Sum();
 			foreach (Column column in relativeColumns.Skip(1))
 			{
 				double width = Math.Floor(column.Width.Value * availableWidth / stars);
@@ -276,9 +276,9 @@ namespace Company.DataGrid.Controllers
 			Column firstColumn = relativeColumns.FirstOrDefault();
 			if (firstColumn != null)
 			{
-				double width = this.ItemsPresenter.ActualWidth - (from column in this.DataGrid.Columns
-				                                                  where column != firstColumn
-				                                                  select column.ActualWidth).Sum();
+				double width = this.Scroll.ViewportWidth - (from column in this.DataGrid.Columns
+				                                            where column != firstColumn
+				                                            select column.ActualWidth).Sum();
 				firstColumn.ActualWidth = Math.Max(width - 1, 1);
 			}
 		}
@@ -410,19 +410,19 @@ namespace Company.DataGrid.Controllers
 			StackPanel stackPanel = this.itemsHost as StackPanel;
 			if (stackPanel != null)
 			{
-				orientation = ((StackPanel) this.ItemsHost).Orientation;
+				orientation = stackPanel.Orientation;
 			}
 			VirtualizingStackPanel virtualizingStackPanel = this.itemsHost as VirtualizingStackPanel;
 			if (virtualizingStackPanel != null)
 			{
-				orientation = ((VirtualizingStackPanel) this.ItemsHost).Orientation;
+				orientation = virtualizingStackPanel.Orientation;
 			}
 			return orientation;
 		}
 
 		private bool IsOnCurrentPage(int index, Orientation orientation)
 		{
-			if (this.ItemsPresenter == null)
+			if (this.Scroll == null)
 			{
 				return true;
 			}
@@ -433,7 +433,7 @@ namespace Company.DataGrid.Controllers
 			}
 			Rect scrollRect;
 			Rect itemRect;
-			GetRectangles(this.ItemsPresenter, item, out scrollRect, out itemRect);
+			GetRectangles(this.Scroll, item, out scrollRect, out itemRect);
 			if (orientation == Orientation.Horizontal)
 			{
 				return (scrollRect.Left <= itemRect.Left && itemRect.Right <= scrollRect.Right);

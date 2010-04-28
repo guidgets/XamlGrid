@@ -11,11 +11,26 @@ namespace Company.DataGrid.Views
 	public static class ItemsControlExtensions
 	{
 		/// <summary>
+		/// Gets the <see cref="ScrollViewer"/> that contains the items of the specified <see cref="ItemsControl"/>.
+		/// </summary>
+		/// <param name="itemsControl">The <see cref="ItemsControl"/> to get the <see cref="ScrollViewer"/> of.</param>
+		/// <returns>The <see cref="ScrollViewer"/> of the specified <see cref="ItemsControl"/>.</returns>
+		public static ScrollViewer GetScroll(this ItemsControl itemsControl)
+		{
+			DependencyObject child = GetItemsPresenter(itemsControl);
+			while (child != null && !(child is ScrollViewer))
+			{
+				child = child.GetParent();
+			}
+			return child as ScrollViewer;
+		}
+
+		/// <summary>
 		/// Gets the <see cref="ItemsPresenter"/>, if any, of the specified <see cref="DependencyObject"/>.
 		/// </summary>
 		/// <param name="dependencyObject">The <see cref="DependencyObject"/> to get the <see cref="ItemsPresenter"/> of.</param>
 		/// <returns>The <see cref="ItemsPresenter"/>, if any, of the specified <see cref="DependencyObject"/></returns>
-		public static ItemsPresenter GetItemsPresenter(this DependencyObject dependencyObject)
+		private static ItemsPresenter GetItemsPresenter(this DependencyObject dependencyObject)
 		{
 			ItemsPresenter presenter = dependencyObject as ItemsPresenter;
 			if (presenter != null)
@@ -41,8 +56,9 @@ namespace Company.DataGrid.Views
 					return itemsPresenter;
 				}
 			}
-			return (from descendantControl in dependencyObject.GetVisualDescendants()
-					let itemsPresenter = GetItemsPresenter(descendantControl)
+			return (from descendant in dependencyObject.GetVisualDescendants()
+					where !(descendant is ItemsControl)
+					let itemsPresenter = GetItemsPresenter(descendant)
 					where itemsPresenter != null
 					select itemsPresenter).FirstOrDefault();
 		}

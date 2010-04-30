@@ -257,6 +257,7 @@ namespace Company.DataGrid.Controllers
 
 		private void CalculateRelativeColumnWidths()
 		{
+			// TODO: do not have the scroll as a property but rather add to it a controller in XAML and send a notification to it
 			if (this.Scroll == null || this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
 			{
 				return;

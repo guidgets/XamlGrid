@@ -15,15 +15,7 @@ namespace Company.DataGrid.Controllers
 					sortingModel.SetCollectionView(notification.Body as ICollectionView);
 					break;
 				case Notifications.SORTING_REQUESTED:
-					SortDescription sortDescription = (SortDescription) notification.Body;
-					if (notification.Type == NotificationTypes.REMOVED_SORTING)
-					{
-						sortingModel.Sort(sortDescription.PropertyName, null);
-					}
-					else
-					{
-						sortingModel.Sort(sortDescription.PropertyName, sortDescription.Direction);
-					}
+					sortingModel.Sort((ExtendedSortDescription) notification.Body);
 					break;
 				case Notifications.REFRESH_SORTING:
 					sortingModel.RefreshIfSorted((string) notification.Body);

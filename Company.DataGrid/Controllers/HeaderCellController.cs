@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Models;
 using Company.DataGrid.Views;
@@ -92,21 +93,13 @@ namespace Company.DataGrid.Controllers
 		}
 
 
-		private void HeaderCell_SortDirectionChanged(object sender, SortDirectionEventArgs sortDirectionEventArgs)
+		private void HeaderCell_SortDirectionChanged(object sender, SortDirectionEventArgs e)
 		{
-			switch (sortDirectionEventArgs.SortDirection)
-			{
-				case null:
-					this.SendNotification(Notifications.SORTING_REQUESTED,
-										  new SortDescription { PropertyName = this.HeaderCell.Column.Binding.Path.Path },
-										  NotificationTypes.REMOVED_SORTING);
-					break;
-				case ListSortDirection.Ascending:
-				case ListSortDirection.Descending:
-					this.SendNotification(Notifications.SORTING_REQUESTED,
-										  new SortDescription(this.HeaderCell.Column.Binding.Path.Path, sortDirectionEventArgs.SortDirection.Value));
-					break;
-			}
+			ExtendedSortDescription sortDescription = new ExtendedSortDescription();
+			sortDescription.Property = this.HeaderCell.Column.Binding.Path.Path;
+			sortDescription.ClearPreviousSorting = (Keyboard.Modifiers & ModifierKeys.Shift) == 0;
+			sortDescription.SortDirection = e.SortDirection;
+			this.SendNotification(Notifications.SORTING_REQUESTED, sortDescription);
 		}
 	}
 }

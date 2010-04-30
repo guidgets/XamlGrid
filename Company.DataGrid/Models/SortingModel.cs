@@ -118,12 +118,32 @@ namespace Company.DataGrid.Models
 		}
 
 		/// <summary>
-		/// Sorts the items of the <see cref="SelectionModel"/> by the specified property name in the specified direction.
+		/// Sorts the items of the <see cref="SortingModel"/> by the specified property name in the specified direction.
+		/// </summary>
+		/// <param name="sortDescription">The sort description to use for sorting.</param>
+		public void Sort(ExtendedSortDescription sortDescription)
+		{
+			this.Sort(sortDescription.Property, sortDescription.SortDirection, sortDescription.ClearPreviousSorting);
+		}
+
+		/// <summary>
+		/// Sorts the items of the <see cref="SortingModel"/> by the specified property name in the specified direction.
 		/// </summary>
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="sortDirection">The sort direction.</param>
-		public void Sort(string propertyName, ListSortDirection? sortDirection)
+		/// <param name="clearPreviousSorting"></param>
+		public void Sort(string propertyName, ListSortDirection? sortDirection, bool clearPreviousSorting)
 		{
+			if (clearPreviousSorting)
+			{
+				for (int i = this.SortDescriptions.Count - 1; i >= 0; i--)
+				{
+					if (this.SortDescriptions[i].PropertyName != propertyName)
+					{
+						this.SortDescriptions.RemoveAt(i);
+					}
+				}
+			}
 			IEnumerable<SortDescription> sortDescriptions = (from sortDescription in this.SortDescriptions
 															 where sortDescription.PropertyName == propertyName
 															 select sortDescription);
@@ -169,6 +189,7 @@ namespace Company.DataGrid.Models
 
 		private void SendNotificationForSorting(object sortDescription, string notificationType)
 		{
+			// TODO: remove the store for notifications; make the header cells ask for their sorted state instead
 			if (this.notificationsSuspended)
 			{
 				notificationsStore.Add(new Notification(Notifications.SORTED, sortDescription, notificationType));

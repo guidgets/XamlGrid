@@ -373,19 +373,29 @@ namespace Company.DataGrid.Views
 
 		private static void OnItemsSourceListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			DataGrid dataGrid = (DataGrid) d;
-			if (dataGrid.ItemsSourceChanged != null)
+			((DataGrid) d).OnItemsSourceChanged(e);
+		}
+
+		protected virtual void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.ItemsSourceChanged;
+			if (handler != null)
 			{
-				dataGrid.ItemsSourceChanged(dataGrid, e);
+				handler(this, e);
 			}
 		}
 
 		private static void OnDataSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			DataGrid dataGrid = (DataGrid) d;
-			if (dataGrid.DataSourceChanged != null)
+			((DataGrid) d).OnDataSourceChanged(e);
+		}
+
+		protected virtual void OnDataSourceChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.DataSourceChanged;
+			if (handler != null)
 			{
-				dataGrid.DataSourceChanged(dataGrid, e);
+				handler(this, e);
 			}
 		}
 

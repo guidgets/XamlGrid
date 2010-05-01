@@ -43,7 +43,7 @@ namespace Company.DataGrid.Controllers
 		private void AssociatedObject_DragDelta(object sender, DragDeltaEventArgs e)
 		{
 			Column columnToResize = this.AssociatedObject.Tag as Column;
-			if (columnToResize != null && columnToResize.Resizable)
+			if (columnToResize != null && columnToResize.IsResizable)
 			{
 				double newWidth = columnToResize.ActualWidth + e.HorizontalChange;
 				columnToResize.Width = new ColumnWidth(newWidth > 1 ? newWidth : 1);

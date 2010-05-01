@@ -56,7 +56,7 @@ namespace Company.DataGrid.Controllers
 				{
 					this.waiting = false;
 					Column columnToResize = this.AssociatedObject.Tag as Column;
-					if (columnToResize != null && columnToResize.Resizable)
+					if (columnToResize != null && columnToResize.IsResizable)
 					{
 						columnToResize.AutoSize();
 					}

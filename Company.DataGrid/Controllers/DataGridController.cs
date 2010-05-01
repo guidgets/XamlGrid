@@ -219,9 +219,9 @@ namespace Company.DataGrid.Controllers
 						BindingOperations.SetBinding(column, Column.WidthProperty,
 						                             new Binding("ColumnWidth") { Source = this.DataGrid });
 					}
-					if (column.ReadLocalValue(Column.ResizableProperty) == DependencyProperty.UnsetValue)
+					if (column.ReadLocalValue(Column.IsResizableProperty) == DependencyProperty.UnsetValue)
 					{
-						BindingOperations.SetBinding(column, Column.ResizableProperty,
+						BindingOperations.SetBinding(column, Column.IsResizableProperty,
 						                             new Binding("ResizableColumns") { Source = this.DataGrid });
 					}
 					if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
@@ -238,7 +238,7 @@ namespace Company.DataGrid.Controllers
 				foreach (Column column in e.OldItems)
 				{
 					column.ClearValue(Column.WidthProperty);
-					column.ClearValue(Column.ResizableProperty);
+					column.ClearValue(Column.IsResizableProperty);
 					column.ClearValue(Column.IsEditableProperty);
 					column.ActualWidthChanged -= this.Column_ActualWidthChanged;
 				}

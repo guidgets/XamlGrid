@@ -12,7 +12,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the binding to apply.
 		/// </summary>
 		/// <value>The binding to apply.</value>
-		public Binding Binding
+		public virtual Binding Binding
 		{
 			get; 
 			set;
@@ -21,7 +21,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets or sets the the name of the dependency Property of the GUI element that the binding is applied to.
 		/// </summary>
-		public string Property
+		public virtual string Property
 		{
 			get; 
 			set;

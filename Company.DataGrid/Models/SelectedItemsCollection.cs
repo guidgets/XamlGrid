@@ -37,7 +37,7 @@ namespace Company.DataGrid.Models
 		/// Gets or sets the selection mode used by the <see cref="SelectedItemsCollection"/> when it manages its items.
 		/// </summary>
 		/// <value>The selection mode.</value>
-		public SelectionMode SelectionMode
+		public virtual SelectionMode SelectionMode
 		{
 			get
 			{
@@ -65,7 +65,7 @@ namespace Company.DataGrid.Models
 		/// Adds the elements of the specified range to the end of this <see cref="SelectedItemsCollection"/>.
 		/// </summary>
 		/// <param name="range">The range which elements should be added to the end of this <see cref="SelectedItemsCollection"/>.</param>
-		public void AddRange(IEnumerable<object> range)
+		public virtual void AddRange(IEnumerable<object> range)
 		{
 			this.suspendNotifications = true;
 			int firstIndex = -1;

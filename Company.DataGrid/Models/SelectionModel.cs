@@ -34,13 +34,13 @@ namespace Company.DataGrid.Models
 		/// Gets the selected items managed by the <see cref="SelectionModel"/>.
 		/// </summary>
 		/// <value>The selected items managed by the <see cref="SelectionModel"/>.</value>
-		public SelectedItemsCollection SelectedItems
+		public virtual SelectedItemsCollection SelectedItems
 		{
 			get;
 			private set;
 		}
 
-		public SelectionMode SelectionMode
+		public virtual SelectionMode SelectionMode
 		{
 			get
 			{
@@ -61,7 +61,7 @@ namespace Company.DataGrid.Models
 		/// Gets or sets the items that the <see cref="SelectionModel"/> selects and deselects.
 		/// </summary>
 		/// <value>The items to select and deselect.</value>
-		public IList Items
+		public virtual IList Items
 		{
 			get
 			{
@@ -98,7 +98,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="item">The first item of the range.</param>
 		/// <param name="clearPreviousSelection">if set to <c>true</c> clear the previous selection.</param>
-		public void SelectRange(object item, bool clearPreviousSelection)
+		public virtual void SelectRange(object item, bool clearPreviousSelection)
 		{
 			this.SelectRange(this.items.IndexOf(item), clearPreviousSelection);
 		}
@@ -108,7 +108,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="endIndex">The first index of the range.</param>
 		/// <param name="clearPreviousSelection">if set to <c>true</c> clear the previous selection.</param>
-		public void SelectRange(int endIndex, bool clearPreviousSelection)
+		public virtual void SelectRange(int endIndex, bool clearPreviousSelection)
 		{
 			int start = this.ranges.Count > 0 ? this.ranges.Last().Start : 0;
 			int end = endIndex;
@@ -119,7 +119,7 @@ namespace Company.DataGrid.Models
 			this.SelectRange(start, end);
 		}
 
-		public void SelectRange(int start, int end)
+		public virtual void SelectRange(int start, int end)
 		{
 			int step = start <= end ? 1 : -1;
 			this.ranges.AddRange(start, end);
@@ -134,7 +134,7 @@ namespace Company.DataGrid.Models
 		/// <summary>
 		/// Selects all items in the collection managed by the model.
 		/// </summary>
-		public void SelectAll()
+		public virtual void SelectAll()
 		{
 			List<Range> backup = new List<Range>(this.ranges);
 			this.SelectRange(0, this.items.Count - 1);

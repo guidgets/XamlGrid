@@ -11,6 +11,6 @@ namespace Company.DataGrid.Models
 		}
 
 
-		public ListSortDirection? SortDirection { get; private set; }
+		public virtual ListSortDirection? SortDirection { get; private set; }
 	}
 }

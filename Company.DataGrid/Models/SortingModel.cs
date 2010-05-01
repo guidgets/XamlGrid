@@ -32,7 +32,7 @@ namespace Company.DataGrid.Models
 		/// Gets the sort descriptions which the <see cref="SelectionModel"/> currently uses to sort its items.
 		/// </summary>
 		/// <value>The sort descriptions.</value>
-		public SortDescriptionCollection SortDescriptions
+		public virtual SortDescriptionCollection SortDescriptions
 		{
 			get
 			{
@@ -44,7 +44,7 @@ namespace Company.DataGrid.Models
 		/// Sets the collection view which items the <see cref="SortingModel"/> sorts.
 		/// </summary>
 		/// <param name="newCollectionView">The new collection view to be sorted by the <see cref="SelectionModel"/>.</param>
-		public void SetCollectionView(ICollectionView newCollectionView)
+		public virtual void SetCollectionView(ICollectionView newCollectionView)
 		{
 			if (this.collectionView == newCollectionView)
 			{
@@ -70,7 +70,7 @@ namespace Company.DataGrid.Models
 		/// <summary>
 		/// Starts the notifications sent when sorting occurs.
 		/// </summary>
-		public void StartNotifications()
+		public virtual void StartNotifications()
 		{
 			if (this.notificationsStore == null)
 			{
@@ -121,7 +121,7 @@ namespace Company.DataGrid.Models
 		/// Sorts the items of the <see cref="SortingModel"/> by the specified property name in the specified direction.
 		/// </summary>
 		/// <param name="sortDescription">The sort description to use for sorting.</param>
-		public void Sort(ExtendedSortDescription sortDescription)
+		public virtual void Sort(ExtendedSortDescription sortDescription)
 		{
 			this.Sort(sortDescription.Property, sortDescription.SortDirection, sortDescription.ClearPreviousSorting);
 		}
@@ -132,7 +132,7 @@ namespace Company.DataGrid.Models
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="sortDirection">The sort direction.</param>
 		/// <param name="clearPreviousSorting"></param>
-		public void Sort(string propertyName, ListSortDirection? sortDirection, bool clearPreviousSorting)
+		public virtual void Sort(string propertyName, ListSortDirection? sortDirection, bool clearPreviousSorting)
 		{
 			if (clearPreviousSorting)
 			{
@@ -173,7 +173,7 @@ namespace Company.DataGrid.Models
 		/// Refreshes the sorting, if any, by the specified property path.
 		/// </summary>
 		/// <param name="propertyPath">The property path to sort by.</param>
-		public void RefreshIfSorted(string propertyPath)
+		public virtual void RefreshIfSorted(string propertyPath)
 		{
 			if (this.collectionView == null)
 			{

@@ -13,15 +13,15 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Occurs when the data context of the <see cref="Row"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler DataContextChanged;
+		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
 		/// <summary>
 		/// Occurs when the <see cref="Row"/> changes its currency.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler IsCurrentChanged;
+		public virtual event DependencyPropertyChangedEventHandler IsCurrentChanged;
 		/// <summary>
 		/// Occurs when the <see cref="Row"/> changes its selection state.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler IsSelectedChanged;
+		public virtual event DependencyPropertyChangedEventHandler IsSelectedChanged;
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
@@ -79,7 +79,7 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if this <see cref="Row"/> is the current one; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsFocused
+		public virtual bool IsFocused
 		{
 			get
 			{
@@ -97,7 +97,7 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if this <see cref="Row"/> is selected; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsSelected
+		public virtual bool IsSelected
 		{
 			get
 			{
@@ -219,7 +219,7 @@ namespace Company.DataGrid.Views
 			((Row) d).OnDataContextChanged(e);
 		}
 
-		private void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
 			if (handler != null)
@@ -240,7 +240,7 @@ namespace Company.DataGrid.Views
 			VisualStateManager.GoToState(this, this.IsFocused ? "Focused" : "Unfocused", false);
 		}
 
-		private void OnIsFocusedChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnIsFocusedChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.IsCurrentChanged;
 			if (handler != null)
@@ -261,7 +261,7 @@ namespace Company.DataGrid.Views
 			VisualStateManager.GoToState(this, this.IsSelected ? "Selected" : "Deselected", false);
 		}
 
-		private void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.IsSelectedChanged;
 			if (handler != null)

@@ -25,7 +25,7 @@ namespace Company.DataGrid.Models
 		/// Gets the current item of the <see cref="CurrentItemModel"/>.
 		/// </summary>
 		/// <value>The current item.</value>
-		public object CurrentItem
+		public virtual object CurrentItem
 		{
 			get
 			{
@@ -37,7 +37,7 @@ namespace Company.DataGrid.Models
 		/// Sets the collection view which contains the items to manage for currency.
 		/// </summary>
 		/// <param name="newCollectionView">The new collection view to manage for currency.</param>
-		public void SetCollectionView(ICollectionView newCollectionView)
+		public virtual void SetCollectionView(ICollectionView newCollectionView)
 		{
 			if (this.collectionView == newCollectionView)
 			{
@@ -63,7 +63,7 @@ namespace Company.DataGrid.Models
 		/// Moves the current item to first item in a collection.
 		/// </summary>
 		/// <returns>A value indicating if the moving was successful.</returns>
-		public bool MoveCurrentToFirst()
+		public virtual bool MoveCurrentToFirst()
 		{
 			return this.collectionView.MoveCurrentToFirst();
 		}
@@ -72,7 +72,7 @@ namespace Company.DataGrid.Models
 		/// Moves the current item to the previous item in a collection.
 		/// </summary>
 		/// <returns>A value indicating if the moving was successful.</returns>
-		public bool MoveCurrentToPrevious()
+		public virtual bool MoveCurrentToPrevious()
 		{
 			this.collectionView.MoveCurrentToPrevious();
 			return !this.collectionView.IsCurrentBeforeFirst || this.MoveCurrentToFirst();
@@ -82,7 +82,7 @@ namespace Company.DataGrid.Models
 		/// Moves the current item to the next item in a collection.
 		/// </summary>
 		/// <returns>A value indicating if the moving was successful.</returns>
-		public bool MoveCurrentToNext()
+		public virtual bool MoveCurrentToNext()
 		{
 			this.collectionView.MoveCurrentToNext();
 			return !this.collectionView.IsCurrentAfterLast || this.MoveCurrentToLast();
@@ -92,7 +92,7 @@ namespace Company.DataGrid.Models
 		/// Moves the current item to the last item in a collection.
 		/// </summary>
 		/// <returns>A value indicating if the moving was successful.</returns>
-		public bool MoveCurrentToLast()
+		public virtual bool MoveCurrentToLast()
 		{
 			return this.collectionView.MoveCurrentToLast();
 		}
@@ -102,7 +102,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="item">The item to become the current one.</param>
 		/// <returns>A value indicating if the moving was successful.</returns>
-		public bool MoveCurrentTo(object item)
+		public virtual bool MoveCurrentTo(object item)
 		{
 			return this.collectionView.MoveCurrentTo(item);
 		}
@@ -112,7 +112,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="position">The position at which the item to become the current one is located.</param>
 		/// <returns>A value indicating if the moving was successful.</returns>
-		public bool MoveCurrentToPosition(int position)
+		public virtual bool MoveCurrentToPosition(int position)
 		{
 			return this.collectionView.MoveCurrentToPosition(position);
 		}

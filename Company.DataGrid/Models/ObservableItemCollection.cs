@@ -19,7 +19,7 @@ namespace Company.DataGrid.Models
 		/// <summary>
 		/// Occurs when a contained item implementing <see cref="INotifyPropertyChanged"/> has a property changed.
 		/// </summary>
-		public event EventHandler<ItemPropertyChangedEventArgs> ItemPropertyChanged;
+		public virtual event EventHandler<ItemPropertyChangedEventArgs> ItemPropertyChanged;
 
 
 		private IEnumerable<T> enumerable;
@@ -45,13 +45,13 @@ namespace Company.DataGrid.Models
 		/// 	<c>true</c> if this <see cref="ObservableItemCollection{T}"/> should throw an exception 
 		/// if it encounters an invalid property path; otherwise, <c>false</c>.
 		/// </value>
-		public bool ThrowExceptionOnInvalidPath
+		public virtual bool ThrowExceptionOnInvalidPath
 		{
 			get; 
 			set;
 		}
 
-		public void SetSource(IEnumerable<T> newEnumerable)
+		public virtual void SetSource(IEnumerable<T> newEnumerable)
 		{
 			if (this.enumerable == newEnumerable)
 			{
@@ -129,7 +129,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="newPropertyPaths">The property paths, at which the items in 
 		/// this <see cref="ObservableItemCollection{T}"/> will be listened to for changes.</param>
-		public void AddPropertyPaths(IEnumerable<string> newPropertyPaths)
+		public virtual void AddPropertyPaths(IEnumerable<string> newPropertyPaths)
 		{
 			this.TraversePropertyPaths(newPropertyPaths, true);
 		}
@@ -140,12 +140,12 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="oldPropertyPaths">The property paths, at which the items in 
 		/// this <see cref="ObservableItemCollection{T}"/> will no longer be listened to for changes.</param>
-		public void RemovePropertyPaths(IEnumerable<string> oldPropertyPaths)
+		public virtual void RemovePropertyPaths(IEnumerable<string> oldPropertyPaths)
 		{
 			this.TraversePropertyPaths(oldPropertyPaths, false);
 		}
 
-		public void ReplacePropertyPaths(IEnumerable<string> newPropertyPaths, IEnumerable<string> oldPropertyPaths)
+		public virtual void ReplacePropertyPaths(IEnumerable<string> newPropertyPaths, IEnumerable<string> oldPropertyPaths)
 		{
 			this.TraversePropertyPaths(oldPropertyPaths, false);
 			this.TraversePropertyPaths(newPropertyPaths, true);
@@ -155,7 +155,7 @@ namespace Company.DataGrid.Models
 		/// Clears all property paths at which the items in
 		/// this <see cref="ObservableItemCollection{T}"/> are listened to for changes.
 		/// </summary>
-		public void ClearPropertyPaths()
+		public virtual void ClearPropertyPaths()
 		{
 			this.TraversePropertyPaths(new List<string>(this.propertyPathsItems.Keys), false);
 		}

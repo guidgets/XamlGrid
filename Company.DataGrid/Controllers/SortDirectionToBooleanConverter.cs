@@ -20,7 +20,7 @@ namespace Company.DataGrid.Controllers
 		/// <returns>
 		/// The value to be passed to the target dependency property.
 		/// </returns>
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value == null)
 			{
@@ -39,7 +39,7 @@ namespace Company.DataGrid.Controllers
 		/// <returns>
 		/// The value to be passed to the source object.
 		/// </returns>
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value == null)
 			{

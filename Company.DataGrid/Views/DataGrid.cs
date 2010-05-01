@@ -19,19 +19,19 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Occurs when the current item of the <see cref="DataGrid"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler CurrentItemChanged;
+		public virtual event DependencyPropertyChangedEventHandler CurrentItemChanged;
 		/// <summary>
 		/// Occurs when the data source of the <see cref="DataGrid"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler DataSourceChanged;
+		public virtual event DependencyPropertyChangedEventHandler DataSourceChanged;
 		/// <summary>
 		/// Occurs when the source of items for the <see cref="DataGrid"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler ItemsSourceChanged;
+		public virtual event DependencyPropertyChangedEventHandler ItemsSourceChanged;
 		/// <summary>
 		/// Occurs when the selection mode of the <see cref="DataGrid"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler SelectionModeChanged;
+		public virtual event DependencyPropertyChangedEventHandler SelectionModeChanged;
 
 
 		/// <summary>
@@ -130,7 +130,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The data source that provides the data to display in the <see cref="DataGrid"/>.</value>
-		public object DataSource
+		public virtual object DataSource
 		{
 			get
 			{
@@ -146,7 +146,7 @@ namespace Company.DataGrid.Views
 		/// Gets the <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.
 		/// </summary>
 		/// <value>The <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.</value>
-		public ObservableCollection<Column> Columns
+		public virtual ObservableCollection<Column> Columns
 		{
 			get;
 			private set;
@@ -158,7 +158,7 @@ namespace Company.DataGrid.Views
 		/// </summary>
 		/// <value><c>true</c> if the columns of the <see cref="DataGrid"/> must be automatically created 
 		/// according to the data source; otherwise, <c>false</c>.</value>
-		public bool AutoCreateColumns
+		public virtual bool AutoCreateColumns
 		{
 			get
 			{
@@ -174,7 +174,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.</value>
-		public ColumnWidth ColumnWidth
+		public virtual ColumnWidth ColumnWidth
 		{
 			get
 			{
@@ -190,7 +190,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets a value indicating whether the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable.
 		/// </summary>
 		/// <value><c>true</c> if the <see cref="Columns"/> of this <see cref="DataGrid"/> are resizable; otherwise, <c>false</c>.</value>
-		public bool ResizableColumns
+		public virtual bool ResizableColumns
 		{
 			get
 			{
@@ -206,7 +206,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The visibility of the header row of the <see cref="DataGrid"/>.</value>
-		public Visibility HeaderVisibility
+		public virtual Visibility HeaderVisibility
 		{
 			get
 			{
@@ -222,7 +222,7 @@ namespace Company.DataGrid.Views
 		/// Gets the descriptions which tell the <see cref="DataGrid"/> how to sort the data it displays.
 		/// </summary>
 		/// <value>The descriptions which tell the <see cref="DataGrid"/> how to sort the data it displays.</value>
-		public SortDescriptionCollection SortDescriptions
+		public virtual SortDescriptionCollection SortDescriptions
 		{
 			get
 			{
@@ -234,7 +234,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the current item of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The current item of the <see cref="DataGrid"/>.</value>
-		public object CurrentItem
+		public virtual object CurrentItem
 		{
 			get
 			{
@@ -250,7 +250,7 @@ namespace Company.DataGrid.Views
 		/// Gets the list of items which are currently selected in the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The list of items which are currently selected in the <see cref="DataGrid"/>.</value>
-		public SelectedItemsCollection SelectedItems
+		public virtual SelectedItemsCollection SelectedItems
 		{
 			get
 			{
@@ -262,7 +262,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.</value>
-		public SelectionMode SelectionMode
+		public virtual SelectionMode SelectionMode
 		{
 			get
 			{
@@ -280,7 +280,7 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if the <see cref="Cell"/>s in this <see cref="DataGrid"/> are read-only; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsEditable
+		public virtual bool IsEditable
 		{
 			get
 			{
@@ -412,7 +412,7 @@ namespace Company.DataGrid.Views
 			((DataGrid) d).OnCurrentItemChanged(e);
 		}
 
-		private void OnCurrentItemChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnCurrentItemChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.CurrentItemChanged;
 			if (handler != null)
@@ -426,7 +426,7 @@ namespace Company.DataGrid.Views
 			((DataGrid) d).OnSelectionModeChanged(e);
 		}
 
-		private void OnSelectionModeChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnSelectionModeChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.SelectionModeChanged;
 			if (handler != null)

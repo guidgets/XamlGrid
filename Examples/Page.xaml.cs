@@ -116,25 +116,25 @@ namespace Examples
 	{
 		private string name;
 
-		public byte[] OrderPhoto
+		public virtual byte[] OrderPhoto
 		{
 			get;
 			set;
 		}
 
-		public Uri OrderThumbnail
+		public virtual Uri OrderThumbnail
 		{
 			get;
 			set;
 		}
 
-		public ObservableCollection<Order> Orders
+		public virtual ObservableCollection<Order> Orders
 		{
 			get;
 			set;
 		}
 
-		public string Name
+		public virtual string Name
 		{
 			get
 			{
@@ -150,13 +150,13 @@ namespace Examples
 			}
 		}
 
-        public int Age
+        public virtual int Age
         {
             get;
             set;
         }
 
-        public DateTime HireDate
+        public virtual DateTime HireDate
         {
             get;
             set;
@@ -164,7 +164,7 @@ namespace Examples
 
 		private bool isSingle;
 
-		public bool IsSingle
+		public virtual bool IsSingle
 		{
 			get
 			{
@@ -182,7 +182,7 @@ namespace Examples
 
 		private bool? maritalStatus;
 
-		public bool? MaritalStatus
+		public virtual bool? MaritalStatus
 		{
 			get
 			{
@@ -198,7 +198,7 @@ namespace Examples
 			}
 		}
 
-		private void OnPropertyChanged(string propertyName)
+		protected virtual void OnPropertyChanged(string propertyName)
 		{
 			if (this.PropertyChanged != null)
 			{
@@ -206,23 +206,23 @@ namespace Examples
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		public virtual event PropertyChangedEventHandler PropertyChanged;
 	}
 
 	public class FullName
 	{
-		public string FirstName { get; set; }
+		public virtual string FirstName { get; set; }
 
-		public string LastName { get; set; }
+		public virtual string LastName { get; set; }
 	}
 
 	public class Order : INotifyPropertyChanged
 	{
-		public event PropertyChangedEventHandler PropertyChanged;
+		public virtual event PropertyChangedEventHandler PropertyChanged;
 
 		private string name;
 
-		public string Name
+		public virtual string Name
 		{
 			get
 			{
@@ -238,7 +238,7 @@ namespace Examples
 			}
 		}
 
-		private void OnPropertyChanged(string propertyName)
+		protected virtual void OnPropertyChanged(string propertyName)
 		{
 			if (this.PropertyChanged != null)
 			{

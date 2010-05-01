@@ -28,7 +28,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the cell for which functionality the <see cref="CellController"/> is responsible.
 		/// </summary>
-		public Cell Cell
+		public virtual Cell Cell
 		{
 			get
 			{

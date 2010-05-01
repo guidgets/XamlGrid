@@ -22,7 +22,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the editor for which functionality the <see cref="EditorController"/> is responsible.
 		/// </summary>
-		public Editor Editor
+		public virtual Editor Editor
 		{
 			get
 			{

@@ -15,7 +15,7 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Occurs when the edit mode of this <see cref="Cell"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler IsInEditModeChanged;
+		public virtual event DependencyPropertyChangedEventHandler IsInEditModeChanged;
 
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the value contained in the <see cref="Cell"/>.
 		/// </summary>
 		/// <value>The value contained in the <see cref="Cell"/>.</value>
-		public object Value
+		public virtual object Value
 		{
 			get
 			{
@@ -80,7 +80,7 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if the content of the <see cref="Cell"/> is editable; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsEditable
+		public virtual bool IsEditable
 		{
 			get
 			{
@@ -98,7 +98,7 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if this <see cref="Cell"/> is in edit mode; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsInEditMode
+		public virtual bool IsInEditMode
 		{
 			get
 			{
@@ -116,7 +116,7 @@ namespace Company.DataGrid.Views
 		/// <value>
 		/// 	<c>true</c> if this <see cref="Cell"/> is selected; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsSelected
+		public virtual bool IsSelected
 		{
 			get
 			{
@@ -132,7 +132,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the type of the data this <see cref="Cell"/> represents.
 		/// </summary>
 		/// <value>The type of the data this <see cref="Cell"/> represent.</value>
-		public Type DataType
+		public virtual Type DataType
 		{
 			get
 			{
@@ -245,7 +245,7 @@ namespace Company.DataGrid.Views
 			}
 		}
 
-		private void OnIsInEditModeChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnIsInEditModeChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.IsInEditModeChanged;
 			if (handler != null)

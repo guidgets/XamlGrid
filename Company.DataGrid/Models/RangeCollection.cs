@@ -32,7 +32,7 @@ namespace Company.DataGrid.Models
 		/// <returns>
 		/// 	<c>true</c> if the <see cref="RangeCollection"/> contains the specified <see cref="Range"/>; otherwise, <c>false</c>.
 		/// </returns>
-		public bool ContainsRange(Range range)
+		public virtual bool ContainsRange(Range range)
 		{
 			return (from item in this
 			        where Math.Min(item.Start, item.End) <= Math.Min(range.Start, range.End) && 
@@ -45,7 +45,7 @@ namespace Company.DataGrid.Models
 		/// </summary>
 		/// <param name="rangeStart">The initial index of the range to add.</param>
 		/// <param name="rangeEnd">The final index of the range to add.</param>
-		public void AddRange(int rangeStart, int rangeEnd)
+		public virtual void AddRange(int rangeStart, int rangeEnd)
 		{
 			this.Add(new Range(rangeStart, rangeEnd));
 		}
@@ -56,7 +56,7 @@ namespace Company.DataGrid.Models
 		/// <param name="rangeStart">The initial index of the range to remove.</param>
 		/// <param name="rangeEnd">The final index of the range to remove.</param>
 		/// <returns></returns>
-		public bool RemoveRange(int rangeStart, int rangeEnd)
+		public virtual bool RemoveRange(int rangeStart, int rangeEnd)
 		{
 			Range rangeToRemove = new Range(rangeStart, rangeEnd);
 			if (this.Contains(rangeToRemove))

@@ -14,7 +14,7 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Occurs when the direction, in which the data summarized by the header is sorted, is changed.
 		/// </summary>
-		public event EventHandler<SortDirectionEventArgs> SortDirectionChanged;
+		public virtual event EventHandler<SortDirectionEventArgs> SortDirectionChanged;
 
 
 		/// <summary>
@@ -46,7 +46,7 @@ namespace Company.DataGrid.Views
 		/// to which the <see cref="HeaderCell"/> belong, is sorted.
 		/// </summary>
 		/// <value>The direction in which the data summarized by the header is sorted.</value>
-		public ListSortDirection? SortDirection
+		public virtual ListSortDirection? SortDirection
 		{
 			get
 			{
@@ -71,7 +71,7 @@ namespace Company.DataGrid.Views
 		}
 
 
-		private void OnSortDirectionChanged(SortDirectionEventArgs e)
+		protected virtual void OnSortDirectionChanged(SortDirectionEventArgs e)
 		{
 			EventHandler<SortDirectionEventArgs> handler = this.SortDirectionChanged;
 			if (handler != null)

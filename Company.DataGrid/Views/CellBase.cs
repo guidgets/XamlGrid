@@ -30,7 +30,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the column to which the <see cref="CellBase"/> belongs.
 		/// </summary>
 		/// <value>The column to which the <see cref="CellBase"/> belongs.</value>
-		public Column Column
+		public virtual Column Column
 		{
 			get
 			{

@@ -25,7 +25,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the row for which functionality the <see cref="RowController"/> is responsible.
 		/// </summary>
-		public Row Row
+		public virtual Row Row
 		{
 			get
 			{

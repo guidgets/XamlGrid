@@ -47,7 +47,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the type of the data a <see cref="Editor"/> edits.
 		/// </summary>
 		/// <value>The type of the data a <see cref="Editor"/> edits.</value>
-		public Type DataType
+		public virtual Type DataType
 		{
 			get
 			{
@@ -63,7 +63,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the value edited by an <see cref="Editor"/>.
 		/// </summary>
 		/// <value>The value edited by an <see cref="Editor"/>.</value>
-		public object Value
+		public virtual object Value
 		{
 			get
 			{
@@ -79,7 +79,7 @@ namespace Company.DataGrid.Views
 		/// Gets or sets the changes in the value that is being edited in this <see cref="Editor"/>.
 		/// </summary>
 		/// <value>The changes in the value that is being edited in this <see cref="Editor"/>.</value>
-		public object EditedValue
+		public virtual object EditedValue
 		{
 			get
 			{
@@ -148,7 +148,7 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Saves the changes to the value of this <see cref="Editor"/>.
 		/// </summary>
-		public void Save()
+		public virtual void Save()
 		{
 			object oldValue = this.Value;
 			this.Value = this.EditedValue;
@@ -161,7 +161,7 @@ namespace Company.DataGrid.Views
 		/// <summary>
 		/// Cancels the changes to the value of this <see cref="Editor"/>.
 		/// </summary>
-		public void Cancel()
+		public virtual void Cancel()
 		{
 			this.cancelled = true;
 		}

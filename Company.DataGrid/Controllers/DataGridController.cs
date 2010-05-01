@@ -37,7 +37,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="DataGridController"/> is responsible.
 		/// </summary>
-		public Views.DataGrid DataGrid
+		public virtual Views.DataGrid DataGrid
 		{
 			get
 			{

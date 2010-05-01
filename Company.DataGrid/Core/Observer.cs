@@ -55,7 +55,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <remarks>This method is thread safe</remarks>
 		/// <param name="notification">The <c>INotification</c> to pass to the interested object's notification method</param>
-		public void NotifyObserver(INotification notification)
+		public virtual void NotifyObserver(INotification notification)
 		{
 			object context;
 			string method;
@@ -78,7 +78,7 @@ namespace Company.DataGrid.Core
 		/// <remarks>This method is thread safe</remarks>
 		/// <param name="obj">The object to compare</param>
 		/// <returns>Indicating if the object and the notification context are the same</returns>
-		public bool CompareNotifyContext(object obj)
+		public virtual bool CompareNotifyContext(object obj)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -96,7 +96,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <remarks>The notification method should take one parameter of type <c>INotification</c></remarks>
 		/// <remarks>This accessor is thread safe</remarks>
-		public string NotifyMethod
+		public virtual string NotifyMethod
 		{
 			private get; 
 			set;
@@ -106,7 +106,7 @@ namespace Company.DataGrid.Core
 		/// The notification context (this) of the interested object
 		/// </summary>
 		/// <remarks>This accessor is thread safe</remarks>
-		public object NotifyContext
+		public virtual object NotifyContext
 		{
 			private get; 
 			set;

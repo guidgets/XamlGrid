@@ -53,7 +53,7 @@ namespace Company.DataGrid.Core
 		/// <remarks>
 		///     <para>The <i>SubCommands</i> will be called in First In/First Out (FIFO) order</para>
 		/// </remarks>
-		public void Execute(INotification notification)
+		public virtual void Execute(INotification notification)
 		{
 			while (this.m_subCommands.Count > 0)
 			{
@@ -105,7 +105,7 @@ namespace Company.DataGrid.Core
 		/// <remarks>
 		///     <para>The <i>SubCommands</i> will be called in First In/First Out (FIFO) order</para>
 		/// </remarks>
-		protected void AddSubCommand(Type commandType)
+		protected virtual void AddSubCommand(Type commandType)
 		{
 			this.m_subCommands.Add(commandType);
 		}

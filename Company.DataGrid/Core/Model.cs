@@ -88,7 +88,7 @@ namespace Company.DataGrid.Core
 		/// Get the Model name
 		/// </summary>
 		/// <returns></returns>
-		public string ModelName
+		public virtual string ModelName
 		{
 			get { return this.m_ModelName; }
 		}
@@ -96,7 +96,7 @@ namespace Company.DataGrid.Core
 		/// <summary>
 		/// Set the data object
 		/// </summary>
-		public object Data
+		public virtual object Data
 		{
 			get { return this.m_data; }
 			set { this.m_data = value; }

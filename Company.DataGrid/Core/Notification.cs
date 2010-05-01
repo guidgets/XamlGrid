@@ -80,7 +80,7 @@ namespace Company.DataGrid.Core
 		/// <summary>
 		/// The name of the <c>Notification</c> instance
 		/// </summary>
-		public string Name
+		public virtual string Name
 		{
 			get { return this.m_name; }
 		}
@@ -89,7 +89,7 @@ namespace Company.DataGrid.Core
 		/// The body of the <c>Notification</c> instance
 		/// </summary>
 		/// <remarks>This accessor is thread safe</remarks>
-		public object Body
+		public virtual object Body
 		{
 			get; 
 			set;
@@ -99,7 +99,7 @@ namespace Company.DataGrid.Core
 		/// The type of the <c>Notification</c> instance
 		/// </summary>
 		/// <remarks>This accessor is thread safe</remarks>
-		public string Type
+		public virtual string Type
 		{
 			get; 
 			set;

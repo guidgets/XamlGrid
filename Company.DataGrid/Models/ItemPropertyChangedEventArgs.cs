@@ -23,7 +23,7 @@ namespace Company.DataGrid.Models
 		/// <summary>
 		/// Gets the item which had a property changed.
 		/// </summary>
-		public object Item
+		public virtual object Item
 		{
 			get; 
 			private set;
@@ -33,7 +33,7 @@ namespace Company.DataGrid.Models
 		/// Gets the property path in which the name of the changed property is located.
 		/// </summary>
 		/// <value>The property path.</value>
-		public string PropertyPath
+		public virtual string PropertyPath
 		{
 			get; 
 			private set;
@@ -43,7 +43,7 @@ namespace Company.DataGrid.Models
 		/// Gets the name of the property which value changed.
 		/// </summary>
 		/// <value>The name of the property which value changed.</value>
-		public string PropertyName
+		public virtual string PropertyName
 		{
 			get; 
 			private set;

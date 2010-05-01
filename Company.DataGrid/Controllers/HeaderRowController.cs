@@ -18,7 +18,7 @@ namespace Company.DataGrid.Controllers
 			this.SendNotification(Notifications.HEADER_ROW_LOADED, this.HeaderRow);
 		}
 
-		public HeaderRow HeaderRow
+		public virtual HeaderRow HeaderRow
 		{
 			get
 			{

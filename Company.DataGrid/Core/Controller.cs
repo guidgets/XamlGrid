@@ -126,7 +126,7 @@ namespace Company.DataGrid.Core
 		///         </code>
 		///     </example>
 		/// </remarks>
-		public object ViewComponent
+		public virtual object ViewComponent
 		{
 			get; 
 			set;

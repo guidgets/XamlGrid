@@ -158,7 +158,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <param name="model">The <c>IModel</c> to be registered with the <c>Model</c></param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void RegisterModel(IModel model)
+		public virtual void RegisterModel(IModel model)
 		{
 			// The model is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the model.
@@ -171,7 +171,7 @@ namespace Company.DataGrid.Core
 		/// <param name="ModelName">The name of the <c>IModel</c> instance to be retrieved</param>
 		/// <returns>The <c>IModel</c> previously regisetered by <c>ModelName</c> with the <c>Model</c></returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public IModel RetrieveModel(string ModelName)
+		public virtual IModel RetrieveModel(string ModelName)
 		{
 			// The model is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the model.
@@ -183,7 +183,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <param name="ModelName">The <c>IModel</c> to remove from the <c>Model</c></param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public IModel RemoveModel(string ModelName)
+		public virtual IModel RemoveModel(string ModelName)
 		{
 			// The model is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the model.
@@ -196,7 +196,7 @@ namespace Company.DataGrid.Core
 		/// <param name="ModelName">The name of the <c>IModel</c> instance to check for</param>
 		/// <returns>whether a Model is currently registered with the given <c>ModelName</c>.</returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public bool HasModel(string ModelName)
+		public virtual bool HasModel(string ModelName)
 		{
 			// The model is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the model.
@@ -213,7 +213,7 @@ namespace Company.DataGrid.Core
 		/// <param name="notificationName">The name of the <c>INotification</c> to associate the <c>IMainCommand</c> with.</param>
 		/// <param name="commandType">A reference to the <c>Type</c> of the <c>IMainCommand</c></param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void RegisterCommand(string notificationName, Type commandType)
+		public virtual void RegisterCommand(string notificationName, Type commandType)
 		{
 			// The controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the controller.
@@ -225,7 +225,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <param name="notificationName">TRemove a previously registered <c>IMainCommand</c> to <c>INotification</c> mapping from the Controller.</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void RemoveCommand(string notificationName)
+		public virtual void RemoveCommand(string notificationName)
 		{
 			// The controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the controller.
@@ -238,7 +238,7 @@ namespace Company.DataGrid.Core
 		/// <param name="notificationName">The name of the <c>INotification</c> to check for.</param>
 		/// <returns>whether a Controller is currently registered for the given <c>notificationName</c>.</returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public bool HasCommand(string notificationName)
+		public virtual bool HasCommand(string notificationName)
 		{
 			// The controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the controller.
@@ -254,7 +254,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <param name="controller">A reference to the <c>IController</c> instance</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void RegisterController(IController controller)
+		public virtual void RegisterController(IController controller)
 		{
 			// The Controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the Controller.
@@ -267,7 +267,7 @@ namespace Company.DataGrid.Core
 		/// <param name="controllerName">The name of the <c>IController</c> instance to retrieve</param>
 		/// <returns>The <c>IController</c> previously registered with the given <c>ControllerName</c></returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public IController RetrieveController(string controllerName)
+		public virtual IController RetrieveController(string controllerName)
 		{
 			// The Controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the Controller.
@@ -279,7 +279,7 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		/// <param name="controllerName">The name of the <c>IController</c> instance to be removed</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public IController RemoveController(string controllerName)
+		public virtual IController RemoveController(string controllerName)
 		{
 			// The Controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the Controller.
@@ -292,7 +292,7 @@ namespace Company.DataGrid.Core
 		/// <param name="controllerName">The name of the <c>IController</c> instance to check for</param>
 		/// <returns>whether a Controller is registered with the given <code>ControllerName</code>.</returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public bool HasController(string controllerName)
+		public virtual bool HasController(string controllerName)
 		{
 			// The Controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the Controller.
@@ -310,7 +310,7 @@ namespace Company.DataGrid.Core
 		/// <remarks>Usually you should just call sendNotification and pass the parameters, never having to construct the notification yourself.</remarks>
 		/// <param name="notification">The <c>INotification</c> to have the <c>Controller</c> notify observers of</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void NotifyObservers(INotification notification)
+		public virtual void NotifyObservers(INotification notification)
 		{
 			// The Controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the Controller.
@@ -325,7 +325,7 @@ namespace Company.DataGrid.Core
 		/// <param name="notificationName">The name of the notiification to send</param>
 		/// <remarks>Keeps us from having to construct new notification instances in our implementation code</remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void SendNotification(string notificationName)
+		public virtual void SendNotification(string notificationName)
 		{
 			this.NotifyObservers(new Notification(notificationName));
 		}
@@ -337,7 +337,7 @@ namespace Company.DataGrid.Core
 		/// <param name="body">The body of the notification</param>
 		/// <remarks>Keeps us from having to construct new notification instances in our implementation code</remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void SendNotification(string notificationName, object body)
+		public virtual void SendNotification(string notificationName, object body)
 		{
 			this.NotifyObservers(new Notification(notificationName, body));
 		}
@@ -350,7 +350,7 @@ namespace Company.DataGrid.Core
 		/// <param name="type">The type of the notification</param>
 		/// <remarks>Keeps us from having to construct new notification instances in our implementation code</remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public void SendNotification(string notificationName, object body, string type)
+		public virtual void SendNotification(string notificationName, object body, string type)
 		{
 			this.NotifyObservers(new Notification(notificationName, body, type));
 		}

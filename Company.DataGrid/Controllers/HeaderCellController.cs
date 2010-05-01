@@ -25,7 +25,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the <see cref="HeaderCell"/> for which functionality the <see cref="Controller"/> is responsible.
 		/// </summary>
-		public HeaderCell HeaderCell
+		public virtual HeaderCell HeaderCell
 		{
 			get
 			{

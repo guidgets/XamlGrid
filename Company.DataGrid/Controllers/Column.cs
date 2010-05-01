@@ -14,11 +14,11 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Occurs when the <see cref="Width"/> of this <see cref="Column"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler WidthChanged;
+		public virtual event DependencyPropertyChangedEventHandler WidthChanged;
 		/// <summary>
 		/// Occurs when the <see cref="ActualWidth"/> of this <see cref="Column"/> is changed.
 		/// </summary>
-		public event DependencyPropertyChangedEventHandler ActualWidthChanged;
+		public virtual event DependencyPropertyChangedEventHandler ActualWidthChanged;
 
 
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the width of the cells in the <see cref="Column"/>.
 		/// </summary>
 		/// <value>The width of the cells in the <see cref="Column"/>.</value>
-		public ColumnWidth Width
+		public virtual ColumnWidth Width
 		{
 			get
 			{
@@ -103,7 +103,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the absolute width, in pixels, of the <see cref="Column"/>.
 		/// </summary>
 		/// <value>The actual width.</value>
-		public double ActualWidth
+		public virtual double ActualWidth
 		{
 			get
 			{
@@ -119,7 +119,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets a value indicating whether this <see cref="Column"/> is resizable.
 		/// </summary>
 		/// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
-		public bool IsResizable
+		public virtual bool IsResizable
 		{
 			get
 			{
@@ -135,7 +135,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the visibility of this <see cref="Column"/>.
 		/// </summary>
 		/// <value>The visibility of this <see cref="Column"/>.</value>
-		public Visibility Visibility
+		public virtual Visibility Visibility
 		{
 			get
 			{
@@ -151,7 +151,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the header which displays visual information about this <see cref="Column"/>.
 		/// </summary>
 		/// <value>The header to display the information about this <see cref="Column"/>.</value>
-		public object Header
+		public virtual object Header
 		{
 			get
 			{
@@ -167,7 +167,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.
 		/// </summary>
 		/// <value>The binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.</value>
-		public Binding Binding
+		public virtual Binding Binding
 		{
 			get
 			{
@@ -190,7 +190,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the type of the data in the <see cref="Cell"/>s in this <see cref="Column"/>.
 		/// </summary>
 		/// <value>The type of the data in the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
-		public Type DataType
+		public virtual Type DataType
 		{
 			get
 			{
@@ -208,7 +208,7 @@ namespace Company.DataGrid.Controllers
 		/// <value>
 		/// 	<c>true</c> if this <see cref="Column"/> is selected; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsSelected
+		public virtual bool IsSelected
 		{
 			get
 			{
@@ -226,7 +226,7 @@ namespace Company.DataGrid.Controllers
 		/// <value>
 		/// 	<c>true</c> if the <see cref="Cell"/>s in this <see cref="Column"/> are read-only; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsEditable
+		public virtual bool IsEditable
 		{
 			get
 			{
@@ -242,7 +242,7 @@ namespace Company.DataGrid.Controllers
 		/// Gets or sets the style of the <see cref="Cell"/>s in this <see cref="Column"/>.
 		/// </summary>
 		/// <value>The style of the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
-		public Style CellStyle
+		public virtual Style CellStyle
 		{
 			get
 			{
@@ -258,7 +258,7 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Recalculates the automatic size of the <see cref="Cell"/>s in this <see cref="Column"/>.
 		/// </summary>
-		public void AutoSize()
+		public virtual void AutoSize()
 		{
 			this.Width = new ColumnWidth(this.ActualWidth);
 			this.Width = new ColumnWidth(SizeMode.Auto);
@@ -282,7 +282,7 @@ namespace Company.DataGrid.Controllers
 			((Column) d).OnWidthChanged(e);
 		}
 
-		private void OnWidthChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnWidthChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.WidthChanged;
 			if (handler != null)
@@ -302,7 +302,7 @@ namespace Company.DataGrid.Controllers
 			column.OnActualWidthChanged(e);
 		}
 
-		private void OnActualWidthChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnActualWidthChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.ActualWidthChanged;
 			if (handler != null)

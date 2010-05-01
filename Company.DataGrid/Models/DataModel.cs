@@ -27,7 +27,7 @@ namespace Company.DataGrid.Models
 			this.SendNotification(Notifications.REFRESH_SORTING, e.PropertyPath);
 		}
 
-		public ICollectionView Create(IEnumerable enumerable)
+		public virtual ICollectionView Create(IEnumerable enumerable)
 		{
 			if (this.collectionView != null && this.collectionView.SourceCollection == enumerable)
 			{
@@ -51,7 +51,7 @@ namespace Company.DataGrid.Models
 			return this.collectionView;
 		}
 
-		public void UpdatePropertyPaths(NotifyCollectionChangedAction action, IEnumerable<string> oldPropertyPaths, 
+		public virtual void UpdatePropertyPaths(NotifyCollectionChangedAction action, IEnumerable<string> oldPropertyPaths, 
 										IEnumerable<string> newPropertyPaths)
 		{
 			switch (action)

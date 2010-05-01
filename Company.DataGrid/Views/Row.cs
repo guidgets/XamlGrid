@@ -27,7 +27,7 @@ namespace Company.DataGrid.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
 		/// </summary>
 		public static readonly DependencyProperty IsFocusedProperty =
-			DependencyProperty.Register("IsCurrent", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsFocusedChanged));
+			DependencyProperty.Register("IsFocused", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsFocusedChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is selected.

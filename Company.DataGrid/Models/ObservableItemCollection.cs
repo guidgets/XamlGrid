@@ -24,6 +24,7 @@ namespace Company.DataGrid.Models
 
 		private IEnumerable<T> enumerable;
 		private readonly Dictionary<string, List<object>> propertyPathsItems;
+		private bool throwExceptionOnInvalidPath;
 
 
 		/// <summary>
@@ -34,7 +35,7 @@ namespace Company.DataGrid.Models
 		{
 			this.propertyPathsItems = new Dictionary<string, List<object>>();
 
-			this.ThrowExceptionOnInvalidPath = true;
+			this.throwExceptionOnInvalidPath = true;
 		}
 
 		/// <summary>
@@ -47,8 +48,14 @@ namespace Company.DataGrid.Models
 		/// </value>
 		public virtual bool ThrowExceptionOnInvalidPath
 		{
-			get; 
-			set;
+			get
+			{
+				return this.throwExceptionOnInvalidPath;
+			}
+			set
+			{
+				this.throwExceptionOnInvalidPath = value;
+			}
 		}
 
 		public virtual void SetSource(IEnumerable<T> newEnumerable)

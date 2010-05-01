@@ -30,6 +30,8 @@ namespace Company.DataGrid.Core
 
 		#endregion
 
+		private object viewComponent;
+
 		#region Constructors
 
 		/// <summary>
@@ -57,7 +59,7 @@ namespace Company.DataGrid.Core
 		public Controller(string controllerName, object viewComponent)
 		{
 			this.mName = controllerName ?? NAME;
-			this.ViewComponent = viewComponent;
+			this.viewComponent = viewComponent;
 		}
 
 		#endregion
@@ -110,7 +112,10 @@ namespace Company.DataGrid.Core
 		/// <remarks><para>You should override this in your subclass</para></remarks>
 		public virtual string Name
 		{
-			get { return this.mName; }
+			get
+			{
+				return this.mName;
+			}
 		}
 
 		/// <summary>
@@ -128,8 +133,14 @@ namespace Company.DataGrid.Core
 		/// </remarks>
 		public virtual object ViewComponent
 		{
-			get; 
-			set;
+			get
+			{
+				return this.viewComponent;
+			}
+			set
+			{
+				this.viewComponent = value;
+			}
 		}
 
 		#endregion

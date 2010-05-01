@@ -53,8 +53,8 @@ namespace Company.DataGrid.Core
 		public Notification(string name, object body, string type)
 		{
 			this.m_name = name;
-			this.Body = body;
-			this.Type = type;
+			this.body = body;
+			this.type = type;
 		}
 
 		#endregion
@@ -82,7 +82,10 @@ namespace Company.DataGrid.Core
 		/// </summary>
 		public virtual string Name
 		{
-			get { return this.m_name; }
+			get
+			{
+				return this.m_name;
+			}
 		}
 
 		/// <summary>
@@ -91,8 +94,14 @@ namespace Company.DataGrid.Core
 		/// <remarks>This accessor is thread safe</remarks>
 		public virtual object Body
 		{
-			get; 
-			set;
+			get
+			{
+				return this.body;
+			}
+			set
+			{
+				this.body = value;
+			}
 		}
 
 		/// <summary>
@@ -101,8 +110,14 @@ namespace Company.DataGrid.Core
 		/// <remarks>This accessor is thread safe</remarks>
 		public virtual string Type
 		{
-			get; 
-			set;
+			get
+			{
+				return this.type;
+			}
+			set
+			{
+				this.type = value;
+			}
 		}
 
 		#endregion
@@ -113,6 +128,8 @@ namespace Company.DataGrid.Core
 		/// The name of the notification instance 
 		/// </summary>
 		private readonly string m_name;
+		private object body;
+		private string type;
 
 		#endregion
 	}

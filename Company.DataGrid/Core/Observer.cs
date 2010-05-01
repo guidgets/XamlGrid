@@ -30,6 +30,9 @@ namespace Company.DataGrid.Core
 	/// <see cref="Company.DataGrid.Core.Notification"/>
 	public class Observer : IObserver
 	{
+		private string notifyMethod;
+		private object notifyContext;
+
 		#region Constructors
 
 		/// <summary>
@@ -42,8 +45,8 @@ namespace Company.DataGrid.Core
 		/// </remarks>
 		public Observer(string notifyMethod, object notifyContext)
 		{
-			this.NotifyMethod = notifyMethod;
-			this.NotifyContext = notifyContext;
+			this.notifyMethod = notifyMethod;
+			this.notifyContext = notifyContext;
 		}
 
 		#endregion
@@ -61,7 +64,7 @@ namespace Company.DataGrid.Core
 			string method;
 
 			// Retrieve the current state of the object, then notify outside of our thread safe block
-			lock (this.m_syncRoot)
+			lock (this.syncRoot)
 			{
 				context = this.NotifyContext;
 				method = this.NotifyMethod;
@@ -80,7 +83,7 @@ namespace Company.DataGrid.Core
 		/// <returns>Indicating if the object and the notification context are the same</returns>
 		public virtual bool CompareNotifyContext(object obj)
 		{
-			lock (this.m_syncRoot)
+			lock (this.syncRoot)
 			{
 				// Compare on the current state
 				return this.NotifyContext.Equals(obj);
@@ -91,6 +94,7 @@ namespace Company.DataGrid.Core
 
 		#region Accessors
 
+
 		/// <summary>
 		/// The notification (callback) method of the interested object
 		/// </summary>
@@ -98,8 +102,14 @@ namespace Company.DataGrid.Core
 		/// <remarks>This accessor is thread safe</remarks>
 		public virtual string NotifyMethod
 		{
-			private get; 
-			set;
+			get
+			{
+				return this.notifyMethod;
+			}
+			set
+			{
+				this.notifyMethod = value;
+			}
 		}
 
 		/// <summary>
@@ -108,8 +118,14 @@ namespace Company.DataGrid.Core
 		/// <remarks>This accessor is thread safe</remarks>
 		public virtual object NotifyContext
 		{
-			private get; 
-			set;
+			get
+			{
+				return this.notifyContext;
+			}
+			set
+			{
+				this.notifyContext = value;
+			}
 		}
 
 		#endregion
@@ -119,7 +135,7 @@ namespace Company.DataGrid.Core
 		/// <summary>
 		/// Used for locking
 		/// </summary>
-		protected readonly object m_syncRoot = new object();
+		protected readonly object syncRoot = new object();
 
 		#endregion
 	}

@@ -29,7 +29,7 @@ namespace Company.DataGrid.Models
 		/// <param name="selectionMode">The selection mode of the <see cref="SelectedItemsCollection"/>.</param>
 		public SelectedItemsCollection(SelectionMode selectionMode)
 		{
-			this.SelectionMode = selectionMode;
+			this.selectionMode = selectionMode;
 		}
 
 

@@ -381,6 +381,7 @@ namespace Company.DataGrid.Controllers
 							break;
 						case ModifierKeys.Control | ModifierKeys.Shift:
 							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem);
+							this.HomeEndMove(key);
 							break;
 					}
 					break;
@@ -399,15 +400,16 @@ namespace Company.DataGrid.Controllers
 				{
 					this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
 					                      NotificationTypes.CLEAR_SELECTION);
-					if (key == Key.Home)
-					{
-						this.Scroll.ScrollToHorizontalOffset(0);
-					}
-					else
-					{
-						this.Scroll.ScrollToHorizontalOffset(this.Scroll.ExtentWidth);
-					}
 				}
+				HomeEndMove(key);
+			}
+		}
+
+		private void HomeEndMove(Key key)
+		{
+			if (key == Key.Home || key == Key.End)
+			{
+				this.Scroll.ScrollToHorizontalOffset(key == Key.Home ? 0 : this.Scroll.ExtentWidth);
 			}
 		}
 

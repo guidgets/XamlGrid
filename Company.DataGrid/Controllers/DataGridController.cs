@@ -141,7 +141,7 @@ namespace Company.DataGrid.Controllers
 					break;
 				case Notifications.ITEM_CLICKED:
 					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, notification.Body);
-					this.SelectItems(true);
+					this.SelectItems(true, Key.None);
 					break;
 				case Notifications.CELL_FOCUSED:
 					UIElement uiElement = (UIElement) notification.Body;
@@ -284,8 +284,10 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private void HandleCurrentItem(Key key)
+		protected virtual void HandleCurrentItem(Key key)
 		{
+			bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
+
 			switch (key)
 			{
 				case Key.Up:
@@ -303,15 +305,21 @@ namespace Company.DataGrid.Controllers
 					                      this.GetFirstItemOnCurrentPage(this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem), true));
 					break;
 				case Key.Home:
-					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());
+					if (control)
+					{
+						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());						
+					}
 					break;
 				case Key.End:
-					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());
+					if (control)
+					{
+						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());						
+					}
 					break;
 			}
 		}
 
-		private void HandleSelection(Key key)
+		protected virtual void HandleSelection(Key key)
 		{
 			bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
 
@@ -323,7 +331,7 @@ namespace Company.DataGrid.Controllers
 				case Key.PageDown:
 				case Key.Home:
 				case Key.End:
-					this.SelectItems(false);
+					this.SelectItems(false, key);
 					break;
 				case Key.Space:
 					if (control)
@@ -342,7 +350,7 @@ namespace Company.DataGrid.Controllers
 			}
 		}
 
-		private void SelectItems(bool clickedItem)
+		private void SelectItems(bool clickedItem, Key key)
 		{
 			bool selected = this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem);
 			string notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
@@ -355,22 +363,17 @@ namespace Company.DataGrid.Controllers
 					}
 					break;
 				case SelectionMode.Multiple:
-					if (clickedItem)
-					{
-						this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
-					}
+					this.ToggleSelection(notificationToSend, clickedItem, key);
 					break;
 				case SelectionMode.Extended:
 					switch (Keyboard.Modifiers)
 					{
 						case ModifierKeys.None:
-							this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem, NotificationTypes.CLEAR_SELECTION);
+							this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
+							                      NotificationTypes.CLEAR_SELECTION);
 							break;
 						case ModifierKeys.Control:
-							if (clickedItem)
-							{
-								this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
-							}
+							this.ToggleSelection(notificationToSend, clickedItem, key);
 							break;
 						case ModifierKeys.Shift:
 							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem,
@@ -381,6 +384,22 @@ namespace Company.DataGrid.Controllers
 							break;
 					}
 					break;
+			}
+		}
+
+		private void ToggleSelection(string notificationToSend, bool clickedItem, Key key)
+		{
+			if (clickedItem)
+			{
+				this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
+			}
+			else
+			{
+				if (key == Key.Home || key == Key.End)
+				{
+					this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
+					                      NotificationTypes.CLEAR_SELECTION);
+				}
 			}
 		}
 

@@ -399,6 +399,14 @@ namespace Company.DataGrid.Controllers
 				{
 					this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
 					                      NotificationTypes.CLEAR_SELECTION);
+					if (key == Key.Home)
+					{
+						this.Scroll.ScrollToHorizontalOffset(0);
+					}
+					else
+					{
+						this.Scroll.ScrollToHorizontalOffset(this.Scroll.ExtentWidth);
+					}
 				}
 			}
 		}

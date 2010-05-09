@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Company.DataGrid.Core;
 using Company.DataGrid.Views;
@@ -38,7 +39,7 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRegister();
 
-			this.Editor.KeyDown += this.Editor_KeyDown;
+			this.Editor.AddHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Editor_KeyDown), true);
 			this.Editor.Unloaded += this.Editor_Unloaded;
 		}
 
@@ -49,8 +50,19 @@ namespace Company.DataGrid.Controllers
 		{
 			base.OnRemove();
 
-			this.Editor.KeyDown -= this.Editor_KeyDown;
+			this.Editor.RemoveHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Editor_KeyDown));
 			this.Editor.Unloaded -= this.Editor_Unloaded;
+		}
+
+		public static bool SentFromMultilineTextBox(KeyEventArgs e)
+		{
+			TextBox textBox = e.OriginalSource as TextBox;
+			if (textBox != null && textBox.AcceptsReturn)
+			{
+				return true;
+			}
+			RichTextBox richTextBox = e.OriginalSource as RichTextBox;
+			return richTextBox != null && richTextBox.AcceptsReturn;
 		}
 
 
@@ -59,7 +71,11 @@ namespace Company.DataGrid.Controllers
 			switch (e.Key)
 			{
 				case Key.Enter:
-					this.Editor.Save();
+					if (!SentFromMultilineTextBox(e))
+					{
+						this.Editor.Save();
+						e.Handled = false;
+					}
 					break;
 				case Key.Escape:
 					this.Editor.Cancel();

@@ -45,7 +45,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRegister();
 
 			this.Cell.GotFocus += this.Cell_GotFocus;
-			this.Cell.AddHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Cell_KeyDown), true);
+			this.Cell.KeyDown += this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
 		}
 
@@ -57,7 +57,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRemove();
 
 			this.Cell.GotFocus -= this.Cell_GotFocus;
-			this.Cell.RemoveHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Cell_KeyDown));
+			this.Cell.KeyDown -= this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
 		}
 
@@ -135,25 +135,6 @@ namespace Company.DataGrid.Controllers
 			return childControls;
 		}
 
-		private void ProcessEnterKey(RoutedEventArgs e)
-		{
-			TextBox textBox = e.OriginalSource as TextBox;
-			if (textBox != null && textBox.AcceptsReturn)
-			{
-				return;
-			}
-			RichTextBox richTextBox = e.OriginalSource as RichTextBox;
-			if (richTextBox != null && richTextBox.AcceptsReturn)
-			{
-				return;
-			}
-			this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
-			if (!this.Cell.IsInEditMode)
-			{
-				this.FocusHorizontalNeighbor(true);
-			}
-		}
-
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
@@ -168,7 +149,14 @@ namespace Company.DataGrid.Controllers
 					this.Cell.IsInEditMode = true;
 					break;
 				case Key.Enter:
-					ProcessEnterKey(e);
+					if (!EditorController.SentFromMultilineTextBox(e))
+					{
+						this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
+						if (!this.Cell.IsInEditMode)
+						{
+							this.FocusHorizontalNeighbor(true);
+						}
+					}
 					break;
 				case Key.Escape:
 					if (this.Cell.IsInEditMode)
@@ -180,17 +168,11 @@ namespace Company.DataGrid.Controllers
 					break;
 				case Key.Left:
 				case Key.Right:
-					if (!e.Handled)
-					{
-						this.FocusHorizontalNeighbor(e.Key == Key.Right);						
-					}
+					this.FocusHorizontalNeighbor(e.Key == Key.Right);
 					break;
 				case Key.Up:
 				case Key.Down:
-					if (!e.Handled)
-					{
-						this.FocusVerticalNeighbor(e.Key == Key.Down);
-					}
+					this.FocusVerticalNeighbor(e.Key == Key.Down);
 					break;
 			}
 		}

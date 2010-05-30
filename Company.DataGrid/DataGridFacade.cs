@@ -1,8 +1,8 @@
-﻿using Company.DataGrid.Controllers;
-using Company.DataGrid.Core;
-using Company.DataGrid.Models;
+﻿using Company.Widgets.Controllers;
+using Company.Widgets.Core;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid
+namespace Company.Widgets
 {
 	public class DataGridFacade : Facade
 	{

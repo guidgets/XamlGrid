@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Linq;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Extends the functionality of an <see cref="ItemsControl"/>.

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using Company.DataGrid.Controllers;
-using Company.DataGrid.Models;
+using Company.Widgets.Controllers;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Represents a cell that stays as a header for a <see cref="Controllers.Column"/>.

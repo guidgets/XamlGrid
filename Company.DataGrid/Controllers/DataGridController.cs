@@ -9,11 +9,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using Company.DataGrid.Core;
-using Company.DataGrid.Models;
-using Company.DataGrid.Views;
+using Company.Widgets.Core;
+using Company.Widgets.Models;
+using Company.Widgets.Models.Export;
+using Company.Widgets.Views;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.DataGrid"/>.
@@ -28,7 +29,7 @@ namespace Company.DataGrid.Controllers
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
 		/// </summary>
 		/// <param name="dataGrid">The view component.</param>
-		public DataGridController(Views.DataGrid dataGrid) : base(dataGrid.GetHashCode().ToString(), dataGrid)
+		public DataGridController(DataGrid dataGrid) : base(dataGrid.GetHashCode().ToString(), dataGrid)
 		{
 
 		}
@@ -37,11 +38,11 @@ namespace Company.DataGrid.Controllers
 		/// <summary>
 		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="DataGridController"/> is responsible.
 		/// </summary>
-		public virtual Views.DataGrid DataGrid
+		public virtual DataGrid DataGrid
 		{
 			get
 			{
-				return (Views.DataGrid) this.ViewComponent;
+				return (DataGrid) this.ViewComponent;
 			}
 		}
 
@@ -70,6 +71,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRegister();
 
 			this.DataGrid.Loaded += this.DataGrid_Loaded;
+			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
@@ -86,6 +88,7 @@ namespace Company.DataGrid.Controllers
 			base.OnRemove();
 
 			this.DataGrid.Loaded -= this.DataGrid_Loaded;
+			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
@@ -177,6 +180,14 @@ namespace Company.DataGrid.Controllers
 										   	   this.CalculateRelativeColumnWidths();
 										   }
 			                           };
+		}
+
+		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (Keyboard.Modifiers == KeyHelper.CommandModifier && e.Key == Key.C)
+			{
+				this.DataGrid.Copy();
+			}
 		}
 
 		private void DataGrid_DataSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -286,7 +297,7 @@ namespace Company.DataGrid.Controllers
 
 		protected virtual void HandleCurrentItem(Key key)
 		{
-			bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
+			bool control = (Keyboard.Modifiers & KeyHelper.CommandModifier) != ModifierKeys.None;
 
 			switch (key)
 			{
@@ -321,7 +332,7 @@ namespace Company.DataGrid.Controllers
 
 		protected virtual void HandleSelection(Key key)
 		{
-			bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
+			bool control = (Keyboard.Modifiers & KeyHelper.CommandModifier) != ModifierKeys.None;
 
 			switch (key)
 			{
@@ -336,7 +347,7 @@ namespace Company.DataGrid.Controllers
 				case Key.Space:
 					if (control)
 					{
-						bool currentItemSelected = this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem);
+						bool currentItemSelected = this.DataGrid.SelectedItems.IsSelected(this.DataGrid.CurrentItem);
 						this.SendNotification(currentItemSelected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS,
 						                      this.DataGrid.CurrentItem);
 					}
@@ -352,12 +363,12 @@ namespace Company.DataGrid.Controllers
 
 		private void SelectItems(bool clickedItem, Key key)
 		{
-			bool selected = this.DataGrid.SelectedItems.Contains(this.DataGrid.CurrentItem);
+			bool selected = this.DataGrid.SelectedItems.IsSelected(this.DataGrid.CurrentItem);
 			string notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
 			switch (this.DataGrid.SelectionMode)
 			{
 				case SelectionMode.Single:
-					if (!selected || (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None)
+					if (!selected || (Keyboard.Modifiers & KeyHelper.CommandModifier) != ModifierKeys.None)
 					{
 						this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
 					}
@@ -372,17 +383,19 @@ namespace Company.DataGrid.Controllers
 							this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
 							                      NotificationTypes.CLEAR_SELECTION);
 							break;
-						case ModifierKeys.Control:
-							this.ToggleSelection(notificationToSend, clickedItem, key);
-							break;
 						case ModifierKeys.Shift:
 							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem,
 												  NotificationTypes.CLEAR_SELECTION);
 							break;
-						case ModifierKeys.Control | ModifierKeys.Shift:
-							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem);
-							this.HomeEndMove(key);
-							break;
+					}
+					if (Keyboard.Modifiers == KeyHelper.CommandModifier)
+					{
+						this.ToggleSelection(notificationToSend, clickedItem, key);						
+					}
+					if (Keyboard.Modifiers == (KeyHelper.CommandModifier | ModifierKeys.Shift))
+					{
+						this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem);
+						this.HomeEndMove(key);
 					}
 					break;
 			}

@@ -1,6 +1,6 @@
-﻿using Company.DataGrid.Core;
+﻿using Company.Widgets.Core;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	public class ItemsSourceChangedCommand : MacroCommand
 	{

@@ -1,11 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Company.DataGrid.Models;
-using Company.DataGrid.Views;
+using Company.Widgets.Models;
+using Company.Widgets.Views;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to resize a <see cref="Column"/> of a <see cref="DataGrid"/>.

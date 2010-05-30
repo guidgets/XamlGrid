@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Contains methods that extend the functionality of <see cref="DependencyObject"/>.

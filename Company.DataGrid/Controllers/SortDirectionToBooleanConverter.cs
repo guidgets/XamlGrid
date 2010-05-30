@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Converts a sorting direction (ascending, descending or none) to a boolean value (<c>false</c>, <c>true</c> or <c>null</c>).

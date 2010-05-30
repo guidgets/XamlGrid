@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents a <see cref="Model"/> that manages the current item of a collection of items.

@@ -10,7 +10,7 @@ using System;
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// The interface definition for a PureMVC Facade
@@ -21,9 +21,9 @@ namespace Company.DataGrid.Core
 	/// </remarks>
 	/// <see cref="IMainModel"/>
 	/// <see cref="INotification"/>
-	/// <see cref="Company.DataGrid.Core"/>
-	/// <see cref="Company.DataGrid.Core"/>
-	/// <see cref="Company.DataGrid.Core"/>
+	/// <see cref="Company.Widgets.Core"/>
+	/// <see cref="Company.Widgets.Core"/>
+	/// <see cref="Company.Widgets.Core"/>
 	public interface IFacade : INotifier
 	{
 		#region Model

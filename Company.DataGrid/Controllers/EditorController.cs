@@ -1,10 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Company.DataGrid.Core;
-using Company.DataGrid.Views;
+using Company.Widgets.Core;
+using Company.Widgets.Views;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Editor"/>.

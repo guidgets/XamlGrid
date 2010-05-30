@@ -1,4 +1,4 @@
-﻿namespace Company.DataGrid.Models
+﻿namespace Company.Widgets.Models
 {
 	public struct Property
 	{

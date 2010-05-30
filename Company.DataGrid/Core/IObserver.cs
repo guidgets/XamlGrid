@@ -4,7 +4,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// The interface definition for a PureMVC Observer
@@ -23,7 +23,7 @@ namespace Company.DataGrid.Core
 	///     <para>Observers can receive <c>Notification</c>s by having their <c>notifyObserver</c> method invoked, passing in an object implementing the <c>INotification</c> interface, such as a subclass of <c>Notification</c></para>
 	/// </remarks>
 	/// <see cref="INotification"/>
-	/// <see cref="Company.DataGrid.Core"/>
+	/// <see cref="Company.Widgets.Core"/>
 	public interface IObserver
 	{
 		/// <summary>

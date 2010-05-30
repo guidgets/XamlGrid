@@ -9,7 +9,7 @@
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// The interface definition for a PureMVC Command

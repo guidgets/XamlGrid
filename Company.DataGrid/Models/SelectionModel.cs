@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents a <see cref="Model"/> that executes the appropriate selection logic requested by different commands.
@@ -15,7 +14,7 @@ namespace Company.DataGrid.Models
 	{
 		public new const string NAME = "selectionModel";
 
-		private IList items;
+		private IList<object> items;
 		private SelectionMode selectionMode;
 		private readonly RangeCollection ranges;
 
@@ -61,7 +60,7 @@ namespace Company.DataGrid.Models
 		/// Gets or sets the items that the <see cref="SelectionModel"/> selects and deselects.
 		/// </summary>
 		/// <value>The items to select and deselect.</value>
-		public virtual IList Items
+		public virtual IList<object> Items
 		{
 			get
 			{
@@ -77,6 +76,10 @@ namespace Company.DataGrid.Models
 			}
 		}
 
+
+		/// <summary>
+		/// Called by the Model when the Model is registered.
+		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
@@ -85,12 +88,29 @@ namespace Company.DataGrid.Models
 			((INotifyPropertyChanged) this.SelectedItems).PropertyChanged += this.SelectionModel_PropertyChanged;
 		}
 
+		/// <summary>
+		/// Called by the Model when the Model is removed.
+		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
 			this.SelectedItems.CollectionChanged -= this.SelectedItems_CollectionChanged;
 			((INotifyPropertyChanged) this.SelectedItems).PropertyChanged -= this.SelectionModel_PropertyChanged;
+		}
+
+
+		/// <summary>
+		/// Selects the specified item.
+		/// </summary>
+		/// <param name="item">The item to select.</param>
+		public virtual void Select(object item)
+		{
+			int index = this.items.IndexOf(item);
+			if (index >= 0)
+			{
+				this.SelectedItems.Add(new SelectedItem(item, index));				
+			}
 		}
 
 		/// <summary>
@@ -103,11 +123,6 @@ namespace Company.DataGrid.Models
 			this.SelectRange(this.items.IndexOf(item), clearPreviousSelection);
 		}
 
-		/// <summary>
-		/// Selects the range of the items located between the specified indices.
-		/// </summary>
-		/// <param name="endIndex">The first index of the range.</param>
-		/// <param name="clearPreviousSelection">if set to <c>true</c> clear the previous selection.</param>
 		public virtual void SelectRange(int endIndex, bool clearPreviousSelection)
 		{
 			int start = this.ranges.Count > 0 ? this.ranges.Last().Start : 0;
@@ -119,14 +134,19 @@ namespace Company.DataGrid.Models
 			this.SelectRange(start, end);
 		}
 
+		/// <summary>
+		/// Selects the range of the items located between the specified indices.
+		/// </summary>
+		/// <param name="start">The start index.</param>
+		/// <param name="end">The end index.</param>
 		public virtual void SelectRange(int start, int end)
 		{
 			int step = start <= end ? 1 : -1;
 			this.ranges.AddRange(start, end);
-			List<object> selectedItems = new List<object>();
+			List<SelectedItem> selectedItems = new List<SelectedItem>();
 			for (int index = start; index != end + step; index += step)
 			{
-				selectedItems.Add(this.items[index]);
+				selectedItems.Add(new SelectedItem(this.items[index], index));
 			}
 			this.SelectedItems.AddRange(selectedItems);
 		}
@@ -153,56 +173,56 @@ namespace Company.DataGrid.Models
 					this.ProcessAddition(e);
 					break;
 				case NotifyCollectionChangedAction.Remove:
-					foreach (int indexOfItem in from object selectedItem in e.OldItems
-												select this.items.IndexOf(selectedItem))
-					{
-						this.ranges.RemoveRange(indexOfItem, indexOfItem);
-					}
-					this.SendNotification(Notifications.DESELECTED_ITEMS, e.OldItems);
+					this.ProcessRemoval(e);
 					break;
 				case NotifyCollectionChangedAction.Replace:
-					foreach (int indexOfItem in from object selectedItem in e.NewItems
-												select this.items.IndexOf(selectedItem))
-					{
-						this.ranges.AddRange(indexOfItem, indexOfItem);
-					}
-					foreach (int indexOfItem in from object selectedItem in e.OldItems
-												select this.items.IndexOf(selectedItem))
-					{
-						this.ranges.RemoveRange(indexOfItem, indexOfItem);
-					}
-					this.SendNotification(Notifications.DESELECTED_ITEMS, e.OldItems);
-					this.SendNotification(Notifications.SELECTED_ITEMS, e.NewItems);
+					this.ProcessAddition(e);
+					this.ProcessRemoval(e);
 					break;
 				case NotifyCollectionChangedAction.Reset:
 					this.ranges.Clear();
-					this.SendNotification(Notifications.DESELECTED_ITEMS, this.SelectedItems);
+					this.SendNotification(Notifications.DESELECTED_ITEMS, new List<object>(0));
 					break;
 			}
 		}
 
 		private void ProcessAddition(NotifyCollectionChangedEventArgs e)
 		{
+			List<object> selectedRanges = new List<object>();
 			List<object> selectedItems = new List<object>();
 			foreach (object newItem in e.NewItems)
 			{
-				IEnumerable<object> enumerable = newItem as IEnumerable<object>;
+				IEnumerable<SelectedItem> enumerable = newItem as IEnumerable<SelectedItem>;
 				if (enumerable != null)
 				{
-					selectedItems.AddRange(enumerable);
+					selectedRanges.AddRange(enumerable.Select(selectedItem => selectedItem.Item));
 				}
 				else
 				{
-					int index = this.items.IndexOf(newItem);
-					this.ranges.AddRange(index, index);						
+					SelectedItem selectedItem = (SelectedItem) newItem;
+					selectedItems.Add(selectedItem.Item);
+					int index = this.items.IndexOf(selectedItem.Item);
+					this.ranges.AddRange(index, index);
 				}
 			}
-			if (selectedItems.Count > 0)
+			if (selectedRanges.Count > 0)
 			{
-				int index = this.items.IndexOf(selectedItems[0]);
-				this.ranges.AddRange(index, index + selectedItems.Count);
+				int index = this.items.IndexOf(selectedRanges[0]);
+				this.ranges.AddRange(index, index + selectedRanges.Count);
 			}
-			this.SendNotification(Notifications.SELECTED_ITEMS, selectedItems.Count > 0 ? selectedItems : e.NewItems);
+			this.SendNotification(Notifications.SELECTED_ITEMS, selectedRanges.Count > 0 ? selectedRanges : selectedItems);
+		}
+
+		private void ProcessRemoval(NotifyCollectionChangedEventArgs e)
+		{
+			List<object> deselectedItems = new List<object>();
+			foreach (SelectedItem selectedItem in e.OldItems)
+			{
+				deselectedItems.Add(selectedItem.Item);
+				int index = this.items.IndexOf(selectedItem.Item);
+				this.ranges.RemoveRange(index, index);
+			}
+			this.SendNotification(Notifications.DESELECTED_ITEMS, deselectedItems);
 		}
 
 		private void SelectionModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

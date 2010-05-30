@@ -1,4 +1,4 @@
-﻿namespace Company.DataGrid
+﻿namespace Company.Widgets
 {
 	public static class Notifications
 	{

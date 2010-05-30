@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Contains methods that extend the functionality of <see cref="Control"/>.

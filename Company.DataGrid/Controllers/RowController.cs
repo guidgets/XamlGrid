@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
-using Company.DataGrid.Core;
-using Company.DataGrid.Views;
+using Company.Widgets.Core;
+using Company.Widgets.Views;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
@@ -97,13 +97,13 @@ namespace Company.DataGrid.Controllers
 					this.Row.IsFocused = this.Row.DataContext == notification.Body;
 					break;
 				case Notifications.SELECTED_ITEMS:
-					if (((IList) notification.Body).Contains(this.Row.DataContext))
+					if (((IList<object>) notification.Body).Contains(this.Row.DataContext))
 					{
 						this.Row.IsSelected = true;
 					}
 					break;
 				case Notifications.DESELECTED_ITEMS:
-					IList list = (IList) notification.Body;
+					IList<object> list = (IList<object>) notification.Body;
 					if (list.Contains(this.Row.DataContext) || list.Count == 0)
 					{
 						this.Row.IsSelected = false;

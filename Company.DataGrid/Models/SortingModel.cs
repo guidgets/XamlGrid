@@ -2,9 +2,9 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents a <see cref="Model"/> that executes all sorting logic over a given set of data.

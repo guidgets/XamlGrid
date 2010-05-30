@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Company.DataGrid.Models;
+using Company.Widgets.Models;
 using NUnit.Framework;
 
 namespace UnitTests.Selection
@@ -51,7 +51,7 @@ namespace UnitTests.Selection
 			this.selectionModel.SelectAll();
 			foreach (object item in this.selectionModel.Items)
 			{
-				Assert.IsTrue(this.selectionModel.SelectedItems.Contains(item));
+				Assert.IsTrue(this.selectionModel.SelectedItems.IsSelected(item));
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace UnitTests.Selection
 			int[] indices = randomizer.GetInts(0, this.selectionModel.Items.Count, 2);
 			Array.Sort(indices);
 
-			this.selectionModel.SelectedItems.Add(this.selectionModel.Items[indices[0]]);
+			this.selectionModel.Select(this.selectionModel.Items[indices[0]]);
 			this.selectionModel.SelectAll();
 			this.selectionModel.SelectRange(indices[1], true);
 
@@ -74,11 +74,11 @@ namespace UnitTests.Selection
 			string range = string.Format("Range: {0} - {1}", indices[0], indices[1]);
 			for (int index = 0; index < indices[0] || index > indices[1]; index++)
 			{
-				Assert.IsFalse(this.selectionModel.SelectedItems.Contains(this.selectionModel.Items[index]), range);
+				Assert.IsFalse(this.selectionModel.SelectedItems.IsSelected(this.selectionModel.Items[index]), range);
 			}
 			for (int index = indices[0]; index <= indices[1]; index++)
 			{
-				Assert.IsTrue(this.selectionModel.SelectedItems.Contains(this.selectionModel.Items[index]), range);
+				Assert.IsTrue(this.selectionModel.SelectedItems.IsSelected(this.selectionModel.Items[index]), range);
 			}
 		}
 	}

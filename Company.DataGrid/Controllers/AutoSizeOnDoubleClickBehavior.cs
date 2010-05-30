@@ -4,10 +4,10 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Threading;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
-	/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to auto-size a <see cref="Column"/> of a <see cref="DataGrid"/>.
+	/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to auto-size a <see cref="Column"/> of a <see cref="Company.Widgets"/>.
 	/// </summary>
 	public class AutoSizeOnDoubleClickBehavior : Behavior<Thumb>
 	{
@@ -18,7 +18,7 @@ namespace Company.DataGrid.Controllers
 		private DateTime waitingSince;
 
 		/// <summary>
-		/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to auto-size a <see cref="Column"/> of a <see cref="DataGrid"/>.
+		/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to auto-size a <see cref="Column"/> of a <see cref="Company.Widgets"/>.
 		/// </summary>
 		public AutoSizeOnDoubleClickBehavior()
 		{

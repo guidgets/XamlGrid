@@ -5,7 +5,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 using System.Threading;
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 using NUnit.Framework;
 
 

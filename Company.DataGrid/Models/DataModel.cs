@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	public class DataModel : Model
 	{

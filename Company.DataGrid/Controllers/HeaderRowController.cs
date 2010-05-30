@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using Company.DataGrid.Core;
-using Company.DataGrid.Views;
+using Company.Widgets.Core;
+using Company.Widgets.Views;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	public class HeaderRowController : Controller
 	{

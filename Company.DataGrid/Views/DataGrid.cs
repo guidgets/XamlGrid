@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -6,16 +7,19 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Company.DataGrid.Controllers;
-using Company.DataGrid.Models;
+using Company.Widgets.Controllers;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Represents a control for displaying and manipulating data with a default tabular view.
 	/// </summary>
 	public class DataGrid : ItemsControl
 	{
+		private event DependencyPropertyChangedEventHandler itemsSourceChanged;
+
+
 		/// <summary>
 		/// Occurs when the current item of the <see cref="DataGrid"/> is changed.
 		/// </summary>
@@ -24,10 +28,22 @@ namespace Company.DataGrid.Views
 		/// Occurs when the data source of the <see cref="DataGrid"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler DataSourceChanged;
+
 		/// <summary>
 		/// Occurs when the source of items for the <see cref="DataGrid"/> is changed.
 		/// </summary>
-		public virtual event DependencyPropertyChangedEventHandler ItemsSourceChanged;
+		public virtual event DependencyPropertyChangedEventHandler ItemsSourceChanged
+		{
+			add
+			{
+				this.itemsSourceChanged += value;
+			}
+			remove
+			{
+				this.itemsSourceChanged -= value;
+			}
+		}
+
 		/// <summary>
 		/// Occurs when the selection mode of the <see cref="DataGrid"/> is changed.
 		/// </summary>
@@ -89,6 +105,13 @@ namespace Company.DataGrid.Views
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
 		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating whether to copy the header of the <see cref="DataGrid"/> to the clipboard.
+		/// </summary>
+		public static readonly DependencyProperty CopyHeaderProperty =
+			DependencyProperty.Register("CopyHeader", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
+
+
+		/// <summary>
 		/// The ItemsSourceListener Attached Dependency Property is a private property
 		/// used to silently bind to the <see cref="ItemsControl"/> ItemsSourceProperty.
 		/// Once bound, the callback method will execute any time the ItemsSource property changes.
@@ -118,7 +141,7 @@ namespace Company.DataGrid.Views
 
 			this.SetBinding(itemsSourceListenerProperty, itemsSourceBinding);
 
-			this.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
+			this.itemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 
 			// TODO: move these to a startup Controller (page 19 and 20 of "Pure MVC - Best Practices")
 			DataGridFacade.Instance.RegisterController(new DataGridController(this));
@@ -293,6 +316,25 @@ namespace Company.DataGrid.Views
 		}
 
 		/// <summary>
+		/// Gets or sets a value indicating whether to copy the header of the <see cref="DataGrid"/> to the clipboard.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if the header should be copied to the clipboard; otherwise, <c>false</c>.
+		/// </value>
+		public bool CopyHeaderToClipboard
+		{
+			get
+			{
+				return (bool) this.GetValue(CopyHeaderProperty);
+			}
+			set
+			{
+				this.SetValue(CopyHeaderProperty, value);
+			}
+		}
+
+
+		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
 		/// <returns>
@@ -378,7 +420,7 @@ namespace Company.DataGrid.Views
 
 		protected virtual void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
 		{
-			DependencyPropertyChangedEventHandler handler = this.ItemsSourceChanged;
+			DependencyPropertyChangedEventHandler handler = this.itemsSourceChanged;
 			if (handler != null)
 			{
 				handler(this, e);

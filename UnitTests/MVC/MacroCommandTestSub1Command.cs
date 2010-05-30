@@ -4,7 +4,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 
 
 namespace UnitTests.MVC

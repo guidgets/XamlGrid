@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	public class SortDirectionEventArgs : EventArgs
 	{

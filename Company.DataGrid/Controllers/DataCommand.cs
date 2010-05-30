@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Company.DataGrid.Core;
-using Company.DataGrid.Models;
+using Company.Widgets.Core;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	public class DataCommand : SimpleCommand
 	{

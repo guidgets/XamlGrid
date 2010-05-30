@@ -10,7 +10,7 @@
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// The interface definition for a PureMVC Notification
@@ -21,7 +21,7 @@ namespace Company.DataGrid.Core
 	///     <para>Notifications are not meant to be a replacement for Events. Generally, <c>IController</c> implementors place event handlers on their Controller components, which they then handle in the usual way. This may lead to the broadcast of <c>Notification</c>s to trigger <c>IMainCommand</c>s or to communicate with other <c>IViews</c>. <c>IModel</c> and <c>IMainCommand</c> instances communicate with each other and <c>IController</c>s by broadcasting <c>INotification</c>s</para>
 	/// </remarks>
 	/// <see cref="IMainController"/>
-	/// <see cref="Company.DataGrid.Core.IObserver"/>
+	/// <see cref="IObserver"/>
 	public interface INotification
 	{
 		/// <summary>

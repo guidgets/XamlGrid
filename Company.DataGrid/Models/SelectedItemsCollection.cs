@@ -3,13 +3,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Controls;
+using System.Linq;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents a <see cref="ObservableCollection{T}"/> of items that are selected.
 	/// </summary>
-	public class SelectedItemsCollection : ObservableCollection<object>
+	public class SelectedItemsCollection : ObservableCollection<SelectedItem>
 	{
 		private SelectionMode selectionMode;
 		private bool suspendNotifications;
@@ -62,40 +63,13 @@ namespace Company.DataGrid.Models
 
 
 		/// <summary>
-		/// Adds the elements of the specified range to the end of this <see cref="SelectedItemsCollection"/>.
-		/// </summary>
-		/// <param name="range">The range which elements should be added to the end of this <see cref="SelectedItemsCollection"/>.</param>
-		public virtual void AddRange(IEnumerable<object> range)
-		{
-			this.suspendNotifications = true;
-			int firstIndex = -1;
-			foreach (object selectedItem in range)
-			{
-				if (firstIndex < 0)
-				{
-					firstIndex = this.Count;
-				}
-				this.Add(selectedItem);
-			}
-			if (firstIndex < 0)
-			{
-				return;
-			}
-			this.suspendNotifications = false;
-			const NotifyCollectionChangedAction action = NotifyCollectionChangedAction.Add;
-			List<object> selection = new List<object>(range);
-			this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, selection, firstIndex));
-		}
-
-
-		/// <summary>
 		/// Inserts an item into the collection at the specified index; 
 		/// if the <see cref="SelectionMode"/> of the <see cref="SelectedItemsCollection"/> is <see cref="System.Windows.Controls.SelectionMode.Single"/>, 
 		/// all items except the specified object parameter are cleared.
 		/// </summary>
 		/// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
 		/// <param name="item">The object to insert.</param>
-		protected override void InsertItem(int index, object item)
+		protected override void InsertItem(int index, SelectedItem item)
 		{
 			if (!this.Contains(item))
 			{
@@ -121,6 +95,64 @@ namespace Company.DataGrid.Models
 			{
 				base.OnCollectionChanged(e);				
 			}
+		}
+
+
+		/// <summary>
+		/// Adds the elements of the specified range to the end of this <see cref="SelectedItemsCollection"/>.
+		/// </summary>
+		/// <param name="range">The range which elements should be added to the end of this <see cref="SelectedItemsCollection"/>.</param>
+		public virtual void AddRange(IEnumerable<SelectedItem> range)
+		{
+			this.suspendNotifications = true;
+			int firstIndex = -1;
+			foreach (SelectedItem selectedItem in range)
+			{
+				if (firstIndex < 0)
+				{
+					firstIndex = this.Count;
+				}
+				this.Add(selectedItem);
+			}
+			if (firstIndex < 0)
+			{
+				return;
+			}
+			this.suspendNotifications = false;
+			const NotifyCollectionChangedAction action = NotifyCollectionChangedAction.Add;
+			List<SelectedItem> selection = new List<SelectedItem>(range);
+			this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, selection, firstIndex));
+		}
+
+		/// <summary>
+		/// Determines whether the specified item is selected.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <returns>
+		/// 	<c>true</c> if the specified item is selected; otherwise, <c>false</c>.
+		/// </returns>
+		public bool IsSelected(object item)
+		{
+			return this.Any(selectedItem => selectedItem.Item == item);
+		}
+
+		/// <summary>
+		/// Deselects the specified item.
+		/// </summary>
+		/// <param name="item">The item to deselect.</param>
+		/// <returns></returns>
+		public bool Deselect(object item)
+		{
+			IList<SelectedItem> existingItems = this.Where(selectedItem => selectedItem.Item == item).ToList();
+			if (existingItems.Any())
+			{
+				for (int index = existingItems.Count - 1; index >= 0; index--)
+				{
+					this.Remove(existingItems[index]);
+				}
+				return true;
+			}
+			return false;
 		}
 	}
 }

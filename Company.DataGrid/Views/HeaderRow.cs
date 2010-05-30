@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Company.DataGrid.Controllers;
-using Company.DataGrid.Models;
+using Company.Widgets.Controllers;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Represents a header that contains explanatory information about the data in a <see cref="DataGrid"/>.

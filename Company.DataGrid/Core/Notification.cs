@@ -10,7 +10,7 @@
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// A base <c>INotification</c> implementation

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Contains methods that extend the functionality of <see cref="Type"/>.

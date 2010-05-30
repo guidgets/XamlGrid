@@ -11,7 +11,7 @@ using System.Reflection;
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// A base <c>IObserver</c> implementation
@@ -27,7 +27,7 @@ namespace Company.DataGrid.Core
 	///     </list>
 	/// </remarks>
 	/// <see cref="MainController"/>
-	/// <see cref="Company.DataGrid.Core.Notification"/>
+	/// <see cref="Notification"/>
 	public class Observer : IObserver
 	{
 		private string notifyMethod;

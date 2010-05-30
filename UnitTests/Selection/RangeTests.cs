@@ -1,4 +1,4 @@
-﻿using Company.DataGrid.Models;
+﻿using Company.Widgets.Models;
 using NUnit.Framework;
 
 namespace UnitTests.Selection

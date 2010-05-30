@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Company.DataGrid.Controllers;
+using Company.Widgets.Controllers;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Represents a visual element that provides means of editing a supplied value.

@@ -10,7 +10,7 @@
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// A Base <c>INotifier</c> implementation
@@ -22,7 +22,7 @@ namespace Company.DataGrid.Core
 	/// </remarks>
 	/// <see cref="Core.Facade"/>
 	/// <see cref="Model"/>
-	/// <see cref="Company.DataGrid.Core"/>
+	/// <see cref="Company.Widgets.Core"/>
 	/// <see cref="MacroCommand"/>
 	/// <see cref="Controller"/>
 	public class Notifier : INotifier

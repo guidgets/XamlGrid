@@ -1,9 +1,10 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Controls;
-using Company.DataGrid.Core;
-using Company.DataGrid.Models;
+using Company.Widgets.Core;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	public class SelectionCommand : SimpleCommand
 	{
@@ -13,14 +14,14 @@ namespace Company.DataGrid.Controllers
 			switch (notification.Name)
 			{
 				case Notifications.ITEMS_CHANGED:
-					selectionModel.Items = notification.Body as IList;
+					selectionModel.Items = notification.Body as IList<object>;
 					break;
 				case Notifications.SELECTING_ITEMS:
 					if (notification.Type == NotificationTypes.CLEAR_SELECTION)
 					{
 						selectionModel.SelectedItems.Clear();
 					}
-					selectionModel.SelectedItems.Add(notification.Body);
+					selectionModel.Select(notification.Body);
 					break;
 				case Notifications.SELECT_ALL:
 					selectionModel.SelectAll();
@@ -29,11 +30,11 @@ namespace Company.DataGrid.Controllers
 					selectionModel.SelectRange(notification.Body, notification.Type == NotificationTypes.CLEAR_SELECTION);
 					break;
 				case Notifications.DESELECTING_ITEMS:
-					selectionModel.SelectedItems.Remove(notification.Body);
+					selectionModel.SelectedItems.Deselect(notification.Body);
 					break;
 				case Notifications.IS_ITEM_SELECTED:
 					selectionModel.SendNotification(Notifications.ITEM_IS_SELECTED, notification.Body,
-					                                selectionModel.SelectedItems.Contains(notification.Body).ToString());
+					                                selectionModel.SelectedItems.IsSelected(notification.Body).ToString());
 					break;
 				case Notifications.SELECTION_MODE_CHANGING:
 					selectionModel.SelectionMode = (SelectionMode) notification.Body;

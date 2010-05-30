@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents an <see cref="ObservableCollection{T}"/> which fires an event when a 

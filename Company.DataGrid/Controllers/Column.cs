@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using Company.DataGrid.Models;
-using Company.DataGrid.Views;
+using Company.Widgets.Models;
+using Company.Widgets.Views;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.

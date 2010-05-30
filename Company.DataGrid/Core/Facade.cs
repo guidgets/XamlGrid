@@ -10,7 +10,7 @@ using System;
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// A base Singleton <c>IFacade</c> implementation

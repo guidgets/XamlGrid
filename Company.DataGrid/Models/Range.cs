@@ -1,4 +1,4 @@
-﻿namespace Company.DataGrid.Models
+﻿namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents a range of indices of items, for example items that participate in a selection.

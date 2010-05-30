@@ -5,7 +5,7 @@
 */
 using System.Collections.Generic;
 using System.Threading;
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 using NUnit.Framework;
 
 

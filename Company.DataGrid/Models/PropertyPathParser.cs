@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	public static class PropertyPathParser
 	{

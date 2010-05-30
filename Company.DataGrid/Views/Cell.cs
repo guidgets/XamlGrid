@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Company.DataGrid.Models;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Represents an element that displays and manipulates a piece of a data object.

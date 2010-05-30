@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Company.DataGrid.Controllers;
-using Company.DataGrid.Models;
+using Company.Widgets.Controllers;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Views
+namespace Company.Widgets.Views
 {
 	/// <summary>
 	/// Represents a GUI element displaying a single characteristic of a data object, or a simple single value.

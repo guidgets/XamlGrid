@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	public class ScrollExtensions
 	{

@@ -1,6 +1,6 @@
 using System;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Provides data for the <see cref="ObservableItemCollection{T}.ItemPropertyChanged"/> event.

@@ -10,7 +10,7 @@
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// The interface definition for a PureMVC Notifier
@@ -21,7 +21,7 @@ namespace Company.DataGrid.Core
 	///     <para>The <c>Notifier</c> class, which all of the above mentioned classes extend, also provides an initialized reference to the <c>Facade</c> Singleton, which is required for the convienience method for sending <c>Notifications</c>, but also eases implementation as these classes have frequent <c>Facade</c> interactions and usually require access to the facade anyway</para>
 	/// </remarks>
 	/// <see cref="INotification"/>
-	/// <see cref="Company.DataGrid.Core"/>
+	/// <see cref="Company.Widgets.Core"/>
 	public interface INotifier
 	{
 		/// <summary>

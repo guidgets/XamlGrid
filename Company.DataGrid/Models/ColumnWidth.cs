@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using Company.DataGrid.Controllers;
+using Company.Widgets.Controllers;
 
-namespace Company.DataGrid.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Represents different ways of specifying the width of a <see cref="Column"/>.

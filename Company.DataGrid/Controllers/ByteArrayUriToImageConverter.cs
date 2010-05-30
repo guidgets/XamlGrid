@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Converts an array of bytes or an <see cref="Uri"/> to an <see cref="ImageSource"/>, for example to use in an <see cref="Image"/> control. 

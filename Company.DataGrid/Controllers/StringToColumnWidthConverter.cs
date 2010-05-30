@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using Company.DataGrid.Models;
+using Company.Widgets.Models;
 
-namespace Company.DataGrid.Controllers
+namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// Converts a <see cref="string"/> to a <see cref="ColumnWidth"/> object.

@@ -5,7 +5,7 @@
 */
 using System.Collections.Generic;
 
-using Company.DataGrid.Core;
+using Company.Widgets.Core;
 
 
 namespace UnitTests.MVC

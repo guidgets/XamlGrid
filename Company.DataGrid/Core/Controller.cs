@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace Company.DataGrid.Core
+namespace Company.Widgets.Core
 {
 	/// <summary>
 	/// A base <c>IController</c> implementation

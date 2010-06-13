@@ -6,6 +6,8 @@
 
 namespace Company.Widgets.Core
 {
+	public delegate void HandleNotification(INotification notification);
+
 	/// <summary>
 	/// The interface definition for a PureMVC Observer
 	/// </summary>
@@ -30,7 +32,7 @@ namespace Company.Widgets.Core
 		/// The notification (callback) method of the interested object
 		/// </summary>
 		/// <remarks>The notification method should take one parameter of type <c>INotification</c></remarks>
-		string NotifyMethod { set; }
+		HandleNotification NotifyMethod { set; }
 
 		/// <summary>
 		/// The notification context (this) of the interested object

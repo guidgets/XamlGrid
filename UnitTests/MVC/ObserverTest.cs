@@ -66,7 +66,7 @@ namespace UnitTests.MVC
    			// use accessors to set notification method and context
 			IObserver observer = new Observer(null, null);
     		observer.NotifyContext = this;
-   			observer.NotifyMethod = "observerTestMethod";
+   			observer.NotifyMethod = this.observerTestMethod;
   			
    			// create a test event, setting a payload value and notify 
    			// the observer with it. since the observer is this class 
@@ -90,7 +90,7 @@ namespace UnitTests.MVC
 		public void ObserverConstructor()
         {
    			// Create observer passing in notification method and context
-			IObserver observer = new Observer("observerTestMethod", this);
+			IObserver observer = new Observer(this.observerTestMethod, this);
   			
    			// create a test note, setting a body value and notify 
    			// the observer with it. since the observer is this class 
@@ -115,7 +115,7 @@ namespace UnitTests.MVC
         {
   			
    			// Create observer passing in notification method and context
-			IObserver observer = new Observer("observerTestMethod", this);
+			IObserver observer = new Observer(this.observerTestMethod, this);
   			
   			object negTestObj = new object();
   			

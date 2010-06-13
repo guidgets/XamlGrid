@@ -103,7 +103,7 @@ namespace UnitTests.MVC
   			IMainController mainController = MainController.Instance;
   			
    			// Create observer, passing in notification method and context
-   			IObserver observer = new Observer("MainControllerTestMethod", this);
+   			IObserver observer = new Observer(this.MainControllerTestMethod, this);
    			
    			// Register Observer's interest in a particulat Notification with the MainController 
 			string name = Thread.CurrentThread.Name ?? string.Empty;

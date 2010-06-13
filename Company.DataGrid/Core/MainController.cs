@@ -174,7 +174,7 @@ namespace Company.Widgets.Core
 				if (interests.Count > 0)
 				{
 					// Create Observer
-					IObserver observer = new Observer("handleNotification", controller);
+					IObserver observer = new Observer(controller.HandleNotification, controller);
 
 					// Register Controller as Observer for its list of Notification interests
 					for (int i = 0; i < interests.Count; i++)

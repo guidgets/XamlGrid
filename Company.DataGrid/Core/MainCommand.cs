@@ -104,7 +104,7 @@ namespace Company.Widgets.Core
 				{
 					// This call needs to be monitored carefully. Have to make sure that RegisterObserver
 					// doesn't call back into the controller, or a dead lock could happen.
-					this.mMainController.RegisterObserver(notificationName, new Observer("ExecuteCommand", this));
+					this.mMainController.RegisterObserver(notificationName, new Observer(this.ExecuteCommand, this));
 				}
 
 				this.commandMap[notificationName] = commandType;

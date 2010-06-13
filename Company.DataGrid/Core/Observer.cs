@@ -30,7 +30,7 @@ namespace Company.Widgets.Core
 	/// <see cref="Notification"/>
 	public class Observer : IObserver
 	{
-		private string notifyMethod;
+		private HandleNotification notifyMethod;
 		private object notifyContext;
 
 		#region Constructors
@@ -43,7 +43,7 @@ namespace Company.Widgets.Core
 		/// <remarks>
 		///     <para>The notification method on the interested object should take on parameter of type <c>INotification</c></para>
 		/// </remarks>
-		public Observer(string notifyMethod, object notifyContext)
+		public Observer(HandleNotification notifyMethod, object notifyContext)
 		{
 			this.notifyMethod = notifyMethod;
 			this.notifyContext = notifyContext;
@@ -60,19 +60,14 @@ namespace Company.Widgets.Core
 		/// <param name="notification">The <c>INotification</c> to pass to the interested object's notification method</param>
 		public virtual void NotifyObserver(INotification notification)
 		{
-			object context;
-			string method;
+			HandleNotification method;
 
 			// Retrieve the current state of the object, then notify outside of our thread safe block
 			lock (this.syncRoot)
 			{
-				context = this.NotifyContext;
 				method = this.NotifyMethod;
 			}
-
-			Type t = context.GetType();
-			MethodInfo mi = t.GetMethod(method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-			mi.Invoke(context, new object[] { notification });
+			method(notification);
 		}
 
 		/// <summary>
@@ -100,7 +95,7 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <remarks>The notification method should take one parameter of type <c>INotification</c></remarks>
 		/// <remarks>This accessor is thread safe</remarks>
-		public virtual string NotifyMethod
+		public virtual HandleNotification NotifyMethod
 		{
 			get
 			{

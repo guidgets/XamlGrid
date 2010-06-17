@@ -64,7 +64,6 @@ namespace Company.Widgets
 			this.RegisterCommand(Notifications.CURRENT_ITEM_TO_POSITION, typeof(CurrentItemCommand));
 			this.RegisterCommand(Notifications.CURRENT_ITEM_FIRST, typeof(CurrentItemCommand));
 			this.RegisterCommand(Notifications.CURRENT_ITEM_LAST, typeof(CurrentItemCommand));
-			this.RegisterCommand(Notifications.IS_ITEM_CURRENT, typeof(CurrentItemCommand));
 
 			this.RegisterCommand(Notifications.SELECTING_ITEMS, typeof(SelectionCommand));
 			this.RegisterCommand(Notifications.SELECT_ALL, typeof(SelectionCommand));

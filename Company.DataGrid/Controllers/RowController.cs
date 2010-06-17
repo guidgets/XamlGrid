@@ -68,7 +68,6 @@ namespace Company.Widgets.Controllers
 			return new List<string>
 			       	{
 			       		Notifications.CURRENT_ITEM_CHANGED,
-			       		Notifications.ITEM_IS_CURRENT,
 			       		Notifications.SELECTED_ITEMS,
 			       		Notifications.DESELECTED_ITEMS,
 			       		Notifications.ITEM_IS_SELECTED,
@@ -87,12 +86,6 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Name)
 			{
-				case Notifications.ITEM_IS_CURRENT:
-					if (this.Row.DataContext == notification.Body)
-					{
-						this.Row.IsFocused = bool.Parse(notification.Type);
-					}
-					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.Row.IsFocused = this.Row.DataContext == notification.Body;
 					break;
@@ -135,7 +128,6 @@ namespace Company.Widgets.Controllers
 
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.IS_ITEM_CURRENT, this.Row.DataContext);
 			this.SendNotification(Notifications.IS_ITEM_SELECTED, this.Row.DataContext);
 		}
 

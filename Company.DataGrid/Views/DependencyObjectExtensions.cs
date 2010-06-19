@@ -16,7 +16,7 @@ namespace Company.Widgets.Views
 		/// <returns>
 		/// 	<c>true</c> if the focus is within the <see cref="DependencyObject"/>; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsFocusWithin(this DependencyObject element)
+		public static bool HasFocus(this DependencyObject element)
 		{
 			object currentElement = FocusManager.GetFocusedElement();
 			while (true)

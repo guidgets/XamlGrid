@@ -11,11 +11,8 @@ namespace Company.Widgets.Controllers
 		/// <summary>
 		/// Gets the modifier that is used to issue a command to an application or a component.
 		/// </summary>
-		public static readonly ModifierKeys CommandModifier;
-
-		static KeyHelper()
-		{
-			CommandModifier = Environment.OSVersion.Platform == PlatformID.MacOSX ? ModifierKeys.Apple : ModifierKeys.Control;
-		}
+		public static readonly ModifierKeys CommandModifier = Environment.OSVersion.Platform == PlatformID.MacOSX
+		                                                      	? ModifierKeys.Apple
+		                                                      	: ModifierKeys.Control;
 	}
 }

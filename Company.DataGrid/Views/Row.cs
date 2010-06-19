@@ -17,7 +17,7 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Occurs when the <see cref="Row"/> changes its currency.
 		/// </summary>
-		public virtual event DependencyPropertyChangedEventHandler IsCurrentChanged;
+		public virtual event DependencyPropertyChangedEventHandler HasFocusChanged;
 		/// <summary>
 		/// Occurs when the <see cref="Row"/> changes its selection state.
 		/// </summary>
@@ -26,8 +26,8 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is the current one.
 		/// </summary>
-		public static readonly DependencyProperty IsFocusedProperty =
-			DependencyProperty.Register("IsFocused", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsFocusedChanged));
+		public static readonly DependencyProperty HasFocusProperty =
+			DependencyProperty.Register("IsFocused", typeof(bool), typeof(Row), new PropertyMetadata(false, OnHasFocusedChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
@@ -83,11 +83,11 @@ namespace Company.Widgets.Views
 		{
 			get
 			{
-				return (bool) this.GetValue(IsFocusedProperty);
+				return (bool) this.GetValue(HasFocusProperty);
 			}
 			set
 			{
-				this.SetValue(IsFocusedProperty, value);
+				this.SetValue(HasFocusProperty, value);
 			}
 		}
 
@@ -135,11 +135,11 @@ namespace Company.Widgets.Views
 		/// <param name="e">The data for the event.</param>
 		protected override void OnLostFocus(RoutedEventArgs e)
 		{
-			if (!this.IsFocusWithin())
+			if (!this.HasFocus())
 			{
 				this.IsFocused = false;
+				base.OnLostFocus(e);
 			}
-			base.OnLostFocus(e);
 		}
 
 		/// <summary>
@@ -176,6 +176,9 @@ namespace Company.Widgets.Views
 			Cell cell = (Cell) element;
 			Column column = (Column) item;
 			cell.Column = column;
+
+			DataGridFacade.Instance.RegisterController(new CellController(cell));
+
 			if (cell.ReadLocalValue(Cell.DataTypeProperty) == DependencyProperty.UnsetValue)
 			{
 				cell.SetBinding(Cell.DataTypeProperty, dataTypeBinding);
@@ -191,8 +194,6 @@ namespace Company.Widgets.Views
 			cell.SetBinding(DataContextProperty, this.dataBinding);
 			cell.SetBinding(Cell.ValueProperty, column.Binding);
 			cell.SetBinding(Cell.IsSelectedProperty, isSelectedBinding);
-
-			DataGridFacade.Instance.RegisterController(new CellController(cell));
 		}
 
 		/// <summary>
@@ -204,14 +205,15 @@ namespace Company.Widgets.Views
 		{
 			base.ClearContainerForItemOverride(element, item);
 			Cell cell = (Cell) element;
+
+			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
+
 			cell.ClearValue(DataContextProperty);
 			cell.DataContext = null;
 			cell.ClearValue(Cell.IsEditableProperty);
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.DataTypeProperty);
 			cell.ClearValue(Cell.IsSelectedProperty);
-
-			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
 		}
 
 		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -228,11 +230,11 @@ namespace Company.Widgets.Views
 			}
 		}
 
-		private static void OnIsFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static void OnHasFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
 			row.GoToFocused();
-			row.OnIsFocusedChanged(e);
+			row.OnHasFocusedChanged(e);
 		}
 
 		private void GoToFocused()
@@ -240,9 +242,9 @@ namespace Company.Widgets.Views
 			VisualStateManager.GoToState(this, this.IsFocused ? "Focused" : "Unfocused", false);
 		}
 
-		protected virtual void OnIsFocusedChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnHasFocusedChanged(DependencyPropertyChangedEventArgs e)
 		{
-			DependencyPropertyChangedEventHandler handler = this.IsCurrentChanged;
+			DependencyPropertyChangedEventHandler handler = this.HasFocusChanged;
 			if (handler != null)
 			{
 				handler(this, e);

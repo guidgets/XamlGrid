@@ -24,6 +24,7 @@
 		public const string CURRENT_ITEM_LAST = "currentItemLast";
 		public const string CURRENT_ITEM_CHANGING = "currentItemChanging";
 		public const string CURRENT_ITEM_CHANGED = "currentItemChanged";
+		public const string IS_ITEM_CURRENT = "isItemCurrent";
 		public const string SELECTING_ITEMS = "itemsSelecting";
 		public const string SELECTED_ITEMS = "itemsSelected";
 		public const string SELECT_ALL = "selectAll";

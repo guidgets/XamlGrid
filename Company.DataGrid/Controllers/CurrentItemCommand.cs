@@ -32,6 +32,9 @@ namespace Company.Widgets.Controllers
 				case Notifications.CURRENT_ITEM_CHANGING:
 					currentItemModel.MoveCurrentTo(notification.Body);
 					break;
+				case Notifications.IS_ITEM_CURRENT:
+					this.SendNotification(Notifications.CURRENT_ITEM_CHANGED, currentItemModel.CurrentItem);
+					break;
 			}
 		}
 	}

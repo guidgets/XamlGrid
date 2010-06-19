@@ -77,7 +77,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged += this.DataGridItems_CollectionChanged;
-			this.DataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
+			this.DataGrid.Columns.CollectionChanged += this.DataGridColumns_CollectionChanged;
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
 			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged -= this.DataGridItems_CollectionChanged;
-			this.DataGrid.Columns.CollectionChanged -= this.Columns_CollectionChanged;
+			this.DataGrid.Columns.CollectionChanged -= this.DataGridColumns_CollectionChanged;
 		}
 
 		/// <summary>
@@ -129,7 +129,6 @@ namespace Company.Widgets.Controllers
 			{
 				case Notifications.DATA_WRAPPED:
 					this.DataGrid.ItemsSource = (IEnumerable) notification.Body;
-					this.DataGrid.CurrentItem = this.DataGrid.Items.FirstOrDefault();
 					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.DataGrid.CurrentItem = notification.Body;
@@ -143,8 +142,7 @@ namespace Company.Widgets.Controllers
 					this.HandleSelection(e.Key);
 					break;
 				case Notifications.ITEM_CLICKED:
-					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, notification.Body);
-					this.SelectItems(true, Key.None);
+					this.SelectItems(notification.Body, true, Key.None);
 					break;
 				case Notifications.CELL_FOCUSED:
 					UIElement uiElement = (UIElement) notification.Body;
@@ -219,7 +217,7 @@ namespace Company.Widgets.Controllers
 			this.SendNotification(Notifications.ITEMS_COLLECTION_CHANGED, e);
 		}
 
-		private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void DataGridColumns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.NewItems != null)
 			{
@@ -318,13 +316,13 @@ namespace Company.Widgets.Controllers
 				case Key.Home:
 					if (control)
 					{
-						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());						
+						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());
 					}
 					break;
 				case Key.End:
 					if (control)
 					{
-						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());						
+						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());
 					}
 					break;
 			}
@@ -342,7 +340,11 @@ namespace Company.Widgets.Controllers
 				case Key.PageDown:
 				case Key.Home:
 				case Key.End:
-					this.SelectItems(false, key);
+					this.SelectItems(this.DataGrid.CurrentItem, false, key);
+					if (key == Key.Home || key == Key.End)
+					{
+						this.Scroll.ScrollToHorizontalOffset(key == Key.Home ? 0 : this.Scroll.ExtentWidth);
+					}
 					break;
 				case Key.Space:
 					if (control)
@@ -361,68 +363,58 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private void SelectItems(bool clickedItem, Key key)
+		private void SelectItems(object itemToSelect, bool clicked, Key key)
 		{
-			bool selected = this.DataGrid.SelectedItems.IsSelected(this.DataGrid.CurrentItem);
+			bool selected = this.DataGrid.SelectedItems.IsSelected(itemToSelect);
 			string notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
 			switch (this.DataGrid.SelectionMode)
 			{
 				case SelectionMode.Single:
 					if (!selected || (Keyboard.Modifiers & KeyHelper.CommandModifier) != ModifierKeys.None)
 					{
-						this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
+						this.SendNotification(notificationToSend, itemToSelect);
 					}
 					break;
 				case SelectionMode.Multiple:
-					this.ToggleSelection(notificationToSend, clickedItem, key);
+					this.ToggleSelection(notificationToSend, itemToSelect, clicked, key);
 					break;
 				case SelectionMode.Extended:
 					switch (Keyboard.Modifiers)
 					{
 						case ModifierKeys.None:
-							this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
+							this.SendNotification(Notifications.SELECTING_ITEMS, itemToSelect,
 							                      NotificationTypes.CLEAR_SELECTION);
 							break;
 						case ModifierKeys.Shift:
-							this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem,
+							this.SendNotification(Notifications.SELECT_RANGE, itemToSelect,
 												  NotificationTypes.CLEAR_SELECTION);
 							break;
 					}
 					if (Keyboard.Modifiers == KeyHelper.CommandModifier)
 					{
-						this.ToggleSelection(notificationToSend, clickedItem, key);						
+						this.ToggleSelection(notificationToSend, itemToSelect, clicked, key);
 					}
 					if (Keyboard.Modifiers == (KeyHelper.CommandModifier | ModifierKeys.Shift))
 					{
-						this.SendNotification(Notifications.SELECT_RANGE, this.DataGrid.CurrentItem);
-						this.HomeEndMove(key);
+						this.SendNotification(Notifications.SELECT_RANGE, itemToSelect);
 					}
 					break;
 			}
 		}
 
-		private void ToggleSelection(string notificationToSend, bool clickedItem, Key key)
+		private void ToggleSelection(string notificationToSend, object itemToSelect, bool clickedItem, Key key)
 		{
 			if (clickedItem)
 			{
-				this.SendNotification(notificationToSend, this.DataGrid.CurrentItem);
+				this.SendNotification(notificationToSend, itemToSelect);
 			}
 			else
 			{
 				if (key == Key.Home || key == Key.End)
 				{
-					this.SendNotification(Notifications.SELECTING_ITEMS, this.DataGrid.CurrentItem,
+					this.SendNotification(Notifications.SELECTING_ITEMS, itemToSelect,
 					                      NotificationTypes.CLEAR_SELECTION);
 				}
-				HomeEndMove(key);
-			}
-		}
-
-		private void HomeEndMove(Key key)
-		{
-			if (key == Key.Home || key == Key.End)
-			{
-				this.Scroll.ScrollToHorizontalOffset(key == Key.Home ? 0 : this.Scroll.ExtentWidth);
 			}
 		}
 

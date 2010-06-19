@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
@@ -22,6 +21,7 @@ namespace Company.Widgets.Controllers
 
 		}
 
+
 		/// <summary>
 		/// Gets the row for which functionality the <see cref="RowController"/> is responsible.
 		/// </summary>
@@ -33,6 +33,7 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
+
 		/// <summary>
 		/// Called by the <see cref="Controller"/> when it is registered.
 		/// </summary>
@@ -40,7 +41,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRegister();
 			this.Row.DataContextChanged += this.Row_DataContextChanged;
-			this.Row.IsCurrentChanged += this.Row_IsCurrentChanged;
+			this.Row.HasFocusChanged += this.Row_HasFocusedChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
 			this.Row.KeyDown += this.Row_KeyDown;
 			this.Row.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp), true);
@@ -53,7 +54,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRemove();
 			this.Row.DataContextChanged -= this.Row_DataContextChanged;
-			this.Row.IsCurrentChanged -= this.Row_IsCurrentChanged;
+			this.Row.HasFocusChanged -= this.Row_HasFocusedChanged;
 			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
 			this.Row.KeyDown -= this.Row_KeyDown;
 			this.Row.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp));
@@ -128,10 +129,11 @@ namespace Company.Widgets.Controllers
 
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
+			this.SendNotification(Notifications.IS_ITEM_CURRENT, this.Row.DataContext);
 			this.SendNotification(Notifications.IS_ITEM_SELECTED, this.Row.DataContext);
 		}
 
-		private void Row_IsCurrentChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void Row_HasFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (this.Row.IsFocused)
 			{

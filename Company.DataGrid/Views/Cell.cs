@@ -191,10 +191,10 @@ namespace Company.Widgets.Views
 		/// <param name="e">The data for the event.</param>
 		protected override void OnLostFocus(RoutedEventArgs e)
 		{
-			base.OnLostFocus(e);
-			VisualStateManager.GoToState(this, "Unfocused", false);
-			if (!this.IsFocusWithin())
+			if (!this.HasFocus())
 			{
+				base.OnLostFocus(e);
+				VisualStateManager.GoToState(this, "Unfocused", false);
 				this.IsInEditMode = false;
 			}
 		}

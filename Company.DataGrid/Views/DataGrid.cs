@@ -79,16 +79,22 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("ResizableColumns", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the visibility of the header row of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the visibility of the header row of a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty HeaderVisibilityProperty =
 			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(null));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the current item of the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the current item of a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty CurrentItemProperty =
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the current column, i.e. the columns of the focused cell, of a <see cref="DataGrid"/>.
+		/// </summary>
+		public static readonly DependencyProperty CurrentColumnProperty =
+			DependencyProperty.Register("CurrentColumn", typeof(Column), typeof(DataGrid), new PropertyMetadata(OnCurrentColumnChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
@@ -105,7 +111,7 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("IsEditable", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets a value indicating whether to copy the header of the <see cref="DataGrid"/> to the clipboard.
+		/// Identifies the dependency property which gets or sets a value indicating whether to copy the header of a <see cref="DataGrid"/> to the clipboard.
 		/// </summary>
 		public static readonly DependencyProperty CopyHeaderProperty =
 			DependencyProperty.Register("CopyHeader", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
@@ -268,6 +274,38 @@ namespace Company.Widgets.Views
 				this.SetValue(CurrentItemProperty, value);
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets the current column, i.e. the columns of the focused cell, of the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The current column.</value>
+		public Column CurrentColumn
+		{
+			get
+			{
+				return (Column) this.GetValue(CurrentColumnProperty);
+			}
+			set
+			{
+				this.SetValue(CurrentColumnProperty, value);
+			}
+		}
+
+		private static void OnCurrentColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataGrid) d).OnCurrentColumnChanged(e);
+		}
+
+		private void OnCurrentColumnChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = CurrentColumnChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		public virtual event DependencyPropertyChangedEventHandler CurrentColumnChanged;
 
 		/// <summary>
 		/// Gets the list of items which are currently selected in the <see cref="DataGrid"/>.

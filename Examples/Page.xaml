@@ -84,7 +84,7 @@
 				<ComponentModel:SortDescription PropertyName="Age" Direction="Descending" />
 			</company:DataGrid.SortDescriptions>-->
 		</company:DataGrid>
-		<Button Grid.Row="2" HorizontalAlignment="Stretch" Content="GC" Click="Button_Click" />
+		<Button Grid.Row="2" HorizontalAlignment="Stretch" Content="{Binding CurrentColumn.Header, ElementName=dataGrid}" Click="Button_Click" />
 		<toolkit:Expander Grid.Row="3">
 			<Grid>
 				<Grid.RowDefinitions>

@@ -15,6 +15,9 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class CellController : Controller
 	{
+		private bool dataItemCurrent;
+		private bool columnCurrent;
+
 		/// <summary>
 		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Cell"/>.
 		/// </summary>
@@ -44,6 +47,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRegister();
 
+			this.Cell.DataContextChanged += this.Cell_DataContextChanged;
 			this.Cell.GotFocus += this.Cell_GotFocus;
 			this.Cell.KeyDown += this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
@@ -56,11 +60,46 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRemove();
 
+			this.Cell.DataContextChanged -= this.Cell_DataContextChanged;
 			this.Cell.GotFocus -= this.Cell_GotFocus;
 			this.Cell.KeyDown -= this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
 		}
 
+		/// <summary>
+		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
+		/// </summary>
+		/// <returns>The list of <c>INotification</c> names.</returns>
+		public override IList<string> ListNotificationInterests()
+		{
+			return new List<string> { Notifications.CURRENT_ITEM_CHANGED, Notifications.CURRENT_COLUMN_CHANGED };
+		}
+
+		/// <summary>
+		/// Handle <c>INotification</c>s.
+		/// </summary>
+		/// <param name="notification">The <c>INotification</c> instance to handle</param>
+		/// <remarks>
+		/// Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller</c> is interested in.
+		/// </remarks>
+		public override void HandleNotification(INotification notification)
+		{
+			bool b = true;
+			switch (notification.Name)
+			{
+				case Notifications.CURRENT_ITEM_CHANGED:
+					this.dataItemCurrent = this.Cell.DataContext == notification.Body;
+					break;
+				case Notifications.CURRENT_COLUMN_CHANGED:
+					this.columnCurrent = this.Cell.Column == notification.Body;
+					b = notification.Type == null || bool.Parse(notification.Type);
+					break;
+			}
+			if (b && this.dataItemCurrent && this.columnCurrent && !this.Cell.HasFocus)
+			{
+				this.Cell.Focus();
+			}
+		}
 
 		private void FocusHorizontalNeighbor(bool next)
 		{
@@ -88,38 +127,6 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private void FocusVerticalNeighbor(bool next)
-		{
-			DependencyObject parent = this.Cell.GetParent();
-			while (parent != null)
-			{
-				ItemsControl itemsControl = parent as ItemsControl;
-				if (itemsControl != null)
-				{
-					IEnumerable<ItemsControl> siblings = from sibling in itemsControl.GetVisualSiblingsAndSelf().OfType<ItemsControl>()
-					                                     orderby sibling.TabIndex
-					                                     select sibling;
-					if (!next)
-					{
-						siblings = siblings.Reverse();
-					}
-					ItemsControl neighbor = siblings.SkipWhile(sibling => sibling != itemsControl).Skip(1).FirstOrDefault();
-					if (neighbor == null)
-					{
-						return;
-					}
-					int index = neighbor.Items.IndexOf(this.Cell.Column);
-					Control cell = neighbor.ItemContainerGenerator.ContainerFromIndex(index) as Control;
-					if (cell != null)
-					{
-						cell.Focus();
-						return;
-					}
-				}
-				parent = parent.GetParent();
-			}
-		}
-
 		private static IEnumerable<Control> GetChildControls(DependencyObject parent)
 		{
 			List<Control> childControls = new List<Control>();
@@ -135,6 +142,11 @@ namespace Company.Widgets.Controllers
 			return childControls;
 		}
 
+
+		private void Cell_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.IS_COLUMN_CURRENT, this.Cell.Column);
+		}
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
@@ -169,10 +181,6 @@ namespace Company.Widgets.Controllers
 				case Key.Left:
 				case Key.Right:
 					this.FocusHorizontalNeighbor(e.Key == Key.Right);
-					break;
-				case Key.Up:
-				case Key.Down:
-					this.FocusVerticalNeighbor(e.Key == Key.Down);
 					break;
 			}
 		}

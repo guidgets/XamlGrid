@@ -24,6 +24,7 @@ namespace Company.Widgets.Controllers
 		private ScrollViewer scroll;
 		private Panel itemsHost;
 		private bool continuousEditing;
+		private bool stopColumnNotification;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
@@ -75,6 +76,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
+			this.DataGrid.CurrentColumnChanged += this.DataGrid_CurrentColumnChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
 			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged += this.DataGridItems_CollectionChanged;
 			this.DataGrid.Columns.CollectionChanged += this.DataGridColumns_CollectionChanged;
@@ -92,6 +94,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
+			this.DataGrid.CurrentColumnChanged -= this.DataGrid_CurrentColumnChanged;
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
 			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged -= this.DataGridItems_CollectionChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.DataGridColumns_CollectionChanged;
@@ -112,7 +115,8 @@ namespace Company.Widgets.Controllers
 						Notifications.ITEM_CLICKED,
 						Notifications.CELL_FOCUSED,
 						Notifications.CELL_EDIT_MODE_CHANGED,
-						Notifications.CELL_EDITING_CANCELLED
+						Notifications.CELL_EDITING_CANCELLED,
+						Notifications.IS_COLUMN_CURRENT
 			       	};
 		}
 
@@ -144,16 +148,22 @@ namespace Company.Widgets.Controllers
 				case Notifications.ITEM_CLICKED:
 					this.SelectItems(notification.Body, true, Key.None);
 					break;
+				case Notifications.IS_COLUMN_CURRENT:
+					this.SendNotification(Notifications.CURRENT_COLUMN_CHANGED, this.DataGrid.CurrentColumn);
+					break;
 				case Notifications.CELL_FOCUSED:
-					UIElement uiElement = (UIElement) notification.Body;
+					Cell cell = (Cell) notification.Body;
+					this.stopColumnNotification = true;
+					this.DataGrid.CurrentColumn = cell.Column;
+					this.stopColumnNotification = false;
 					IScrollInfo scrollInfo = this.ItemsHost as IScrollInfo;
 					if (scrollInfo != null)
 					{
-						Rect bounds = new Rect(0, 0, uiElement.RenderSize.Width, uiElement.RenderSize.Height);
-						scrollInfo.MakeVisible(uiElement, bounds);
+						Rect bounds = new Rect(0, 0, cell.RenderSize.Width, cell.RenderSize.Height);
+						scrollInfo.MakeVisible(cell, bounds);
 					}
 					// TODO: this should be replaced by sending a notification because it tightens the coupling
-					((Cell) uiElement).IsInEditMode = continuousEditing;
+					cell.IsInEditMode = continuousEditing;
 					break;
 				case Notifications.CELL_EDIT_MODE_CHANGED:
 					if ((bool) notification.Body)
@@ -207,6 +217,11 @@ namespace Company.Widgets.Controllers
 			this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.CurrentItem);
 		}
 
+		private void DataGrid_CurrentColumnChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.CURRENT_COLUMN_CHANGED, e.NewValue, (!this.stopColumnNotification).ToString());
+		}
+
 		private void DataGrid_SelectionModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.SELECTION_MODE_CHANGING, this.DataGrid.SelectionMode);
@@ -240,6 +255,10 @@ namespace Company.Widgets.Controllers
 					}
 					column.IsSelected = true;
 					column.ActualWidthChanged += this.Column_ActualWidthChanged;
+					if (this.DataGrid.CurrentColumn == null)
+					{
+						this.DataGrid.CurrentColumn = column;
+					}
 				}
 			}
 			if (e.OldItems != null)
@@ -250,7 +269,15 @@ namespace Company.Widgets.Controllers
 					column.ClearValue(Column.IsResizableProperty);
 					column.ClearValue(Column.IsEditableProperty);
 					column.ActualWidthChanged -= this.Column_ActualWidthChanged;
+					if (this.DataGrid.CurrentColumn == column)
+					{
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
+					}
 				}
+			}
+			if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
+				this.DataGrid.CurrentColumn = null;
 			}
 			if (this.DataGrid.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
 			{
@@ -318,12 +345,14 @@ namespace Company.Widgets.Controllers
 					{
 						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());
 					}
+					this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
 					break;
 				case Key.End:
 					if (control)
 					{
 						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());
 					}
+					this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
 					break;
 			}
 		}

@@ -2,6 +2,8 @@
 {
 	public static class Notifications
 	{
+		public const string IS_COLUMN_CURRENT = "isColumnCurrent";
+		public const string CURRENT_COLUMN_CHANGED = "currentColumnChanged";
 		public const string CELL_FOCUSED = "cellFocused";
 		public const string CELL_EDIT_MODE_CHANGED = "cellEditModeChanged";
 		public const string CELL_EDITING_CANCELLED = "cellEditingCancelled";

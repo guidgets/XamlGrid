@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using Company.Widgets.Models;
 
@@ -13,6 +14,10 @@ namespace Company.Widgets.Views
 	public class Cell : CellBase
 	{
 		/// <summary>
+		/// Occurs when the data context of the <see cref="Cell"/> is changed.
+		/// </summary>
+		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
+		/// <summary>
 		/// Occurs when the edit mode of this <see cref="Cell"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler IsInEditModeChanged;
@@ -23,6 +28,12 @@ namespace Company.Widgets.Views
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
 			DependencyProperty.Register("Value", typeof(object), typeof(Cell), new PropertyMetadata(OnValueChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> has focus.
+		/// </summary>
+		public static readonly DependencyProperty HasFocusProperty =
+			DependencyProperty.Register("HasFocus", typeof(bool), typeof(Cell), new PropertyMetadata(OnHasFocusChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
@@ -48,6 +59,14 @@ namespace Company.Widgets.Views
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
 
+		private static readonly DependencyProperty dataContextListenerProperty =
+			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Cell), new PropertyMetadata(OnDataContextListenerChanged));
+
+		private static readonly Binding dataContextBinding = new Binding("DataContext")
+		                                                     {
+		                                                     	 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                     };
+
 
 		/// <summary>
 		/// Represents an element that displays and manipulates a piece of a data object.
@@ -55,6 +74,8 @@ namespace Company.Widgets.Views
 		public Cell()
 		{
 			this.DefaultStyleKey = typeof(Cell);
+
+			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 		}
 
 
@@ -73,6 +94,23 @@ namespace Company.Widgets.Views
 				this.SetValue(ValueProperty, value);
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Cell"/> has focus.
+		/// </summary>
+		/// <value><c>true</c> if this <see cref="Cell"/> has focus; otherwise, <c>false</c>.</value>
+		public bool HasFocus
+		{
+			get
+			{
+				return (bool) this.GetValue(HasFocusProperty);
+			}
+			set
+			{
+				this.SetValue(HasFocusProperty, value);
+			}
+		}
+
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable.
@@ -181,6 +219,7 @@ namespace Company.Widgets.Views
 		/// <param name="e">The data for the event.</param>
 		protected override void OnGotFocus(RoutedEventArgs e)
 		{
+			this.HasFocus = true;
 			base.OnGotFocus(e);
 			VisualStateManager.GoToState(this, "Focused", false);
 		}
@@ -193,6 +232,7 @@ namespace Company.Widgets.Views
 		{
 			if (!this.HasFocus())
 			{
+				this.HasFocus = false;
 				base.OnLostFocus(e);
 				VisualStateManager.GoToState(this, "Unfocused", false);
 				this.IsInEditMode = false;
@@ -210,16 +250,47 @@ namespace Company.Widgets.Views
 			return this.Column.Width.SizeMode == SizeMode.ToData || base.IsAutoSized();
 		}
 
-		private static void OnValueChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			Cell cell = (Cell) dependencyObject;
-			if (cell.Value != null && cell.DataType == DataTypeProperty.GetMetadata(typeof(Cell)).DefaultValue)
+			((Cell) d).OnValueChanged(e);
+		}
+
+		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
+		{
+			if (this.Value != null && this.DataType == DataTypeProperty.GetMetadata(typeof(Cell)).DefaultValue)
 			{
-				cell.DataType = cell.Value.GetType();
+				this.DataType = this.Value.GetType();
 			}
 			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
-			cell.Content = cell.Value;
-			cell.GoToSpecialView();
+			this.Content = this.Value;
+			this.GoToSpecialView();
+		}
+
+		private static void OnHasFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).OnHasFocusChanged(e);
+		}
+
+		protected virtual void OnHasFocusChanged(DependencyPropertyChangedEventArgs e)
+		{
+			if ((bool) e.NewValue)
+			{
+				this.Focus();
+			}
+		}
+
+		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).OnDataContextChanged(e);
+		}
+
+		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
 		}
 
 		private static void OnIsInEditModeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)

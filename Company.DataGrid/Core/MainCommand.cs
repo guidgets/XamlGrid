@@ -49,7 +49,7 @@ namespace Company.Widgets.Core
 		/// </remarks>
 		protected MainCommand()
 		{
-			this.commandMap = new Dictionary<string, Type>();
+			this.commandMap = new Dictionary<int, Type>();
 			this.InitializeController();
 		}
 
@@ -69,8 +69,8 @@ namespace Company.Widgets.Core
 
 			lock (this.m_syncRoot)
 			{
-				if (!this.commandMap.ContainsKey(note.Name)) return;
-				commandType = this.commandMap[note.Name];
+				if (!this.commandMap.ContainsKey(note.Code)) return;
+				commandType = this.commandMap[note.Code];
 			}
 
 			object commandInstance = Activator.CreateInstance(commandType);
@@ -96,7 +96,7 @@ namespace Company.Widgets.Core
 		///     </para>
 		/// </remarks> 
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RegisterCommand(string notificationName, Type commandType)
+		public virtual void RegisterCommand(int notificationName, Type commandType)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -117,7 +117,7 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName"></param>
 		/// <returns>whether a Controller is currently registered for the given <c>notificationName</c>.</returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual bool HasCommand(string notificationName)
+		public virtual bool HasCommand(int notificationName)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -130,7 +130,7 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="notificationName">The name of the <c>INotification</c> to remove the <c>IMainCommand</c> mapping for</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RemoveCommand(string notificationName)
+		public virtual void RemoveCommand(int notificationName)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -228,7 +228,7 @@ namespace Company.Widgets.Core
 		/// <summary>
 		/// Mapping of Notification names to Controller Class references
 		/// </summary>
-		protected IDictionary<string, Type> commandMap;
+		protected IDictionary<int, Type> commandMap;
 
 		/// <summary>
 		/// Local reference to Controller

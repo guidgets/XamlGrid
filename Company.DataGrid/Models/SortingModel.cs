@@ -79,7 +79,7 @@ namespace Company.Widgets.Models
 			this.notificationsSuspended = false;
 			foreach (Notification notification in this.notificationsStore)
 			{
-				this.SendNotification(notification.Name, notification.Body, notification.Type);
+				this.SendNotification(notification.Code, notification.Body, notification.Type);
 			}
 			this.notificationsStore.Clear();
 			this.notificationsStore = null;

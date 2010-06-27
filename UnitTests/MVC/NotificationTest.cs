@@ -55,10 +55,10 @@ namespace UnitTests.MVC
 		public void NameAccessors()
         {
 			// Create a new Notification and use accessors to set the note name 
-   			INotification note = new Notification("TestNote");
+   			INotification note = new Notification(1);
    			
    			// test assertions
-			Assert.IsTrue(note.Name == "TestNote", "Expecting note.Name == 'TestNote'");
+			Assert.IsTrue(note.Code == 1, "Expecting note.Name == 'TestNote'");
    		}
 
         /**
@@ -69,7 +69,7 @@ namespace UnitTests.MVC
 		public void BodyAccessors()
         {
 			// Create a new Notification and use accessors to set the body
-   			INotification note = new Notification(null);
+   			INotification note = new Notification(-1);
    			note.Body = 5;
    			
    			// test assertions
@@ -84,10 +84,10 @@ namespace UnitTests.MVC
 		public void TestConstructor()
         {
 			// Create a new Notification using the Constructor to set the note name and body
-   			INotification note = new Notification("TestNote", 5, "TestNoteType");
+   			INotification note = new Notification(1, 5, "TestNoteType");
    			
    			// test assertions
-			Assert.IsTrue(note.Name == "TestNote", "Expecting note.Name == 'TestNote'");
+			Assert.IsTrue(note.Code == 1, "Expecting note.Name == 'TestNote'");
 			Assert.IsTrue((int) note.Body == 5, "Expecting (int) note.Body == 5");
    			Assert.IsTrue(note.Type == "TestNoteType", "Expecting note.Type == 'TestNoteType'");
    		}
@@ -101,8 +101,8 @@ namespace UnitTests.MVC
 		{
 
 			// Create a new Notification and use accessors to set the note name 
-   			INotification note = new Notification("TestNote", "1,3,5", "TestType");
-   			string ts = "Notification Name: TestNote\nBody:1,3,5\nType:TestType";
+   			INotification note = new Notification(1, "1,3,5", "TestType");
+   			string ts = "Notification Name: 1\nBody:1,3,5\nType:TestType";
    			
    			// test assertions
 			Assert.IsTrue(note.ToString() == ts, "Expecting note.testToString() == '" + ts + "'");

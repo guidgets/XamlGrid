@@ -29,17 +29,17 @@ namespace UnitTests.MVC
             : base(NAME, MainController)
         { }
 
-		override public IList<string> ListNotificationInterests()
+		override public IList<int> ListNotificationInterests()
         {
             // be sure that the Controller has some Observers created
             // in order to test removeController
-			return new List<string>(new[] { MainControllerTest.NOTE1, MainControllerTest.NOTE2 });
+			return new List<int>(new[] { MainControllerTest.NOTE1, MainControllerTest.NOTE2 });
         }
 
         override public void HandleNotification(INotification notification)
 		{
 			base.HandleNotification(notification);
-			MainControllerTest.lastNotification = notification.Name;
+			MainControllerTest.lastNotification = notification.Code;
 		}
 
         public MainControllerTest MainControllerTest

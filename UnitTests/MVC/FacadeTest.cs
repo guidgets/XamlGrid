@@ -84,16 +84,16 @@ namespace UnitTests.MVC
    			// Create the Facade, register the FacadeTestCommand to 
    			// handle 'FacadeTest' events
 			IFacade facade = Facade.Instance;
-   			facade.RegisterCommand("FacadeTestNote", typeof(FacadeTestCommand));
+			facade.RegisterCommand(4, typeof(FacadeTestCommand));
 
 			// Send notification. The Command associated with the event
 			// (FacadeTestCommand) will be invoked, and will multiply 
 			// the vo.input value by 2 and set the result on vo.result
 			FacadeTestVO vo = new FacadeTestVO(32);
-            facade.SendNotification("FacadeTestNote", vo);
-   			
-   			// test assertions 
-   			Assert.IsTrue(vo.result == 64, "Expecting vo.result == 64");
+			facade.SendNotification(4, vo);
+
+			// test assertions 
+			Assert.IsTrue(vo.result == 64, "Expecting vo.result == 64");
    		}
 
   		/**
@@ -118,17 +118,17 @@ namespace UnitTests.MVC
    			// Create the Facade, register the FacadeTestCommand to 
    			// handle 'FacadeTest' events
 			IFacade facade = Facade.Instance;
-   			facade.RegisterCommand("FacadeTestNote", typeof(FacadeTestCommand));
-   			facade.RemoveCommand("FacadeTestNote");
+			facade.RegisterCommand(1, typeof(FacadeTestCommand));
+			facade.RemoveCommand(1);
 
 			// Send notification. The Command associated with the event
 			// (FacadeTestCommand) will NOT be invoked, and will NOT multiply 
 			// the vo.input value by 2 
-            FacadeTestVO vo = new FacadeTestVO(32);
-   			facade.SendNotification("FacadeTestNote", vo);
-   			
-   			// test assertions 
-   			Assert.IsTrue(vo.result != 64, "Expecting vo.result != 64");
+			FacadeTestVO vo = new FacadeTestVO(32);
+			facade.SendNotification(1, vo);
+
+			// test assertions 
+			Assert.IsTrue(vo.result != 64, "Expecting vo.result != 64");
    		}
 
         /**
@@ -256,17 +256,17 @@ namespace UnitTests.MVC
 		public void HasCommand()
 		{
    			// register the MainCommandTestCommand to handle 'hasCommandTest' notes
-   			IFacade facade = Facade.Instance;
-   			facade.RegisterCommand("facadeHasCommandTest", typeof(FacadeTestCommand));
-   			
-   			// test that hasCommand returns true for hasCommandTest notifications 
-   			Assert.IsTrue(facade.HasCommand("facadeHasCommandTest"), "Expecting facade.hasCommand('facadeHasCommandTest') == true");
-   			
-   			// Remove the Command from the MainCommand
-   			facade.RemoveCommand("facadeHasCommandTest");
-			
-   			// test that hasCommand returns false for hasCommandTest notifications 
-   			Assert.IsTrue(facade.HasCommand("facadeHasCommandTest") == false, "Expecting facade.hasCommand('facadeHasCommandTest') == false");
+			IFacade facade = Facade.Instance;
+			facade.RegisterCommand(1, typeof(FacadeTestCommand));
+
+			// test that hasCommand returns true for hasCommandTest notifications 
+			Assert.IsTrue(facade.HasCommand(1), "Expecting facade.hasCommand('facadeHasCommandTest') == true");
+
+			// Remove the Command from the MainCommand
+			facade.RemoveCommand(1);
+
+			// test that hasCommand returns false for hasCommandTest notifications 
+			Assert.IsTrue(facade.HasCommand(1) == false, "Expecting facade.hasCommand('facadeHasCommandTest') == false");
    			
    		}
 	}

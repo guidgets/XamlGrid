@@ -12,7 +12,7 @@ namespace Company.Widgets.Controllers
 		public override void Execute(INotification notification)
 		{
 			DataModel dataModel;
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.DATA_WRAPPING_REQUESTED:
 					dataModel = (DataModel) DataGridFacade.Instance.RetrieveModel(DataModel.NAME);

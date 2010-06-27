@@ -29,7 +29,7 @@ namespace Company.Widgets.Core
 		/// Constructs a new notification with the specified name, default body and type
 		/// </summary>
 		/// <param name="name">The name of the <c>Notification</c> instance</param>
-		public Notification(string name)
+		public Notification(int name)
 			: this(name, null, null)
 		{
 		}
@@ -39,7 +39,7 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="name">The name of the <c>Notification</c> instance</param>
 		/// <param name="body">The <c>Notification</c>s body</param>
-		public Notification(string name, object body)
+		public Notification(int name, object body)
 			: this(name, body, null)
 		{
 		}
@@ -47,12 +47,12 @@ namespace Company.Widgets.Core
 		/// <summary>
 		/// Constructs a new notification with the specified name, body and type
 		/// </summary>
-		/// <param name="name">The name of the <c>Notification</c> instance</param>
+		/// <param name="code">The name of the <c>Notification</c> instance</param>
 		/// <param name="body">The <c>Notification</c>s body</param>
 		/// <param name="type">The type of the <c>Notification</c></param>
-		public Notification(string name, object body, string type)
+		public Notification(int code, object body, string type)
 		{
-			this.m_name = name;
+			this.mCode = code;
 			this.body = body;
 			this.type = type;
 		}
@@ -67,7 +67,7 @@ namespace Company.Widgets.Core
 		/// <returns>The string representation of the <c>Notification</c> instance</returns>
 		public override string ToString()
 		{
-			string msg = "Notification Name: " + this.Name;
+			string msg = "Notification Name: " + this.Code;
 			msg += "\nBody:" + ((this.Body == null) ? "null" : this.Body.ToString());
 			msg += "\nType:" + (this.Type ?? "null");
 			return msg;
@@ -80,11 +80,11 @@ namespace Company.Widgets.Core
 		/// <summary>
 		/// The name of the <c>Notification</c> instance
 		/// </summary>
-		public virtual string Name
+		public virtual int Code
 		{
 			get
 			{
-				return this.m_name;
+				return this.mCode;
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace Company.Widgets.Core
 		/// <summary>
 		/// The name of the notification instance 
 		/// </summary>
-		private readonly string m_name;
+		private readonly int mCode;
 		private object body;
 		private string type;
 

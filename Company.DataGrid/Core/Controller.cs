@@ -70,9 +70,9 @@ namespace Company.Widgets.Core
 		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names.</returns>
-		public virtual IList<string> ListNotificationInterests()
+		public virtual IList<int> ListNotificationInterests()
 		{
-			return new List<string>();
+			return new List<int>();
 		}
 
 		/// <summary>

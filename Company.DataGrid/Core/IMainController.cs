@@ -31,14 +31,14 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="notificationName">The name of the <c>INotifications</c> to notify this <c>IObserver</c> of</param>
 		/// <param name="observer">The <c>IObserver</c> to register</param>
-		void RegisterObserver(string notificationName, IObserver observer);
+		void RegisterObserver(int notificationName, IObserver observer);
 
 		/// <summary>
 		/// Remove a group of observers from the observer list for a given Notification name.
 		/// </summary>
 		/// <param name="notificationName">which observer list to remove from</param>
 		/// <param name="notifyContext">removed the observers with this object as their notifyContext</param>
-		void RemoveObserver(string notificationName, object notifyContext);
+		void RemoveObserver(int notificationName, object notifyContext);
 
 		/// <summary>
 		/// Notify the <c>IObservers</c> for a particular <c>INotification</c>

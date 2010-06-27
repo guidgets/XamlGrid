@@ -82,27 +82,45 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MVC\MainCommandTest.cs" />
-    <Compile Include="MVC\ControllerTestCommand.cs" />
-    <Compile Include="MVC\MainCommandTestCommand2.cs" />
-    <Compile Include="MVC\MainCommandTestVO.cs" />
-    <Compile Include="MVC\FacadeTest.cs" />
-    <Compile Include="MVC\FacadeTestCommand.cs" />
-    <Compile Include="MVC\FacadeTestVO.cs" />
-    <Compile Include="MVC\MacroCommandTest.cs" />
-    <Compile Include="MVC\MacroCommandTestCommand.cs" />
-    <Compile Include="MVC\MacroCommandTestSub1Command.cs" />
-    <Compile Include="MVC\MacroCommandTestSub2Command.cs" />
-    <Compile Include="MVC\MacroCommandTestVO.cs" />
-    <Compile Include="MVC\ControllerTest.cs" />
-    <Compile Include="MVC\MainModelTest.cs" />
-    <Compile Include="MVC\TestModel.cs" />
-    <Compile Include="MVC\NotificationTest.cs" />
-    <Compile Include="MVC\ObserverTest.cs" />
-    <Compile Include="MVC\ModelTest.cs" />
-    <Compile Include="MVC\SimpleCommandTest.cs" />
-    <Compile Include="MVC\SimpleCommandTestCommand.cs" />
-    <Compile Include="MVC\SimpleCommandTestVO.cs" />
+    <Compile Include="MVC\ControllerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\ControllerTestCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\FacadeTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\FacadeTestCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\FacadeTestVO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MacroCommandTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MacroCommandTestCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MacroCommandTestSub1Command.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MacroCommandTestSub2Command.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MacroCommandTestVO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MainCommandTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MainCommandTestCommand2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MainCommandTestVO.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MVC\MainControllerTest.cs" />
     <Compile Include="MVC\MainControllerTestController.cs" />
     <Compile Include="MVC\MainControllerTestController2.cs" />
@@ -110,7 +128,33 @@
     <Compile Include="MVC\MainControllerTestController4.cs" />
     <Compile Include="MVC\MainControllerTestController5.cs" />
     <Compile Include="MVC\MainControllerTestController6.cs" />
-    <Compile Include="MVC\MainControllerTestNote.cs" />
+    <Compile Include="MVC\MainControllerTestNote.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\MainModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\ModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\NotificationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\ObserverTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\SimpleCommandTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\SimpleCommandTestCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\SimpleCommandTestVO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MVC\TestModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection\RangeTests.cs" />
     <Compile Include="Selection\SelectionModelTests.cs" />

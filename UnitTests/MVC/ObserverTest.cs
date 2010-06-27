@@ -74,7 +74,7 @@ namespace UnitTests.MVC
    			// successful notification will result in our local 
    			// observerTestVar being set to the value we pass in 
    			// on the note body.
-   			INotification note = new Notification("ObserverTestNote", 10);
+   			INotification note = new Notification(1, 10);
 			observer.NotifyObserver(note);
 
 			// test assertions  			
@@ -98,7 +98,7 @@ namespace UnitTests.MVC
    			// successful notification will result in our local 
    			// observerTestVar being set to the value we pass in 
    			// on the note body.
-   			INotification note = new Notification("ObserverTestNote", 5);
+   			INotification note = new Notification(1, 5);
 			observer.NotifyObserver(note);
 
 			// test assertions  			

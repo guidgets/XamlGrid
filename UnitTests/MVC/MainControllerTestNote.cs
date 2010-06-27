@@ -19,7 +19,7 @@ namespace UnitTests.MVC
         /**
 		 * The name of this Notification.
 		 */
-		public const string NAME = "MainControllerTestNote";
+		public const int NAME = 100;
 		
 		/**
 		 * Constructor.
@@ -27,7 +27,7 @@ namespace UnitTests.MVC
 		 * @param name Ignored and forced to NAME.
 		 * @param body the body of the Notification to be constructed.
 		 */
-		public MainControllerTestNote(string threadName, object body)
+		public MainControllerTestNote(int threadName, object body)
             : base(NAME + threadName, body)
 		{ }
 		
@@ -42,7 +42,7 @@ namespace UnitTests.MVC
 		 * @param threadName the name of the thread creating this notification.
 		 * @param body the body of the Notification to be constructed.
 		 */
-		public static INotification Create(string threadName, object body) 		
+		public static INotification Create(int threadName, object body) 		
 		{
 			return new MainControllerTestNote(threadName, body);
 		}

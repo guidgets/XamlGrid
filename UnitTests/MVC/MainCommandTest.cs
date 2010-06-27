@@ -82,7 +82,7 @@ namespace UnitTests.MVC
         {
    			// Create the MainCommand, register the MainCommandTestCommand to handle 'MainCommandTest' notes
    			IMainCommand mainCommand = MainCommand.Instance;
-			string name = "MainCommandTest" + Thread.CurrentThread.Name;
+			int name = int.MinValue + Thread.CurrentThread.ManagedThreadId;
    			mainCommand.RegisterCommand(name, typeof(MainCommandTestCommand));
    			
    			// Create a 'MainCommandTest' note
@@ -109,38 +109,36 @@ namespace UnitTests.MVC
 		[Description("MainCommand Tests")]
 		public void RegisterAndRemoveCommand()
         {
-  			
    			// Create the MainCommand, register the MainCommandTestCommand to handle 'MainCommandTest' notes
-   			IMainCommand mainCommand = MainCommand.Instance;
-			string name = "MainCommandRemoveTest" + Thread.CurrentThread.Name;
+			IMainCommand mainCommand = MainCommand.Instance;
+			int name = int.MinValue + Thread.CurrentThread.ManagedThreadId;
 			mainCommand.RegisterCommand(name, typeof(MainCommandTestCommand));
-   			
-   			// Create a 'MainCommandTest' note
-            MainCommandTestVO vo = new MainCommandTestVO(12);
-   			INotification note = new Notification(name, vo);
+
+			// Create a 'MainCommandTest' note
+			MainCommandTestVO vo = new MainCommandTestVO(12);
+			INotification note = new Notification(name, vo);
 
 			// Tell the MainCommand to execute the Command associated with the note
 			// the MainCommandTestCommand invoked will multiply the vo.input value
 			// by 2 and set the result on vo.result
-   			mainCommand.ExecuteCommand(note);
-   			
-   			// test assertions 
-   			Assert.IsTrue(vo.result == 24, "Expecting vo.result == 24");
-   			
-   			// Reset result
-   			vo.result = 0;
-   			
-   			// Remove the Command from the MainCommand
-   			mainCommand.RemoveCommand(name);
-			
+			mainCommand.ExecuteCommand(note);
+
+			// test assertions 
+			Assert.IsTrue(vo.result == 24, "Expecting vo.result == 24");
+
+			// Reset result
+			vo.result = 0;
+
+			// Remove the Command from the MainCommand
+			mainCommand.RemoveCommand(name);
+
 			// Tell the MainCommand to execute the Command associated with the
 			// note. This time, it should not be registered, and our vo result
 			// will not change   			
-   			mainCommand.ExecuteCommand(note);
-   			
-   			// test assertions 
-            Assert.IsTrue(vo.result == 0, "Expecting vo.result == 0");
-   			
+			mainCommand.ExecuteCommand(note);
+
+			// test assertions 
+			Assert.IsTrue(vo.result == 0, "Expecting vo.result == 0");
    		}
   		
   		/**
@@ -151,17 +149,17 @@ namespace UnitTests.MVC
 		public void HasCommand()
 		{
    			// register the MainCommandTestCommand to handle 'hasCommandTest' notes
-   			IMainCommand mainCommand = MainCommand.Instance;
-			string name = "HasCommandTest" + Thread.CurrentThread.Name;
+			IMainCommand mainCommand = MainCommand.Instance;
+			int name = int.MinValue + Thread.CurrentThread.ManagedThreadId;
 			mainCommand.RegisterCommand(name, typeof(MainCommandTestCommand));
-   			
-   			// test that hasCommand returns true for hasCommandTest notifications 
+
+			// test that hasCommand returns true for hasCommandTest notifications 
 			Assert.IsTrue(mainCommand.HasCommand(name), "Expecting MainCommand.HasCommand(name) == true");
-   			
-   			// Remove the Command from the MainCommand
+
+			// Remove the Command from the MainCommand
 			mainCommand.RemoveCommand(name);
-			
-   			// test that hasCommand returns false for hasCommandTest notifications 
+
+			// test that hasCommand returns false for hasCommandTest notifications 
 			Assert.IsTrue(mainCommand.HasCommand(name) == false, "Expecting MainCommand.HasCommand(name) == false");
    		}
    		
@@ -183,33 +181,33 @@ namespace UnitTests.MVC
 		{
   			 
    			// Fetch the MainCommand, register the MainCommandTestCommand2 to handle 'MainCommandTest2' notes
-   			IMainCommand mainCommand = MainCommand.Instance;
-			string name = "MainCommandTest2" + Thread.CurrentThread.Name;
-			mainCommand.RegisterCommand(name, typeof(MainCommandTestCommand2));
-   			
-   			// Remove the Command from the MainCommand
-			mainCommand.RemoveCommand(name);
-			
-   			// Re-register the Command with the MainCommand
+			IMainCommand mainCommand = MainCommand.Instance;
+			int name = int.MinValue + Thread.CurrentThread.ManagedThreadId;
 			mainCommand.RegisterCommand(name, typeof(MainCommandTestCommand2));
 
-   			// Create a 'MainCommandTest2' note
+			// Remove the Command from the MainCommand
+			mainCommand.RemoveCommand(name);
+
+			// Re-register the Command with the MainCommand
+			mainCommand.RegisterCommand(name, typeof(MainCommandTestCommand2));
+
+			// Create a 'MainCommandTest2' note
 			MainCommandTestVO vo = new MainCommandTestVO(12);
 			Notification note = new Notification(name, vo);
 
 			// retrieve a reference to the MainController.
-   			IMainController mainController = MainController.Instance;
-   			
+			IMainController mainController = MainController.Instance;
+
 			// send the Notification
-   			mainController.NotifyObservers(note);
-   			
-   			// test assertions 
+			mainController.NotifyObservers(note);
+
+			// test assertions 
 			// if the command is executed once the value will be 24
 			Assert.IsTrue(vo.result == 24, "Expecting vo.result == 24");
 
-   			// Prove that accumulation works in the VO by sending the notification again
-   			mainController.NotifyObservers(note);
-   			
+			// Prove that accumulation works in the VO by sending the notification again
+			mainController.NotifyObservers(note);
+
 			// if the command is executed twice the value will be 48
 			Assert.IsTrue(vo.result == 48, "Expecting vo.result == 48");
    		}

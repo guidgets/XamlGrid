@@ -28,7 +28,7 @@ namespace Company.Widgets.Core
 		/// The name of the <c>INotification</c> instance
 		/// </summary>
 		/// <remarks>No setter, should be set by constructor only</remarks>
-		string Name { get; }
+		int Code { get; }
 
 		/// <summary>
 		/// The body of the <c>INotification</c> instance

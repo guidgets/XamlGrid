@@ -42,7 +42,7 @@ namespace Company.Widgets.Core
 		protected MainController()
 		{
 			this.m_ControllerMap = new Dictionary<string, IController>();
-			this.m_observerMap = new Dictionary<string, IList<IObserver>>();
+			this.m_observerMap = new Dictionary<int, IList<IObserver>>();
 			this.InitializeController();
 		}
 
@@ -58,7 +58,7 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName">The name of the <c>INotifications</c> to notify this <c>IObserver</c> of</param>
 		/// <param name="observer">The <c>IObserver</c> to register</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RegisterObserver(string notificationName, IObserver observer)
+		public virtual void RegisterObserver(int notificationName, IObserver observer)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -85,10 +85,10 @@ namespace Company.Widgets.Core
 
 			lock (this.m_syncRoot)
 			{
-				if (this.m_observerMap.ContainsKey(notification.Name))
+				if (this.m_observerMap.ContainsKey(notification.Code))
 				{
 					// Get a reference to the observers list for this notification name
-					IList<IObserver> observers_ref = this.m_observerMap[notification.Name];
+					IList<IObserver> observers_ref = this.m_observerMap[notification.Code];
 					// Copy observers from reference array to working array, 
 					// since the reference array may change during the notification loop
 					observers = new List<IObserver>(observers_ref);
@@ -113,7 +113,7 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName">which observer list to remove from</param>
 		/// <param name="notifyContext">remove the observer with this object as its notifyContext</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RemoveObserver(string notificationName, object notifyContext)
+		public virtual void RemoveObserver(int notificationName, object notifyContext)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -168,7 +168,7 @@ namespace Company.Widgets.Core
 				this.m_ControllerMap[controller.Name] = controller;
 
 				// Get Notification interests, if any.
-				IList<string> interests = controller.ListNotificationInterests();
+				IList<int> interests = controller.ListNotificationInterests();
 
 				// Register Controller as an observer for each of its notification interests
 				if (interests.Count > 0)
@@ -219,7 +219,7 @@ namespace Company.Widgets.Core
 				controller = this.m_ControllerMap[controllerName];
 
 				// for every notification this Controller is interested in...
-				IList<string> interests = controller.ListNotificationInterests();
+				IList<int> interests = controller.ListNotificationInterests();
 
 				for (int i = 0; i < interests.Count; i++)
 				{
@@ -325,7 +325,7 @@ namespace Company.Widgets.Core
 		/// <summary>
 		/// Mapping of Notification names to Observer lists
 		/// </summary>
-		protected IDictionary<string, IList<IObserver>> m_observerMap;
+		protected IDictionary<int, IList<IObserver>> m_observerMap;
 
 		#endregion
 	}

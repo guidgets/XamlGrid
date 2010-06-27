@@ -104,9 +104,9 @@ namespace Company.Widgets.Controllers
 		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names</returns>
-		public override IList<string> ListNotificationInterests()
+		public override IList<int> ListNotificationInterests()
 		{
-			return new List<string>
+			return new List<int>
 			       	{
 			       		Notifications.DATA_WRAPPED,
 			       		Notifications.CURRENT_ITEM_CHANGED,
@@ -129,7 +129,7 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.DATA_WRAPPED:
 					this.DataGrid.ItemsSource = (IEnumerable) notification.Body;
@@ -395,7 +395,7 @@ namespace Company.Widgets.Controllers
 		private void SelectItems(object itemToSelect, bool clicked, Key key)
 		{
 			bool selected = this.DataGrid.SelectedItems.IsSelected(itemToSelect);
-			string notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
+			int notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
 			switch (this.DataGrid.SelectionMode)
 			{
 				case SelectionMode.Single:
@@ -431,7 +431,7 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private void ToggleSelection(string notificationToSend, object itemToSelect, bool clickedItem, Key key)
+		private void ToggleSelection(int notificationToSend, object itemToSelect, bool clickedItem, Key key)
 		{
 			if (clickedItem)
 			{

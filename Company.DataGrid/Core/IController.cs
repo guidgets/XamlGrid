@@ -99,7 +99,7 @@ namespace Company.Widgets.Core
 		/// List <c>INotification interests</c>
 		/// </summary>
 		/// <returns>An <c>IList</c> of the <c>INotification</c> names this <c>IController</c> has an interest in</returns>
-		IList<string> ListNotificationInterests();
+		IList<int> ListNotificationInterests();
 
 		/// <summary>
 		/// Handle an <c>INotification</c>

@@ -69,7 +69,7 @@ namespace UnitTests.MVC
   			SimpleCommandTestVO vo = new SimpleCommandTestVO(5);
   			
   			// Create the Notification (note)
-  			INotification note = new Notification("SimpleCommandTestNote", vo);
+  			INotification note = new Notification(1, vo);
 
 			// Create the SimpleCommand  			
 			ICommand command = new SimpleCommandTestCommand();

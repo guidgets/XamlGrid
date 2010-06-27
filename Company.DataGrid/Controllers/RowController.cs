@@ -64,9 +64,9 @@ namespace Company.Widgets.Controllers
 		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names</returns>
-		public override IList<string> ListNotificationInterests()
+		public override IList<int> ListNotificationInterests()
 		{
-			return new List<string>
+			return new List<int>
 			       	{
 			       		Notifications.CURRENT_ITEM_CHANGED,
 			       		Notifications.SELECTED_ITEMS,
@@ -85,7 +85,7 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.Row.IsFocused = this.Row.DataContext == notification.Body;

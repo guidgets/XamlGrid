@@ -30,9 +30,9 @@ namespace UnitTests.MVC
 		{
 		}
 
-		public override IList<string> ListNotificationInterests()
+		public override IList<int> ListNotificationInterests()
 		{
-			return new List<string>(new[] { MainControllerTest.NOTE5 });
+			return new List<int>(new[] { MainControllerTest.NOTE5 });
 		}
 
 		public override void HandleNotification(INotification note)

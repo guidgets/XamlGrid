@@ -58,9 +58,9 @@ namespace Company.Widgets.Controllers
 		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names</returns>
-		public override IList<string> ListNotificationInterests()
+		public override IList<int> ListNotificationInterests()
 		{
-			return new List<string> { Notifications.SORTED };
+			return new List<int> { Notifications.SORTED };
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace Company.Widgets.Controllers
 			{
 				return;
 			}
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.SORTED:
 					if (notification.Type == NotificationTypes.REMOVED_SORTING)

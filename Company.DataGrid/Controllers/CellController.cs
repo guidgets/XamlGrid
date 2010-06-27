@@ -70,9 +70,9 @@ namespace Company.Widgets.Controllers
 		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
 		/// </summary>
 		/// <returns>The list of <c>INotification</c> names.</returns>
-		public override IList<string> ListNotificationInterests()
+		public override IList<int> ListNotificationInterests()
 		{
-			return new List<string> { Notifications.CURRENT_ITEM_CHANGED, Notifications.CURRENT_COLUMN_CHANGED };
+			return new List<int> { Notifications.CURRENT_ITEM_CHANGED, Notifications.CURRENT_COLUMN_CHANGED };
 		}
 
 		/// <summary>
@@ -85,7 +85,7 @@ namespace Company.Widgets.Controllers
 		public override void HandleNotification(INotification notification)
 		{
 			bool b = true;
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.dataItemCurrent = this.Cell.DataContext == notification.Body;

@@ -86,7 +86,7 @@ namespace UnitTests.MVC
   			MacroCommandTestVO vo = new MacroCommandTestVO(5);
   			
   			// Create the Notification (note)
-  			INotification note = new Notification("MacroCommandTest", vo);
+  			INotification note = new Notification(1, vo);
 
 			// Create the SimpleCommand  			
 			ICommand command = new MacroCommandTestCommand();

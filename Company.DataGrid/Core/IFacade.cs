@@ -63,20 +63,20 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="notificationName">The name of the <c>INotification</c> to associate the <c>IMainCommand</c> with.</param>
 		/// <param name="commandType">A reference to the <c>Type</c> of the <c>IMainCommand</c></param>
-		void RegisterCommand(string notificationName, Type commandType);
+		void RegisterCommand(int notificationName, Type commandType);
 
 		/// <summary>
 		/// Remove a previously registered <c>IMainCommand</c> to <c>INotification</c> mapping from the Controller.
 		/// </summary>
 		/// <param name="notificationName">TRemove a previously registered <c>IMainCommand</c> to <c>INotification</c> mapping from the Controller.</param>
-		void RemoveCommand(string notificationName);
+		void RemoveCommand(int notificationName);
 
 		/// <summary>
 		/// Check if a Controller is registered for a given Notification 
 		/// </summary>
 		/// <param name="notificationName">The name of the <c>INotification</c> to check.</param>
 		/// <returns>whether a Controller is currently registered for the given <c>notificationName</c>.</returns>
-		bool HasCommand(string notificationName);
+		bool HasCommand(int notificationName);
 
 		#endregion
 

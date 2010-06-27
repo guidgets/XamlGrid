@@ -31,7 +31,7 @@ namespace Company.Widgets.Core
 		///     <para>Convenience method to prevent having to construct new notification instances in our implementation code</para>
 		/// </remarks>
 		/// <param name="notificationName">The name of the notification to send</param>
-		void SendNotification(string notificationName);
+		void SendNotification(int notificationName);
 
 		/// <summary>
 		/// Send a <c>INotification</c>
@@ -41,7 +41,7 @@ namespace Company.Widgets.Core
 		/// </remarks>
 		/// <param name="notificationName">The name of the notification to send</param>
 		/// <param name="body">The body of the notification</param>
-		void SendNotification(string notificationName, object body);
+		void SendNotification(int notificationName, object body);
 
 		/// <summary>
 		/// Send a <c>INotification</c>
@@ -52,6 +52,6 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName">The name of the notification to send</param>
 		/// <param name="body">The body of the notification</param>
 		/// <param name="type">The type of the notification</param>
-		void SendNotification(string notificationName, object body, string type);
+		void SendNotification(int notificationName, object body, string type);
 	}
 }

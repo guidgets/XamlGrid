@@ -9,7 +9,7 @@ namespace Company.Widgets.Controllers
 		public override void Execute(INotification notification)
 		{
 			CurrentItemModel currentItemModel = (CurrentItemModel) DataGridFacade.Instance.RetrieveModel(CurrentItemModel.NAME);
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.ITEMS_SOURCE_CHANGED:
 					currentItemModel.SetCollectionView(notification.Body as ICollectionView);

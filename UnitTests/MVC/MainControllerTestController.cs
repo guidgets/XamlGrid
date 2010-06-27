@@ -29,11 +29,11 @@ namespace UnitTests.MVC
             : base(NAME + threadName, MainController)
         { }
 
-		override public IList<string> ListNotificationInterests()
+		override public IList<int> ListNotificationInterests()
 		{
 			// be sure that the Controller has some Observers created
 			// in order to test removeController
-			return new List<string>(new[]{"ABC", "DEF", "GHI"});
+			return new List<int>(new[]{10, 20, 30});
 		}
     }
 }

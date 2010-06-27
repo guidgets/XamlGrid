@@ -20,17 +20,17 @@ namespace UnitTests.MVC
 	[TestFixture]
 	public class MainControllerTest
     {
-        public string lastNotification;	
+        public int? lastNotification;	
   		public bool onRegisterCalled;
   		public bool onRemoveCalled;
   		public Int32 counter;
   		
- 		public const string NOTE1 = "Notification1";
-		public const string NOTE2 = "Notification2";
-		public const string NOTE3 = "Notification3";
-		public const string NOTE4 = "Notification4";
-		public const string NOTE5 = "Notification5";
-		public const string NOTE6 = "Notification6";
+ 		public const int NOTE1 = 1;
+		public const int NOTE2 = 2;
+		public const int NOTE3 = 3;
+		public const int NOTE4 = 4;
+		public const int NOTE5 = 5;
+		public const int NOTE6 = 6;
 
         /**
   		 * Constructor.
@@ -106,7 +106,7 @@ namespace UnitTests.MVC
    			IObserver observer = new Observer(this.MainControllerTestMethod, this);
    			
    			// Register Observer's interest in a particulat Notification with the MainController 
-			string name = Thread.CurrentThread.Name ?? string.Empty;
+			int name = Thread.CurrentThread.ManagedThreadId;
 
 			lock (m_MainControllerTestVarsLock)
 			{
@@ -136,7 +136,7 @@ namespace UnitTests.MVC
   		 * A test variable that proves the MainControllerTestMethod was
   		 * invoked by the MainController.
   		 */
-  		private readonly IDictionary<string, int> mainControllerTestVars = new Dictionary<string, int>();
+  		private readonly IDictionary<int, int> mainControllerTestVars = new Dictionary<int, int>();
 
 		private readonly object m_MainControllerTestVarsLock = new object();
 
@@ -146,7 +146,7 @@ namespace UnitTests.MVC
 		public void MainControllerTestMethod(INotification note)
   		{
   			// set the local MainControllerTestVar to the number on the event payload
-			string name = Thread.CurrentThread.Name ?? string.Empty;
+			int name = Thread.CurrentThread.ManagedThreadId;
 
 			lock (m_MainControllerTestVarsLock)
 			{

@@ -213,7 +213,7 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName">The name of the <c>INotification</c> to associate the <c>IMainCommand</c> with.</param>
 		/// <param name="commandType">A reference to the <c>Type</c> of the <c>IMainCommand</c></param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RegisterCommand(string notificationName, Type commandType)
+		public virtual void RegisterCommand(int notificationName, Type commandType)
 		{
 			// The controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the controller.
@@ -225,7 +225,7 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="notificationName">TRemove a previously registered <c>IMainCommand</c> to <c>INotification</c> mapping from the Controller.</param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RemoveCommand(string notificationName)
+		public virtual void RemoveCommand(int notificationName)
 		{
 			// The controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the controller.
@@ -238,7 +238,7 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName">The name of the <c>INotification</c> to check for.</param>
 		/// <returns>whether a Controller is currently registered for the given <c>notificationName</c>.</returns>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual bool HasCommand(string notificationName)
+		public virtual bool HasCommand(int notificationName)
 		{
 			// The controller is initialized in the constructor of the singleton, so this call should be thread safe.
 			// This method is thread safe on the controller.
@@ -325,7 +325,7 @@ namespace Company.Widgets.Core
 		/// <param name="notificationName">The name of the notiification to send</param>
 		/// <remarks>Keeps us from having to construct new notification instances in our implementation code</remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void SendNotification(string notificationName)
+		public virtual void SendNotification(int notificationName)
 		{
 			this.NotifyObservers(new Notification(notificationName));
 		}
@@ -337,7 +337,7 @@ namespace Company.Widgets.Core
 		/// <param name="body">The body of the notification</param>
 		/// <remarks>Keeps us from having to construct new notification instances in our implementation code</remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void SendNotification(string notificationName, object body)
+		public virtual void SendNotification(int notificationName, object body)
 		{
 			this.NotifyObservers(new Notification(notificationName, body));
 		}
@@ -350,7 +350,7 @@ namespace Company.Widgets.Core
 		/// <param name="type">The type of the notification</param>
 		/// <remarks>Keeps us from having to construct new notification instances in our implementation code</remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void SendNotification(string notificationName, object body, string type)
+		public virtual void SendNotification(int notificationName, object body, string type)
 		{
 			this.NotifyObservers(new Notification(notificationName, body, type));
 		}

@@ -7,7 +7,7 @@ namespace Company.Widgets.Controllers
 	{
 		public override void Execute(INotification notification)
 		{
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.HEADER_ROW_LOADED:
 					SortingModel sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);

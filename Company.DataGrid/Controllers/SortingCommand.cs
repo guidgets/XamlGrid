@@ -9,7 +9,7 @@ namespace Company.Widgets.Controllers
 		public override void Execute(INotification notification)
 		{
 			SortingModel sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.ITEMS_SOURCE_CHANGED:
 					sortingModel.SetCollectionView(notification.Body as ICollectionView);

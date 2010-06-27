@@ -11,7 +11,7 @@ namespace Company.Widgets.Controllers
 		public override void Execute(INotification notification)
 		{
 			SelectionModel selectionModel = (SelectionModel) DataGridFacade.Instance.RetrieveModel(SelectionModel.NAME);
-			switch (notification.Name)
+			switch (notification.Code)
 			{
 				case Notifications.ITEMS_CHANGED:
 					selectionModel.Items = notification.Body as IList<object>;

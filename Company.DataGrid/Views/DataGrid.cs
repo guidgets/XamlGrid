@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Markup;
 using Company.Widgets.Controllers;
 using Company.Widgets.Models;
 
@@ -141,6 +143,7 @@ namespace Company.Widgets.Views
 		public DataGrid()
 		{
 			this.DefaultStyleKey = typeof(DataGrid);
+			this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.Name);
 			this.Columns = new ObservableCollection<Column>();
 			this.otherColumns = new List<Column>();
 

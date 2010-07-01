@@ -9,6 +9,7 @@
     >
 
 	<Style TargetType="company:DataGrid">
+		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background">
 			<Setter.Value>
 				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
@@ -35,13 +36,13 @@
 								<RowDefinition Height="Auto" />
 								<RowDefinition />
 							</Grid.RowDefinitions>
-							<ScrollViewer Name="headerScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,18,0" Padding="0"
-                                          controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
+							<ScrollViewer Name="headerScroll" IsTabStop="False" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" 
+										  Margin="0,0,18,0" Padding="0" controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
 								<company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
                                                    Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 							</ScrollViewer>
-							<ScrollViewer Name="mainScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="0"
-                                          controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
+							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 
+										  Padding="0" controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
 								<ItemsPresenter />
 							</ScrollViewer>
 						</Grid>
@@ -52,6 +53,7 @@
 	</Style>
 
 	<Style TargetType="company:HeaderRow">
+		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -65,6 +67,7 @@
 	<controllers:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 
 	<Style TargetType="company:HeaderCell">
+		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background">
 			<Setter.Value>
 				<SolidColorBrush company:OSBrush.OSColor="ControlColor" />
@@ -94,7 +97,7 @@
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
-							<ToggleButton IsThreeState="True" Content="{TemplateBinding Content}"
+							<ToggleButton IsThreeState="True" Content="{TemplateBinding Content}" IsTabStop="False"
                                           ContentTemplate="{TemplateBinding ContentTemplate}" Padding="{TemplateBinding Padding}"
                                           IsChecked="{Binding SortDirection, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
                                                               Converter={StaticResource sortDirectionToBooleanConverter}}">

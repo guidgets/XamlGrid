@@ -47,7 +47,6 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRegister();
 
-			this.Cell.DataContextChanged += this.Cell_DataContextChanged;
 			this.Cell.GotFocus += this.Cell_GotFocus;
 			this.Cell.KeyDown += this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
@@ -60,7 +59,6 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRemove();
 
-			this.Cell.DataContextChanged -= this.Cell_DataContextChanged;
 			this.Cell.GotFocus -= this.Cell_GotFocus;
 			this.Cell.KeyDown -= this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
@@ -142,11 +140,6 @@ namespace Company.Widgets.Controllers
 			return childControls;
 		}
 
-
-		private void Cell_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
-			this.SendNotification(Notifications.IS_COLUMN_CURRENT, this.Cell.Column);
-		}
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{

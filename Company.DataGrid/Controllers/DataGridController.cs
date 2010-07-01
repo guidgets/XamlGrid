@@ -190,6 +190,14 @@ namespace Company.Widgets.Controllers
 			                           };
 		}
 
+		private void DataGrid_LayoutUpdated(object sender, EventArgs e)
+		{
+			Column columnToFocus = this.DataGrid.CurrentColumn ?? this.DataGrid.Columns.FirstOrDefault();
+			this.DataGrid.CurrentColumn = null;
+			this.DataGrid.CurrentColumn = columnToFocus;
+			this.DataGrid.LayoutUpdated -= this.DataGrid_LayoutUpdated;
+		}
+
 		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (Keyboard.Modifiers == KeyHelper.CommandModifier && e.Key == Key.C)
@@ -219,7 +227,10 @@ namespace Company.Widgets.Controllers
 
 		private void DataGrid_CurrentColumnChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.CURRENT_COLUMN_CHANGED, e.NewValue, (!this.stopColumnNotification).ToString());
+			if (e.NewValue != null)
+			{
+				this.SendNotification(Notifications.CURRENT_COLUMN_CHANGED, e.NewValue, (!this.stopColumnNotification).ToString());
+			}
 		}
 
 		private void DataGrid_SelectionModeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -230,6 +241,10 @@ namespace Company.Widgets.Controllers
 		private void DataGridItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			this.SendNotification(Notifications.ITEMS_COLLECTION_CHANGED, e);
+			if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
+				this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
+			}
 		}
 
 		private void DataGridColumns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -257,7 +272,7 @@ namespace Company.Widgets.Controllers
 					column.ActualWidthChanged += this.Column_ActualWidthChanged;
 					if (this.DataGrid.CurrentColumn == null)
 					{
-						this.DataGrid.CurrentColumn = column;
+						this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
 					}
 				}
 			}

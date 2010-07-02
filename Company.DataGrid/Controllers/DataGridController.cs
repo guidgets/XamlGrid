@@ -270,7 +270,7 @@ namespace Company.Widgets.Controllers
 					}
 					column.IsSelected = true;
 					column.ActualWidthChanged += this.Column_ActualWidthChanged;
-					if (this.DataGrid.CurrentColumn == null)
+					if (this.DataGrid.Columns.Count == 1 && this.DataGrid.CurrentColumn == null)
 					{
 						this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
 					}

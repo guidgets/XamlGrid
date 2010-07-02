@@ -15,9 +15,6 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class CellController : Controller
 	{
-		private bool dataItemCurrent;
-		private bool columnCurrent;
-
 		/// <summary>
 		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Cell"/>.
 		/// </summary>
@@ -70,7 +67,7 @@ namespace Company.Widgets.Controllers
 		/// <returns>The list of <c>INotification</c> names.</returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.CURRENT_ITEM_CHANGED, Notifications.CURRENT_COLUMN_CHANGED };
+			return new List<int> { Notifications.FOCUS_CELL };
 		}
 
 		/// <summary>
@@ -82,20 +79,15 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
-			bool b = true;
 			switch (notification.Code)
 			{
-				case Notifications.CURRENT_ITEM_CHANGED:
-					this.dataItemCurrent = this.Cell.DataContext == notification.Body;
+				case Notifications.FOCUS_CELL:
+					object[] data = (object[]) notification.Body;
+					if (this.Cell.DataContext == data[0] && this.Cell.Column == data[1] && !this.Cell.HasFocus)
+					{
+						this.Cell.Focus();
+					}
 					break;
-				case Notifications.CURRENT_COLUMN_CHANGED:
-					this.columnCurrent = this.Cell.Column == notification.Body;
-					b = notification.Type == null || bool.Parse(notification.Type);
-					break;
-			}
-			if (b && this.dataItemCurrent && this.columnCurrent && !this.Cell.HasFocus)
-			{
-				this.Cell.Focus();
 			}
 		}
 

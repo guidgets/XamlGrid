@@ -24,7 +24,7 @@ namespace Company.Widgets.Controllers
 		private ScrollViewer scroll;
 		private Panel itemsHost;
 		private bool continuousEditing;
-		private bool stopColumnNotification;
+		private bool fromFocusedCell;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
@@ -136,6 +136,7 @@ namespace Company.Widgets.Controllers
 					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.DataGrid.CurrentItem = notification.Body;
+					this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
 					break;
 				case Notifications.SELECTION_MODE_CHANGED:
 					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
@@ -153,9 +154,9 @@ namespace Company.Widgets.Controllers
 					break;
 				case Notifications.CELL_FOCUSED:
 					Cell cell = (Cell) notification.Body;
-					this.stopColumnNotification = true;
+					this.fromFocusedCell = true;
 					this.DataGrid.CurrentColumn = cell.Column;
-					this.stopColumnNotification = false;
+					this.fromFocusedCell = false;
 					IScrollInfo scrollInfo = this.ItemsHost as IScrollInfo;
 					if (scrollInfo != null)
 					{
@@ -227,9 +228,9 @@ namespace Company.Widgets.Controllers
 
 		private void DataGrid_CurrentColumnChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (e.NewValue != null)
+			if (this.DataGrid.CurrentColumn != null && !this.fromFocusedCell)
 			{
-				this.SendNotification(Notifications.CURRENT_COLUMN_CHANGED, e.NewValue, (!this.stopColumnNotification).ToString());
+				this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
 			}
 		}
 

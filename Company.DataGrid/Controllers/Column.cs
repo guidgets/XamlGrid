@@ -19,6 +19,10 @@ namespace Company.Widgets.Controllers
 		/// Occurs when the <see cref="ActualWidth"/> of this <see cref="Column"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler ActualWidthChanged;
+		/// <summary>
+		/// Occurs when the <see cref="Visibility"/> of this <see cref="Column"/> is changed.
+		/// </summary>
+		public virtual event DependencyPropertyChangedEventHandler VisibilityChanged;
 
 
 		/// <summary>
@@ -52,7 +56,7 @@ namespace Company.Widgets.Controllers
 		/// Identifies the dependency property which gets or sets the visibility of a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty VisibilityProperty =
-			DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Column), new PropertyMetadata(Visibility.Visible));
+			DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Column), new PropertyMetadata(Visibility.Visible, OnVisibilityChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating 
@@ -282,6 +286,10 @@ namespace Company.Widgets.Controllers
 			((Column) d).OnWidthChanged(e);
 		}
 
+		/// <summary>
+		/// Raises the <see cref="WidthChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnWidthChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.WidthChanged;
@@ -302,9 +310,31 @@ namespace Company.Widgets.Controllers
 			column.OnActualWidthChanged(e);
 		}
 
+		/// <summary>
+		/// Raises the <see cref="ActualWidthChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnActualWidthChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.ActualWidthChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		private static void OnVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Column) d).OnVisibilityChanged(e);
+		}
+
+		/// <summary>
+		/// Raises the <see cref="VisibilityChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+		protected virtual void OnVisibilityChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.VisibilityChanged;
 			if (handler != null)
 			{
 				handler(this, e);

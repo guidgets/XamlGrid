@@ -270,7 +270,8 @@ namespace Company.Widgets.Controllers
 						                             new Binding("IsEditable") { Source = this.DataGrid });
 					}
 					column.IsSelected = true;
-					column.ActualWidthChanged += this.Column_ActualWidthChanged;
+					column.ActualWidthChanged += this.Column_WidthAffected;
+					column.VisibilityChanged += this.Column_WidthAffected;
 					if (this.DataGrid.Columns.Count == 1 && this.DataGrid.CurrentColumn == null)
 					{
 						this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
@@ -284,7 +285,8 @@ namespace Company.Widgets.Controllers
 					column.ClearValue(Column.WidthProperty);
 					column.ClearValue(Column.IsResizableProperty);
 					column.ClearValue(Column.IsEditableProperty);
-					column.ActualWidthChanged -= this.Column_ActualWidthChanged;
+					column.ActualWidthChanged -= this.Column_WidthAffected;
+					column.VisibilityChanged -= this.Column_WidthAffected;
 					if (this.DataGrid.CurrentColumn == column)
 					{
 						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
@@ -302,7 +304,7 @@ namespace Company.Widgets.Controllers
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
 		}
 
-		private void Column_ActualWidthChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void Column_WidthAffected(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.CalculateRelativeColumnWidths();
 		}
@@ -315,11 +317,13 @@ namespace Company.Widgets.Controllers
 				return;
 			}
 			IEnumerable<Column> relativeColumns = from column in this.DataGrid.Columns
-			                                      where column.Width.SizeMode == SizeMode.Fill
+			                                      where column.Visibility == Visibility.Visible &&
+			                                            column.Width.SizeMode == SizeMode.Fill
 			                                      select column;
 			double stars = relativeColumns.Sum(column => column.Width.Value);
 			double availableWidth = this.Scroll.ViewportWidth - (from column in this.DataGrid.Columns
-			                                                     where column.Width.SizeMode != SizeMode.Fill
+			                                                     where column.Visibility == Visibility.Visible &&
+			                                                           column.Width.SizeMode != SizeMode.Fill
 			                                                     select column.ActualWidth).Sum();
 			foreach (Column column in relativeColumns.Skip(1))
 			{
@@ -330,7 +334,8 @@ namespace Company.Widgets.Controllers
 			if (firstColumn != null)
 			{
 				double width = this.Scroll.ViewportWidth - (from column in this.DataGrid.Columns
-				                                            where column != firstColumn
+				                                            where column.Visibility == Visibility.Visible &&
+				                                                  column != firstColumn
 				                                            select column.ActualWidth).Sum();
 				firstColumn.ActualWidth = Math.Max(width - 1, 1);
 			}

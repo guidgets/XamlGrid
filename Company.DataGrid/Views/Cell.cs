@@ -194,16 +194,6 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> event occurs.
-		/// </summary>
-		/// <param name="e">The data for the event.</param>
-		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-		{
-			base.OnMouseLeftButtonDown(e);
-			e.Handled = true;
-		}
-
-		/// <summary>
 		/// Called before the <see cref="UIElement.MouseLeftButtonUp"/> event occurs.
 		/// </summary>
 		/// <param name="e">The data for the event.</param>

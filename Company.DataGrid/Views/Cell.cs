@@ -194,12 +194,12 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Called before the <see cref="UIElement.MouseLeftButtonUp"/> event occurs.
+		/// Called before the <see cref="UIElement.MouseLeftButtonDown"/> event occurs.
 		/// </summary>
 		/// <param name="e">The data for the event.</param>
-		protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{
-			base.OnMouseLeftButtonUp(e);
+			base.OnMouseLeftButtonDown(e);
 			this.Focus();
 		}
 

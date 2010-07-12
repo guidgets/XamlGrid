@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
 using Company.Widgets.Models.Export;
@@ -354,12 +353,12 @@ namespace Company.Widgets.Controllers
 					this.SendNotification(Notifications.CURRENT_ITEM_DOWN);
 					break;
 				case Key.PageUp:
-					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION,
-					                      this.GetFirstItemOnCurrentPage(this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - 1, false));
+					int pageUp = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - this.GetPageSize();
+					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Max(pageUp, 0));
 					break;
 				case Key.PageDown:
-					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION,
-					                      this.GetFirstItemOnCurrentPage(this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem), true));
+					int pageDown = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) + this.GetPageSize();
+					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
 					break;
 				case Key.Home:
 					if (control)
@@ -468,70 +467,35 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private int GetFirstItemOnCurrentPage(int startingIndex, bool forward)
+		private int GetPageSize()
 		{
-			int step = forward ? 1 : -1;
-			int firstItemIndex = -1;
-			Orientation orientation = this.GetOrientation();
-			int index = startingIndex;
-			while (0 <= index && index < this.DataGrid.Items.Count &&
-			       !this.IsOnCurrentPage(index, orientation))
+			int page = 0;
+			switch (this.GetOrientation())
 			{
-				firstItemIndex = index;
-				index += step;
+				case Orientation.Vertical:
+					page = (int) this.Scroll.ViewportHeight;
+					break;
+				case Orientation.Horizontal:
+					page = (int) this.Scroll.ViewportWidth;
+					break;
 			}
-			while (0 <= index && index < this.DataGrid.Items.Count &&
-			       this.IsOnCurrentPage(index, orientation))
-			{
-				firstItemIndex = index;
-				index += step;
-			}
-			return firstItemIndex >= 0 ? firstItemIndex : 0;
+			return page;
 		}
 
 		private Orientation GetOrientation()
 		{
 			Orientation orientation = Orientation.Vertical;
-			StackPanel stackPanel = this.itemsHost as StackPanel;
+			StackPanel stackPanel = this.ItemsHost as StackPanel;
 			if (stackPanel != null)
 			{
 				orientation = stackPanel.Orientation;
 			}
-			VirtualizingStackPanel virtualizingStackPanel = this.itemsHost as VirtualizingStackPanel;
+			VirtualizingStackPanel virtualizingStackPanel = this.ItemsHost as VirtualizingStackPanel;
 			if (virtualizingStackPanel != null)
 			{
 				orientation = virtualizingStackPanel.Orientation;
 			}
 			return orientation;
-		}
-
-		private bool IsOnCurrentPage(int index, Orientation orientation)
-		{
-			if (this.Scroll == null)
-			{
-				return true;
-			}
-			FrameworkElement item = (FrameworkElement) this.DataGrid.ItemContainerGenerator.ContainerFromIndex(index);
-			if (item == null)
-			{
-				return false;
-			}
-			Rect scrollRect;
-			Rect itemRect;
-			GetRectangles(this.Scroll, item, out scrollRect, out itemRect);
-			if (orientation == Orientation.Horizontal)
-			{
-				return (scrollRect.Left <= itemRect.Left && itemRect.Right <= scrollRect.Right);
-			}
-			return (scrollRect.Top <= itemRect.Top && itemRect.Bottom <= scrollRect.Bottom);
-		}
-
-		private static void GetRectangles(FrameworkElement parent, FrameworkElement item, out Rect parentRectangle, out Rect itemRectangle)
-		{
-			parentRectangle = new Rect(0.0, 0.0, parent.ActualWidth, parent.ActualHeight);
-			GeneralTransform transform = item.TransformToVisual(parent);
-			itemRectangle = new Rect(transform.Transform(new Point()),
-			                         transform.Transform(new Point(item.ActualWidth, item.ActualHeight)));
 		}
 	}
 }

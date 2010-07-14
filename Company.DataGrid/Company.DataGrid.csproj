@@ -165,6 +165,7 @@
     <Compile Include="Views\OSBrush.cs" />
     <Compile Include="Views\OSColors.cs" />
     <Compile Include="Views\Row.cs" />
+    <Compile Include="VisualTreeVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="themes\generic.xaml">

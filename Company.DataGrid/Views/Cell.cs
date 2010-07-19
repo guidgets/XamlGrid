@@ -201,6 +201,7 @@ namespace Company.Widgets.Views
 		{
 			base.OnMouseLeftButtonDown(e);
 			this.Focus();
+			e.Handled = true;
 		}
 
 		/// <summary>

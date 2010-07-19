@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -441,16 +442,29 @@ namespace Company.Widgets.Views
 				this.otherColumns.AddRange(this.Columns);
 			}
 			this.Columns.Clear();
-			foreach (PropertyInfo property in firstItem.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+			Type itemType = firstItem.GetType();
+			if (itemType.IsSimple())
 			{
-				Column column = new Column();
-				column.Binding = new Binding(property.Name);
-				column.Binding.Mode = property.CanWrite ? BindingMode.TwoWay : BindingMode.OneWay;
-				column.Binding.ValidatesOnExceptions = true;
-				column.Binding.NotifyOnValidationError = true;
-				column.DataType = property.PropertyType;
-				this.Columns.Add(column);
+				this.CreateColumn(string.Empty, itemType, false);
 			}
+			else
+			{
+				foreach (PropertyInfo property in itemType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+				{
+					this.CreateColumn(property.Name, property.PropertyType, property.CanWrite);
+				}
+			}
+		}
+
+		private void CreateColumn(string propertyName, Type propertyType, bool writable)
+		{
+			Column column = new Column();
+			column.Binding = new Binding(propertyName);
+			column.Binding.Mode = writable ? BindingMode.TwoWay : BindingMode.OneWay;
+			column.Binding.ValidatesOnExceptions = true;
+			column.Binding.NotifyOnValidationError = true;
+			column.DataType = propertyType;
+			this.Columns.Add(column);
 		}
 
 		private static void OnItemsSourceListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

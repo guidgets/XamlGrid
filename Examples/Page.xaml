@@ -79,6 +79,7 @@
 				<company:Column Binding="{Binding IsSingle, Mode=TwoWay}" Width="*" />
 				<company:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleMaritalStatus}" />
 				<company:Column Binding="{Binding HireDate, Mode=TwoWay}" Width="2*" />
+				<!--<company:Column Binding="{Binding}" Width="Auto" />-->
 			</company:DataGrid.Columns>
 			<!--<company:DataGrid.SortDescriptions>
 				<ComponentModel:SortDescription PropertyName="Age" Direction="Descending" />

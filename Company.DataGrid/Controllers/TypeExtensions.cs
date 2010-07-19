@@ -7,17 +7,23 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public static class TypeExtensions
 	{
+		public static bool IsSimple(this Type type)
+		{
+			Type typeToCheck = Nullable.GetUnderlyingType(type) ?? type;
+			return typeToCheck.IsPrimitive || typeToCheck == typeof(decimal) || typeToCheck == typeof(string);
+		}
+
 		/// <summary>
 		/// Determines whether the <see cref="Type"/> is a numeric type.
 		/// </summary>
-		/// <param name="typeToCheck">The <see cref="Type"/> to check.</param>
+		/// <param name="type">The <see cref="Type"/> to check.</param>
 		/// <returns>
 		/// 	<c>true</c> if the <see cref="Type"/> is a numeric type; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsNumeric(this Type typeToCheck)
+		public static bool IsNumeric(this Type type)
 		{
-			Type nulledType = Nullable.GetUnderlyingType(typeToCheck);
-			TypeCode typeCode = nulledType != null ? Type.GetTypeCode(nulledType) : Type.GetTypeCode(typeToCheck);
+			Type typeToCheck = Nullable.GetUnderlyingType(type) ?? type;
+			TypeCode typeCode = Type.GetTypeCode(typeToCheck);
 			return (TypeCode.Char <= typeCode && typeCode <= TypeCode.Decimal);
 		}
 	}

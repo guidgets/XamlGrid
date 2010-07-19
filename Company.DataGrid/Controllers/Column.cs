@@ -186,6 +186,7 @@ namespace Company.Widgets.Controllers
 					{
 						this.Header = this.binding.Path.Path;
 					}
+					this.IsEditable = this.binding.Mode == BindingMode.TwoWay;
 				}
 			}
 		}

@@ -54,6 +54,7 @@
 
 	<Style TargetType="company:HeaderRow">
 		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>

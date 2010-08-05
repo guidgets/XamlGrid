@@ -43,16 +43,6 @@ namespace Company.Widgets.Views
 	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 	                                                     	 };
 
-		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
-		                                                  {
-		                                                  	  RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-		                                                  };
-
-		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
-	                                                    	{
-	                                                    		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-	                                                    	};
-
 
 		private readonly Binding isSelectedBinding;
 
@@ -180,22 +170,9 @@ namespace Company.Widgets.Views
 				cell.ContentTemplate = contentTemplate;
 			}
 			cell.ClearValue(ContentControl.ContentProperty);
-			Column column = (Column) item;
 
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 
-			if (cell.ReadLocalValue(Cell.DataTypeProperty) == DependencyProperty.UnsetValue)
-			{
-				cell.SetBinding(Cell.DataTypeProperty, dataTypeBinding);
-			}
-			if (cell.ReadLocalValue(StyleProperty) == DependencyProperty.UnsetValue)
-			{
-				cell.Style = column.CellStyle;
-			}
-			if (cell.ReadLocalValue(Cell.IsEditableProperty) == DependencyProperty.UnsetValue)
-			{
-				cell.SetBinding(Cell.IsEditableProperty, isEditableBinding);
-			}
 			cell.ClearValue(DataContextProperty);
 			cell.SetBinding(Cell.ValueProperty, cell.Column.Binding);
 			cell.SetBinding(Cell.IsSelectedProperty, isSelectedBinding);

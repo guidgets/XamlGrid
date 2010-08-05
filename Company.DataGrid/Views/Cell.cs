@@ -67,7 +67,22 @@ namespace Company.Widgets.Views
 		private static readonly Binding dataContextBinding = new Binding("DataContext")
 		                                                     {
 		                                                     	 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-		                                                     };
+															 };
+
+		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
+														  {
+															  RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+														  };
+
+		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
+															{
+																RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+															};
+
+		private static readonly Binding styleBinding = new Binding("Column.CellStyle")
+													   {
+														   RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+													   };
 
 
 		/// <summary>
@@ -78,6 +93,9 @@ namespace Company.Widgets.Views
 			this.DefaultStyleKey = typeof(Cell);
 
 			this.SetBinding(dataContextListenerProperty, dataContextBinding);
+			this.SetBinding(DataTypeProperty, dataTypeBinding);
+			this.SetBinding(IsEditableProperty, isEditableBinding);
+			this.SetBinding(StyleProperty, styleBinding);
 		}
 
 

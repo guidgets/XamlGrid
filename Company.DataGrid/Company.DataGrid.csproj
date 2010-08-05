@@ -98,7 +98,6 @@
     <Compile Include="Models\Export\Font.cs" />
     <Compile Include="Models\ExtendedSortDescription.cs" />
     <Compile Include="Models\SelectedItem.cs" />
-    <Compile Include="Views\ControlExtensions.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
     <Compile Include="Controllers\TypeToAlignmentConverter.cs" />

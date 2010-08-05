@@ -40,6 +40,8 @@ namespace Company.Widgets.Views
 			DefaultStyleKey = typeof(Editor);
 
 			DataGridFacade.Instance.RegisterController(new EditorController(this));
+
+			this.LayoutUpdated += this.Editor_LayoutUpdated;
 		}
 
 
@@ -164,6 +166,13 @@ namespace Company.Widgets.Views
 		public virtual void Cancel()
 		{
 			this.cancelled = true;
+		}
+
+
+		private void Editor_LayoutUpdated(object sender, EventArgs e)
+		{
+			this.Focus();
+			this.LayoutUpdated -= this.Editor_LayoutUpdated;
 		}
 	}
 }

@@ -17,8 +17,8 @@ namespace Company.Widgets.Controllers
 				case Notifications.SORTING_REQUESTED:
 					sortingModel.Sort((ExtendedSortDescription) notification.Body);
 					break;
-				case Notifications.REFRESH_SORTING:
-					sortingModel.RefreshIfSorted((string) notification.Body);
+				case Notifications.ITEM_PROPERTY_CHANGED:
+					sortingModel.RefreshIfSorted((string) ((object[]) notification.Body)[1]);
 					break;
 			}
 		}

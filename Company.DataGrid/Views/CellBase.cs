@@ -13,7 +13,7 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the column to which the <see cref="CellBase"/> belongs.
 		/// </summary>
-		public static readonly DependencyProperty ColumnProperty =
+		private static readonly DependencyProperty columnProperty =
 			DependencyProperty.Register("Column", typeof(Column), typeof(CellBase), new PropertyMetadata(null));
 
 
@@ -34,14 +34,27 @@ namespace Company.Widgets.Views
 		{
 			get
 			{
-				return (Column) this.GetValue(ColumnProperty);
-			}
-			set
-			{
-				this.SetValue(ColumnProperty, value);
+				return (Column) this.GetValue(columnProperty);
 			}
 		}
 
+		/// <summary>
+		/// Called when the value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property changes.
+		/// </summary>
+		/// <param name="oldContent">The old value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+		/// <param name="newContent">The new value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+		protected override void OnContentChanged(object oldContent, object newContent)
+		{
+			base.OnContentChanged(oldContent, newContent);
+			if (this.Column == null)
+			{
+				Column column = newContent as Column;
+				if (column != null)
+				{
+					this.SetValue(columnProperty, column);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.

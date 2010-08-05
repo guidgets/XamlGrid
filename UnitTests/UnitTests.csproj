@@ -1,126 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AA167BD9-6C51-4D72-918F-5F604A890AAC}</ProjectGuid>
+    <ProjectGuid>{8FAE592B-0C89-4FAF-B1CB-8FA3A9310F6E}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UnitTests</RootNamespace>
     <AssemblyName>UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightApplication>false</SilverlightApplication>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>4.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <PublishUrl>http://localhost/UnitTests/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>UnitTests.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>UnitTests.App</SilverlightAppEntry>
+    <TestPageFileName>UnitTestsTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>ClientBin\</OutputPath>
+    <OutputPath>Bin\Debug</OutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>ClientBin\</OutputPath>
+    <OutputPath>Bin\Release</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
-    <Reference Include="System.Windows">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Microsoft.Silverlight.Testing, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
-    <Reference Include="system">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Windows.Browser">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="NUnit.Silverlight.Framework, Version=2010.6.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NUnit.Silverlight.Metadata, Version=2010.6.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MVC\ControllerTest.cs">
-      <SubType>Code</SubType>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVC\ControllerTestCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\FacadeTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\FacadeTestCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\FacadeTestVO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MacroCommandTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MacroCommandTestCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MacroCommandTestSub1Command.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MacroCommandTestSub2Command.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MacroCommandTestVO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MainCommandTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MainCommandTestCommand2.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MainCommandTestVO.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="MVC\ControllerTest.cs" />
+    <Compile Include="MVC\ControllerTestCommand.cs" />
+    <Compile Include="MVC\FacadeTest.cs" />
+    <Compile Include="MVC\FacadeTestCommand.cs" />
+    <Compile Include="MVC\FacadeTestVO.cs" />
+    <Compile Include="MVC\MacroCommandTest.cs" />
+    <Compile Include="MVC\MacroCommandTestCommand.cs" />
+    <Compile Include="MVC\MacroCommandTestSub1Command.cs" />
+    <Compile Include="MVC\MacroCommandTestSub2Command.cs" />
+    <Compile Include="MVC\MacroCommandTestVO.cs" />
+    <Compile Include="MVC\MainCommandTest.cs" />
+    <Compile Include="MVC\MainCommandTestCommand2.cs" />
+    <Compile Include="MVC\MainCommandTestVO.cs" />
     <Compile Include="MVC\MainControllerTest.cs" />
     <Compile Include="MVC\MainControllerTestController.cs" />
     <Compile Include="MVC\MainControllerTestController2.cs" />
@@ -128,79 +95,30 @@
     <Compile Include="MVC\MainControllerTestController4.cs" />
     <Compile Include="MVC\MainControllerTestController5.cs" />
     <Compile Include="MVC\MainControllerTestController6.cs" />
-    <Compile Include="MVC\MainControllerTestNote.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\MainModelTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\ModelTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\NotificationTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\ObserverTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\SimpleCommandTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\SimpleCommandTestCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\SimpleCommandTestVO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MVC\TestModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="MVC\MainControllerTestNote.cs" />
+    <Compile Include="MVC\MainModelTest.cs" />
+    <Compile Include="MVC\ModelTest.cs" />
+    <Compile Include="MVC\NotificationTest.cs" />
+    <Compile Include="MVC\ObserverTest.cs" />
+    <Compile Include="MVC\SimpleCommandTest.cs" />
+    <Compile Include="MVC\SimpleCommandTestCommand.cs" />
+    <Compile Include="MVC\SimpleCommandTestVO.cs" />
+    <Compile Include="MVC\TestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection\RangeTests.cs" />
     <Compile Include="Selection\SelectionModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="References\nunit.framework.dll" />
-    <None Include="References\nunit.framework.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="Properties\AppManifest.xml" />
+    <Content Include="References\Microsoft.Silverlight.Testing.dll" />
+    <Content Include="References\NUnit.Silverlight.Framework.dll" />
+    <Content Include="References\NUnit.Silverlight.Metadata.dll" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Company.DataGrid\Company.DataGrid.csproj">
@@ -208,7 +126,6 @@
       <Name>Company.DataGrid</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -144,9 +144,9 @@ namespace Company.Widgets.Models
 					}
 				}
 			}
-			IEnumerable<SortDescription> sortDescriptions = (from sortDescription in this.SortDescriptions
-															 where sortDescription.PropertyName == propertyName
-															 select sortDescription);
+			IEnumerable<SortDescription> sortDescriptions = from sortDescription in this.SortDescriptions 
+															where sortDescription.PropertyName == propertyName 
+															select sortDescription;
 			bool isUnsorted = !sortDescriptions.Any();
 			if (sortDirection == null && isUnsorted)
 			{

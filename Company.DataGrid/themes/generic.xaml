@@ -8,6 +8,8 @@
     xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     >
 
+	<controllers:NumberToVisibilityConverter x:Key="numberToVisibilityConverter" />
+
 	<Style TargetType="company:DataGrid">
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background">
@@ -35,16 +37,30 @@
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto" />
 								<RowDefinition />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
-							<ScrollViewer Name="headerScroll" IsTabStop="False" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" 
-										  Margin="0,0,18,0" Padding="0" controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=mainScroll}">
-								<company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-							</ScrollViewer>
-							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 
-										  Padding="0" controllers:ScrollExtensions.HorizontalOffset="{Binding HorizontalOffset, ElementName=headerScroll}">
+							<company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
+                                               Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+											   Tag="{Binding ElementName=horizontalScrollBar}" />
+							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" 
+										  HorizontalScrollBarVisibility="Hidden" Padding="0" 
+										  controllers:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
+								<interactivity:Interaction.Behaviors>
+									<controllers:ScrollIntoViewBehavior />
+								</interactivity:Interaction.Behaviors>
 								<ItemsPresenter />
 							</ScrollViewer>
+							<company:FooterRow Grid.Row="2" Margin="0,0,18,0" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}" 
+											   Visibility="{Binding FooterVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+											   DataContext="{Binding Items, RelativeSource={RelativeSource TemplatedParent}}" 
+											   Tag="{Binding ElementName=horizontalScrollBar}" />
+							<ScrollBar Name="horizontalScrollBar" Grid.Row="3" IsTabStop="False" Margin="0,0,18,0" 
+									   DataContext="{Binding ElementName=mainScroll}" 
+									   Visibility="{Binding Maximum, RelativeSource={RelativeSource Self}, 
+															Converter={StaticResource numberToVisibilityConverter}}" 
+                                       Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}" 
+                                       Maximum="{Binding ScrollableWidth}" />
 						</Grid>
 					</Border>
 				</ControlTemplate>
@@ -53,6 +69,7 @@
 	</Style>
 
 	<Style TargetType="company:HeaderRow">
+		<Setter Property="BorderThickness" Value="1,0,0,1" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="ItemsPanel">
@@ -62,12 +79,32 @@
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="company:HeaderRow">
+					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
+									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+									  controllers:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
+																							  RelativeSource={RelativeSource TemplatedParent},
+																							  Mode=TwoWay}">
+							<interactivity:Interaction.Behaviors>
+								<controllers:ScrollIntoViewBehavior />
+							</interactivity:Interaction.Behaviors>
+							<ItemsPresenter />
+						</ScrollViewer>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
 	<controllers:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 
 	<Style TargetType="company:HeaderCell">
+		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background">
 			<Setter.Value>
@@ -142,7 +179,7 @@
 							</ToggleButton>
 							<Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8"
                                    Tag="{Binding Column, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Visibility="{Binding Tag.Resizable, RelativeSource={RelativeSource Self}, 
+                                   Visibility="{Binding Tag.IsResizable, RelativeSource={RelativeSource Self}, 
                                                         Converter={StaticResource booleanToVisibilityConverter}}">
 								<interactivity:Interaction.Behaviors>
 									<controllers:ColumnResizingBehavior />
@@ -248,6 +285,7 @@
 	<controllers:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
 
 	<Style TargetType="company:Cell">
+		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="controllers:StyleBinder.Bindings">
@@ -261,6 +299,13 @@
 					<controllers:StyleBinding Property="Visibility" 
                                               Binding="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 				</controllers:StyleBindingCollection>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="ContentTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<TextBlock Text="{Binding}" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+				</DataTemplate>
 			</Setter.Value>
 		</Setter>
 		<Setter Property="Padding" Value="6,3,6,3" />
@@ -514,6 +559,47 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style TargetType="company:FooterRow">
+		<Setter Property="BorderThickness" Value="1,0,0,1" />
+		<Setter Property="BorderBrush">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="ActiveBorderColor" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Background">
+			<Setter.Value>
+				<SolidColorBrush company:OSBrush.OSColor="WindowColor" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="company:FooterRow">
+					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
+									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+									  controllers:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
+																							  RelativeSource={RelativeSource TemplatedParent},
+																							  Mode=TwoWay}">
+							<interactivity:Interaction.Behaviors>
+								<controllers:ScrollIntoViewBehavior />
+							</interactivity:Interaction.Behaviors>
+							<ItemsPresenter />
+						</ScrollViewer>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>

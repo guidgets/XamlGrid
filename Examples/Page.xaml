@@ -63,6 +63,7 @@
 			<Style x:Key="cellStyleMaritalStatus" TargetType="company:Cell">
 				<Setter Property="Background" Value="Yellow" />
 			</Style>
+			<company:SumAggregate x:Name="sumAggregate" />
 		</Grid.Resources>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -74,7 +75,7 @@
 		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="True" AutoCreateColumns="False">
 			<company:DataGrid.Columns>
 				<company:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
-				<company:Column Binding="{Binding Age, Mode=TwoWay}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
+				<company:Column Binding="{Binding Age, Mode=TwoWay}" FooterBinding="{Binding Converter={StaticResource sumAggregate}}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
 				<company:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Width="3*" IsEditable="True" Header="First Order Name" />
 				<company:Column Binding="{Binding IsSingle, Mode=TwoWay}" Width="*" />
 				<company:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleMaritalStatus}" />

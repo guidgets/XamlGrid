@@ -54,7 +54,6 @@ namespace Company.Widgets.Views
 	                                                    	};
 
 
-		private readonly Binding dataBinding;
 		private readonly Binding isSelectedBinding;
 
 		/// <summary>
@@ -64,7 +63,6 @@ namespace Company.Widgets.Views
 		{
 			this.DefaultStyleKey = typeof(Row);
 
-			this.dataBinding = new Binding { Source = this.DataContext, Mode = BindingMode.OneTime };
 			this.isSelectedBinding = new Binding("IsSelected") { Source = this, Mode = BindingMode.OneWay };
 
 			this.SetBinding(dataContextListenerProperty, dataContextBinding);
@@ -172,10 +170,17 @@ namespace Company.Widgets.Views
 		/// <param name="item">The item to display.</param>
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
-			base.PrepareContainerForItemOverride(element, item);
 			Cell cell = (Cell) element;
+			DataTemplate contentTemplate = cell.ContentTemplate;
+
+			base.PrepareContainerForItemOverride(element, item);
+
+			if (this.ItemTemplate == null)
+			{
+				cell.ContentTemplate = contentTemplate;
+			}
+			cell.ClearValue(ContentControl.ContentProperty);
 			Column column = (Column) item;
-			cell.Column = column;
 
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 
@@ -191,8 +196,8 @@ namespace Company.Widgets.Views
 			{
 				cell.SetBinding(Cell.IsEditableProperty, isEditableBinding);
 			}
-			cell.SetBinding(DataContextProperty, this.dataBinding);
-			cell.SetBinding(Cell.ValueProperty, column.Binding);
+			cell.ClearValue(DataContextProperty);
+			cell.SetBinding(Cell.ValueProperty, cell.Column.Binding);
 			cell.SetBinding(Cell.IsSelectedProperty, isSelectedBinding);
 		}
 
@@ -208,8 +213,6 @@ namespace Company.Widgets.Views
 
 			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
 
-			cell.ClearValue(DataContextProperty);
-			cell.DataContext = null;
 			cell.ClearValue(Cell.IsEditableProperty);
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.DataTypeProperty);

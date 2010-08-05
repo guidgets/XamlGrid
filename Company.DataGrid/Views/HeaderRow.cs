@@ -48,19 +48,6 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Prepares the specified element to display the specified item.
-		/// </summary>
-		/// <param name="element">The element used to display the specified item.</param>
-		/// <param name="item">The item to display.</param>
-		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-		{
-			base.PrepareContainerForItemOverride(element, item);
-			HeaderCell headerCell = (HeaderCell) element;
-			Column column = (Column) item;
-			headerCell.Column = column;
-		}
-
-		/// <summary>
 		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
 		/// </summary>
 		/// <param name="element">The container element.</param>

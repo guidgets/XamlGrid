@@ -156,12 +156,6 @@ namespace Company.Widgets.Controllers
 					this.fromFocusedCell = true;
 					this.DataGrid.CurrentColumn = cell.Column;
 					this.fromFocusedCell = false;
-					IScrollInfo scrollInfo = this.ItemsHost as IScrollInfo;
-					if (scrollInfo != null)
-					{
-						Rect bounds = new Rect(0, 0, cell.RenderSize.Width, cell.RenderSize.Height);
-						scrollInfo.MakeVisible(cell, bounds);
-					}
 					// TODO: this should be replaced by sending a notification because it tightens the coupling
 					cell.IsInEditMode = continuousEditing;
 					break;

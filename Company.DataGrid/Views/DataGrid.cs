@@ -84,7 +84,13 @@ namespace Company.Widgets.Views
 		/// Identifies the dependency property which gets or sets the visibility of the header row of a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty HeaderVisibilityProperty =
-			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(null));
+			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(Visibility.Visible));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the visibility of the footer row of a <see cref="DataGrid"/>.
+		/// </summary>
+		public static readonly DependencyProperty FooterVisibilityProperty =
+			DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(Visibility.Visible));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the current item of a <see cref="DataGrid"/>.
@@ -247,6 +253,22 @@ namespace Company.Widgets.Views
 			set
 			{
 				this.SetValue(HeaderVisibilityProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the visibility of the footer row of the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The visibility of the footer row of the <see cref="DataGrid"/>.</value>
+		public virtual Visibility FooterVisibility
+		{
+			get
+			{
+				return (Visibility) this.GetValue(FooterVisibilityProperty);
+			}
+			set
+			{
+				this.SetValue(FooterVisibilityProperty, value);
 			}
 		}
 

@@ -32,6 +32,14 @@ namespace Company.Widgets.Controllers
 		public static readonly DependencyProperty HeaderProperty =
 			DependencyProperty.Register("Header", typeof(object), typeof(Column), new PropertyMetadata(null));
 
+		public static readonly DependencyProperty DataBindingProperty =
+			DependencyProperty.Register("DataBinding", typeof(Binding), typeof(Column),
+			                            new PropertyMetadata(null, OnBindingChanged));
+
+		public static readonly DependencyProperty FooterDataBindingProperty =
+			DependencyProperty.Register("FooterDataBinding", typeof(Binding), typeof(Column),
+										new PropertyMetadata(null, OnFooterBindingChanged));
+
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
 		/// </summary>		
@@ -82,9 +90,6 @@ namespace Company.Widgets.Controllers
 		/// </summary>
 		public static readonly DependencyProperty CellStyleProperty =
 			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
-
-
-		private Binding binding;
 
 
 		/// <summary>
@@ -171,23 +176,27 @@ namespace Company.Widgets.Controllers
 		/// Gets or sets the binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.
 		/// </summary>
 		/// <value>The binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.</value>
-		public virtual Binding Binding
+		public Binding Binding
 		{
 			get
 			{
-				return this.binding;
+				return (Binding) this.GetValue(DataBindingProperty);
 			}
 			set
 			{
-				if (this.binding != value)
-				{
-					this.binding = value;
-					if (this.ReadLocalValue(HeaderProperty) == DependencyProperty.UnsetValue)
-					{
-						this.Header = this.binding.Path.Path;
-					}
-					this.IsEditable = this.binding.Mode == BindingMode.TwoWay;
-				}
+				this.SetValue(DataBindingProperty, value);
+			}
+		}
+
+		public Binding FooterBinding
+		{
+			get
+			{
+				return (Binding) this.GetValue(FooterDataBindingProperty);
+			}
+			set
+			{
+				this.SetValue(FooterDataBindingProperty, value);
 			}
 		}
 
@@ -269,6 +278,37 @@ namespace Company.Widgets.Controllers
 			this.Width = new ColumnWidth(SizeMode.Auto);
 		}
 
+
+		private static void OnBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Column) d).OnBindingChanged(e);
+		}
+
+		protected virtual void OnBindingChanged(DependencyPropertyChangedEventArgs e)
+		{
+			if (this.Binding == null)
+			{
+				return;
+			}
+			if (this.ReadLocalValue(HeaderProperty) == DependencyProperty.UnsetValue)
+			{
+				this.Header = this.Binding.Path.Path;
+			}
+			this.IsEditable = this.Binding.Mode == BindingMode.TwoWay;
+		}
+
+		private static void OnFooterBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Column) d).OnFooterBindingChanged(e);
+		}
+
+		protected virtual void OnFooterBindingChanged(DependencyPropertyChangedEventArgs e)
+		{
+			if (this.FooterBinding != null && this.FooterBinding.ConverterParameter == null)
+			{
+				this.FooterBinding.ConverterParameter = this.Binding.Path.Path;
+			}
+		}
 
 		private static void OnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{

@@ -23,6 +23,8 @@ namespace Company.Widgets.Views
 		public virtual event DependencyPropertyChangedEventHandler IsInEditModeChanged;
 
 
+		private static readonly Type typeOfObject = typeof(object);
+
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
 		/// </summary>
@@ -39,7 +41,7 @@ namespace Company.Widgets.Views
 		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
 		/// </summary>
 		public static readonly DependencyProperty DataTypeProperty =
-			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeof(object)));
+			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeOfObject));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
@@ -60,7 +62,7 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
 
 		private static readonly DependencyProperty dataContextListenerProperty =
-			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Cell), new PropertyMetadata(OnDataContextListenerChanged));
+			DependencyProperty.Register("dataContextListener", typeOfObject, typeof(Cell), new PropertyMetadata(OnDataContextListenerChanged));
 
 		private static readonly Binding dataContextBinding = new Binding("DataContext")
 		                                                     {
@@ -110,7 +112,6 @@ namespace Company.Widgets.Views
 				this.SetValue(HasFocusProperty, value);
 			}
 		}
-
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable.
@@ -248,13 +249,15 @@ namespace Company.Widgets.Views
 
 		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
 		{
-			if (this.Value != null && this.DataType == DataTypeProperty.GetMetadata(typeof(Cell)).DefaultValue)
+			if (this.Value != null && this.Column.DataType == typeOfObject && this.DataType == typeOfObject)
 			{
-				this.DataType = this.Value.GetType();
+				this.Column.DataType = this.Value.GetType();
 			}
 			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
-			this.Content = this.Value;
-			this.GoToSpecialView();
+			if (!this.GoToSpecialView())
+			{
+				this.Content = this.Value;
+			}
 		}
 
 		private static void OnHasFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

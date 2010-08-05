@@ -12,21 +12,6 @@ namespace Company.Widgets.Models.Export
 	/// </summary>
 	public abstract class Exporter
 	{
-		private class ValueGetter : FrameworkElement
-		{
-			public object Value
-			{
-				get
-				{
-					return this.GetValue(ValueProperty);
-				}
-			}
-
-			public static readonly DependencyProperty ValueProperty =
-				DependencyProperty.Register("Value", typeof(object), typeof(ValueGetter), new PropertyMetadata(null));
-		}
-
-
 		private ExportOptions options;
 
 
@@ -131,7 +116,6 @@ namespace Company.Widgets.Models.Export
 				}
 				backups.Add(column, backup);
 			}
-			ValueGetter valueGetter = new ValueGetter();
 			foreach (object item in items)
 			{
 				List<CellInfo> rowInfo = new List<CellInfo>(visibleColumnsCount);
@@ -149,15 +133,11 @@ namespace Company.Widgets.Models.Export
 							cellInfo = new CellInfo(null, cell.Background, cell.BorderBrush, font);
 						}
 					}
-					valueGetter.DataContext = item;
-					valueGetter.SetBinding(ValueGetter.ValueProperty, column.Binding);
-					cellInfo.Value = valueGetter.Value;
-					valueGetter.ClearValue(ValueGetter.ValueProperty);
+					cellInfo.Value = DataBinder.GetValue(item, column.Binding.Path.Path);
 					rowInfo.Add(cellInfo);
 				}
 				dataToExport.Add(rowInfo);
 			}
-			valueGetter.DataContext = null;
 			return dataToExport;
 		}
 	}

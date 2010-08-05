@@ -83,7 +83,12 @@
     <Compile Include="Controllers\CellController.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
+    <Compile Include="Controllers\DataBinder.cs" />
     <Compile Include="Controllers\EditorController.cs" />
+    <Compile Include="Controllers\FooterCellController.cs" />
+    <Compile Include="Controllers\NumberToVisibilityConverter.cs" />
+    <Compile Include="Controllers\ScrollIntoViewBehavior.cs" />
+    <Compile Include="Controllers\SumAggregate.cs" />
     <Compile Include="Models\Export\ClipboardExporter.cs" />
     <Compile Include="Models\Export\Exporter.cs" />
     <Compile Include="Controllers\KeyHelper.cs" />
@@ -110,6 +115,7 @@
     <Compile Include="Controllers\StyleBinding.cs" />
     <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
+    <Compile Include="Views\FooterRow.cs" />
     <Compile Include="Views\ItemsControlExtensions.cs" />
     <Compile Include="Views\Editor.cs" />
     <Compile Include="Views\DependencyObjectExtensions.cs" />

@@ -16,7 +16,7 @@
 		public const int COLUMNS_CHANGED = 11;
 		public const int DATA_WRAPPED = 12;
 		public const int DATA_WRAPPING_REQUESTED = 13;
-		public const int REFRESH_SORTING = 14;
+		public const int ITEM_PROPERTY_CHANGED = 14;
 		public const int SORTED = 15;
 		public const int SORTING_REQUESTED = 16;
 		public const int HEADER_ROW_LOADED = 17;

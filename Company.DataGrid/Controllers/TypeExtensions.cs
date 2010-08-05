@@ -7,6 +7,14 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public static class TypeExtensions
 	{
+		/// <summary>
+		/// Determines whether the specified type is simple, that is, it is not built upon other types.
+		/// These are the numeric types (including <see cref="char"/>) and <see cref="string"/>.
+		/// </summary>
+		/// <param name="type">The <see cref="Type"/> to check.</param>
+		/// <returns>
+		/// 	<c>true</c> if the specified <see cref="Type"/> is simple; otherwise, <c>false</c>.
+		/// </returns>
 		public static bool IsSimple(this Type type)
 		{
 			Type typeToCheck = Nullable.GetUnderlyingType(type) ?? type;

@@ -56,7 +56,7 @@ namespace Company.Widgets
 
 			this.RegisterCommand(Notifications.SORTING_REQUESTED, typeof(SortingCommand));
 			this.RegisterCommand(Notifications.SORTED, typeof(SortingCommand));
-			this.RegisterCommand(Notifications.REFRESH_SORTING, typeof(SortingCommand));
+			this.RegisterCommand(Notifications.ITEM_PROPERTY_CHANGED, typeof(SortingCommand));
 
 			this.RegisterCommand(Notifications.CURRENT_ITEM_CHANGING, typeof(CurrentItemCommand));
 			this.RegisterCommand(Notifications.CURRENT_ITEM_UP, typeof(CurrentItemCommand));

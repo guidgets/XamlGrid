@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows.Controls;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace Company.Widgets.Models
 {

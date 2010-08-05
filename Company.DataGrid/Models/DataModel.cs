@@ -24,7 +24,7 @@ namespace Company.Widgets.Models
 
 		private void ObservableItemCollection_ItemPropertyChanged(object sender, ItemPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.REFRESH_SORTING, e.PropertyPath);
+			this.SendNotification(Notifications.ITEM_PROPERTY_CHANGED, new[] { e.Item, e.PropertyPath });
 		}
 
 		public virtual ICollectionView Create(IEnumerable enumerable)

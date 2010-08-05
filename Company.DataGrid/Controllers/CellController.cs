@@ -166,6 +166,7 @@ namespace Company.Widgets.Controllers
 				case Key.Left:
 				case Key.Right:
 					this.FocusHorizontalNeighbor(e.Key == Key.Right);
+					e.Handled = true;
 					break;
 			}
 		}

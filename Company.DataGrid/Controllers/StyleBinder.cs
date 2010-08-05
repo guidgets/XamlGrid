@@ -1,10 +1,13 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 
 namespace Company.Widgets.Controllers
 {
 	public static class StyleBinder
 	{
+		private static readonly Dictionary<string, DependencyProperty> dependencyProperties = new Dictionary<string, DependencyProperty>();
+
 		/// <summary>
 		/// Binding Attached Dependency Property
 		/// </summary>
@@ -43,16 +46,20 @@ namespace Company.Widgets.Controllers
 			StyleBindingCollection styleBindings = (StyleBindingCollection) e.NewValue;
 			foreach (StyleBinding styleBinding in styleBindings)
 			{
-				string depPropName = styleBinding.Property + "Property";
-				FieldInfo dependencyPropertyField = frameworkElement.GetType().GetField(depPropName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-				if (dependencyPropertyField != null)
+				DependencyProperty dependencyProperty;
+				if (dependencyProperties.ContainsKey(styleBinding.Property))
 				{
-					DependencyProperty dependencyProperty = dependencyPropertyField.GetValue(null) as DependencyProperty;
-					if (dependencyProperty != null)
-					{
-						frameworkElement.SetBinding(dependencyProperty, styleBinding.Binding);
-					}
+					dependencyProperty = dependencyProperties[styleBinding.Property];
 				}
+				else
+				{
+					string dependencyPropertyName = styleBinding.Property + "Property";
+					const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+					FieldInfo dependencyPropertyField = frameworkElement.GetType().GetField(dependencyPropertyName, bindingFlags);
+					dependencyProperty = (DependencyProperty) dependencyPropertyField.GetValue(null);
+					dependencyProperties.Add(styleBinding.Property, dependencyProperty);
+				}
+				frameworkElement.SetBinding(dependencyProperty, styleBinding.Binding);
 			}
 		}
 	}

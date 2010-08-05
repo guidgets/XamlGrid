@@ -25,19 +25,17 @@ namespace Company.Widgets.Controllers
 
 		private void AssociatedObject_GotFocus(object sender, RoutedEventArgs e)
 		{
-			UIElement focusedElement = FocusManager.GetFocusedElement() as UIElement;
+			UIElement focusedElement = e.OriginalSource as UIElement;
 			if (focusedElement == null)
 			{
 				return;
 			}
-			IScrollInfo scrollInfo = this.AssociatedObject.Content as IScrollInfo;
-			if (scrollInfo == null)
+			IScrollInfo scrollInfo = null;
+			ItemsPresenter itemsPresenter = this.AssociatedObject.Content as ItemsPresenter;
+			if (itemsPresenter != null)
 			{
-				ItemsPresenter itemsPresenter = this.AssociatedObject.Content as ItemsPresenter;
-				if (itemsPresenter != null)
-				{
-					scrollInfo = VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo;
-				}
+				scrollInfo = VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo ??
+				             this.AssociatedObject.Content as IScrollInfo;
 			}
 			if (scrollInfo == null)
 			{

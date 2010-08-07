@@ -41,7 +41,7 @@
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
-							<company:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
+							<company:HeaderRow Margin="0,0,18,0" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
                                                Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
 											   Tag="{Binding ElementName=horizontalScrollBar}" />
 							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" 
@@ -61,7 +61,7 @@
 									   Visibility="{Binding Maximum, RelativeSource={RelativeSource Self}, 
 															Converter={StaticResource numberToVisibilityConverter}}" 
                                        Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}" 
-                                       Maximum="{Binding ScrollableWidth}" />
+                                       Maximum="{Binding ScrollableWidth}" Value="{Binding HorizontalOffset, Mode=TwoWay}" />
 						</Grid>
 					</Border>
 				</ControlTemplate>

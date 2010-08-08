@@ -39,7 +39,7 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Called when the value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property changes.
+		/// Called when the value of the <see cref="ContentControl.Content"/> property changes.
 		/// </summary>
 		/// <param name="oldContent">The old value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
 		/// <param name="newContent">The new value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>

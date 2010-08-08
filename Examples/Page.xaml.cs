@@ -58,8 +58,9 @@ namespace Examples
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-			//this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
-			((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });
+			//this.dataGrid.Columns[0].CellStyle = null;
+			////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
+			//((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });
         	//this.dataGrid.DataSource = new[] { "Ivan1", "Ivan2", "Ivan3", "Ivan4" };
         	//((ObservableCollection<Customer>) this.dataGrid.DataSource).RemoveAt(3);
         	//this.dataGrid.Columns[1].Visibility = this.dataGrid.Columns[1].Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;

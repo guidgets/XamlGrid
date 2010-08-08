@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Company.Widgets.Models;
@@ -13,10 +14,6 @@ namespace Company.Widgets.Views
 	/// </summary>
 	public class Cell : CellBase
 	{
-		/// <summary>
-		/// Occurs when the data context of the <see cref="Cell"/> is changed.
-		/// </summary>
-		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
 		/// <summary>
 		/// Occurs when the edit mode of this <see cref="Cell"/> is changed.
 		/// </summary>
@@ -66,11 +63,6 @@ namespace Company.Widgets.Views
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
 
-		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
-														  {
-															  RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-														  };
-
 		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
 															{
 																RelativeSource = new RelativeSource(RelativeSourceMode.Self)
@@ -89,7 +81,6 @@ namespace Company.Widgets.Views
 		{
 			this.DefaultStyleKey = typeof(Cell);
 
-			this.SetBinding(DataTypeProperty, dataTypeBinding);
 			this.SetBinding(IsEditableProperty, isEditableBinding);
 			this.SetBinding(StyleProperty, styleBinding);
 		}
@@ -246,6 +237,17 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
+		/// Called when the value of the <see cref="ContentControl.Content"/> property changes.
+		/// </summary>
+		/// <param name="oldContent">The old value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+		/// <param name="newContent">The new value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+		protected override void OnContentChanged(object oldContent, object newContent)
+		{
+			base.OnContentChanged(oldContent, newContent);
+			this.DataType = this.Column.DataType;
+		}
+
+		/// <summary>
 		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.
 		/// </summary>
 		/// <returns>
@@ -265,7 +267,7 @@ namespace Company.Widgets.Views
 		{
 			if (this.Value != null && this.Column.DataType == typeOfObject && this.DataType == typeOfObject)
 			{
-				this.Column.DataType = this.Value.GetType();
+				this.DataType = this.Column.DataType = this.Value.GetType();
 			}
 			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
 			if (!this.GoToSpecialView())
@@ -284,20 +286,6 @@ namespace Company.Widgets.Views
 			if ((bool) e.NewValue)
 			{
 				this.Focus();
-			}
-		}
-
-		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Cell) d).OnDataContextChanged(e);
-		}
-
-		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
-		{
-			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
-			if (handler != null)
-			{
-				handler(this, e);
 			}
 		}
 

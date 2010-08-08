@@ -24,6 +24,11 @@ namespace Company.Widgets.Views
 
 
 		private static readonly Type typeOfObject = typeof(object);
+		private static readonly Type typeOfBoolean = typeof(bool);
+		private static readonly Type typeOfNullableBoolean = typeof(bool?);
+		private static readonly Type typeOfByteArray = typeof(byte[]);
+		private static readonly Type typeOfUri = typeof(Uri);
+
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
@@ -373,11 +378,11 @@ namespace Company.Widgets.Views
 
 		private bool GoToBoolean()
 		{
-			if (this.DataType == typeof(bool))
+			if (this.DataType == typeOfBoolean)
 			{
 				return VisualStateManager.GoToState(this, "Boolean", false);
 			}
-			if (this.DataType == typeof(bool?))
+			if (this.DataType == typeOfNullableBoolean)
 			{
 				return VisualStateManager.GoToState(this, "NullableBoolean", false);
 			}
@@ -386,11 +391,11 @@ namespace Company.Widgets.Views
 
 		private bool GoToImage()
 		{
-			if (this.DataType == typeof(byte[]))
+			if (this.DataType == typeOfByteArray)
 			{
 				return VisualStateManager.GoToState(this, "Image", false);
 			}
-			if (this.DataType == typeof(Uri) && this.Value != null)
+			if (this.DataType == typeOfUri && this.Value != null)
 			{
 				string uri = this.Value.ToString();
 				if ((from imageExtension in new[] { ".png", ".jpg", ".jpeg" }

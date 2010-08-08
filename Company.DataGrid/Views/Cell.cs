@@ -66,14 +66,6 @@ namespace Company.Widgets.Views
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
 
-		private static readonly DependencyProperty dataContextListenerProperty =
-			DependencyProperty.Register("dataContextListener", typeOfObject, typeof(Cell), new PropertyMetadata(OnDataContextListenerChanged));
-
-		private static readonly Binding dataContextBinding = new Binding("DataContext")
-		                                                     {
-		                                                     	 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-															 };
-
 		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
 														  {
 															  RelativeSource = new RelativeSource(RelativeSourceMode.Self)
@@ -97,7 +89,6 @@ namespace Company.Widgets.Views
 		{
 			this.DefaultStyleKey = typeof(Cell);
 
-			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 			this.SetBinding(DataTypeProperty, dataTypeBinding);
 			this.SetBinding(IsEditableProperty, isEditableBinding);
 			this.SetBinding(StyleProperty, styleBinding);

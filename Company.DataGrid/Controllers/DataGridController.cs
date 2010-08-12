@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using Company.Widgets.Core;
@@ -71,6 +70,7 @@ namespace Company.Widgets.Controllers
 			base.OnRegister();
 
 			this.DataGrid.Loaded += this.DataGrid_Loaded;
+			this.DataGrid.GotFocus += DataGrid_GotFocus;
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
@@ -89,6 +89,7 @@ namespace Company.Widgets.Controllers
 			base.OnRemove();
 
 			this.DataGrid.Loaded -= this.DataGrid_Loaded;
+			this.DataGrid.GotFocus -= this.DataGrid_GotFocus;
 			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
@@ -135,7 +136,10 @@ namespace Company.Widgets.Controllers
 					break;
 				case Notifications.CURRENT_ITEM_CHANGED:
 					this.DataGrid.CurrentItem = notification.Body;
-					this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
+					if (this.DataGrid.HasFocus())
+					{
+						this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });						
+					}
 					break;
 				case Notifications.SELECTION_MODE_CHANGED:
 					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
@@ -184,6 +188,14 @@ namespace Company.Widgets.Controllers
 			                           };
 		}
 
+		private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
+		{
+			if (e.OriginalSource == this.DataGrid)
+			{
+				this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
+			}
+		}
+
 		private void DataGrid_LayoutUpdated(object sender, EventArgs e)
 		{
 			Column columnToFocus = this.DataGrid.CurrentColumn ?? this.DataGrid.Columns.FirstOrDefault();
@@ -221,7 +233,7 @@ namespace Company.Widgets.Controllers
 
 		private void DataGrid_CurrentColumnChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (this.DataGrid.CurrentColumn != null && !this.fromFocusedCell)
+			if (this.DataGrid.CurrentColumn != null && !this.fromFocusedCell && this.DataGrid.HasFocus())
 			{
 				this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
 			}

@@ -92,6 +92,7 @@
 		<Setter Property="BorderThickness" Value="1,0,0,1" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="MinHeight" Value="22" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -218,6 +219,7 @@
 		<Setter Property="BorderThickness" Value="0,0,0,1" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
@@ -536,6 +538,7 @@
 		<Setter Property="BorderThickness" Value="1,0,0,1" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>

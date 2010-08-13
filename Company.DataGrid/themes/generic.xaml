@@ -440,7 +440,7 @@
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
 														<TextBox Text="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                 SelectionLength="1000000000" />
+                                                                 SelectionLength="{Binding Text.Length, RelativeSource={RelativeSource Self}, Mode=OneTime}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>

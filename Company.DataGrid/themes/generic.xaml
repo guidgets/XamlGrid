@@ -297,7 +297,7 @@
 		<Setter Property="ContentTemplate">
 			<Setter.Value>
 				<DataTemplate>
-					<TextBlock Text="{Binding}" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+					<TextBlock Text="{Binding}" TextTrimming="WordEllipsis" />
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>

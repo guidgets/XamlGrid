@@ -342,7 +342,7 @@ namespace Company.Widgets.Controllers
 				                                            where column.Visibility == Visibility.Visible &&
 				                                                  column != firstColumn
 				                                            select column.ActualWidth).Sum();
-				firstColumn.ActualWidth = Math.Max(width - 1, 1);
+				firstColumn.ActualWidth = Math.Max(width, 1);
 			}
 		}
 

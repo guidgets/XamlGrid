@@ -52,7 +52,7 @@
 								<TextBlock Grid.Column="1" Width="18" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 							</Grid>
 							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto"
-										  HorizontalScrollBarVisibility="Hidden" Padding="0"
+										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{StaticResource activeBorderColor}" 
 										  controllers:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
 								<interactivity:Interaction.Behaviors>
 									<controllers:ScrollIntoViewBehavior />
@@ -89,7 +89,8 @@
 	</Style>
 
 	<Style TargetType="company:HeaderRow">
-		<Setter Property="BorderThickness" Value="1,0,0,1" />
+		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
+		<Setter Property="BorderThickness" Value="1,1,1,0" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
@@ -535,7 +536,7 @@
 	</Style>
 	
 	<Style TargetType="company:FooterRow">
-		<Setter Property="BorderThickness" Value="1,0,0,1" />
+		<Setter Property="BorderThickness" Value="1,0,1,1" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
 		<Setter Property="HorizontalAlignment" Value="Left" />

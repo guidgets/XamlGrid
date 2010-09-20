@@ -86,6 +86,7 @@
     <Compile Include="Controllers\DataBinder.cs" />
     <Compile Include="Controllers\EditorController.cs" />
     <Compile Include="Controllers\FooterCellController.cs" />
+    <Compile Include="Controllers\NewItemCommand.cs" />
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />
     <Compile Include="Controllers\ScrollIntoViewBehavior.cs" />
     <Compile Include="Controllers\SumAggregate.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Models\Export\ExportOptions.cs" />
     <Compile Include="Models\Export\Font.cs" />
     <Compile Include="Models\ExtendedSortDescription.cs" />
+    <Compile Include="Models\NewItemModel.cs" />
     <Compile Include="Models\SelectedItem.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />

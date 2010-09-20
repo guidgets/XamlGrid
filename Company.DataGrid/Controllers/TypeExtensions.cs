@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Company.Widgets.Controllers
 {
@@ -33,6 +35,30 @@ namespace Company.Widgets.Controllers
 			Type typeToCheck = Nullable.GetUnderlyingType(type) ?? type;
 			TypeCode typeCode = Type.GetTypeCode(typeToCheck);
 			return (TypeCode.Char <= typeCode && typeCode <= TypeCode.Decimal);
+		}
+
+		/// <summary>
+		/// Gets the type of the elements (assuming all elements have the same type) of the specified <see cref="IEnumerable"/>.
+		/// </summary>
+		/// <param name="enumerable">The <see cref="IEnumerable"/> to get the element type of.</param>
+		/// <returns>The type in the generic placeholder of the specified <see cref="IEnumerable"/> if the latter is generic;
+		/// otherwise, the type of the first non-<c>null</c> element, if any.</returns>
+		public static Type GetElementType(this IEnumerable enumerable)
+		{
+			Type @interface = enumerable.GetType().GetInterface(typeof(IEnumerable<>).FullName, false);
+			if (@interface != null)
+			{
+				return @interface.GetGenericArguments()[0];
+			}
+			IEnumerator enumerator = enumerable.GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				if (enumerator.Current != null)
+				{
+					return enumerator.Current.GetType();
+				}
+			}
+			return typeof(object);
 		}
 	}
 }

@@ -216,6 +216,10 @@ namespace Company.Widgets.Controllers
 		{
 			if (e.NewValue == null || e.NewValue is IEnumerable)
 			{
+				if (e.NewValue != null)
+				{
+					this.DataGrid.ItemType = ((IEnumerable) e.NewValue).GetElementType();
+				}
 				this.SendNotification(Notifications.DATA_WRAPPING_REQUESTED, e.NewValue);
 			}
 		}

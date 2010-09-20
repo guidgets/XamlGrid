@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +25,10 @@ namespace Company.Widgets.Views
 		/// Occurs when the current item of the <see cref="DataGrid"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler CurrentItemChanged;
+		/// <summary>
+		/// Occurs when the current column of the <see cref="DataGrid"/> is changed.
+		/// </summary>
+		public virtual event DependencyPropertyChangedEventHandler CurrentColumnChanged;
 		/// <summary>
 		/// Occurs when the data source of the <see cref="DataGrid"/> is changed.
 		/// </summary>
@@ -57,6 +60,12 @@ namespace Company.Widgets.Views
 		/// </summary>
 		public static readonly DependencyProperty DataSourceProperty =
 			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the type of the items contained in the <see cref="DataGrid"/>.
+		/// </summary>
+		public static readonly DependencyProperty ItemTypeProperty =
+			DependencyProperty.Register("ItemType", typeof(Type), typeof(DataGrid), new PropertyMetadata(typeof(object)));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
@@ -181,6 +190,22 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
+		/// Gets or sets the type of the items contained in the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The type of the items contained in the <see cref="DataGrid"/>.</value>
+		public Type ItemType
+		{
+			get
+			{
+				return (Type) this.GetValue(ItemTypeProperty);
+			}
+			set
+			{
+				this.SetValue(ItemTypeProperty, value);
+			}
+		}
+
+		/// <summary>
 		/// Gets the <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.
 		/// </summary>
 		/// <value>The <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.</value>
@@ -301,7 +326,7 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Gets or sets the current column, i.e. the columns of the focused cell, of the <see cref="DataGrid"/>.
+		/// Gets or sets the current column, i.e. the column of the focused cell, of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The current column.</value>
 		public Column CurrentColumn
@@ -316,21 +341,6 @@ namespace Company.Widgets.Views
 			}
 		}
 
-		private static void OnCurrentColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((DataGrid) d).OnCurrentColumnChanged(e);
-		}
-
-		private void OnCurrentColumnChanged(DependencyPropertyChangedEventArgs e)
-		{
-			DependencyPropertyChangedEventHandler handler = CurrentColumnChanged;
-			if (handler != null)
-			{
-				handler(this, e);
-			}
-		}
-
-		public virtual event DependencyPropertyChangedEventHandler CurrentColumnChanged;
 
 		/// <summary>
 		/// Gets the list of items which are currently selected in the <see cref="DataGrid"/>.
@@ -452,26 +462,18 @@ namespace Company.Widgets.Views
 			{
 				return;
 			}
-			object firstItem = (from object item in this.ItemsSource 
-								where item != null 
-								select item).FirstOrDefault();
-			if (firstItem == null)
-			{
-				return;
-			}
 			if (this.otherColumns.Count == 0 && this.Columns.Count > 0)
 			{
 				this.otherColumns.AddRange(this.Columns);
 			}
 			this.Columns.Clear();
-			Type itemType = firstItem.GetType();
-			if (itemType.IsSimple())
+			if (this.ItemType.IsSimple())
 			{
-				this.CreateColumn(string.Empty, itemType, false);
+				this.CreateColumn(string.Empty, this.ItemType, false);
 			}
 			else
 			{
-				foreach (PropertyInfo property in itemType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+				foreach (PropertyInfo property in this.ItemType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
 				{
 					this.CreateColumn(property.Name, property.PropertyType, property.CanWrite);
 				}
@@ -543,6 +545,20 @@ namespace Company.Widgets.Views
 		protected virtual void OnCurrentItemChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.CurrentItemChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		private static void OnCurrentColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataGrid) d).OnCurrentColumnChanged(e);
+		}
+
+		private void OnCurrentColumnChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = CurrentColumnChanged;
 			if (handler != null)
 			{
 				handler(this, e);

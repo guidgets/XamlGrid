@@ -14,7 +14,7 @@ namespace Company.Widgets.Controllers
 			DataModel dataModel;
 			switch (notification.Code)
 			{
-				case Notifications.DATA_WRAPPING_REQUESTED:
+				case Notifications.DATA_SOURCE_CHANGED:
 					dataModel = (DataModel) DataGridFacade.Instance.RetrieveModel(DataModel.NAME);
 					dataModel.Create((IEnumerable) notification.Body);
 					break;

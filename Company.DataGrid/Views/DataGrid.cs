@@ -33,6 +33,10 @@ namespace Company.Widgets.Views
 		/// Occurs when the data source of the <see cref="DataGrid"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler DataSourceChanged;
+		/// <summary>
+		/// Occurs when the type of the items contained in the <see cref="DataGrid"/> is changed.
+		/// </summary>
+		public virtual event DependencyPropertyChangedEventHandler ItemTypeChanged;
 
 		/// <summary>
 		/// Occurs when the source of items for the <see cref="DataGrid"/> is changed.
@@ -65,7 +69,7 @@ namespace Company.Widgets.Views
 		/// Identifies the dependency property which gets or sets the type of the items contained in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty ItemTypeProperty =
-			DependencyProperty.Register("ItemType", typeof(Type), typeof(DataGrid), new PropertyMetadata(typeof(object)));
+			DependencyProperty.Register("ItemType", typeof(Type), typeof(DataGrid), new PropertyMetadata(typeof(object), OnItemTypeChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
@@ -496,6 +500,10 @@ namespace Company.Widgets.Views
 			((DataGrid) d).OnItemsSourceChanged(e);
 		}
 
+		/// <summary>
+		/// Raises the <see cref="ItemsSourceChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.itemsSourceChanged;
@@ -510,9 +518,31 @@ namespace Company.Widgets.Views
 			((DataGrid) d).OnDataSourceChanged(e);
 		}
 
+		/// <summary>
+		/// Raises the <see cref="DataSourceChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnDataSourceChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.DataSourceChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		private static void OnItemTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataGrid) d).OnItemTypeChanged(e);
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ItemTypeChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+		protected virtual void OnItemTypeChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.ItemTypeChanged;
 			if (handler != null)
 			{
 				handler(this, e);
@@ -542,6 +572,10 @@ namespace Company.Widgets.Views
 			((DataGrid) d).OnCurrentItemChanged(e);
 		}
 
+		/// <summary>
+		/// Raises the <see cref="CurrentItemChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnCurrentItemChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.CurrentItemChanged;
@@ -570,6 +604,10 @@ namespace Company.Widgets.Views
 			((DataGrid) d).OnSelectionModeChanged(e);
 		}
 
+		/// <summary>
+		/// Raises the <see cref="SelectionModeChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnSelectionModeChanged(DependencyPropertyChangedEventArgs e)
 		{
 			DependencyPropertyChangedEventHandler handler = this.SelectionModeChanged;

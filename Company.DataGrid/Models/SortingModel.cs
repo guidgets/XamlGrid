@@ -11,7 +11,7 @@ namespace Company.Widgets.Models
 	/// </summary>
 	public class SortingModel : Model
 	{
-		public new const string NAME = "sortingModel";
+		public static readonly string NAME = typeof(SortingModel).Name;
 
 		private bool notificationsSuspended;
 		private ICollectionView collectionView;

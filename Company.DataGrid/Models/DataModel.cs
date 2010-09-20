@@ -10,7 +10,7 @@ namespace Company.Widgets.Models
 {
 	public class DataModel : Model
 	{
-		public new const string NAME = "dataModel";
+		public static readonly string NAME = typeof(DataModel).Name;
 
 		private readonly ObservableItemCollection<object> observableItemCollection;
 		private ICollectionView collectionView;
@@ -51,8 +51,8 @@ namespace Company.Widgets.Models
 			return this.collectionView;
 		}
 
-		public virtual void UpdatePropertyPaths(NotifyCollectionChangedAction action, IEnumerable<string> oldPropertyPaths, 
-										IEnumerable<string> newPropertyPaths)
+		public virtual void UpdatePropertyPaths(NotifyCollectionChangedAction action, IEnumerable<string> oldPropertyPaths,
+												IEnumerable<string> newPropertyPaths)
 		{
 			switch (action)
 			{

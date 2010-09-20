@@ -73,6 +73,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.GotFocus += DataGrid_GotFocus;
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
+			this.DataGrid.ItemTypeChanged += this.DataGrid_ItemTypeChanged;
 			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.CurrentColumnChanged += this.DataGrid_CurrentColumnChanged;
@@ -92,6 +93,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.GotFocus -= this.DataGrid_GotFocus;
 			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
+			this.DataGrid.ItemTypeChanged -= this.DataGrid_ItemTypeChanged;
 			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
 			this.DataGrid.CurrentColumnChanged -= this.DataGrid_CurrentColumnChanged;
@@ -220,8 +222,13 @@ namespace Company.Widgets.Controllers
 				{
 					this.DataGrid.ItemType = ((IEnumerable) e.NewValue).GetElementType();
 				}
-				this.SendNotification(Notifications.DATA_WRAPPING_REQUESTED, e.NewValue);
+				this.SendNotification(Notifications.DATA_SOURCE_CHANGED, e.NewValue);
 			}
+		}
+
+		private void DataGrid_ItemTypeChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.SendNotification(Notifications.ITEM_TYPE_CHANGED, this.DataGrid.ItemType);
 		}
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)

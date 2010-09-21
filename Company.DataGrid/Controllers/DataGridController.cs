@@ -218,10 +218,6 @@ namespace Company.Widgets.Controllers
 		{
 			if (e.NewValue == null || e.NewValue is IEnumerable)
 			{
-				if (e.NewValue != null)
-				{
-					this.DataGrid.ItemType = ((IEnumerable) e.NewValue).GetElementType();
-				}
 				this.SendNotification(Notifications.DATA_SOURCE_CHANGED, e.NewValue);
 			}
 		}
@@ -235,6 +231,10 @@ namespace Company.Widgets.Controllers
 		{
 			this.SendNotification(Notifications.ITEMS_SOURCE_CHANGED, this.DataGrid.ItemsSource);
 			this.SendNotification(Notifications.ITEMS_CHANGED, this.DataGrid.Items);
+			if (this.DataGrid.ItemsSource != null)
+			{
+				this.DataGrid.ItemType = this.DataGrid.ItemsSource.GetElementType();				
+			}
 		}
 
 		private void DataGrid_CurrentItemChanged(object sender, DependencyPropertyChangedEventArgs e)

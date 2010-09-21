@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Company.Widgets.Controllers
 {
@@ -45,7 +46,17 @@ namespace Company.Widgets.Controllers
 		/// otherwise, the type of the first non-<c>null</c> element, if any.</returns>
 		public static Type GetElementType(this IEnumerable enumerable)
 		{
-			Type @interface = enumerable.GetType().GetInterface(typeof(IEnumerable<>).FullName, false);
+			Type enumerableType = null;
+			ICollectionView collectionView = enumerable as ICollectionView;
+			if (collectionView != null && collectionView.SourceCollection != null)
+			{
+				enumerableType = collectionView.SourceCollection.GetType();
+			}
+			if (enumerableType == null)
+			{
+				enumerableType = enumerable.GetType();
+			}
+			Type @interface = enumerableType.GetInterface(typeof(IEnumerable<>).FullName, false);
 			if (@interface != null)
 			{
 				return @interface.GetGenericArguments()[0];

@@ -27,9 +27,8 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
-		/// Gets or sets the column to which the <see cref="CellBase"/> belongs.
+		/// Gets the column to which the <see cref="CellBase"/> belongs.
 		/// </summary>
-		/// <value>The column to which the <see cref="CellBase"/> belongs.</value>
 		public virtual Column Column
 		{
 			get

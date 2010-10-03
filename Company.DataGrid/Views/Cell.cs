@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Company.Widgets.Models;
@@ -14,6 +13,10 @@ namespace Company.Widgets.Views
 	/// </summary>
 	public class Cell : CellBase
 	{
+		/// <summary>
+		/// Occurs when the data context of the <see cref="Cell"/> is changed.
+		/// </summary>
+		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
 		/// <summary>
 		/// Occurs when the edit mode of this <see cref="Cell"/> is changed.
 		/// </summary>
@@ -40,12 +43,6 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("HasFocus", typeof(bool), typeof(Cell), new PropertyMetadata(OnHasFocusChanged));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
-		/// </summary>
-		public static readonly DependencyProperty DataTypeProperty =
-			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeOfObject));
-
-		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
@@ -63,6 +60,20 @@ namespace Company.Widgets.Views
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
 
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
+		/// </summary>
+		private static readonly DependencyProperty dataTypeProperty =
+			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeOfObject));
+
+		private static readonly DependencyProperty dataContextListenerProperty =
+			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Cell), new PropertyMetadata(OnDataContextListenerChanged));
+
+		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
+		                                                  {
+		                                                  		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                  };
+
 		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
 															{
 																RelativeSource = new RelativeSource(RelativeSourceMode.Self)
@@ -73,6 +84,11 @@ namespace Company.Widgets.Views
 														   RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 													   };
 
+		private static readonly Binding dataContextBinding = new Binding("DataContext")
+		                                                     {
+																RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                     };
+
 
 		/// <summary>
 		/// Represents an element that displays and manipulates a piece of a data object.
@@ -81,8 +97,11 @@ namespace Company.Widgets.Views
 		{
 			this.DefaultStyleKey = typeof(Cell);
 
+			this.SetBinding(dataTypeProperty, dataTypeBinding);
 			this.SetBinding(IsEditableProperty, isEditableBinding);
 			this.SetBinding(StyleProperty, styleBinding);
+
+			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 		}
 
 
@@ -180,11 +199,7 @@ namespace Company.Widgets.Views
 		{
 			get
 			{
-				return (Type) this.GetValue(DataTypeProperty);
-			}
-			set
-			{
-				this.SetValue(DataTypeProperty, value);
+				return (Type) this.GetValue(dataTypeProperty);
 			}
 		}
 
@@ -236,15 +251,25 @@ namespace Company.Widgets.Views
 			}
 		}
 
-		/// <summary>
-		/// Called when the value of the <see cref="ContentControl.Content"/> property changes.
-		/// </summary>
-		/// <param name="oldContent">The old value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
-		/// <param name="newContent">The new value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
-		protected override void OnContentChanged(object oldContent, object newContent)
+		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			base.OnContentChanged(oldContent, newContent);
-			this.DataType = this.Column.DataType;
+			((Cell) d).OnDataContextChanged(e);
+		}
+
+		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
+		{
+			this.UpdateDataType();
+			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		public void SetValueBinding()
+		{
+			this.SetBinding(ValueProperty, this.Column.Binding);
+			this.UpdateDataType();
 		}
 
 		/// <summary>
@@ -265,10 +290,7 @@ namespace Company.Widgets.Views
 
 		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
 		{
-			if (this.Value != null && this.Column.DataType == typeOfObject && this.DataType == typeOfObject)
-			{
-				this.DataType = this.Column.DataType = this.Value.GetType();
-			}
+			this.UpdateDataType();
 			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
 			if (!this.GoToSpecialView())
 			{
@@ -385,6 +407,19 @@ namespace Company.Widgets.Views
 				}
 			}
 			return false;
+		}
+
+		private void UpdateDataType()
+		{
+			if (this.Column != null && this.Column.DataType == typeOfObject)
+			{
+				PropertyPathWalker propertyPathWalker = new PropertyPathWalker(this.Column.Binding.Path.Path, true);
+				propertyPathWalker.Update(this.DataContext);
+				if (!propertyPathWalker.IsPathBroken)
+				{
+					this.Column.DataType = propertyPathWalker.FinalNode.ValueType;
+				}
+			}
 		}
 	}
 }

@@ -87,9 +87,11 @@
     <Compile Include="Controllers\EditorController.cs" />
     <Compile Include="Controllers\FooterCellController.cs" />
     <Compile Include="Controllers\NewItemCommand.cs" />
+    <Compile Include="Controllers\NewRowController.cs" />
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />
     <Compile Include="Controllers\ScrollIntoViewBehavior.cs" />
     <Compile Include="Controllers\SumAggregate.cs" />
+    <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\Export\ClipboardExporter.cs" />
     <Compile Include="Models\Export\Exporter.cs" />
     <Compile Include="Controllers\KeyHelper.cs" />
@@ -98,7 +100,12 @@
     <Compile Include="Models\Export\ExportOptions.cs" />
     <Compile Include="Models\Export\Font.cs" />
     <Compile Include="Models\ExtendedSortDescription.cs" />
+    <Compile Include="Models\IndexedPropertyPathNode.cs" />
+    <Compile Include="Models\IPropertyPathNode.cs" />
     <Compile Include="Models\NewItemModel.cs" />
+    <Compile Include="Models\PropertyNodeType.cs" />
+    <Compile Include="Models\PropertyPathNode.cs" />
+    <Compile Include="Models\PropertyPathWalker.cs" />
     <Compile Include="Models\SelectedItem.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
@@ -116,6 +123,7 @@
     <Compile Include="Controllers\StyleBinding.cs" />
     <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
+    <Compile Include="Models\StandardPropertyPathNode.cs" />
     <Compile Include="Views\FooterRow.cs" />
     <Compile Include="Views\ItemsControlExtensions.cs" />
     <Compile Include="Views\Editor.cs" />
@@ -169,9 +177,11 @@
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Views\HeaderCell.cs" />
     <Compile Include="Views\HeaderRow.cs" />
+    <Compile Include="Views\NewRow.cs" />
     <Compile Include="Views\OSBrush.cs" />
     <Compile Include="Views\OSColors.cs" />
     <Compile Include="Views\Row.cs" />
+    <Compile Include="Views\RowBase.cs" />
     <Compile Include="VisualTreeVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>

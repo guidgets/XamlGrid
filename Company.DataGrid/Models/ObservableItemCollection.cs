@@ -231,27 +231,27 @@ namespace Company.Widgets.Models
 			{
 				return;
 			}
-			ReadOnlyCollection<Property> properties = PropertyPathParser.GetPropertyNames(propertyPath, false);
-			for (int index = 0; index < properties.Count - 1; index++)
+			PropertyPathWalker propertyPathWalker = new PropertyPathWalker(propertyPath);
+			propertyPathWalker.Update(value);
+			if (propertyPathWalker.IsPathBroken)
 			{
-				Type type = value.GetType();
-				PropertyInfo property = type.GetProperty(properties[index].Name);
-				if (property == null)
+				if (this.ThrowExceptionOnInvalidPath)
 				{
-					if (this.ThrowExceptionOnInvalidPath)
-					{
-						throw new InvalidOperationException(string.Format("The property {0} contained in the property path {1} " +
-																		  "does not exist on the type {2}.",
-																		  properties[index].Name, propertyPath, type.FullName));	
-					}
-					return;
+					throw new ArgumentException(string.Format("The property path {0} is broken", propertyPath));
 				}
-				value = property.GetValue(value, properties[index].Arguments);
+				return;
+			}
+
+			IPropertyPathNode currentNode = propertyPathWalker.Node;
+			while (currentNode != null)
+			{
+				value = currentNode.Value;
 				if (value == null)
 				{
 					break;
 				}
 				this.AddRemoveHandler(value, propertyPath, addHandler);
+				currentNode = currentNode.Next;
 			}
 		}
 

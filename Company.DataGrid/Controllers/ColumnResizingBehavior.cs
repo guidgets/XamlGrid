@@ -51,10 +51,7 @@ namespace Company.Widgets.Controllers
 
 		private void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			if (this.AssociatedObject.IsDragging)
-			{
-				this.AssociatedObject.CancelDrag();
-			}
+			this.AssociatedObject.CancelDrag();
 		}
 	}
 }

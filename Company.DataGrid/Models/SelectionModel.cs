@@ -12,7 +12,7 @@ namespace Company.Widgets.Models
 	/// </summary>
 	public class SelectionModel : Model
 	{
-		public static readonly string NAME = typeof(SelectionModel).Name;
+		public new static readonly string NAME = typeof(SelectionModel).Name;
 
 		private IList<object> items;
 		private SelectionMode selectionMode;

@@ -18,11 +18,14 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void Execute(INotification notification)
 		{
+			NewItemModel newItemModel = (NewItemModel) DataGridFacade.Instance.RetrieveModel(NewItemModel.NAME);
 			switch (notification.Code)
 			{
 				case Notifications.ITEM_TYPE_CHANGED:
-					NewItemModel newItemModel = (NewItemModel) DataGridFacade.Instance.RetrieveModel(NewItemModel.NAME);
 					newItemModel.ItemType = (Type) notification.Body;
+					break;
+				case Notifications.NEW_ITEM_ADD:
+					newItemModel.AddItem();
 					break;
 			}
 		}

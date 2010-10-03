@@ -1,73 +1,117 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
-
+using System;
 namespace Company.Widgets.Models
 {
-	public static class PropertyPathParser
+	public class PropertyPathParser
 	{
-		private static readonly ReadOnlyCollection<Property> emptyList = new ReadOnlyCollection<Property>(new Collection<Property>());
-
-		public static ReadOnlyCollection<Property> GetPropertyNames(string propertyPath)
+		string Path
 		{
-			return GetPropertyNames(propertyPath, true);
+			get;
+			set;
 		}
 
-		/// <summary>
-		/// Gets the property names which compose the specified property path.
-		/// </summary>
-		/// <param name="propertyPath">The property path.</param>
-		/// <param name="throwExceptionOnInvalidPath">if set to <c>true</c>, throws an exception on an invalid path.</param>
-		/// <returns>A list of the property names which compose the specified property path.</returns>
-		public static ReadOnlyCollection<Property> GetPropertyNames(string propertyPath, bool throwExceptionOnInvalidPath)
+		public PropertyPathParser(string path)
 		{
-			// no support for attached properties since the namespaces of their types cannot be resolved
-			if (propertyPath.StartsWith("("))
+			Path = path;
+		}
+
+		public PropertyNodeType Step(out string typeName, out string propertyName, out string index)
+		{
+			var type = PropertyNodeType.None;
+			if (Path.Length == 0)
 			{
-				return emptyList;
+				typeName = null;
+				propertyName = null;
+				index = null;
+				return type;
 			}
-			if (propertyPath.StartsWith("."))
+
+			int end;
+			if (Path.StartsWith("("))
 			{
-				throw new ArgumentException("The specified property path has invalid syntax.", "propertyPath");
-			}
-			string[] propertyNames = propertyPath.Split(new[] { '.', '[' }, StringSplitOptions.RemoveEmptyEntries);
-			List<Property> properties = new List<Property>(propertyNames.Length);
-			foreach (string propertyName in propertyNames)
-			{
-				Property property = new Property();
-				if (propertyName.Contains("]"))
+				type = PropertyNodeType.AttachedProperty;
+				end = Path.IndexOf(")");
+				if (end == -1)
+					throw new ArgumentException("Invalid property path. Attached property is missing the closing bracket");
+
+				int type_open;
+				int type_close;
+				int prop_open;
+				int prop_close;
+
+				type_open = Path.IndexOf('\'');
+				if (type_open > 0)
 				{
-					// indexers have a "[" (already excluded by string.Split), an integer (bindings support only integer indices) and a "]"
-					if (!Regex.IsMatch(propertyName, @"^[0-9]+\]$"))
-					{
-						if (throwExceptionOnInvalidPath)
-						{
-							throw new ArgumentException(string.Format("The specified property path {0} contains the invalid property {1}.",
-																	  propertyPath, propertyName), "propertyPath");							
-						}
-						return emptyList;
-					}
-					property.Name = "Item";
-					property.Arguments = new object[] { int.Parse(propertyName.Substring(0, propertyName.Length - 1)) };
+					// move past the ' char
+					++type_open;
+
+					type_close = Path.IndexOf('\'', type_open + 1);
+					if (type_close < 0)
+						throw new Exception(String.Format("Invalid property path, Unclosed type name '{0}'.", Path));
+
+					prop_open = Path.IndexOf('.', type_close);
+					if (prop_open < 0)
+						throw new Exception(String.Format("Invalid property path, No property indexer found '{0}'.", Path));
+
+					// move past the . char
+					++prop_open;
 				}
 				else
 				{
-					// identifiers begin with any (Unicode) letter or an underscore and may contain only letters, numbers and underscores
-					if (!Regex.IsMatch(propertyName, @"^(\p{L}|_)\w*$"))
-					{
-						if (throwExceptionOnInvalidPath)
-						{
-							throw new ArgumentException(string.Format("The specified property path {0} contains the invalid property {1}.",
-																	  propertyPath, propertyName), "propertyPath");							
-						}
-						return emptyList;
-					}
-					property.Name = propertyName;
+					type_open = 1;
+
+					type_close = Path.IndexOf('.', type_open);
+					if (type_close < 0)
+						throw new Exception(String.Format("Invalid property path, No property indexer found on '{0}'.", Path));
+
+					prop_open = type_close + 1;
 				}
-				properties.Add(property);
+
+				prop_close = end;
+
+				typeName = Path.Substring(type_open, type_close - type_open);
+				propertyName = Path.Substring(prop_open, prop_close - prop_open);
+
+				index = null;
+				Path = Path.Substring(end + 1);
 			}
-			return properties.AsReadOnly();
+			else if (Path.StartsWith("["))
+			{
+				type = PropertyNodeType.Indexed;
+				end = Path.IndexOf("]");
+
+				typeName = null;
+				propertyName = null;
+				index = Path.Substring(1, end - 1);
+				Path = Path.Substring(end + 1);
+				// You can do stuff like: [someIndex].SomeProp
+				// as well as: [SomeIndex]SomeProp
+				if (Path.StartsWith("."))
+					Path = Path.Substring(1);
+			}
+			else
+			{
+				type = PropertyNodeType.Property;
+				end = Path.IndexOfAny(new[] { '.', '[' });
+				if (end == -1)
+				{
+					propertyName = Path;
+					Path = "";
+				}
+				else
+				{
+					propertyName = Path.Substring(0, end);
+					if (Path[end] == '.')
+						Path = Path.Substring(end + 1);
+					else
+						Path = Path.Substring(end);
+				}
+
+				typeName = null;
+				index = null;
+			}
+
+			return type;
 		}
 	}
 }
+

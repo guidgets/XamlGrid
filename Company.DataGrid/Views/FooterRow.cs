@@ -30,10 +30,6 @@ namespace Company.Widgets.Views
 			{
 				cell.SetBinding(Cell.ValueProperty, cell.Column.FooterBinding);
 			}
-			else
-			{
-				cell.DataType = typeof(object);
-			}
 			DataGridFacade.Instance.RegisterController(new FooterCellController(cell));
 		}
 

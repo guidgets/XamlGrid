@@ -57,6 +57,7 @@ namespace Company.Widgets
 
 			this.RegisterCommand(Notifications.DATA_SOURCE_CHANGED, typeof(DataCommand));
 			this.RegisterCommand(Notifications.ITEM_TYPE_CHANGED, typeof(NewItemCommand));
+			this.RegisterCommand(Notifications.NEW_ITEM_ADD, typeof(NewItemCommand));
 			this.RegisterCommand(Notifications.COLUMNS_CHANGED, typeof(DataCommand));
 
 			Type typeOfSortingCommand = typeof(SortingCommand);

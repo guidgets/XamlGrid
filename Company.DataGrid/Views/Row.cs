@@ -8,7 +8,7 @@ namespace Company.Widgets.Views
 	/// <summary>
 	/// Represents a UI element that displays a data object.
 	/// </summary>
-	public class Row : ItemsControl
+	public class Row : RowBase
 	{
 		/// <summary>
 		/// Occurs when the data context of the <see cref="Row"/> is changed.
@@ -174,7 +174,7 @@ namespace Company.Widgets.Views
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 
 			cell.ClearValue(DataContextProperty);
-			cell.SetBinding(Cell.ValueProperty, cell.Column.Binding);
+			cell.SetValueBinding();
 			cell.SetBinding(Cell.IsSelectedProperty, isSelectedBinding);
 		}
 
@@ -186,13 +186,11 @@ namespace Company.Widgets.Views
 		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
 		{
 			base.ClearContainerForItemOverride(element, item);
-			Cell cell = (Cell) element;
 
-			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
+			Cell cell = (Cell) element;
 
 			cell.ClearValue(Cell.IsEditableProperty);
 			cell.ClearValue(Cell.ValueProperty);
-			cell.ClearValue(Cell.DataTypeProperty);
 			cell.ClearValue(Cell.IsSelectedProperty);
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using Company.Widgets.Core;
 using Company.Widgets.Views;
 
@@ -27,6 +28,7 @@ namespace Company.Widgets.Controllers
 			base.OnRegister();
 
 			this.NewRow.Loaded += this.NewRow_Loaded;
+			this.NewRow.KeyDown += this.NewRow_KeyDown;
 		}
 
 		public override void OnRemove()
@@ -34,6 +36,7 @@ namespace Company.Widgets.Controllers
 			base.OnRemove();
 
 			this.NewRow.Loaded -= this.NewRow_Loaded;
+			this.NewRow.KeyDown -= this.NewRow_KeyDown;
 		}
 
 		/// <summary>
@@ -66,6 +69,17 @@ namespace Company.Widgets.Controllers
 		private void NewRow_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.SendNotification(Notifications.NEW_ITEM_ADD);
+		}
+
+		private void NewRow_KeyDown(object sender, KeyEventArgs e)
+		{
+			// TODO: called when enter is pressed to put a cell in edit mode; what to do - ignore the enter in this case or have all cells constantly in edit mode, or sth else?
+			switch (e.Key)
+			{
+				case Key.Enter:
+					this.SendNotification(Notifications.NEW_ITEM_COMMIT, this.NewRow.DataContext);
+					break;
+			}
 		}
 	}
 }

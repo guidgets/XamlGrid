@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
 
@@ -21,11 +22,17 @@ namespace Company.Widgets.Controllers
 			NewItemModel newItemModel = (NewItemModel) DataGridFacade.Instance.RetrieveModel(NewItemModel.NAME);
 			switch (notification.Code)
 			{
+				case Notifications.ITEMS_SOURCE_CHANGED:
+					newItemModel.SetSource((IEnumerable) notification.Body);
+					break;
 				case Notifications.ITEM_TYPE_CHANGED:
 					newItemModel.ItemType = (Type) notification.Body;
 					break;
 				case Notifications.NEW_ITEM_ADD:
-					newItemModel.AddItem();
+					newItemModel.CreateItem();
+					break;
+				case Notifications.NEW_ITEM_COMMIT:
+					newItemModel.AddItem(notification.Body);
 					break;
 			}
 		}

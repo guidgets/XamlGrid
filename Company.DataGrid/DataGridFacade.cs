@@ -56,9 +56,12 @@ namespace Company.Widgets
 			this.RegisterCommand(Notifications.HEADER_ROW_LOADED, typeof(LoadedCommand));
 
 			this.RegisterCommand(Notifications.DATA_SOURCE_CHANGED, typeof(DataCommand));
-			this.RegisterCommand(Notifications.ITEM_TYPE_CHANGED, typeof(NewItemCommand));
-			this.RegisterCommand(Notifications.NEW_ITEM_ADD, typeof(NewItemCommand));
 			this.RegisterCommand(Notifications.COLUMNS_CHANGED, typeof(DataCommand));
+
+			Type typeOfNewItemCommand = typeof(NewItemCommand);
+			this.RegisterCommand(Notifications.ITEM_TYPE_CHANGED, typeOfNewItemCommand);
+			this.RegisterCommand(Notifications.NEW_ITEM_ADD, typeOfNewItemCommand);
+			this.RegisterCommand(Notifications.NEW_ITEM_COMMIT, typeOfNewItemCommand);
 
 			Type typeOfSortingCommand = typeof(SortingCommand);
 			this.RegisterCommand(Notifications.SORTING_REQUESTED, typeOfSortingCommand);

@@ -10,6 +10,7 @@ namespace Company.Widgets.Controllers
 
 			this.AddSubCommand(typeof(SortingCommand));
 			this.AddSubCommand(typeof(CurrentItemCommand));
+			this.AddSubCommand(typeof(NewItemCommand));
 		}
 	}
 }

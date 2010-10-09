@@ -26,19 +26,17 @@ namespace Company.Widgets.Models
 
 		public object CreateItem()
 		{
-			// TODO: check if this enumerable supports adding elements; if not, the same question as in CreateItem - hide the new row? Throw an exception?
 			// TODO: signal the data grid to raise an event for a new item
 			object newItem = (from constructor in this.ItemType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
 							  where constructor.GetParameters().Length == 0
 							  select constructor.Invoke(null)).FirstOrDefault();
 			if (newItem == null)
 			{
-				// TODO: what? Hide the insertion row? Throw an exception that a new element cannot be created?
+				const string error = "A new item cannot be created because the type of {0} " +
+				                     "does not have a parameterless constructor.";
+				throw new MissingMemberException(string.Format(error, this.ItemType.FullName));
 			}
-			else
-			{
-				this.SendNotification(Notifications.NEW_ITEM_ADDED, newItem);
-			}
+			this.SendNotification(Notifications.NEW_ITEM_ADDED, newItem);
 			return newItem;
 		}
 
@@ -49,6 +47,8 @@ namespace Company.Widgets.Models
 			// TODO: a thought: when wrapping a data source would it be a good idea to additionally (besides ICollectionView) wrap it in an INotifyCollectionChanged?
 			// probably not because the original source is lost; but is it possible for this source to have something that valuable to the grid?
 			// a possible solution would be to use an inheritor of ObservableCollection which keeps the original source as a field and synchronizes it
+			// if this additional wrapper is used how to get the original source besides checking with "is"? The original must be checked whether it supports adding (or not)?
+			// it may be possible to add items to the wrapper and let it throw an exception if its original cannot have items added
 			this.CreateItem();
 		}
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.ComponentModel;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
 
@@ -23,7 +23,7 @@ namespace Company.Widgets.Controllers
 			switch (notification.Code)
 			{
 				case Notifications.ITEMS_SOURCE_CHANGED:
-					newItemModel.SetSource((IEnumerable) notification.Body);
+					newItemModel.SetSource(notification.Body as ICollectionView);
 					break;
 				case Notifications.ITEM_TYPE_CHANGED:
 					newItemModel.ItemType = (Type) notification.Body;

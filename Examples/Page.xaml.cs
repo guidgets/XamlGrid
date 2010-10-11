@@ -38,7 +38,7 @@ namespace Examples
 				customer.OrderThumbnail = new Uri(string.Format("/Images/p{0}.png", index), UriKind.Relative);
 				++index;
 			}
-			this.dataGrid.DataSource = new ObservableCollection<Customer>(list);
+			this.dataGrid.DataSource = new List<Customer>(list);
 			this.listBoxCustomers.ItemsSource = this.collectionView = new CollectionViewSource { Source = list }.View;
 
 			//this.dataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;

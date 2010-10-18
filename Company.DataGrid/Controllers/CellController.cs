@@ -45,6 +45,7 @@ namespace Company.Widgets.Controllers
 			base.OnRegister();
 
 			this.Cell.GotFocus += this.Cell_GotFocus;
+            this.Cell.LostFocus += this.Cell_LostFocus;
 			this.Cell.KeyDown += this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
 		}
@@ -57,6 +58,7 @@ namespace Company.Widgets.Controllers
 			base.OnRemove();
 
 			this.Cell.GotFocus -= this.Cell_GotFocus;
+		    this.Cell.LostFocus -= this.Cell_LostFocus;
 			this.Cell.KeyDown -= this.Cell_KeyDown;
 			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
 		}
@@ -137,6 +139,11 @@ namespace Company.Widgets.Controllers
 		{
 			this.SendNotification(Notifications.CELL_FOCUSED, this.Cell);
 		}
+
+        private void Cell_LostFocus (object sender, RoutedEventArgs e)
+        {
+            this.Cell.IsInEditMode = false;
+        }
 
 		private void Cell_KeyDown(object sender, KeyEventArgs e)
 		{

@@ -212,6 +212,10 @@ namespace Company.Widgets.Views
 			base.OnApplyTemplate();
 			this.GoToSpecialView();
 			this.GoToSelected();
+			if (this.IsInEditMode && !this.GoToSpecialView())
+			{
+				this.GoToEdit();
+			}
 		}
 
 		/// <summary>
@@ -247,7 +251,6 @@ namespace Company.Widgets.Views
 				this.HasFocus = false;
 				base.OnLostFocus(e);
 				VisualStateManager.GoToState(this, "Unfocused", false);
-				this.IsInEditMode = false;
 			}
 		}
 
@@ -323,7 +326,7 @@ namespace Company.Widgets.Views
 			cell.OnIsInEditModeChanged(e);
 			if (editMode)
 			{
-				if (!cell.GoToEdit())
+				if (cell.GoToSpecialView())
 				{
 					cell.IsInEditMode = false;
 				}
@@ -351,9 +354,9 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
-		private bool GoToEdit()
+		private void GoToEdit()
 		{
-			return !this.GoToSpecialView() && VisualStateManager.GoToState(this, "Editor", false);
+			VisualStateManager.GoToState(this, "Editor", false);
 		}
 
 		/// <summary>

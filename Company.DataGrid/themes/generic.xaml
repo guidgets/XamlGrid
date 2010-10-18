@@ -54,7 +54,7 @@
 												   Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
 												   Tag="{Binding ElementName=horizontalScrollBar}" />
 								<company:NewRow Grid.Row="1" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												Tag="{Binding ElementName=horizontalScrollBar}" />
+												TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
 								<TextBlock Grid.Column="1" Grid.RowSpan="2" Width="18" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 							</Grid>
 							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto"

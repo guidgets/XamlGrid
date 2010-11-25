@@ -18,9 +18,7 @@ namespace Examples
 		{
 			InitializeComponent();
 
-			this.dataGrid.Columns[4].DataType = typeof(bool?);
-
-			IEnumerable<Customer> customers = from i in Enumerable.Range(0, 0)
+			IEnumerable<Customer> customers = from i in Enumerable.Range(0, 100)
 			                                  select new Customer
 			                                         	{
 			                                         		Name = string.Format("Ivan{0}", i),

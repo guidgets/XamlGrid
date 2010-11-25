@@ -73,11 +73,13 @@ namespace Company.Widgets.Controllers
 
 		private void NewRow_KeyDown(object sender, KeyEventArgs e)
 		{
-			// TODO: called when enter is pressed to put a cell in edit mode; what to do - ignore the enter in this case or have all cells constantly in edit mode, or sth else?
 			switch (e.Key)
 			{
 				case Key.Enter:
 					this.SendNotification(Notifications.NEW_ITEM_COMMIT, this.NewRow.DataContext);
+					break;
+				case Key.Escape:
+					this.NewRow.FocusHorizontalNeighbour(true);
 					break;
 			}
 		}

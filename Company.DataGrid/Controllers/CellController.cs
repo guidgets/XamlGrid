@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Company.Widgets.Core;
 using Company.Widgets.Views;
@@ -93,47 +89,6 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private void FocusHorizontalNeighbor(bool next)
-		{
-			DependencyObject dependencyObject = this.Cell;
-			while (dependencyObject != null)
-			{
-				Control control = dependencyObject as Control;
-				if (control != null)
-				{
-					IEnumerable<Control> siblings = from sibling in control.GetVisualSiblingsAndSelf().OfType<Control>()
-					                                orderby sibling.TabIndex
-					                                select sibling;
-					if (!next)
-					{
-						siblings = siblings.Reverse();
-					}
-					Func<Control, bool> focus = c => ((next || c.IsTabStop) && c.Focus()) ||
-					                                 GetChildControls(c).LastOrDefault(v => v.Focus()) != null;
-					if (siblings.SkipWhile(sibling => sibling != control).Skip(1).Any(focus))
-					{
-						return;
-					}
-				}
-				dependencyObject = dependencyObject.GetParent();
-			}
-		}
-
-		private static IEnumerable<Control> GetChildControls(DependencyObject parent)
-		{
-			List<Control> childControls = new List<Control>();
-			Control control = parent as Control;
-			if (control != null)
-			{
-				childControls.Add(control);
-			}
-			foreach (DependencyObject dependencyObject in parent.GetVisualChildren())
-			{
-				childControls.AddRange(GetChildControls(dependencyObject));
-			}
-			return childControls;
-		}
-
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
@@ -158,7 +113,7 @@ namespace Company.Widgets.Controllers
 						this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
 						if (!this.Cell.IsInEditMode)
 						{
-							this.FocusHorizontalNeighbor(true);
+							this.Cell.FocusHorizontalNeighbour(true);
 						}
 					}
 					break;
@@ -172,7 +127,7 @@ namespace Company.Widgets.Controllers
 					break;
 				case Key.Left:
 				case Key.Right:
-					this.FocusHorizontalNeighbor(e.Key == Key.Right);
+					this.Cell.FocusHorizontalNeighbour(e.Key == Key.Right);
 					e.Handled = true;
 					break;
 			}

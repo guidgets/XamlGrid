@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Company.Widgets.Controllers;
 using Company.Widgets.Core;
 using Company.Widgets.Models;

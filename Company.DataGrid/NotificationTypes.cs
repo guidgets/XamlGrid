@@ -1,4 +1,4 @@
-﻿namespace Company.Widgets
+namespace Company.Widgets
 {
 	public static class NotificationTypes
 	{

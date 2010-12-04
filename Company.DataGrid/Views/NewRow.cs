@@ -1,4 +1,4 @@
-﻿using Company.Widgets.Controllers;
+using Company.Widgets.Controllers;
 
 namespace Company.Widgets.Views
 {

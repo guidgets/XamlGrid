@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using Microsoft.Silverlight.Testing;
 using Microsoft.Silverlight.Testing.UnitTesting.Metadata.NUnit;

@@ -1,4 +1,4 @@
-﻿namespace Company.Widgets.Models
+namespace Company.Widgets.Models
 {
 	/// <summary>
 	/// Provides values for different types of sizing.

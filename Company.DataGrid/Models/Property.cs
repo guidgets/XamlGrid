@@ -1,4 +1,4 @@
-﻿namespace Company.Widgets.Models
+namespace Company.Widgets.Models
 {
 	public struct Property
 	{

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 /* 
  PureMVC C# Port by Andy Adamczak <andy.adamczak@puremvc.org>, et al.
  PureMVC - Copyright(c) 2006-08 Futurescale, Inc., Some rights reserved. 

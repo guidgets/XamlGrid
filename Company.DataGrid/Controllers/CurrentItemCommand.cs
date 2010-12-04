@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
 

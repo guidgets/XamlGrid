@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using Company.Widgets.Core;
 using Company.Widgets.Views;
 

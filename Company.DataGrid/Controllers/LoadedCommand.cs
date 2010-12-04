@@ -1,4 +1,4 @@
-﻿using Company.Widgets.Core;
+using Company.Widgets.Core;
 using Company.Widgets.Models;
 
 namespace Company.Widgets.Controllers

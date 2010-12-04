@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using Company.Widgets.Core;
 using Company.Widgets.Views;

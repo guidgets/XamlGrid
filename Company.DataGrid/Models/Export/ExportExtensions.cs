@@ -1,4 +1,4 @@
-﻿using Company.Widgets.Views;
+using Company.Widgets.Views;
 
 namespace Company.Widgets.Models.Export
 {

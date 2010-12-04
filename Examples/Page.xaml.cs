@@ -56,15 +56,16 @@ namespace Examples
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-			//this.dataGrid.Columns[0].CellStyle = null;
-			////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
-			//((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });
+        	this.dataGrid.NewRowVisibility = Visibility.Visible;
+        	//this.dataGrid.Columns[0].CellStyle = null;
+        	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
+        	//((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });
         	//this.dataGrid.DataSource = new[] { "Ivan1", "Ivan2", "Ivan3", "Ivan4" };
         	//((ObservableCollection<Customer>) this.dataGrid.DataSource).RemoveAt(3);
         	//this.dataGrid.Columns[1].Visibility = this.dataGrid.Columns[1].Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         	//this.dataGrid.ResizableColumns = !this.dataGrid.ResizableColumns;
-			//this.dataGrid.FooterVisibility = this.dataGrid.FooterVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
-			//this.dataGrid.HeaderVisibility = this.dataGrid.HeaderVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+        	//this.dataGrid.FooterVisibility = this.dataGrid.FooterVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+        	//this.dataGrid.HeaderVisibility = this.dataGrid.HeaderVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         	//this.dataGrid.ColumnWidth = new GridLength(1, GridUnitType.Auto);
         	//this.dataGrid.Columns.Clear();
         	//this.dataGrid.DataSource = null;

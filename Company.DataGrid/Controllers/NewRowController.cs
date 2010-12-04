@@ -23,19 +23,27 @@ namespace Company.Widgets.Controllers
 		}
 
 
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is registered.
+		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 
 			this.NewRow.Loaded += this.NewRow_Loaded;
+			this.NewRow.VisibilityChanged += this.NewRow_VisibilityChanged;
 			this.NewRow.KeyDown += this.NewRow_KeyDown;
 		}
 
+		/// <summary>
+		/// Called by the <see cref="Controller"/> when it is removed.
+		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
 			this.NewRow.Loaded -= this.NewRow_Loaded;
+			this.NewRow.VisibilityChanged -= this.NewRow_VisibilityChanged;
 			this.NewRow.KeyDown -= this.NewRow_KeyDown;
 		}
 
@@ -66,9 +74,23 @@ namespace Company.Widgets.Controllers
 		}
 
 
-		private void NewRow_Loaded(object sender, RoutedEventArgs e)
+		private void EnsureNewItem()
 		{
-			this.SendNotification(Notifications.NEW_ITEM_ADD);
+			if (this.NewRow.Visibility == Visibility.Visible)
+			{
+				this.SendNotification(Notifications.NEW_ITEM_ADD);
+			}
+		}
+
+
+		private void NewRow_Loaded(object sender, RoutedEventArgs routedEventArgs)
+		{
+			this.EnsureNewItem();
+		}
+
+		private void NewRow_VisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			this.EnsureNewItem();
 		}
 
 		private void NewRow_KeyDown(object sender, KeyEventArgs e)

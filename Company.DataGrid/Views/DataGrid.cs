@@ -100,6 +100,12 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(Visibility.Visible));
 
 		/// <summary>
+		/// Identifies the dependency property which gets or sets the visibility of the new row of a <see cref="DataGrid"/>.
+		/// </summary>
+		public static readonly DependencyProperty NewRowVisibilityProperty =
+			DependencyProperty.Register("NewRowVisibility", typeof(Visibility), typeof(DataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+		/// <summary>
 		/// Identifies the dependency property which gets or sets the visibility of the footer row of a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty FooterVisibilityProperty =
@@ -282,6 +288,22 @@ namespace Company.Widgets.Views
 			set
 			{
 				this.SetValue(HeaderVisibilityProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the visibility of the new row of the <see cref="DataGrid"/>.
+		/// </summary>
+		/// <value>The visibility of the new row of the <see cref="DataGrid"/>.</value>
+		public Visibility NewRowVisibility
+		{
+			get
+			{
+				return (Visibility) this.GetValue(NewRowVisibilityProperty);
+			}
+			set
+			{
+				this.SetValue(NewRowVisibilityProperty, value);
 			}
 		}
 

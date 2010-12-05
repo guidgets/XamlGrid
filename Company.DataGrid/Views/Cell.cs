@@ -326,7 +326,7 @@ namespace Company.Widgets.Views
 			cell.OnIsInEditModeChanged(e);
 			if (editMode)
 			{
-				if (cell.GoToSpecialView())
+				if (cell.GoToSpecialView() || !cell.GoToEdit())
 				{
 					cell.IsInEditMode = false;
 				}
@@ -354,9 +354,9 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
-		private void GoToEdit()
+		private bool GoToEdit()
 		{
-			VisualStateManager.GoToState(this, "Editor", false);
+			return VisualStateManager.GoToState(this, "Editor", false);
 		}
 
 		/// <summary>

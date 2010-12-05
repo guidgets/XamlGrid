@@ -95,10 +95,13 @@ namespace Company.Widgets.Controllers
 			this.SendNotification(Notifications.CELL_FOCUSED, this.Cell);
 		}
 
-        private void Cell_LostFocus (object sender, RoutedEventArgs e)
-        {
-            this.Cell.IsInEditMode = false;
-        }
+		private void Cell_LostFocus(object sender, RoutedEventArgs e)
+		{
+			if (!this.Cell.HasFocus)
+			{
+				this.Cell.IsInEditMode = false;
+			}
+		}
 
 		private void Cell_KeyDown(object sender, KeyEventArgs e)
 		{

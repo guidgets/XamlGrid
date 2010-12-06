@@ -17,17 +17,30 @@ namespace Company.Widgets.Models
 
 		public NewItemModel() : base(NAME)
 		{
-			this.ItemType = typeof(object);
+
 		}
 
+		/// <summary>
+		/// Gets or sets the type of the items in the underlying data source; this type is used when creating new items.
+		/// </summary>
+		/// <value>The type of the items in the underlying data source.</value>
 		public Type ItemType
 		{
 			get; 
 			set;
 		}
 
+		/// <summary>
+		/// Creates a new item to be edited.
+		/// </summary>
+		/// <returns>The newly created item.</returns>
 		public object CreateItem()
 		{
+			// a new row may be requested before any data source is specified
+			if (this.ItemType == null)
+			{
+				return null;
+			}
 			// TODO: signal the data grid to raise an event for a new item
 			object newItem = (from constructor in this.ItemType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
 							  where constructor.GetParameters().Length == 0
@@ -42,6 +55,10 @@ namespace Company.Widgets.Models
 			return newItem;
 		}
 
+		/// <summary>
+		/// Adds the specified item to the underlying data source.
+		/// </summary>
+		/// <param name="item">The item to add.</param>
 		public void AddItem(object item)
 		{
 			if (this.collectionView == null)
@@ -58,17 +75,20 @@ namespace Company.Widgets.Models
 				}
 				this.CreateItem();
 			}
-			// TODO: where and what is the best way to check whether the enumerable supports adding items?
-			// throw new NotSupportedException("The source collection does not support adding elements.");
+			throw new NotSupportedException("The source collection does not support adding elements.");
 		}
 
-		public void SetSource(ICollectionView newCollectionView)
+		/// <summary>
+		/// Sets the underlying data source to add items to.
+		/// </summary>
+		/// <param name="dataSource">The data source to add items to.</param>
+		public void SetSource(ICollectionView dataSource)
 		{
-			// TODO: whenever the source is changed the data context of the new row must be updated
+			// TODO: set the item type to null when the data source is set to null
+			// TODO: whenever the source is changed the data context of the new row must be updated, if it's visible
 			// a few questions:
-			// 1. Should a model for a new item be created at all if the underlying collection does not support adding? - the new row may request its creation when it's loaded and visible
-			// 2. Bind the grid to an addable source, show the new row, then bind to an unaddable source - should an exception be thrown here as well? Hide the new row (people will wonder)?
-			this.collectionView = newCollectionView;
+			// 1. Bind the grid to an addable source, show the new row, then bind to an unaddable source - should an exception be thrown here as well? Hide the new row (people will wonder)?
+			this.collectionView = dataSource;
 		}
 	}
 }

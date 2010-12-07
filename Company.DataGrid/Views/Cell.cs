@@ -212,7 +212,7 @@ namespace Company.Widgets.Views
 			base.OnApplyTemplate();
 			this.GoToSpecialView();
 			this.GoToSelected();
-			if (this.IsInEditMode && !this.GoToSpecialView())
+			if (this.IsInEditMode)
 			{
 				this.GoToEdit();
 			}
@@ -295,10 +295,7 @@ namespace Company.Widgets.Views
 		{
 			this.UpdateDataType();
 			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
-			if (!this.GoToSpecialView())
-			{
-				this.Content = this.Value;
-			}
+			this.Content = this.Value;
 		}
 
 		private static void OnHasFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -326,10 +323,7 @@ namespace Company.Widgets.Views
 			cell.OnIsInEditModeChanged(e);
 			if (editMode)
 			{
-				if (cell.GoToSpecialView() || !cell.GoToEdit())
-				{
-					cell.IsInEditMode = false;
-				}
+				cell.GoToEdit();
 			}
 			else
 			{
@@ -354,9 +348,12 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
-		private bool GoToEdit()
+		private void GoToEdit()
 		{
-			return VisualStateManager.GoToState(this, "Editor", false);
+			if (!this.GoToSpecialView())
+			{
+				VisualStateManager.GoToState(this, "Editor", false);
+			}
 		}
 
 		/// <summary>

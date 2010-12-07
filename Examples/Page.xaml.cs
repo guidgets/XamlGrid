@@ -36,7 +36,7 @@ namespace Examples
 				customer.OrderThumbnail = new Uri(string.Format("/Images/p{0}.png", index), UriKind.Relative);
 				++index;
 			}
-			this.dataGrid.DataSource = new List<Customer>(list);
+			//this.dataGrid.DataSource = new List<Customer>(list);
 			this.listBoxCustomers.ItemsSource = this.collectionView = new CollectionViewSource { Source = list }.View;
 
 			//this.dataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
@@ -56,7 +56,9 @@ namespace Examples
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-        	this.dataGrid.NewRowVisibility = Visibility.Visible;
+			this.dataGrid.NewRowVisibility = Visibility.Visible;
+			// BUG: the rebinding invalidates the column widths: all columns are relative but a horizontal scroll appears nevertheless
+        	this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
         	//((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });

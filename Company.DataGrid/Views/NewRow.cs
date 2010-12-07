@@ -12,6 +12,7 @@ namespace Company.Widgets.Views
 		/// </summary>
 		public NewRow()
 		{
+			// TODO: fix the template of the new row: the cell borders and the horizontal offset (scrolling) must be in sync with the data rows
 			DataGridFacade.Instance.RemoveController(this.GetHashCode().ToString());
 			DataGridFacade.Instance.RegisterController(new NewRowController(this));
 		}
@@ -28,7 +29,6 @@ namespace Company.Widgets.Views
             Cell cell = (Cell) element;
             DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
 			// TODO: putting a cell in edit mode focuses it (because of the editor within) but when the new row appears the first cell must get the focus, while now the last one does
-			// TODO: fix a regression: the cells are not in edit mode
             cell.IsInEditMode = true;
         }
 	}

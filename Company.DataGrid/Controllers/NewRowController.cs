@@ -53,7 +53,7 @@ namespace Company.Widgets.Controllers
 		/// <returns>The list of <c>INotification</c> names.</returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.NEW_ITEM_ADDED };
+			return new List<int> { Notifications.NEW_ITEM_ADDED, Notifications.ITEMS_SOURCE_CHANGED };
 		}
 
 		/// <summary>
@@ -69,6 +69,9 @@ namespace Company.Widgets.Controllers
 			{
 				case Notifications.NEW_ITEM_ADDED:
 					this.NewRow.DataContext = notification.Body;
+					break;
+				case Notifications.ITEMS_SOURCE_CHANGED:
+					this.EnsureNewItem();
 					break;
 			}
 		}

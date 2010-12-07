@@ -229,12 +229,9 @@ namespace Company.Widgets.Controllers
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
+			this.DataGrid.ItemType = this.DataGrid.ItemsSource != null ? this.DataGrid.ItemsSource.GetElementType() : null;
 			this.SendNotification(Notifications.ITEMS_SOURCE_CHANGED, this.DataGrid.ItemsSource);
 			this.SendNotification(Notifications.ITEMS_CHANGED, this.DataGrid.Items);
-			if (this.DataGrid.ItemsSource != null)
-			{
-				this.DataGrid.ItemType = this.DataGrid.ItemsSource.GetElementType();				
-			}
 		}
 
 		private void DataGrid_CurrentItemChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -84,7 +84,6 @@ namespace Company.Widgets.Models
 		/// <param name="dataSource">The data source to add items to.</param>
 		public void SetSource(ICollectionView dataSource)
 		{
-			// TODO: set the item type to null when the data source is set to null
 			// TODO: whenever the source is changed the data context of the new row must be updated, if it's visible
 			// a few questions:
 			// 1. Bind the grid to an addable source, show the new row, then bind to an unaddable source - should an exception be thrown here as well? Hide the new row (people will wonder)?

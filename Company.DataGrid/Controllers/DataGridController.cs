@@ -19,10 +19,10 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class DataGridController : Controller
 	{
-		private ScrollViewer scroll;
 		private Panel itemsHost;
 		private bool continuousEditing;
 		private bool fromFocusedCell;
+		private Size viewportSize;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
@@ -45,13 +45,6 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private ScrollViewer Scroll
-		{
-			get
-			{
-				return this.scroll ?? (this.scroll = this.DataGrid.GetScroll());
-			}
-		}
 
 		private Panel ItemsHost
 		{
@@ -69,7 +62,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRegister();
 
-			this.DataGrid.Loaded += this.DataGrid_Loaded;
+			this.DataGrid.ViewportSizeChanged += DataGrid_ViewportSizeChanged;
 			this.DataGrid.GotFocus += DataGrid_GotFocus;
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
@@ -89,7 +82,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRemove();
 
-			this.DataGrid.Loaded -= this.DataGrid_Loaded;
+			this.DataGrid.ViewportSizeChanged -= this.DataGrid_ViewportSizeChanged;
 			this.DataGrid.GotFocus -= this.DataGrid_GotFocus;
 			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
@@ -178,16 +171,13 @@ namespace Company.Widgets.Controllers
 		}
 
 
-		private void DataGrid_Loaded(object sender, EventArgs e)
+		private void DataGrid_ViewportSizeChanged(object sender, CustomSizeChangedEventArgs e)
 		{
-			this.DataGrid.ApplyTemplate();
-			this.Scroll.SizeChanged += (o, args) =>
-			                           {
-										   if (args.NewSize.Width != args.PreviousSize.Width)
-										   {
-										   	   this.CalculateRelativeColumnWidths();
-										   }
-			                           };
+			if (e.NewSize.Width != e.OldSize.Width)
+			{
+				this.viewportSize = e.NewSize;
+				this.CalculateRelativeColumnWidths();
+			}
 		}
 
 		private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
@@ -324,8 +314,7 @@ namespace Company.Widgets.Controllers
 
 		private void CalculateRelativeColumnWidths()
 		{
-			// TODO: do not have the scroll as a property but rather add to it a controller in XAML and send a notification to it
-			if (this.Scroll == null || this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
+			if (this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
 			{
 				return;
 			}
@@ -334,10 +323,10 @@ namespace Company.Widgets.Controllers
 			                                            column.Width.SizeMode == SizeMode.Fill
 			                                      select column;
 			double stars = relativeColumns.Sum(column => column.Width.Value);
-			double availableWidth = this.Scroll.ViewportWidth - (from column in this.DataGrid.Columns
-			                                                     where column.Visibility == Visibility.Visible &&
-			                                                           column.Width.SizeMode != SizeMode.Fill
-			                                                     select column.ActualWidth).Sum();
+			double availableWidth = this.viewportSize.Width - (from column in this.DataGrid.Columns
+			                                                   where column.Visibility == Visibility.Visible &&
+			                                                         column.Width.SizeMode != SizeMode.Fill
+			                                                   select column.ActualWidth).Sum();
 			foreach (Column column in relativeColumns.Skip(1))
 			{
 				double width = Math.Floor(column.Width.Value * availableWidth / stars);
@@ -346,10 +335,10 @@ namespace Company.Widgets.Controllers
 			Column firstColumn = relativeColumns.FirstOrDefault();
 			if (firstColumn != null)
 			{
-				double width = this.Scroll.ViewportWidth - (from column in this.DataGrid.Columns
-				                                            where column.Visibility == Visibility.Visible &&
-				                                                  column != firstColumn
-				                                            select column.ActualWidth).Sum();
+				double width = this.viewportSize.Width - (from column in this.DataGrid.Columns
+				                                          where column.Visibility == Visibility.Visible &&
+				                                                column != firstColumn
+				                                          select column.ActualWidth).Sum();
 				firstColumn.ActualWidth = Math.Max(width, 1);
 			}
 		}
@@ -366,6 +355,7 @@ namespace Company.Widgets.Controllers
 				case Key.Down:
 					this.SendNotification(Notifications.CURRENT_ITEM_DOWN);
 					break;
+					// TODO: page up and page down are broken: paging down eventually focuses the first footer cell instead of the last data cell
 				case Key.PageUp:
 					int pageUp = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - this.GetPageSize();
 					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Max(pageUp, 0));
@@ -404,10 +394,6 @@ namespace Company.Widgets.Controllers
 				case Key.Home:
 				case Key.End:
 					this.SelectItems(this.DataGrid.CurrentItem, false, key);
-					if (key == Key.Home || key == Key.End)
-					{
-						this.Scroll.ScrollToHorizontalOffset(key == Key.Home ? 0 : this.Scroll.ExtentWidth);
-					}
 					break;
 				case Key.Space:
 					if (control)
@@ -487,10 +473,10 @@ namespace Company.Widgets.Controllers
 			switch (this.GetOrientation())
 			{
 				case Orientation.Vertical:
-					page = (int) this.Scroll.ViewportHeight;
+					page = (int) this.viewportSize.Height;
 					break;
 				case Orientation.Horizontal:
-					page = (int) this.Scroll.ViewportWidth;
+					page = (int) this.viewportSize.Width;
 					break;
 			}
 			return page;

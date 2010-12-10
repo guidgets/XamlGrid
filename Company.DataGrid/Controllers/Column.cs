@@ -93,6 +93,30 @@ namespace Company.Widgets.Controllers
 
 
 		/// <summary>
+		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
+		/// </summary>
+		public Column()
+		{
+		}
+
+		/// <summary>
+		/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.
+		/// </summary>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <param name="propertyType">Type of the property.</param>
+		/// <param name="writeable">if set to <c>true</c> the values of the cells in the <see cref="Column"/> are writeable.</param>
+		public Column(string propertyName, Type propertyType, bool writeable)
+		{
+			Binding binding = new Binding(propertyName);
+			binding.Mode = writeable ? BindingMode.TwoWay : BindingMode.OneWay;
+			binding.ValidatesOnExceptions = true;
+			binding.NotifyOnValidationError = true;
+			this.SetValue(DataBindingProperty, binding);
+			this.SetValue(DataTypeProperty, propertyType);
+		}
+
+
+		/// <summary>
 		/// Gets or sets the width of the cells in the <see cref="Column"/>.
 		/// </summary>
 		/// <value>The width of the cells in the <see cref="Column"/>.</value>
@@ -176,7 +200,7 @@ namespace Company.Widgets.Controllers
 		/// Gets or sets the binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.
 		/// </summary>
 		/// <value>The binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.</value>
-		public Binding Binding
+		public virtual Binding Binding
 		{
 			get
 			{
@@ -188,7 +212,7 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		public Binding FooterBinding
+		public virtual Binding FooterBinding
 		{
 			get
 			{

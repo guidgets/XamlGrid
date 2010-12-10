@@ -10,6 +10,8 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using Company.Widgets.Controllers;
 using Company.Widgets.Models;
+using System.Windows.Controls.Primitives;
+using System.Linq;
 
 namespace Company.Widgets.Views
 {
@@ -57,6 +59,10 @@ namespace Company.Widgets.Views
 		/// Occurs when the selection mode of the <see cref="DataGrid"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler SelectionModeChanged;
+		/// <summary>
+		/// Occurs when the view port where the <see cref="DataGrid"/> positions its items changes its width.
+		/// </summary>
+		public virtual event EventHandler<CustomSizeChangedEventArgs> ViewportSizeChanged;
 
 
 		/// <summary>
@@ -153,15 +159,32 @@ namespace Company.Widgets.Views
 			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
 												new PropertyMetadata(null, OnItemsSourceListenerChanged));
 
+		private static readonly DependencyProperty viewportWidthListenerProperty =
+			DependencyProperty.Register("ViewportWidthListener", typeof(double), typeof(ScrollViewer), new PropertyMetadata(OnViewportWidthChanged));
+
+		private static readonly DependencyProperty viewportHeightListenerProperty =
+			DependencyProperty.Register("ViewportHeightListener", typeof(double), typeof(ScrollViewer), new PropertyMetadata(OnViewportHeightChanged));
+
 		private static readonly Binding itemsSourceBinding = new Binding("ItemsSource")
 	                                                     	 {
 	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self),
 	                                                     		 Mode = BindingMode.OneWay
-	                                                     	 };
+															 };
+
+		private static readonly Binding viewportWidthBinding = new Binding("ViewportWidth")
+		                                                       {
+																   RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                       };
+
+		private static readonly Binding viewportHeightBinding = new Binding("ViewportHeight")
+		                                                        {
+		                                                        	RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                        };
 
 		private readonly SortingModel sortingModel;
 		private readonly SelectionModel selectionModel;
 		private readonly List<Column> otherColumns;
+		private ScrollViewer scroll;
 
 		/// <summary>
 		/// Represents a control for displaying and manipulating data with a default tabular view.
@@ -181,6 +204,14 @@ namespace Company.Widgets.Views
 			DataGridFacade.Instance.RegisterController(new DataGridController(this));
 			DataGridFacade.Instance.RegisterModel(this.sortingModel = new SortingModel());
 			DataGridFacade.Instance.RegisterModel(this.selectionModel = new SelectionModel());
+		}
+
+		private ScrollViewer Scroll
+		{
+			get
+			{
+				return this.scroll ?? (this.scroll = this.GetScroll());
+			}
 		}
 
 		/// <summary>
@@ -434,6 +465,20 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
+		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
+		/// </summary>
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+
+			if (this.Scroll != null)
+			{
+				this.Scroll.SetBinding(viewportWidthListenerProperty, viewportWidthBinding);
+				this.Scroll.SetBinding(viewportHeightListenerProperty, viewportHeightBinding);
+			}
+		}
+
+		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
 		/// <returns>
@@ -495,26 +540,52 @@ namespace Company.Widgets.Views
 			this.Columns.Clear();
 			if (this.ItemType.IsSimple())
 			{
-				this.CreateColumn(string.Empty, this.ItemType, false);
+				this.Columns.Add(new Column(string.Empty, this.ItemType, false));
 			}
 			else
 			{
 				foreach (PropertyInfo property in this.ItemType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
 				{
-					this.CreateColumn(property.Name, property.PropertyType, property.CanWrite);
+					this.Columns.Add(new Column(property.Name, property.PropertyType, property.CanWrite));
 				}
 			}
 		}
 
-		private void CreateColumn(string propertyName, Type propertyType, bool writable)
+		private static void OnViewportWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			Column column = new Column();
-			column.Binding = new Binding(propertyName);
-			column.Binding.Mode = writable ? BindingMode.TwoWay : BindingMode.OneWay;
-			column.Binding.ValidatesOnExceptions = true;
-			column.Binding.NotifyOnValidationError = true;
-			column.DataType = propertyType;
-			this.Columns.Add(column);
+			d.GetVisualAncestors().OfType<DataGrid>().Last().OnViewportWidthChanged(e);
+		}
+
+		private void OnViewportWidthChanged(DependencyPropertyChangedEventArgs e)
+		{
+			Size oldSize = new Size((double) e.OldValue, this.Scroll.ViewportHeight);
+			Size newSize = new Size((double) e.NewValue, this.Scroll.ViewportHeight);
+			this.OnViewportSizeChanged(new CustomSizeChangedEventArgs(oldSize, newSize));
+		}
+
+		private static void OnViewportHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			d.GetVisualAncestors().OfType<DataGrid>().Last().OnViewportHeightChanged(e);
+		}
+
+		private void OnViewportHeightChanged(DependencyPropertyChangedEventArgs e)
+		{
+			Size oldSize = new Size(this.Scroll.ViewportWidth, (double) e.OldValue);
+			Size newSize = new Size(this.Scroll.ViewportWidth, (double) e.NewValue);
+			this.OnViewportSizeChanged(new CustomSizeChangedEventArgs(oldSize, newSize));
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ViewportSizeChanged"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="Company.Widgets.Models.CustomSizeChangedEventArgs"/> instance containing the event data.</param>
+		protected virtual void OnViewportSizeChanged(CustomSizeChangedEventArgs e)
+		{
+			EventHandler<CustomSizeChangedEventArgs> handler = this.ViewportSizeChanged;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
 		}
 
 		private static void OnItemsSourceListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -57,7 +57,6 @@ namespace Examples
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 			this.dataGrid.NewRowVisibility = Visibility.Visible;
-			// BUG: the rebinding invalidates the column widths: all columns are relative but a horizontal scroll appears nevertheless
         	this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };

@@ -12,7 +12,8 @@ namespace Company.Widgets.Views
 		/// </summary>
 		public NewRow()
 		{
-			// TODO: fix the template of the new row: the cell borders and the horizontal offset (scrolling) must be in sync with the data rows
+			this.DefaultStyleKey = typeof(NewRow);
+
 			DataGridFacade.Instance.RemoveController(this.GetHashCode().ToString());
 			DataGridFacade.Instance.RegisterController(new NewRowController(this));
 		}
@@ -22,14 +23,14 @@ namespace Company.Widgets.Views
 		/// </summary>
 		/// <param name="element">The element used to display the specified item.</param>
 		/// <param name="item">The item to display.</param>
-        protected override void PrepareContainerForItemOverride (System.Windows.DependencyObject element, object item)
-        {
-            base.PrepareContainerForItemOverride (element, item);
+		protected override void PrepareContainerForItemOverride(System.Windows.DependencyObject element, object item)
+		{
+			base.PrepareContainerForItemOverride(element, item);
 
-            Cell cell = (Cell) element;
-            DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
+			Cell cell = (Cell) element;
+			DataGridFacade.Instance.RemoveController(cell.GetHashCode().ToString());
 			// TODO: putting a cell in edit mode focuses it (because of the editor within) but when the new row appears the first cell must get the focus, while now the last one does
-            cell.IsInEditMode = true;
-        }
+			cell.IsInEditMode = true;
+		}
 	}
 }

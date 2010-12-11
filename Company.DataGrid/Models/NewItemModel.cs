@@ -26,7 +26,7 @@ namespace Company.Widgets.Models
 		/// <value>The type of the items in the underlying data source.</value>
 		public Type ItemType
 		{
-			get; 
+			get;
 			set;
 		}
 
@@ -48,7 +48,7 @@ namespace Company.Widgets.Models
 			if (newItem == null)
 			{
 				const string error = "A new item cannot be created because the type of {0} " +
-				                     "does not have a parameterless constructor.";
+									 "does not have a parameterless constructor.";
 				throw new MissingMemberException(string.Format(error, this.ItemType.FullName));
 			}
 			this.SendNotification(Notifications.NEW_ITEM_ADDED, newItem);
@@ -84,9 +84,7 @@ namespace Company.Widgets.Models
 		/// <param name="dataSource">The data source to add items to.</param>
 		public void SetSource(ICollectionView dataSource)
 		{
-			// TODO: whenever the source is changed the data context of the new row must be updated, if it's visible
-			// a few questions:
-			// 1. Bind the grid to an addable source, show the new row, then bind to an unaddable source - should an exception be thrown here as well? Hide the new row (people will wonder)?
+			// TODO: a question: Bind the grid to an addable source, show the new row, then bind to an unaddable source - throw an exception? Hide the new row?
 			this.collectionView = dataSource;
 		}
 	}

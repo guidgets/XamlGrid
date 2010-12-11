@@ -95,40 +95,6 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="company:HeaderRow">
-		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
-		<Setter Property="BorderThickness" Value="1,1,1,0" />
-		<Setter Property="IsTabStop" Value="False" />
-		<Setter Property="MinHeight" Value="22" />
-		<Setter Property="HorizontalAlignment" Value="Left" />
-		<Setter Property="ItemsPanel">
-			<Setter.Value>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal" />
-				</ItemsPanelTemplate>
-			</Setter.Value>
-		</Setter>
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="company:HeaderRow">
-					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
-						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
-									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
-									  controllers:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
-																							  RelativeSource={RelativeSource TemplatedParent},
-																							  Mode=TwoWay}">
-							<interactivity:Interaction.Behaviors>
-								<controllers:ScrollIntoViewBehavior />
-							</interactivity:Interaction.Behaviors>
-							<ItemsPresenter />
-						</ScrollViewer>
-					</Border>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
 	<controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
 	<controllers:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 
@@ -542,9 +508,10 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="company:Row" x:Key="specialRow">
+	<Style TargetType="company:RowBase" x:Key="specialRow">
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
+		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
@@ -556,7 +523,7 @@
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="company:Row">
+				<ControlTemplate TargetType="company:RowBase">
 					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
 						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
@@ -575,12 +542,16 @@
 		</Setter>
 	</Style>
 
+	<Style TargetType="company:HeaderRow" BasedOn="{StaticResource specialRow}" >
+		<Setter Property="BorderThickness" Value="1,1,1,0" />
+	</Style>
+
 	<Style TargetType="company:NewRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="1,0,1,1" />
+		<Setter Property="BorderThickness" Value="1,1,1,0" />
 	</Style>
 	
 	<Style TargetType="company:FooterRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="1,1,1,0" />
+		<Setter Property="BorderThickness" Value="1,0,1,1" />
 	</Style>
 
 </ResourceDictionary>

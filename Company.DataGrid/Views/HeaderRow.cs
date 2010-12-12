@@ -16,9 +16,6 @@ namespace Company.Widgets.Views
 		public HeaderRow()
 		{
 			this.DefaultStyleKey = typeof(HeaderRow);
-
-
-			DataGridFacade.Instance.RegisterController(new HeaderRowController(this));
 		}
 
 

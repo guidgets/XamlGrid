@@ -14,6 +14,9 @@ namespace Company.Widgets.Controllers
 				case Notifications.ITEMS_SOURCE_CHANGED:
 					sortingModel.SetCollectionView(notification.Body as ICollectionView);
 					break;
+				case Notifications.SORTING_STATE:
+					sortingModel.CheckSortingState((string) notification.Body);
+					break;
 				case Notifications.SORTING_REQUESTED:
 					sortingModel.Sort((ExtendedSortDescription) notification.Body);
 					break;

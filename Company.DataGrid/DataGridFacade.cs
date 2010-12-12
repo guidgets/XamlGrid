@@ -53,8 +53,6 @@ namespace Company.Widgets
 			this.RegisterCommand(Notifications.ITEMS_SOURCE_CHANGED, typeof(ItemsSourceChangedCommand));
 			this.RegisterCommand(Notifications.ITEMS_CHANGED, typeOfSelectionCommand);
 
-			this.RegisterCommand(Notifications.HEADER_ROW_LOADED, typeof(LoadedCommand));
-
 			this.RegisterCommand(Notifications.DATA_SOURCE_CHANGED, typeof(DataCommand));
 			this.RegisterCommand(Notifications.COLUMNS_CHANGED, typeof(DataCommand));
 
@@ -64,8 +62,8 @@ namespace Company.Widgets
 			this.RegisterCommand(Notifications.NEW_ITEM_COMMIT, typeOfNewItemCommand);
 
 			Type typeOfSortingCommand = typeof(SortingCommand);
+			this.RegisterCommand(Notifications.SORTING_STATE, typeOfSortingCommand);
 			this.RegisterCommand(Notifications.SORTING_REQUESTED, typeOfSortingCommand);
-			this.RegisterCommand(Notifications.SORTED, typeOfSortingCommand);
 			this.RegisterCommand(Notifications.ITEM_PROPERTY_CHANGED, typeOfSortingCommand);
 
 			Type typeOfCurrentItemCommand = typeof(CurrentItemCommand);

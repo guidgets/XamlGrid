@@ -13,10 +13,8 @@ namespace Company.Widgets.Models
 	{
 		public static readonly string NAME = typeof(SortingModel).Name;
 
-		private bool notificationsSuspended;
 		private ICollectionView collectionView;
 		private readonly SortDescriptionCollection sortDescriptionsStore;
-		private List<Notification> notificationsStore;
 
 		/// <summary>
 		/// Represents a <see cref="Model"/> that executes all sorting logic over a given set of data.
@@ -24,8 +22,6 @@ namespace Company.Widgets.Models
 		public SortingModel() : base(NAME)
 		{
 			this.sortDescriptionsStore = new SortDescriptionCollection();
-			this.notificationsSuspended = true;
-			this.notificationsStore = new List<Notification>();
 		}
 
 		/// <summary>
@@ -68,52 +64,21 @@ namespace Company.Widgets.Models
 		}
 
 		/// <summary>
-		/// Starts the notifications sent when sorting occurs.
+		/// Checks the state of the sorting (if any) at the specified property path.
 		/// </summary>
-		public virtual void StartNotifications()
+		/// <param name="propertyPath">The property path to check sorting at.</param>
+		public virtual void CheckSortingState(string propertyPath)
 		{
-			if (this.notificationsStore == null)
+			IEnumerable<SortDescription> sortDescriptions = from sortDescription in this.SortDescriptions
+															where sortDescription.PropertyName == propertyPath
+															select sortDescription;
+			if (sortDescriptions.Any())
 			{
-				return;
+				this.SendNotification(Notifications.SORTED, sortDescriptions.First());
 			}
-			this.notificationsSuspended = false;
-			foreach (Notification notification in this.notificationsStore)
+			else
 			{
-				this.SendNotification(notification.Code, notification.Body, notification.Type);
-			}
-			this.notificationsStore.Clear();
-			this.notificationsStore = null;
-		}
-
-		private void SortingModel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			switch (e.Action)
-			{
-				case NotifyCollectionChangedAction.Add:
-					foreach (object sortDescription in e.NewItems)
-					{
-						this.SendNotificationForSorting(sortDescription, null);
-					}
-					break;
-				case NotifyCollectionChangedAction.Remove:
-					for (int index = e.OldItems.Count - 1; index >= 0; index--)
-					{
-						this.SendNotificationForSorting(e.OldItems[index], NotificationTypes.REMOVED_SORTING);
-					}
-					break;
-				case NotifyCollectionChangedAction.Replace:
-					for (int index = e.OldItems.Count - 1; index >= 0; index--)
-					{
-						this.SendNotificationForSorting(e.OldItems[index], NotificationTypes.REMOVED_SORTING);
-					}
-					foreach (object sortDescription in e.NewItems)
-					{
-						this.SendNotificationForSorting(sortDescription, null);
-					}
-					break;
-				case NotifyCollectionChangedAction.Reset:
-					this.SendNotificationForSorting(new SortDescription(), NotificationTypes.REMOVED_SORTING);
-					break;
+				this.SendNotification(Notifications.SORTED, null, NotificationTypes.NO_SORTING);
 			}
 		}
 
@@ -187,16 +152,36 @@ namespace Company.Widgets.Models
 			}
 		}
 
-		private void SendNotificationForSorting(object sortDescription, string notificationType)
+
+		private void SortingModel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			// TODO: remove the store for notifications; make the header cells ask for their sorted state instead
-			if (this.notificationsSuspended)
+			switch (e.Action)
 			{
-				notificationsStore.Add(new Notification(Notifications.SORTED, sortDescription, notificationType));
-			}
-			else
-			{
-				this.SendNotification(Notifications.SORTED, sortDescription, notificationType);				
+				case NotifyCollectionChangedAction.Add:
+					foreach (object sortDescription in e.NewItems)
+					{
+						this.SendNotification(Notifications.SORTED, sortDescription, null);
+					}
+					break;
+				case NotifyCollectionChangedAction.Remove:
+					for (int index = e.OldItems.Count - 1; index >= 0; index--)
+					{
+						this.SendNotification(Notifications.SORTED, e.OldItems[index], NotificationTypes.NO_SORTING);
+					}
+					break;
+				case NotifyCollectionChangedAction.Replace:
+					for (int index = e.OldItems.Count - 1; index >= 0; index--)
+					{
+						this.SendNotification(Notifications.SORTED, e.OldItems[index], NotificationTypes.NO_SORTING);
+					}
+					foreach (object sortDescription in e.NewItems)
+					{
+						this.SendNotification(Notifications.SORTED, sortDescription, null);
+					}
+					break;
+				case NotifyCollectionChangedAction.Reset:
+					this.SendNotification(Notifications.SORTED, new SortDescription(), NotificationTypes.NO_SORTING);
+					break;
 			}
 		}
 	}

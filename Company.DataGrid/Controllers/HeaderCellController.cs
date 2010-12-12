@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
@@ -41,6 +42,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRegister();
 
+			this.HeaderCell.Loaded += this.HeaderCell_Loaded;
 			this.HeaderCell.SortDirectionChanged += this.HeaderCell_SortDirectionChanged;
 		}
 
@@ -51,6 +53,7 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRemove();
 
+			this.HeaderCell.Loaded -= this.HeaderCell_Loaded;
 			this.HeaderCell.SortDirectionChanged -= this.HeaderCell_SortDirectionChanged;
 		}
 
@@ -80,7 +83,7 @@ namespace Company.Widgets.Controllers
 			switch (notification.Code)
 			{
 				case Notifications.SORTED:
-					if (notification.Type == NotificationTypes.REMOVED_SORTING)
+					if (notification.Type == NotificationTypes.NO_SORTING)
 					{
 						this.HeaderCell.SortDirection = null;
 					}
@@ -92,6 +95,11 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
+
+		private void HeaderCell_Loaded(object sender, RoutedEventArgs e)
+		{
+			this.SendNotification(Notifications.SORTING_STATE, this.HeaderCell.Column.Binding.Path.Path);
+		}
 
 		private void HeaderCell_SortDirectionChanged(object sender, SortDirectionEventArgs e)
 		{

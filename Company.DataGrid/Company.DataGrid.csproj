@@ -113,8 +113,6 @@
     <Compile Include="Controllers\TypeToAlignmentConverter.cs" />
     <Compile Include="Controllers\ItemsSourceChangedCommand.cs" />
     <Compile Include="Controllers\HeaderCellController.cs" />
-    <Compile Include="Controllers\HeaderRowController.cs" />
-    <Compile Include="Controllers\LoadedCommand.cs" />
     <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\ScrollExtensions.cs" />
     <Compile Include="Controllers\SelectionCommand.cs" />

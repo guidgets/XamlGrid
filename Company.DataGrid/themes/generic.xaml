@@ -382,7 +382,7 @@
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
-														<company:Editor Content="{Binding}"
+														<company:Editor Content="{Binding}" HasFocus="{Binding Tag.HasFocus, RelativeSource={RelativeSource TemplatedParent}}"
 																		Value="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                         DataType="{Binding Tag.DataType, RelativeSource={RelativeSource TemplatedParent}}" />
 													</DataTemplate>

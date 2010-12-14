@@ -303,6 +303,10 @@ namespace Company.Widgets.Views
 			((Cell) d).OnHasFocusChanged(e);
 		}
 
+		/// <summary>
+		/// Called when the property indicating if the <see cref="Cell"/> has focus changes.
+		/// </summary>
+		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnHasFocusChanged(DependencyPropertyChangedEventArgs e)
 		{
 			if ((bool) e.NewValue)

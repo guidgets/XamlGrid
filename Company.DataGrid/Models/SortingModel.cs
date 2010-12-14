@@ -78,7 +78,8 @@ namespace Company.Widgets.Models
 			}
 			else
 			{
-				this.SendNotification(Notifications.SORTED, null, NotificationTypes.NO_SORTING);
+				this.SendNotification(Notifications.SORTED, new SortDescription(string.Empty, ListSortDirection.Ascending),
+				                      NotificationTypes.NO_SORTING);
 			}
 		}
 

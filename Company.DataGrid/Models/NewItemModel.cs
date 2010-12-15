@@ -13,6 +13,7 @@ namespace Company.Widgets.Models
 	{
 		public new static readonly string NAME = typeof(NewItemModel).Name;
 		private ICollectionView collectionView;
+		private object item;
 
 
 		public NewItemModel() : base(NAME)
@@ -34,12 +35,12 @@ namespace Company.Widgets.Models
 		/// Creates a new item to be edited.
 		/// </summary>
 		/// <returns>The newly created item.</returns>
-		public object CreateItem()
+		public void AddItem()
 		{
 			// a new row may be requested before any data source is specified
 			if (this.ItemType == null)
 			{
-				return null;
+				return;
 			}
 			// TODO: signal the data grid to raise an event for a new item
 			object newItem = (from constructor in this.ItemType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
@@ -52,15 +53,19 @@ namespace Company.Widgets.Models
 				throw new MissingMemberException(string.Format(error, this.ItemType.FullName));
 			}
 			this.SendNotification(Notifications.NEW_ITEM_ADDED, newItem);
-			return newItem;
+			this.item = newItem;
 		}
 
 		/// <summary>
 		/// Adds the specified item to the underlying data source.
 		/// </summary>
-		/// <param name="item">The item to add.</param>
-		public void AddItem(object item)
+		public void CommitItem()
 		{
+			if (this.item == null)
+			{
+				throw new InvalidOperationException("A new item must be added before being committed.");
+			}
+			// simply return because a commit may be requested when there is no data source
 			if (this.collectionView == null)
 			{
 				return;
@@ -68,14 +73,15 @@ namespace Company.Widgets.Models
 			Type enumerableType = this.collectionView.SourceCollection.GetType();
 			if (this.collectionView.SourceCollection is IList || enumerableType.GetInterface(typeof(ICollection<>).FullName, false) != null)
 			{
-				enumerableType.GetMethod("Add").Invoke(this.collectionView.SourceCollection, new[] { item });
+				enumerableType.GetMethod("Add").Invoke(this.collectionView.SourceCollection, new[] { this.item });
 				if (!(this.collectionView.SourceCollection is INotifyCollectionChanged))
 				{
 					this.collectionView.Refresh();
 				}
-				this.CreateItem();
+				this.AddItem();
 			}
-			throw new NotSupportedException("The source collection does not support adding elements.");
+			throw new NotSupportedException("The addition of a new item was requested but " +
+			                                "the source collection does not support adding elements.");
 		}
 
 		/// <summary>
@@ -84,7 +90,6 @@ namespace Company.Widgets.Models
 		/// <param name="dataSource">The data source to add items to.</param>
 		public void SetSource(ICollectionView dataSource)
 		{
-			// TODO: a question: Bind the grid to an addable source, show the new row, then bind to an unaddable source - throw an exception? Hide the new row?
 			this.collectionView = dataSource;
 		}
 	}

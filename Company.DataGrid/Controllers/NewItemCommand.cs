@@ -29,10 +29,10 @@ namespace Company.Widgets.Controllers
 					newItemModel.ItemType = (Type) notification.Body;
 					break;
 				case Notifications.NEW_ITEM_ADD:
-					newItemModel.CreateItem();
+					newItemModel.AddItem();
 					break;
 				case Notifications.NEW_ITEM_COMMIT:
-					newItemModel.AddItem(notification.Body);
+					newItemModel.CommitItem();
 					break;
 			}
 		}

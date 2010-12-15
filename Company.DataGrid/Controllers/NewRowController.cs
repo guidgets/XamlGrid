@@ -86,7 +86,7 @@ namespace Company.Widgets.Controllers
 		}
 
 
-		private void NewRow_Loaded(object sender, RoutedEventArgs routedEventArgs)
+		private void NewRow_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.EnsureNewItem();
 		}
@@ -101,7 +101,7 @@ namespace Company.Widgets.Controllers
 			switch (e.Key)
 			{
 				case Key.Enter:
-					this.SendNotification(Notifications.NEW_ITEM_COMMIT, this.NewRow.DataContext);
+					this.SendNotification(Notifications.NEW_ITEM_COMMIT);
 					break;
 				case Key.Escape:
 					this.NewRow.FocusHorizontalNeighbour(true);

@@ -42,10 +42,12 @@ namespace Company.Widgets.Models
 			{
 				return;
 			}
-			// TODO: signal the data grid to raise an event for a new item
-			object newItem = (from constructor in this.ItemType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
-							  where constructor.GetParameters().Length == 0
-							  select constructor.Invoke(null)).FirstOrDefault();
+			NewItemEventArgs newItemEventArgs = new NewItemEventArgs();
+			this.SendNotification(Notifications.NEW_ITEM_CUSTOM, newItemEventArgs);
+			object newItem = newItemEventArgs.NewItem ??
+			                 (from constructor in this.ItemType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+			                  where constructor.GetParameters().Length == 0
+			                  select constructor.Invoke(null)).FirstOrDefault();
 			if (newItem == null)
 			{
 				const string error = "A new item cannot be created because the type of {0} " +

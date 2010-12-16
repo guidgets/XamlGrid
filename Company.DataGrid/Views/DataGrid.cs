@@ -39,6 +39,10 @@ namespace Company.Widgets.Views
 		/// Occurs when the type of the items contained in the <see cref="DataGrid"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler ItemTypeChanged;
+		/// <summary>
+		/// Occurs when a new item is being added to the source the <see cref="DataGrid"/> is bound to.
+		/// </summary>
+		public virtual event EventHandler<NewItemEventArgs> NewItemAdding;
 
 		/// <summary>
 		/// Occurs when the source of items for the <see cref="DataGrid"/> is changed.
@@ -124,13 +128,13 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("CurrentItem", typeof(object), typeof(DataGrid), new PropertyMetadata(OnCurrentItemChanged));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the current column, i.e. the columns of the focused cell, of a <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the current column, that is, the columns of the focused cell, of a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty CurrentColumnProperty =
 			DependencyProperty.Register("CurrentColumn", typeof(Column), typeof(DataGrid), new PropertyMetadata(OnCurrentColumnChanged));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty SelectionModeProperty =
 			DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(DataGrid),
@@ -383,7 +387,7 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Gets or sets the current column, i.e. the column of the focused cell, of the <see cref="DataGrid"/>.
+		/// Gets or sets the current column, that is, the column of the focused cell, of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The current column.</value>
 		public Column CurrentColumn
@@ -412,9 +416,9 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// Gets or sets the mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.
+		/// Gets or sets the mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.
 		/// </summary>
-		/// <value>The mode which defines the behavior when selecting items in the <see cref="DataGrid"/>.</value>
+		/// <value>The mode which defines the behaviour when selecting items in the <see cref="DataGrid"/>.</value>
 		public virtual SelectionMode SelectionMode
 		{
 			get
@@ -515,6 +519,21 @@ namespace Company.Widgets.Views
 				row.ItemsSource = this.Columns;
 			}
 		}
+
+
+		/// <summary>
+		/// Raises the <see cref="NewItemAdding"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="Company.Widgets.Models.NewItemEventArgs"/> instance containing the event data.</param>
+		public void OnNewItemAdding(NewItemEventArgs e)
+		{
+			EventHandler<NewItemEventArgs> handler = this.NewItemAdding;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{

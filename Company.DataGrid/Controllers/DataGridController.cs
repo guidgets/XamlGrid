@@ -111,7 +111,8 @@ namespace Company.Widgets.Controllers
 						Notifications.CELL_FOCUSED,
 						Notifications.CELL_EDIT_MODE_CHANGED,
 						Notifications.CELL_EDITING_CANCELLED,
-						Notifications.IS_COLUMN_CURRENT
+						Notifications.IS_COLUMN_CURRENT,
+						Notifications.NEW_ITEM_CUSTOM
 			       	};
 		}
 
@@ -166,6 +167,9 @@ namespace Company.Widgets.Controllers
 					break;
 				case Notifications.CELL_EDITING_CANCELLED:
 					continuousEditing = false;
+					break;
+				case Notifications.NEW_ITEM_CUSTOM:
+					this.DataGrid.OnNewItemAdding((NewItemEventArgs) notification.Body);
 					break;
 			}
 		}

@@ -103,6 +103,7 @@
     <Compile Include="Models\ExtendedSortDescription.cs" />
     <Compile Include="Models\IndexedPropertyPathNode.cs" />
     <Compile Include="Models\IPropertyPathNode.cs" />
+    <Compile Include="Models\NewItemEventArgs.cs" />
     <Compile Include="Models\NewItemModel.cs" />
     <Compile Include="Models\PropertyNodeType.cs" />
     <Compile Include="Models\PropertyPathNode.cs" />

@@ -91,6 +91,7 @@
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />
     <Compile Include="Controllers\ScrollIntoViewBehavior.cs" />
     <Compile Include="Controllers\SumAggregate.cs" />
+    <Compile Include="Controllers\SyncScrollBehavior.cs" />
     <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />
     <Compile Include="Models\Export\ClipboardExporter.cs" />

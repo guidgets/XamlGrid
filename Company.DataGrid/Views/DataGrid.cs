@@ -160,14 +160,14 @@ namespace Company.Widgets.Views
 		/// Once bound, the callback method will execute any time the ItemsSource property changes.
 		/// </summary>
 		private static readonly DependencyProperty itemsSourceListenerProperty =
-			DependencyProperty.RegisterAttached("ItemsSourceListener", typeof(object), typeof(DataGrid),
+			DependencyProperty.RegisterAttached("itemsSourceListener", typeof(object), typeof(DataGrid),
 												new PropertyMetadata(null, OnItemsSourceListenerChanged));
 
 		private static readonly DependencyProperty viewportWidthListenerProperty =
-			DependencyProperty.Register("ViewportWidthListener", typeof(double), typeof(ScrollViewer), new PropertyMetadata(OnViewportWidthChanged));
+			DependencyProperty.Register("viewportWidthListener", typeof(double), typeof(ScrollViewer), new PropertyMetadata(OnViewportWidthChanged));
 
 		private static readonly DependencyProperty viewportHeightListenerProperty =
-			DependencyProperty.Register("ViewportHeightListener", typeof(double), typeof(ScrollViewer), new PropertyMetadata(OnViewportHeightChanged));
+			DependencyProperty.Register("viewportHeightListener", typeof(double), typeof(ScrollViewer), new PropertyMetadata(OnViewportHeightChanged));
 
 		private static readonly Binding itemsSourceBinding = new Binding("ItemsSource")
 	                                                     	 {

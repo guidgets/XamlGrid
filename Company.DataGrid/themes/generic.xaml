@@ -533,6 +533,7 @@
 																							  Mode=TwoWay}">
 							<interactivity:Interaction.Behaviors>
 								<controllers:ScrollIntoViewBehavior />
+								<controllers:SyncScrollBehavior />
 							</interactivity:Interaction.Behaviors>
 							<ItemsPresenter />
 						</ScrollViewer>

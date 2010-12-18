@@ -13,10 +13,10 @@ namespace Company.Widgets.Views
 										new PropertyMetadata(Visibility.Visible, OnVisibilityChanged));
 
 		private static readonly Binding visibilityBinding = new Binding("Visibility")
-		{
-			RelativeSource = new RelativeSource(RelativeSourceMode.Self),
-			Mode = BindingMode.OneWay
-		};
+		                                                    {
+		                                                    	RelativeSource = new RelativeSource(RelativeSourceMode.Self),
+		                                                    	Mode = BindingMode.OneWay
+		                                                    };
 
 
 		protected RowBase()

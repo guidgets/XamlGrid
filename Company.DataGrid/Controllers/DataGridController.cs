@@ -359,7 +359,8 @@ namespace Company.Widgets.Controllers
 				case Key.Down:
 					this.SendNotification(Notifications.CURRENT_ITEM_DOWN);
 					break;
-					// TODO: page up and page down are broken: paging down eventually focuses the first footer cell instead of the last data cell
+					// TODO: page down is broken: the scroll is not paged, only the current item is moved
+					// TODO: the removal of controllers in rows and cells must be removed; it is a part of the above problem because the footer cell keeps the controller of the cell
 				case Key.PageUp:
 					int pageUp = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - this.GetPageSize();
 					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Max(pageUp, 0));

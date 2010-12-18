@@ -543,15 +543,15 @@
 	</Style>
 
 	<Style TargetType="company:HeaderRow" BasedOn="{StaticResource specialRow}" >
-		<Setter Property="BorderThickness" Value="1,1,1,0" />
+		<Setter Property="BorderThickness" Value="1,1,0,0" />
 	</Style>
 
 	<Style TargetType="company:NewRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="1,1,1,0" />
+		<Setter Property="BorderThickness" Value="1,1,0,0" />
 	</Style>
-	
+
 	<Style TargetType="company:FooterRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="1,0,1,1" />
+		<Setter Property="BorderThickness" Value="1,0,0,1" />
 	</Style>
 
 </ResourceDictionary>

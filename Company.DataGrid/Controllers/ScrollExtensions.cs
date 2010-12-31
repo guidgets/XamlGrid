@@ -6,7 +6,7 @@ namespace Company.Widgets.Controllers
 	public class ScrollExtensions
 	{
 		public static readonly DependencyProperty VerticalOffsetProperty =
-			DependencyProperty.RegisterAttached("HorizontalOffset", typeof(double), typeof(ScrollExtensions),
+			DependencyProperty.RegisterAttached("VerticalOffset", typeof(double), typeof(ScrollExtensions),
 			                                    new PropertyMetadata(0d, OnVerticalOffsetChanged));
 
 		public static readonly DependencyProperty HorizontalOffsetProperty =
@@ -16,12 +16,12 @@ namespace Company.Widgets.Controllers
 
 		public static double GetVerticalOffset(ScrollViewer scrollViewer)
 		{
-			return (double) scrollViewer.GetValue(HorizontalOffsetProperty);
+			return (double) scrollViewer.GetValue(VerticalOffsetProperty);
 		}
 
 		public static void SetVerticalOffset(ScrollViewer scrollViewer, double value)
 		{
-			scrollViewer.SetValue(HorizontalOffsetProperty, value);
+			scrollViewer.SetValue(VerticalOffsetProperty, value);
 		}
 
 		public static double GetHorizontalOffset(ScrollViewer scrollViewer)

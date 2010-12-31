@@ -23,6 +23,7 @@ namespace Company.Widgets.Controllers
 		private bool continuousEditing;
 		private bool fromFocusedCell;
 		private Size viewportSize;
+		private Key pressedKey;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DataGridController"/> class.
@@ -359,15 +360,16 @@ namespace Company.Widgets.Controllers
 				case Key.Down:
 					this.SendNotification(Notifications.CURRENT_ITEM_DOWN);
 					break;
-					// TODO: page down is broken: the scroll is not paged, only the current item is moved
-					// TODO: the removal of controllers in rows and cells must be removed; it is a part of the above problem because the footer cell keeps the controller of the cell
 				case Key.PageUp:
 					int pageUp = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - this.GetPageSize();
 					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Max(pageUp, 0));
 					break;
 				case Key.PageDown:
-					int pageDown = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) + this.GetPageSize();
-					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
+					// make sure the new page is scrolled to before any MakeVisible is called
+					if (this.DataGrid.CurrentItem != this.DataGrid.Items.Last())
+					{
+						this.DataGrid.LayoutUpdated += this.DataGrid_CurrentItemLayoutUpdated;
+					}
 					break;
 				case Key.Home:
 					if (control)
@@ -395,10 +397,17 @@ namespace Company.Widgets.Controllers
 				case Key.Up:
 				case Key.Down:
 				case Key.PageUp:
-				case Key.PageDown:
 				case Key.Home:
 				case Key.End:
 					this.SelectItems(this.DataGrid.CurrentItem, false, key);
+					break;
+				case Key.PageDown:
+					// make sure the new page is scrolled to before any MakeVisible is called
+					if (this.DataGrid.CurrentItem != this.DataGrid.Items.Last())
+					{
+						pressedKey = key;
+						this.DataGrid.LayoutUpdated += this.DataGrid_SelectionLayoutUpdated;	
+					}
 					break;
 				case Key.Space:
 					if (control)
@@ -415,6 +424,19 @@ namespace Company.Widgets.Controllers
 					}
 					break;
 			}
+		}
+
+		private void DataGrid_CurrentItemLayoutUpdated(object sender, EventArgs e)
+		{
+			int pageDown = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) + this.GetPageSize();
+			this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
+			this.DataGrid.LayoutUpdated -= this.DataGrid_CurrentItemLayoutUpdated;
+		}
+
+		private void DataGrid_SelectionLayoutUpdated(object sender, EventArgs e)
+		{
+			this.SelectItems(this.DataGrid.CurrentItem, false, pressedKey);
+			this.DataGrid.LayoutUpdated -= this.DataGrid_SelectionLayoutUpdated;
 		}
 
 		private void SelectItems(object itemToSelect, bool clicked, Key key)

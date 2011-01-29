@@ -197,7 +197,7 @@ namespace Company.Widgets.Views
 		{
 			this.DefaultStyleKey = typeof(DataGrid);
 			this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.Name);
-			this.Columns = new ObservableCollection<Column>();
+			this.Columns = new ColumnsCollection();
 			this.otherColumns = new List<Column>();
 
 			this.SetBinding(itemsSourceListenerProperty, itemsSourceBinding);
@@ -254,7 +254,7 @@ namespace Company.Widgets.Views
 		/// Gets the <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.
 		/// </summary>
 		/// <value>The <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.</value>
-		public virtual ObservableCollection<Column> Columns
+		public virtual ColumnsCollection Columns
 		{
 			get;
 			private set;

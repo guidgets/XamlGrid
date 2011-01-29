@@ -181,7 +181,7 @@ namespace Company.Widgets.Controllers
 			if (e.NewSize.Width != e.OldSize.Width)
 			{
 				this.viewportSize = e.NewSize;
-				this.CalculateRelativeColumnWidths();
+				this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
 			}
 		}
 
@@ -307,45 +307,14 @@ namespace Company.Widgets.Controllers
 			}
 			if (this.DataGrid.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
 			{
-				this.CalculateRelativeColumnWidths();
+				this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
 			}
 			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
 		}
 
 		private void Column_WidthAffected(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.CalculateRelativeColumnWidths();
-		}
-
-		private void CalculateRelativeColumnWidths()
-		{
-			if (this.DataGrid.Columns.Any(column => double.IsNaN(column.ActualWidth)))
-			{
-				return;
-			}
-			IEnumerable<Column> relativeColumns = from column in this.DataGrid.Columns
-			                                      where column.Visibility == Visibility.Visible &&
-			                                            column.Width.SizeMode == SizeMode.Fill
-			                                      select column;
-			double stars = relativeColumns.Sum(column => column.Width.Value);
-			double availableWidth = this.viewportSize.Width - (from column in this.DataGrid.Columns
-			                                                   where column.Visibility == Visibility.Visible &&
-			                                                         column.Width.SizeMode != SizeMode.Fill
-			                                                   select column.ActualWidth).Sum();
-			foreach (Column column in relativeColumns.Skip(1))
-			{
-				double width = Math.Floor(column.Width.Value * availableWidth / stars);
-				column.ActualWidth = Math.Max(width, 1);
-			}
-			Column firstColumn = relativeColumns.FirstOrDefault();
-			if (firstColumn != null)
-			{
-				double width = this.viewportSize.Width - (from column in this.DataGrid.Columns
-				                                          where column.Visibility == Visibility.Visible &&
-				                                                column != firstColumn
-				                                          select column.ActualWidth).Sum();
-				firstColumn.ActualWidth = Math.Max(width, 1);
-			}
+			this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
 		}
 
 		protected virtual void HandleCurrentItem(Key key)

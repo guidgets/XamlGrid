@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Company.Widgets.Views;
 
 namespace Company.Widgets.Models.Export

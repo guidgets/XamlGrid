@@ -130,8 +130,10 @@ namespace Company.Widgets.Controllers
 					break;
 				case Key.Left:
 				case Key.Right:
-					this.Cell.FocusHorizontalNeighbour(e.Key == Key.Right);
-					e.Handled = true;
+					if ((Keyboard.Modifiers & KeyHelper.CommandModifier) == ModifierKeys.None)
+					{
+						this.Cell.FocusHorizontalNeighbour(e.Key == Key.Right);
+					}
 					break;
 			}
 		}

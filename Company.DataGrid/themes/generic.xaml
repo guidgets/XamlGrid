@@ -4,9 +4,8 @@
     xmlns:company="clr-namespace:Company.Widgets.Views"
     xmlns:controllers="clr-namespace:Company.Widgets.Controllers"
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
-    xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    >
+    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
+	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:widgets="clr-namespace:Company.Widgets">
 
 	<SolidColorBrush x:Key="controlColor" company:OSBrush.OSColor="ControlColor" />
 	<SolidColorBrush x:Key="windowColor" company:OSBrush.OSColor="WindowColor" />
@@ -62,9 +61,13 @@
 										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{StaticResource activeBorderColor}" 
 										  controllers:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
 								<interactivity:Interaction.Behaviors>
-									<controllers:ScrollIntoViewBehavior />
+									<controllers:ScrollOnHomeEndBehaviour />
 								</interactivity:Interaction.Behaviors>
-								<ItemsPresenter />
+								<ItemsPresenter>
+									<interactivity:Interaction.Behaviors>
+										<controllers:HandleNavigationBehaviour />
+									</interactivity:Interaction.Behaviors>
+								</ItemsPresenter>
 							</ScrollViewer>
 							<Grid Grid.Row="2">
 								<Grid.RowDefinitions>
@@ -532,9 +535,11 @@
 																							  RelativeSource={RelativeSource TemplatedParent},
 																							  Mode=TwoWay}">
 							<interactivity:Interaction.Behaviors>
-								<controllers:ScrollIntoViewBehavior />
 								<controllers:SyncScrollBehavior />
 							</interactivity:Interaction.Behaviors>
+							<widgets:DataGridFacade.Controllers>
+								<controllers:ScrollIntoViewBehavior />
+							</widgets:DataGridFacade.Controllers>
 							<ItemsPresenter />
 						</ScrollViewer>
 					</Border>

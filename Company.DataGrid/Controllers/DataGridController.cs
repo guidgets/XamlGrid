@@ -354,6 +354,18 @@ namespace Company.Widgets.Controllers
 
 			switch (key)
 			{
+				case Key.Left:
+					if (control)
+					{
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();						
+					}
+					break;
+				case Key.Right:
+					if (control)
+					{
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();						
+					}
+					break;
 				case Key.Up:
 					this.SendNotification(Notifications.CURRENT_ITEM_UP);
 					break;
@@ -372,18 +384,18 @@ namespace Company.Widgets.Controllers
 					}
 					break;
 				case Key.Home:
+					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());
 					if (control)
 					{
-						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
 					}
-					this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
 					break;
 				case Key.End:
+					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());
 					if (control)
 					{
-						this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
 					}
-					this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
 					break;
 			}
 		}

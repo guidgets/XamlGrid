@@ -1,82 +1,95 @@
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Interactivity;
 using System.Windows.Media;
+using Company.Widgets.Core;
 
 namespace Company.Widgets.Controllers
 {
-	public class ScrollIntoViewBehavior : Behavior<ScrollViewer>
+	public class ScrollIntoViewBehavior : Controller
 	{
-		protected override void OnAttached()
+		/// <summary>
+		/// Gets the row for which functionality the <see cref="RowController"/> is responsible.
+		/// </summary>
+		public virtual ScrollViewer Scroll
 		{
-			base.OnAttached();
-
-			this.AssociatedObject.GotFocus += this.AssociatedObject_GotFocus;
+			get
+			{
+				return (ScrollViewer) this.ViewComponent;
+			}
 		}
 
-		protected override void OnDetaching()
-		{
-			base.OnDetaching();
 
-			this.AssociatedObject.GotFocus -= this.AssociatedObject_GotFocus;
+		/// <summary>
+		/// Lists the notification interests.
+		/// </summary>
+		/// <returns></returns>
+		public override IList<int> ListNotificationInterests()
+		{
+			return new List<int> { Notifications.CELL_FOCUSED };
 		}
 
-		private void AssociatedObject_GotFocus(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Handles the notification.
+		/// </summary>
+		/// <param name="notification">The notification.</param>
+		public override void HandleNotification(INotification notification)
 		{
-			UIElement focusedElement = e.OriginalSource as UIElement;
-			if (focusedElement == null)
+			switch (notification.Code)
 			{
-				return;
-			}
-			IScrollInfo scrollInfo = null;
-			ItemsPresenter itemsPresenter = this.AssociatedObject.Content as ItemsPresenter;
-			if (itemsPresenter != null)
-			{
-				scrollInfo = VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo ??
-				             this.AssociatedObject.Content as IScrollInfo;
-			}
-			if (scrollInfo == null)
-			{
-				this.MakeVisible(focusedElement);
-			}
-			else
-			{
-				Rect bounds = new Rect(0, 0, focusedElement.RenderSize.Width, focusedElement.RenderSize.Height);
-				scrollInfo.MakeVisible(focusedElement, bounds);
+				case Notifications.CELL_FOCUSED:
+					UIElement focusedElement = (UIElement) notification.Body;
+					IScrollInfo scrollInfo = null;
+					ItemsPresenter itemsPresenter = this.Scroll.Content as ItemsPresenter;
+					if (itemsPresenter != null)
+					{
+						scrollInfo = VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo ??
+						             this.Scroll.Content as IScrollInfo;
+					}
+					if (scrollInfo == null)
+					{
+						this.MakeVisible(focusedElement);
+					}
+					else
+					{
+						Rect bounds = new Rect(0, 0, focusedElement.RenderSize.Width, focusedElement.RenderSize.Height);
+						scrollInfo.MakeVisible(focusedElement, bounds);
+					}
+					break;
 			}
 		}
 
 		private void MakeVisible(UIElement focusedElement)
 		{
-			GeneralTransform generalTransform = focusedElement.TransformToVisual(this.AssociatedObject);
+			GeneralTransform generalTransform = focusedElement.TransformToVisual(this.Scroll);
 			Point point = generalTransform.Transform(new Point(0, 0));
 
-			double horizontalOffset = point.X + focusedElement.RenderSize.Width - this.AssociatedObject.ViewportWidth;
+			double horizontalOffset = point.X + focusedElement.RenderSize.Width - this.Scroll.ViewportWidth;
 			if (horizontalOffset > 0)
 			{
-				ScrollExtensions.SetHorizontalOffset(this.AssociatedObject,
-				                                     this.AssociatedObject.HorizontalOffset + horizontalOffset);
+				ScrollExtensions.SetHorizontalOffset(this.Scroll,
+				                                     this.Scroll.HorizontalOffset + horizontalOffset);
 			}
 			else
 			{
 				if (point.X < 0)
 				{
-					ScrollExtensions.SetHorizontalOffset(this.AssociatedObject, this.AssociatedObject.HorizontalOffset + point.X);
+					ScrollExtensions.SetHorizontalOffset(this.Scroll, this.Scroll.HorizontalOffset + point.X);
 				}
 			}
 
-			double verticalOffset = point.Y + focusedElement.RenderSize.Height - this.AssociatedObject.ViewportHeight;
+			double verticalOffset = point.Y + focusedElement.RenderSize.Height - this.Scroll.ViewportHeight;
 			if (verticalOffset > 0)
 			{
-				ScrollExtensions.SetVerticalOffset(this.AssociatedObject,
-				                                   this.AssociatedObject.VerticalOffset + verticalOffset);
+				ScrollExtensions.SetVerticalOffset(this.Scroll,
+				                                   this.Scroll.VerticalOffset + verticalOffset);
 			}
 			else
 			{
 				if (point.Y < 0)
 				{
-					ScrollExtensions.SetVerticalOffset(this.AssociatedObject, this.AssociatedObject.VerticalOffset + point.Y);
+					ScrollExtensions.SetVerticalOffset(this.Scroll, this.Scroll.VerticalOffset + point.Y);
 				}
 			}
 		}

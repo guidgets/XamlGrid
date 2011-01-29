@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using Company.Widgets.Controllers;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
@@ -8,6 +9,10 @@ namespace Company.Widgets
 	public class DataGridFacade : Facade
 	{
 		private static DataGridFacade instance;
+
+		public static readonly DependencyProperty ControllersProperty =
+			DependencyProperty.RegisterAttached("Controllers", typeof(ControllerCollection), typeof(DataGridFacade), null);
+
 
 		private DataGridFacade()
 		{
@@ -34,6 +39,35 @@ namespace Company.Widgets
 				return instance;
 			}
 		}
+
+
+		/// <summary>
+		/// Gets the collection of controllers for the specified <see cref="DependencyObject"/>.
+		/// </summary>
+		/// <param name="o">The <see cref="DependencyObject"/> to lookup.</param>
+		/// <returns>The collection of associated controllers.</returns>
+		public static ControllerCollection GetControllers(DependencyObject o)
+		{
+			ControllerCollection controllers = (ControllerCollection) o.GetValue(ControllersProperty);
+			if (controllers == null)
+			{
+				controllers = new ControllerCollection(o);
+				SetControllers(o, controllers);
+			}
+
+			return controllers;
+		}
+
+		/// <summary>
+		/// Sets the collection of controllers for the specified <see cref="DependencyObject"/>.
+		/// </summary>
+		/// <param name="o">The <see cref="DependencyObject"/> to set.</param>
+		/// <param name="controllers">The collection of controllers to associate.</param>
+		public static void SetControllers(DependencyObject o, ControllerCollection controllers)
+		{
+			o.SetValue(ControllersProperty, controllers);
+		}
+
 
 		protected override void InitializeMainModel()
 		{

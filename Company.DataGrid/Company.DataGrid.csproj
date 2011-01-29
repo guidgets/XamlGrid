@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
+    <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controllers\ByteArrayUriToImageConverter.cs" />
     <Compile Include="Controllers\CellController.cs" />
@@ -86,12 +87,14 @@
     <Compile Include="Controllers\DataBinder.cs" />
     <Compile Include="Controllers\EditorController.cs" />
     <Compile Include="Controllers\FooterCellController.cs" />
+    <Compile Include="Controllers\HandleNavigationBehaviour.cs" />
     <Compile Include="Controllers\NewItemCommand.cs" />
     <Compile Include="Controllers\NewRowController.cs" />
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />
     <Compile Include="Controllers\ScrollIntoViewBehavior.cs" />
     <Compile Include="Controllers\SumAggregate.cs" />
     <Compile Include="Controllers\SyncScrollBehavior.cs" />
+    <Compile Include="Controllers\ScrollOnHomeEndBehaviour.cs" />
     <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />
     <Compile Include="Models\Export\ClipboardExporter.cs" />

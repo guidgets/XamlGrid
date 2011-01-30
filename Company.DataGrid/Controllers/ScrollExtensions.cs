@@ -1,9 +1,14 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace Company.Widgets.Controllers
 {
-	public class ScrollExtensions
+	/// <summary>
+	/// Contains methods that complement missing features of the <see cref="ScrollViewer"/>.
+	/// </summary>
+	public static class ScrollExtensions
 	{
 		public static readonly DependencyProperty VerticalOffsetProperty =
 			DependencyProperty.RegisterAttached("VerticalOffset", typeof(double), typeof(ScrollExtensions),
@@ -42,6 +47,17 @@ namespace Company.Widgets.Controllers
 		private static void OnHorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			((ScrollViewer) d).ScrollToHorizontalOffset((double) e.NewValue);
+		}
+
+		public static IScrollInfo GetScrollInfo(this ScrollViewer scroll)
+		{
+			ItemsPresenter itemsPresenter = scroll.Content as ItemsPresenter;
+			if (itemsPresenter != null)
+			{
+				return VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo ??
+				       scroll.Content as IScrollInfo;
+			}
+			return null;
 		}
 	}
 }

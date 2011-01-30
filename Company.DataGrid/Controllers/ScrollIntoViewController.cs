@@ -40,13 +40,7 @@ namespace Company.Widgets.Controllers
 			{
 				case Notifications.CELL_FOCUSED:
 					UIElement focusedElement = (UIElement) notification.Body;
-					IScrollInfo scrollInfo = null;
-					ItemsPresenter itemsPresenter = this.Scroll.Content as ItemsPresenter;
-					if (itemsPresenter != null)
-					{
-						scrollInfo = VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo ??
-						             this.Scroll.Content as IScrollInfo;
-					}
+					IScrollInfo scrollInfo = this.Scroll.GetScrollInfo();
 					if (scrollInfo == null)
 					{
 						this.MakeVisible(focusedElement);

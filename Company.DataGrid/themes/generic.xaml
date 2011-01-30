@@ -169,7 +169,7 @@
 									</ControlTemplate>
 								</ToggleButton.Template>
 							</ToggleButton>
-							<Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8"
+							<Thumb HorizontalAlignment="Right" Grid.Column="1" Width="8" Cursor="SizeWE"
                                    Tag="{Binding Column, RelativeSource={RelativeSource TemplatedParent}}"
                                    Visibility="{Binding Tag.IsResizable, RelativeSource={RelativeSource Self}, 
                                                         Converter={StaticResource booleanToVisibilityConverter}}">

@@ -19,8 +19,6 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnAttached();
 
-			this.AssociatedObject.Cursor = Cursors.SizeWE;
-
 			this.AssociatedObject.DragDelta += this.AssociatedObject_DragDelta;
 			this.AssociatedObject.MouseLeftButtonUp += this.AssociatedObject_MouseLeftButtonUp;
 		}
@@ -32,8 +30,6 @@ namespace Company.Widgets.Controllers
 		protected override void OnDetaching()
 		{
 			base.OnDetaching();
-
-			this.AssociatedObject.Cursor = Cursors.Arrow;
 
 			this.AssociatedObject.DragDelta -= this.AssociatedObject_DragDelta;
 			this.AssociatedObject.MouseLeftButtonUp -= this.AssociatedObject_MouseLeftButtonUp;

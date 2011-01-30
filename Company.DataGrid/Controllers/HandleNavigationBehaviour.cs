@@ -33,14 +33,21 @@ namespace Company.Widgets.Controllers
 
 		private static void AssociatedObject_KeyDown(object sender, KeyEventArgs e)
 		{
-			if ((Keyboard.Modifiers & KeyHelper.CommandModifier) != KeyHelper.CommandModifier &&
-				(e.Key == Key.Right || e.Key == Key.Left))
+			switch (e.Key)
 			{
-				e.Handled = true;
-			}
-			if (e.Key == Key.Home || e.Key == Key.End)
-			{
-				e.Handled = true;
+				case Key.Left:
+				case Key.Right:
+					if ((Keyboard.Modifiers & KeyHelper.CommandModifier) != KeyHelper.CommandModifier)
+					{
+						e.Handled = true;
+					}
+					break;
+				case Key.Up:
+				case Key.Down:
+				case Key.Home:
+				case Key.End:
+					e.Handled = true;
+					break;
 			}
 		}
 	}

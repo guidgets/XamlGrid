@@ -326,13 +326,13 @@ namespace Company.Widgets.Controllers
 				case Key.Left:
 					if (control)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();						
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
 					}
 					break;
 				case Key.Right:
 					if (control)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();						
+						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
 					}
 					break;
 				case Key.Up:

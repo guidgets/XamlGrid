@@ -7,7 +7,7 @@ using Company.Widgets.Core;
 
 namespace Company.Widgets.Controllers
 {
-	public class ScrollIntoViewBehavior : Controller
+	public class ScrollIntoViewController : Controller
 	{
 		/// <summary>
 		/// Gets the row for which functionality the <see cref="RowController"/> is responsible.

@@ -63,6 +63,9 @@
 								<interactivity:Interaction.Behaviors>
 									<controllers:ScrollOnHomeEndBehaviour />
 								</interactivity:Interaction.Behaviors>
+								<widgets:DataGridFacade.Controllers>
+									<controllers:ScrollIntoViewController />
+								</widgets:DataGridFacade.Controllers>
 								<ItemsPresenter>
 									<interactivity:Interaction.Behaviors>
 										<controllers:HandleNavigationBehaviour />
@@ -538,7 +541,7 @@
 								<controllers:SyncScrollBehavior />
 							</interactivity:Interaction.Behaviors>
 							<widgets:DataGridFacade.Controllers>
-								<controllers:ScrollIntoViewBehavior />
+								<controllers:ScrollIntoViewController />
 							</widgets:DataGridFacade.Controllers>
 							<ItemsPresenter />
 						</ScrollViewer>

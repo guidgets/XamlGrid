@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Company.Widgets.Core;
+using Company.Widgets.Controllers;
 
 namespace Company.Widgets.Models
 {
@@ -13,7 +14,6 @@ namespace Company.Widgets.Models
 	{
 		public new static readonly string NAME = typeof(NewItemModel).Name;
 		private ICollectionView collectionView;
-		private object item;
 
 
 		public NewItemModel() : base(NAME)
@@ -54,8 +54,9 @@ namespace Company.Widgets.Models
 									 "does not have a parameterless constructor.";
 				throw new MissingMemberException(string.Format(error, this.ItemType.FullName));
 			}
+			// not checking of the underlying source can be added to because there may be no source at at all yet
 			this.SendNotification(Notifications.NEW_ITEM_ADDED, newItem);
-			this.item = newItem;
+			this.Data = newItem;
 		}
 
 		/// <summary>
@@ -63,7 +64,7 @@ namespace Company.Widgets.Models
 		/// </summary>
 		public void CommitItem()
 		{
-			if (this.item == null)
+			if (this.Data == null)
 			{
 				throw new InvalidOperationException("A new item must be added before being committed.");
 			}
@@ -75,12 +76,13 @@ namespace Company.Widgets.Models
 			Type enumerableType = this.collectionView.SourceCollection.GetType();
 			if (this.collectionView.SourceCollection is IList || enumerableType.GetInterface(typeof(ICollection<>).FullName, false) != null)
 			{
-				enumerableType.GetMethod("Add").Invoke(this.collectionView.SourceCollection, new[] { this.item });
+				enumerableType.GetMethod("Add").Invoke(this.collectionView.SourceCollection, new[] { this.Data });
 				if (!(this.collectionView.SourceCollection is INotifyCollectionChanged))
 				{
 					this.collectionView.Refresh();
 				}
 				this.AddItem();
+				return;
 			}
 			throw new NotSupportedException("The addition of a new item was requested but " +
 			                                "the source collection does not support adding elements.");
@@ -92,7 +94,12 @@ namespace Company.Widgets.Models
 		/// <param name="dataSource">The data source to add items to.</param>
 		public void SetSource(ICollectionView dataSource)
 		{
+			// TODO: what to do if there already is a new item?
 			this.collectionView = dataSource;
+			if (this.collectionView != null)
+			{
+				this.ItemType = this.collectionView.GetElementType();
+			}
 		}
 	}
 }

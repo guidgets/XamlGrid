@@ -73,11 +73,9 @@
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Windows.Browser">
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -111,6 +109,8 @@
     <Compile Include="MVC\SimpleCommandTestCommand.cs" />
     <Compile Include="MVC\SimpleCommandTestVO.cs" />
     <Compile Include="MVC\TestModel.cs" />
+    <Compile Include="NewItemTests.cs" />
+    <Compile Include="SampleObject.cs" />
     <Compile Include="Selection\RangeTests.cs" />
     <Compile Include="Selection\SelectionModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

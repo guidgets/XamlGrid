@@ -98,6 +98,7 @@
     <Compile Include="Controllers\ScrollOnHomeEndBehaviour.cs" />
     <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />
+    <Compile Include="Models\DataWrapper.cs" />
     <Compile Include="Models\Export\ClipboardExporter.cs" />
     <Compile Include="Models\Export\Exporter.cs" />
     <Compile Include="Controllers\KeyHelper.cs" />

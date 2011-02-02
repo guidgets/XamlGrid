@@ -7,6 +7,19 @@ namespace Company.Widgets.Models
 	/// </summary>
 	public struct ExtendedSortDescription
 	{
+		public ExtendedSortDescription(string property, ListSortDirection? sortDirection) : this(property, sortDirection, false)
+		{
+			this.Property = property;
+			this.SortDirection = sortDirection;
+		}
+
+		public ExtendedSortDescription(string property, ListSortDirection? sortDirection, bool clearPreviousSorting) : this()
+		{
+			this.Property = property;
+			this.SortDirection = sortDirection;
+			this.ClearPreviousSorting = clearPreviousSorting;
+		}
+
 		/// <summary>
 		/// Gets or sets the property by which to sort.
 		/// </summary>

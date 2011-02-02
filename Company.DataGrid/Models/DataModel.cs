@@ -45,7 +45,7 @@ namespace Company.Widgets.Models
 					this.observableItemCollection.SetSource(from object item in enumerable
 					                                        select item);
 				}
-				this.collectionView = enumerable as ICollectionView ?? new PagedCollectionView(enumerable);
+				this.collectionView = DataWrapper.Wrap(enumerable);
 			}
 			this.SendNotification(Notifications.DATA_WRAPPED, this.collectionView);
 			return this.collectionView;

@@ -114,6 +114,7 @@
     <Compile Include="Selection\RangeTests.cs" />
     <Compile Include="Selection\SelectionModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SortingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="References\nunit.framework.dll" />

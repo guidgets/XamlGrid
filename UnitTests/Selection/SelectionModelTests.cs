@@ -29,7 +29,7 @@ namespace UnitTests.Selection
 		}
 
 		[TearDown]
-		public void ClearSelection()
+		public void Clear()
 		{
 			this.selectionModel.SelectedItems.Clear();
 		}

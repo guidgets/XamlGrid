@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Data;
 using Company.Widgets.Models;
 using NUnit.Framework;
 
@@ -26,7 +25,7 @@ namespace UnitTests
 		{
 			this.sampleObjects = SampleObject.GetCollection();
 			this.newItemModel = new NewItemModel();
-			this.newItemModel.SetSource(new PagedCollectionView(this.sampleObjects));
+			this.newItemModel.SetSource(DataWrapper.Wrap(this.sampleObjects));
 		}
 
 		[TearDown]
@@ -71,31 +70,30 @@ namespace UnitTests
 		[Test]
 		public void TestExceptionOnCommitItem()
 		{
-			const string message = "A new item must be added before being committed.";
-			Assert.That(() => this.newItemModel.CommitItem(),
-			            Throws.InvalidOperationException.With.Property("Message").EqualTo(message));
+			InvalidOperationException exception = Assert.Catch<InvalidOperationException>(() => this.newItemModel.CommitItem());
+			Assert.AreEqual(exception.Message, "A new item must be added before being committed.");
 		}
 
 		[Test]
 		public void TestExceptionOnImmutableCollection()
 		{
-			this.newItemModel.SetSource(new PagedCollectionView(SampleObject.GetEnumerable()));
+			this.newItemModel.SetSource(DataWrapper.Wrap(SampleObject.GetEnumerable()));
 			this.newItemModel.AddItem();
 			const string message = "The addition of a new item was requested " +
 			                       "but the source collection does not support adding elements.";
-			Assert.That(() => this.newItemModel.CommitItem(),
-			            Throws.TypeOf(typeof(NotSupportedException)).With.Property("Message").EqualTo(message));
+			NotSupportedException exception = Assert.Catch<NotSupportedException>(() => this.newItemModel.CommitItem());
+			Assert.AreEqual(exception.Message, message);
 		}
 
 		[Test]
 		public void TestExceptionOnNoEmptyObjectConstructor()
 		{
-			this.newItemModel.SetSource(new PagedCollectionView(new[] { new NoEmptyConstructor(0) }));
+			this.newItemModel.SetSource(DataWrapper.Wrap((new[] { new NoEmptyConstructor(0) })));
 			const string error = "A new item cannot be created because the type of {0} " +
 								 "does not have a parameterless constructor.";
 			string message = string.Format(error, typeof(NoEmptyConstructor).FullName);
-			Assert.That(() => this.newItemModel.AddItem(),
-			            Throws.TypeOf(typeof(MissingMemberException)).With.Property("Message").EqualTo(message));
+			MissingMemberException exception = Assert.Catch<MissingMemberException>(() => this.newItemModel.AddItem());
+			Assert.AreEqual(exception.Message, message);
 		}
 	}
 }

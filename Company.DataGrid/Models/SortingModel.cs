@@ -74,12 +74,12 @@ namespace Company.Widgets.Models
 															select sortDescription;
 			if (sortDescriptions.Any())
 			{
-				this.SendNotification(Notifications.SORTED, sortDescriptions.First());
+				this.SendNotification(Notifications.Sorted, sortDescriptions.First());
 			}
 			else
 			{
-				this.SendNotification(Notifications.SORTED, new SortDescription(string.Empty, ListSortDirection.Ascending),
-				                      NotificationTypes.NO_SORTING);
+				this.SendNotification(Notifications.Sorted, new SortDescription(string.Empty, ListSortDirection.Ascending),
+				                      NotificationTypes.NoSorting);
 			}
 		}
 
@@ -161,27 +161,27 @@ namespace Company.Widgets.Models
 				case NotifyCollectionChangedAction.Add:
 					foreach (object sortDescription in e.NewItems)
 					{
-						this.SendNotification(Notifications.SORTED, sortDescription, null);
+						this.SendNotification(Notifications.Sorted, sortDescription, null);
 					}
 					break;
 				case NotifyCollectionChangedAction.Remove:
 					for (int index = e.OldItems.Count - 1; index >= 0; index--)
 					{
-						this.SendNotification(Notifications.SORTED, e.OldItems[index], NotificationTypes.NO_SORTING);
+						this.SendNotification(Notifications.Sorted, e.OldItems[index], NotificationTypes.NoSorting);
 					}
 					break;
 				case NotifyCollectionChangedAction.Replace:
 					for (int index = e.OldItems.Count - 1; index >= 0; index--)
 					{
-						this.SendNotification(Notifications.SORTED, e.OldItems[index], NotificationTypes.NO_SORTING);
+						this.SendNotification(Notifications.Sorted, e.OldItems[index], NotificationTypes.NoSorting);
 					}
 					foreach (object sortDescription in e.NewItems)
 					{
-						this.SendNotification(Notifications.SORTED, sortDescription, null);
+						this.SendNotification(Notifications.Sorted, sortDescription, null);
 					}
 					break;
 				case NotifyCollectionChangedAction.Reset:
-					this.SendNotification(Notifications.SORTED, new SortDescription(), NotificationTypes.NO_SORTING);
+					this.SendNotification(Notifications.Sorted, new SortDescription(), NotificationTypes.NoSorting);
 					break;
 			}
 		}

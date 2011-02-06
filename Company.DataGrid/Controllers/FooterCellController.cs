@@ -49,7 +49,7 @@ namespace Company.Widgets.Controllers
 		/// <returns>The list of <c>INotification</c> names.</returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.ITEM_PROPERTY_CHANGED };
+			return new List<int> { Notifications.ItemPropertyChanged };
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Code)
 			{
-				case Notifications.ITEM_PROPERTY_CHANGED:
+				case Notifications.ItemPropertyChanged:
 					this.Update();
 					break;
 			}

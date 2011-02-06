@@ -14,11 +14,11 @@ namespace Company.Widgets.Controllers
 			DataModel dataModel;
 			switch (notification.Code)
 			{
-				case Notifications.DATA_SOURCE_CHANGED:
+				case Notifications.DataSourceChanged:
 					dataModel = (DataModel) DataGridFacade.Instance.RetrieveModel(DataModel.NAME);
 					dataModel.Create((IEnumerable) notification.Body);
 					break;
-				case Notifications.COLUMNS_CHANGED:
+				case Notifications.ColumnsChanged:
 					NotifyCollectionChangedEventArgs e = (NotifyCollectionChangedEventArgs) notification.Body;
 					IEnumerable<string> oldPropertyPaths = e.OldItems == null ? null : from Column column in e.OldItems
 																					   where column.Binding != null

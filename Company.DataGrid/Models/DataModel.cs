@@ -24,7 +24,7 @@ namespace Company.Widgets.Models
 
 		private void ObservableItemCollection_ItemPropertyChanged(object sender, ItemPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.ITEM_PROPERTY_CHANGED, new[] { e.Item, e.PropertyPath });
+			this.SendNotification(Notifications.ItemPropertyChanged, new[] { e.Item, e.PropertyPath });
 		}
 
 		public virtual ICollectionView Create(IEnumerable enumerable)
@@ -47,7 +47,7 @@ namespace Company.Widgets.Models
 				}
 				this.collectionView = DataWrapper.Wrap(enumerable);
 			}
-			this.SendNotification(Notifications.DATA_WRAPPED, this.collectionView);
+			this.SendNotification(Notifications.DataWrapped, this.collectionView);
 			return this.collectionView;
 		}
 

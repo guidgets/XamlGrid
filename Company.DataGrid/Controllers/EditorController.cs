@@ -79,7 +79,7 @@ namespace Company.Widgets.Controllers
 					break;
 				case Key.Escape:
 					this.Editor.Cancel();
-					this.SendNotification(Notifications.CELL_EDITING_CANCELLED);
+					this.SendNotification(Notifications.CellEditingCancelled);
 					break;
 			}
 		}

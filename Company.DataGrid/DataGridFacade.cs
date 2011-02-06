@@ -84,37 +84,37 @@ namespace Company.Widgets
 
 			Type typeOfSelectionCommand = typeof(SelectionCommand);
 
-			this.RegisterCommand(Notifications.ITEMS_SOURCE_CHANGED, typeof(ItemsSourceChangedCommand));
-			this.RegisterCommand(Notifications.ITEMS_CHANGED, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.ItemsSourceChanged, typeof(ItemsSourceChangedCommand));
+			this.RegisterCommand(Notifications.ItemsChanged, typeOfSelectionCommand);
 
-			this.RegisterCommand(Notifications.DATA_SOURCE_CHANGED, typeof(DataCommand));
-			this.RegisterCommand(Notifications.COLUMNS_CHANGED, typeof(DataCommand));
+			this.RegisterCommand(Notifications.DataSourceChanged, typeof(DataCommand));
+			this.RegisterCommand(Notifications.ColumnsChanged, typeof(DataCommand));
 
 			Type typeOfNewItemCommand = typeof(NewItemCommand);
-			this.RegisterCommand(Notifications.ITEM_TYPE_CHANGED, typeOfNewItemCommand);
-			this.RegisterCommand(Notifications.NEW_ITEM_ADD, typeOfNewItemCommand);
-			this.RegisterCommand(Notifications.NEW_ITEM_COMMIT, typeOfNewItemCommand);
+			this.RegisterCommand(Notifications.ItemTypeChanged, typeOfNewItemCommand);
+			this.RegisterCommand(Notifications.NewItemAdd, typeOfNewItemCommand);
+			this.RegisterCommand(Notifications.NewItemCommit, typeOfNewItemCommand);
 
 			Type typeOfSortingCommand = typeof(SortingCommand);
-			this.RegisterCommand(Notifications.SORTING_STATE, typeOfSortingCommand);
-			this.RegisterCommand(Notifications.SORTING_REQUESTED, typeOfSortingCommand);
-			this.RegisterCommand(Notifications.ITEM_PROPERTY_CHANGED, typeOfSortingCommand);
+			this.RegisterCommand(Notifications.SortingState, typeOfSortingCommand);
+			this.RegisterCommand(Notifications.SortingRequested, typeOfSortingCommand);
+			this.RegisterCommand(Notifications.ItemPropertyChanged, typeOfSortingCommand);
 
 			Type typeOfCurrentItemCommand = typeof(CurrentItemCommand);
-			this.RegisterCommand(Notifications.CURRENT_ITEM_CHANGING, typeOfCurrentItemCommand);
-			this.RegisterCommand(Notifications.CURRENT_ITEM_UP, typeOfCurrentItemCommand);
-			this.RegisterCommand(Notifications.CURRENT_ITEM_DOWN, typeOfCurrentItemCommand);
-			this.RegisterCommand(Notifications.CURRENT_ITEM_TO_POSITION, typeOfCurrentItemCommand);
-			this.RegisterCommand(Notifications.CURRENT_ITEM_FIRST, typeOfCurrentItemCommand);
-			this.RegisterCommand(Notifications.CURRENT_ITEM_LAST, typeOfCurrentItemCommand);
-			this.RegisterCommand(Notifications.IS_ITEM_CURRENT, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.CurrentItemChanging, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.CurrentItemUp, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.CurrentItemDown, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.CurrentItemToPosition, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.CurrentItemFirst, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.CurrentItemLast, typeOfCurrentItemCommand);
+			this.RegisterCommand(Notifications.IsItemCurrent, typeOfCurrentItemCommand);
 
-			this.RegisterCommand(Notifications.SELECTING_ITEMS, typeOfSelectionCommand);
-			this.RegisterCommand(Notifications.SELECT_ALL, typeOfSelectionCommand);
-			this.RegisterCommand(Notifications.SELECT_RANGE, typeOfSelectionCommand);
-			this.RegisterCommand(Notifications.DESELECTING_ITEMS, typeOfSelectionCommand);
-			this.RegisterCommand(Notifications.IS_ITEM_SELECTED, typeOfSelectionCommand);
-			this.RegisterCommand(Notifications.SELECTION_MODE_CHANGING, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.SelectingItems, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.SelectAll, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.SelectRange, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.DeselectingItems, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.IsItemSelected, typeOfSelectionCommand);
+			this.RegisterCommand(Notifications.SelectionModeChanging, typeOfSelectionCommand);
 		}
 	}
 }

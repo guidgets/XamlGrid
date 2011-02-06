@@ -68,11 +68,11 @@ namespace Company.Widgets.Controllers
 		{
 			return new List<int>
 			       	{
-			       		Notifications.CURRENT_ITEM_CHANGED,
-			       		Notifications.SELECTED_ITEMS,
-			       		Notifications.DESELECTED_ITEMS,
-			       		Notifications.ITEM_IS_SELECTED,
-			       		Notifications.ITEMS_COLLECTION_CHANGED
+			       		Notifications.CurrentItemChanged,
+			       		Notifications.SelectedItems,
+			       		Notifications.DeselectedItems,
+			       		Notifications.ItemIsSelected,
+			       		Notifications.ItemsCollectionChanged
 			       	};
 		}
 
@@ -87,29 +87,29 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Code)
 			{
-				case Notifications.CURRENT_ITEM_CHANGED:
+				case Notifications.CurrentItemChanged:
 					this.Row.IsFocused = this.Row.DataContext == notification.Body;
 					break;
-				case Notifications.SELECTED_ITEMS:
+				case Notifications.SelectedItems:
 					if (((IList<object>) notification.Body).Contains(this.Row.DataContext))
 					{
 						this.Row.IsSelected = true;
 					}
 					break;
-				case Notifications.DESELECTED_ITEMS:
+				case Notifications.DeselectedItems:
 					IList<object> list = (IList<object>) notification.Body;
 					if (list.Contains(this.Row.DataContext) || list.Count == 0)
 					{
 						this.Row.IsSelected = false;
 					}
 					break;
-				case Notifications.ITEM_IS_SELECTED:
+				case Notifications.ItemIsSelected:
 					if (this.Row.DataContext == notification.Body)
 					{
 						this.Row.IsSelected = bool.Parse(notification.Type);
 					}
 					break;
-				case Notifications.ITEMS_COLLECTION_CHANGED:
+				case Notifications.ItemsCollectionChanged:
 					NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs) notification.Body;
 					switch (args.Action)
 					{
@@ -129,32 +129,32 @@ namespace Company.Widgets.Controllers
 
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.IS_ITEM_CURRENT, this.Row.DataContext);
-			this.SendNotification(Notifications.IS_ITEM_SELECTED, this.Row.DataContext);
+			this.SendNotification(Notifications.IsItemCurrent, this.Row.DataContext);
+			this.SendNotification(Notifications.IsItemSelected, this.Row.DataContext);
 		}
 
 		private void Row_HasFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (this.Row.IsFocused)
 			{
-				this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.Row.DataContext);
+				this.SendNotification(Notifications.CurrentItemChanging, this.Row.DataContext);
 			}
 		}
 
 		private void Row_IsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(this.Row.IsSelected ? Notifications.SELECTING_ITEMS : Notifications.DESELECTING_ITEMS,
+			this.SendNotification(this.Row.IsSelected ? Notifications.SelectingItems : Notifications.DeselectingItems,
 			                      this.Row.DataContext);
 		}
 
 		private void Row_KeyDown(object sender, KeyEventArgs e)
 		{
-			this.SendNotification(Notifications.ITEM_KEY_DOWN, e);
+			this.SendNotification(Notifications.ItemKeyDown, e);
 		}
 
 		private void Row_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			this.SendNotification(Notifications.ITEM_CLICKED, this.Row.DataContext);
+			this.SendNotification(Notifications.ItemClicked, this.Row.DataContext);
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace Company.Widgets.Controllers
 		/// <returns></returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.CELL_FOCUSED };
+			return new List<int> { Notifications.CellFocused };
 		}
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Code)
 			{
-				case Notifications.CELL_FOCUSED:
+				case Notifications.CellFocused:
 					UIElement focusedElement = (UIElement) notification.Body;
 					IScrollInfo scrollInfo = this.Scroll.GetScrollInfo();
 					if (scrollInfo == null)

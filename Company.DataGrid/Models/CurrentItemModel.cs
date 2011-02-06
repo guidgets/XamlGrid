@@ -56,7 +56,7 @@ namespace Company.Widgets.Models
 
 		private void CollectionView_CurrentChanged(object sender, EventArgs e)
 		{
-			this.SendNotification(Notifications.CURRENT_ITEM_CHANGED, this.collectionView.CurrentItem);
+			this.SendNotification(Notifications.CurrentItemChanged, this.collectionView.CurrentItem);
 		}
 
 		/// <summary>

@@ -65,7 +65,7 @@ namespace Company.Widgets.Controllers
 		/// <returns>The list of <c>INotification</c> names.</returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.FOCUS_CELL };
+			return new List<int> { Notifications.FocusCell };
 		}
 
 		/// <summary>
@@ -79,7 +79,7 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Code)
 			{
-				case Notifications.FOCUS_CELL:
+				case Notifications.FocusCell:
 					object[] data = (object[]) notification.Body;
 					if (this.Cell.DataContext == data[0] && this.Cell.Column == data[1] && !this.Cell.HasFocus)
 					{
@@ -92,7 +92,7 @@ namespace Company.Widgets.Controllers
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
-			this.SendNotification(Notifications.CELL_FOCUSED, this.Cell);
+			this.SendNotification(Notifications.CellFocused, this.Cell);
 		}
 
 		private void Cell_LostFocus(object sender, RoutedEventArgs e)
@@ -140,7 +140,7 @@ namespace Company.Widgets.Controllers
 
 		private void Cell_IsInEditModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.CELL_EDIT_MODE_CHANGED, this.Cell.IsInEditMode);
+			this.SendNotification(Notifications.CellEditModeChanged, this.Cell.IsInEditMode);
 		}
 	}
 }

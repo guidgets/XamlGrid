@@ -11,29 +11,29 @@ namespace Company.Widgets.Controllers
 			CurrentItemModel currentItemModel = (CurrentItemModel) DataGridFacade.Instance.RetrieveModel(CurrentItemModel.NAME);
 			switch (notification.Code)
 			{
-				case Notifications.ITEMS_SOURCE_CHANGED:
+				case Notifications.ItemsSourceChanged:
 					currentItemModel.SetCollectionView(notification.Body as ICollectionView);
 					break;
-				case Notifications.CURRENT_ITEM_UP:
+				case Notifications.CurrentItemUp:
 					currentItemModel.MoveCurrentToPrevious();
 					break;
-				case Notifications.CURRENT_ITEM_DOWN:
+				case Notifications.CurrentItemDown:
 					currentItemModel.MoveCurrentToNext();
 					break;
-				case Notifications.CURRENT_ITEM_TO_POSITION:
+				case Notifications.CurrentItemToPosition:
 					currentItemModel.MoveCurrentToPosition((int) notification.Body);
 					break;
-				case Notifications.CURRENT_ITEM_FIRST:
+				case Notifications.CurrentItemFirst:
 					currentItemModel.MoveCurrentToFirst();
 					break;
-				case Notifications.CURRENT_ITEM_LAST:
+				case Notifications.CurrentItemLast:
 					currentItemModel.MoveCurrentToLast();
 					break;
-				case Notifications.CURRENT_ITEM_CHANGING:
+				case Notifications.CurrentItemChanging:
 					currentItemModel.MoveCurrentTo(notification.Body);
 					break;
-				case Notifications.IS_ITEM_CURRENT:
-					this.SendNotification(Notifications.CURRENT_ITEM_CHANGED, currentItemModel.CurrentItem);
+				case Notifications.IsItemCurrent:
+					this.SendNotification(Notifications.CurrentItemChanged, currentItemModel.CurrentItem);
 					break;
 			}
 		}

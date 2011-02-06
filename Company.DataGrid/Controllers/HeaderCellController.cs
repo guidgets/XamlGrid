@@ -63,7 +63,7 @@ namespace Company.Widgets.Controllers
 		/// <returns>The list of <c>INotification</c> names</returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.SORTED };
+			return new List<int> { Notifications.Sorted };
 		}
 
 		/// <summary>
@@ -82,8 +82,8 @@ namespace Company.Widgets.Controllers
 			}
 			switch (notification.Code)
 			{
-				case Notifications.SORTED:
-					if (notification.Type == NotificationTypes.NO_SORTING)
+				case Notifications.Sorted:
+					if (notification.Type == NotificationTypes.NoSorting)
 					{
 						this.HeaderCell.SortDirection = null;
 					}
@@ -98,7 +98,7 @@ namespace Company.Widgets.Controllers
 
 		private void HeaderCell_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.SendNotification(Notifications.SORTING_STATE, this.HeaderCell.Column.Binding.Path.Path);
+			this.SendNotification(Notifications.SortingState, this.HeaderCell.Column.Binding.Path.Path);
 		}
 
 		private void HeaderCell_SortDirectionChanged(object sender, SortDirectionEventArgs e)
@@ -107,7 +107,7 @@ namespace Company.Widgets.Controllers
 			sortDescription.Property = this.HeaderCell.Column.Binding.Path.Path;
 			sortDescription.ClearPreviousSorting = (Keyboard.Modifiers & ModifierKeys.Shift) == 0;
 			sortDescription.SortDirection = e.SortDirection;
-			this.SendNotification(Notifications.SORTING_REQUESTED, sortDescription);
+			this.SendNotification(Notifications.SortingRequested, sortDescription);
 		}
 	}
 }

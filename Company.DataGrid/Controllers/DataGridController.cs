@@ -104,16 +104,16 @@ namespace Company.Widgets.Controllers
 		{
 			return new List<int>
 			       	{
-			       		Notifications.DATA_WRAPPED,
-			       		Notifications.CURRENT_ITEM_CHANGED,
-			       		Notifications.SELECTION_MODE_CHANGED,
-						Notifications.ITEM_KEY_DOWN,
-						Notifications.ITEM_CLICKED,
-						Notifications.CELL_FOCUSED,
-						Notifications.CELL_EDIT_MODE_CHANGED,
-						Notifications.CELL_EDITING_CANCELLED,
-						Notifications.IS_COLUMN_CURRENT,
-						Notifications.NEW_ITEM_CUSTOM
+			       		Notifications.DataWrapped,
+			       		Notifications.CurrentItemChanged,
+			       		Notifications.SelectionModeChanged,
+						Notifications.ItemKeyDown,
+						Notifications.ItemClicked,
+						Notifications.CellFocused,
+						Notifications.CellEditModeChanged,
+						Notifications.CellEditingCancelled,
+						Notifications.IsColumnCurrent,
+						Notifications.NewItemCustom
 			       	};
 		}
 
@@ -128,31 +128,31 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Code)
 			{
-				case Notifications.DATA_WRAPPED:
+				case Notifications.DataWrapped:
 					this.DataGrid.ItemsSource = (IEnumerable) notification.Body;
 					break;
-				case Notifications.CURRENT_ITEM_CHANGED:
+				case Notifications.CurrentItemChanged:
 					this.DataGrid.CurrentItem = notification.Body;
 					if (this.DataGrid.HasFocus())
 					{
-						this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });						
+						this.SendNotification(Notifications.FocusCell, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });						
 					}
 					break;
-				case Notifications.SELECTION_MODE_CHANGED:
+				case Notifications.SelectionModeChanged:
 					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
 					break;
-				case Notifications.ITEM_KEY_DOWN:
+				case Notifications.ItemKeyDown:
 					KeyEventArgs e = (KeyEventArgs) notification.Body;
 					this.HandleCurrentItem(e.Key);
 					this.HandleSelection(e.Key);
 					break;
-				case Notifications.ITEM_CLICKED:
+				case Notifications.ItemClicked:
 					this.SelectItems(notification.Body, true, Key.None);
 					break;
-				case Notifications.IS_COLUMN_CURRENT:
-					this.SendNotification(Notifications.CURRENT_COLUMN_CHANGED, this.DataGrid.CurrentColumn);
+				case Notifications.IsColumnCurrent:
+					this.SendNotification(Notifications.CurrentColumnChanged, this.DataGrid.CurrentColumn);
 					break;
-				case Notifications.CELL_FOCUSED:
+				case Notifications.CellFocused:
 					Cell cell = (Cell) notification.Body;
 					this.fromFocusedCell = true;
 					this.DataGrid.CurrentColumn = cell.Column;
@@ -160,16 +160,16 @@ namespace Company.Widgets.Controllers
 					// TODO: this should be replaced by sending a notification because it tightens the coupling
 					cell.IsInEditMode = continuousEditing;
 					break;
-				case Notifications.CELL_EDIT_MODE_CHANGED:
+				case Notifications.CellEditModeChanged:
 					if ((bool) notification.Body)
 					{
 						continuousEditing = true;
 					}
 					break;
-				case Notifications.CELL_EDITING_CANCELLED:
+				case Notifications.CellEditingCancelled:
 					continuousEditing = false;
 					break;
-				case Notifications.NEW_ITEM_CUSTOM:
+				case Notifications.NewItemCustom:
 					this.DataGrid.OnNewItemAdding((NewItemEventArgs) notification.Body);
 					break;
 			}
@@ -189,7 +189,7 @@ namespace Company.Widgets.Controllers
 		{
 			if (e.OriginalSource == this.DataGrid)
 			{
-				this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
+				this.SendNotification(Notifications.FocusCell, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
 			}
 		}
 
@@ -213,43 +213,43 @@ namespace Company.Widgets.Controllers
 		{
 			if (e.NewValue == null || e.NewValue is IEnumerable)
 			{
-				this.SendNotification(Notifications.DATA_SOURCE_CHANGED, e.NewValue);
+				this.SendNotification(Notifications.DataSourceChanged, e.NewValue);
 			}
 		}
 
 		private void DataGrid_ItemTypeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.ITEM_TYPE_CHANGED, this.DataGrid.ItemType);
+			this.SendNotification(Notifications.ItemTypeChanged, this.DataGrid.ItemType);
 		}
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.DataGrid.ItemType = this.DataGrid.ItemsSource != null ? this.DataGrid.ItemsSource.GetElementType() : null;
-			this.SendNotification(Notifications.ITEMS_SOURCE_CHANGED, this.DataGrid.ItemsSource);
-			this.SendNotification(Notifications.ITEMS_CHANGED, this.DataGrid.Items);
+			this.SendNotification(Notifications.ItemsSourceChanged, this.DataGrid.ItemsSource);
+			this.SendNotification(Notifications.ItemsChanged, this.DataGrid.Items);
 		}
 
 		private void DataGrid_CurrentItemChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.CurrentItem);
+			this.SendNotification(Notifications.CurrentItemChanging, this.DataGrid.CurrentItem);
 		}
 
 		private void DataGrid_CurrentColumnChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (this.DataGrid.CurrentColumn != null && !this.fromFocusedCell && this.DataGrid.HasFocus())
 			{
-				this.SendNotification(Notifications.FOCUS_CELL, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
+				this.SendNotification(Notifications.FocusCell, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
 			}
 		}
 
 		private void DataGrid_SelectionModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.SELECTION_MODE_CHANGING, this.DataGrid.SelectionMode);
+			this.SendNotification(Notifications.SelectionModeChanging, this.DataGrid.SelectionMode);
 		}
 
 		private void DataGridItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.ITEMS_COLLECTION_CHANGED, e);
+			this.SendNotification(Notifications.ItemsCollectionChanged, e);
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
 				this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
@@ -309,7 +309,7 @@ namespace Company.Widgets.Controllers
 			{
 				this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
 			}
-			this.SendNotification(Notifications.COLUMNS_CHANGED, e);
+			this.SendNotification(Notifications.ColumnsChanged, e);
 		}
 
 		private void Column_WidthAffected(object sender, DependencyPropertyChangedEventArgs e)
@@ -336,14 +336,14 @@ namespace Company.Widgets.Controllers
 					}
 					break;
 				case Key.Up:
-					this.SendNotification(Notifications.CURRENT_ITEM_UP);
+					this.SendNotification(Notifications.CurrentItemUp);
 					break;
 				case Key.Down:
-					this.SendNotification(Notifications.CURRENT_ITEM_DOWN);
+					this.SendNotification(Notifications.CurrentItemDown);
 					break;
 				case Key.PageUp:
 					int pageUp = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - this.GetPageSize();
-					this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Max(pageUp, 0));
+					this.SendNotification(Notifications.CurrentItemToPosition, Math.Max(pageUp, 0));
 					break;
 				case Key.PageDown:
 					// make sure the new page is scrolled to before any MakeVisible is called
@@ -353,14 +353,14 @@ namespace Company.Widgets.Controllers
 					}
 					break;
 				case Key.Home:
-					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.First());
+					this.SendNotification(Notifications.CurrentItemChanging, this.DataGrid.Items.First());
 					if (control)
 					{
 						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
 					}
 					break;
 				case Key.End:
-					this.SendNotification(Notifications.CURRENT_ITEM_CHANGING, this.DataGrid.Items.Last());
+					this.SendNotification(Notifications.CurrentItemChanging, this.DataGrid.Items.Last());
 					if (control)
 					{
 						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
@@ -394,14 +394,14 @@ namespace Company.Widgets.Controllers
 					if (control)
 					{
 						bool currentItemSelected = this.DataGrid.SelectedItems.IsSelected(this.DataGrid.CurrentItem);
-						this.SendNotification(currentItemSelected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS,
+						this.SendNotification(currentItemSelected ? Notifications.DeselectingItems : Notifications.SelectingItems,
 						                      this.DataGrid.CurrentItem);
 					}
 					break;
 				case Key.A:
 					if (control && this.DataGrid.SelectionMode == SelectionMode.Extended)
 					{
-						this.SendNotification(Notifications.SELECT_ALL);
+						this.SendNotification(Notifications.SelectAll);
 					}
 					break;
 			}
@@ -410,7 +410,7 @@ namespace Company.Widgets.Controllers
 		private void DataGrid_CurrentItemLayoutUpdated(object sender, EventArgs e)
 		{
 			int pageDown = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) + this.GetPageSize();
-			this.SendNotification(Notifications.CURRENT_ITEM_TO_POSITION, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
+			this.SendNotification(Notifications.CurrentItemToPosition, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
 			this.DataGrid.LayoutUpdated -= this.DataGrid_CurrentItemLayoutUpdated;
 		}
 
@@ -423,7 +423,7 @@ namespace Company.Widgets.Controllers
 		private void SelectItems(object itemToSelect, bool clicked, Key key)
 		{
 			bool selected = this.DataGrid.SelectedItems.IsSelected(itemToSelect);
-			int notificationToSend = selected ? Notifications.DESELECTING_ITEMS : Notifications.SELECTING_ITEMS;
+			int notificationToSend = selected ? Notifications.DeselectingItems : Notifications.SelectingItems;
 			switch (this.DataGrid.SelectionMode)
 			{
 				case SelectionMode.Single:
@@ -439,12 +439,12 @@ namespace Company.Widgets.Controllers
 					switch (Keyboard.Modifiers)
 					{
 						case ModifierKeys.None:
-							this.SendNotification(Notifications.SELECTING_ITEMS, itemToSelect,
-							                      NotificationTypes.CLEAR_SELECTION);
+							this.SendNotification(Notifications.SelectingItems, itemToSelect,
+							                      NotificationTypes.ClearSelection);
 							break;
 						case ModifierKeys.Shift:
-							this.SendNotification(Notifications.SELECT_RANGE, itemToSelect,
-												  NotificationTypes.CLEAR_SELECTION);
+							this.SendNotification(Notifications.SelectRange, itemToSelect,
+												  NotificationTypes.ClearSelection);
 							break;
 					}
 					if (Keyboard.Modifiers == KeyHelper.CommandModifier)
@@ -453,7 +453,7 @@ namespace Company.Widgets.Controllers
 					}
 					if (Keyboard.Modifiers == (KeyHelper.CommandModifier | ModifierKeys.Shift))
 					{
-						this.SendNotification(Notifications.SELECT_RANGE, itemToSelect);
+						this.SendNotification(Notifications.SelectRange, itemToSelect);
 					}
 					break;
 			}
@@ -469,8 +469,8 @@ namespace Company.Widgets.Controllers
 			{
 				if (key == Key.Home || key == Key.End)
 				{
-					this.SendNotification(Notifications.SELECTING_ITEMS, itemToSelect,
-					                      NotificationTypes.CLEAR_SELECTION);
+					this.SendNotification(Notifications.SelectingItems, itemToSelect,
+					                      NotificationTypes.ClearSelection);
 				}
 			}
 		}

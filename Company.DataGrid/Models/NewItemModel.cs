@@ -43,7 +43,7 @@ namespace Company.Widgets.Models
 				return;
 			}
 			NewItemEventArgs newItemEventArgs = new NewItemEventArgs();
-			this.SendNotification(Notifications.NEW_ITEM_CUSTOM, newItemEventArgs);
+			this.SendNotification(Notifications.NewItemCustom, newItemEventArgs);
 			object newItem = newItemEventArgs.NewItem ??
 			                 (from constructor in this.ItemType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
 			                  where constructor.GetParameters().Length == 0
@@ -55,7 +55,7 @@ namespace Company.Widgets.Models
 				throw new MissingMemberException(string.Format(error, this.ItemType.FullName));
 			}
 			// not checking of the underlying source can be added to because there may be no source at at all yet
-			this.SendNotification(Notifications.NEW_ITEM_ADDED, newItem);
+			this.SendNotification(Notifications.NewItemAdded, newItem);
 			this.Data = newItem;
 		}
 

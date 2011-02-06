@@ -53,7 +53,7 @@ namespace Company.Widgets.Controllers
 		/// <returns>The list of <c>INotification</c> names.</returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.NEW_ITEM_ADDED, Notifications.ITEMS_SOURCE_CHANGED };
+			return new List<int> { Notifications.NewItemAdded, Notifications.ItemsSourceChanged };
 		}
 
 		/// <summary>
@@ -67,10 +67,10 @@ namespace Company.Widgets.Controllers
 		{
 			switch (notification.Code)
 			{
-				case Notifications.NEW_ITEM_ADDED:
+				case Notifications.NewItemAdded:
 					this.NewRow.DataContext = notification.Body;
 					break;
-				case Notifications.ITEMS_SOURCE_CHANGED:
+				case Notifications.ItemsSourceChanged:
 					this.EnsureNewItem();
 					break;
 			}
@@ -81,7 +81,7 @@ namespace Company.Widgets.Controllers
 		{
 			if (this.NewRow.Visibility == Visibility.Visible)
 			{
-				this.SendNotification(Notifications.NEW_ITEM_ADD);
+				this.SendNotification(Notifications.NewItemAdd);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Company.Widgets.Controllers
 			switch (e.Key)
 			{
 				case Key.Enter:
-					this.SendNotification(Notifications.NEW_ITEM_COMMIT);
+					this.SendNotification(Notifications.NewItemCommit);
 					break;
 				case Key.Escape:
 					this.NewRow.FocusHorizontalNeighbour(true);

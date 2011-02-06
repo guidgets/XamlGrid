@@ -11,16 +11,16 @@ namespace Company.Widgets.Controllers
 			SortingModel sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 			switch (notification.Code)
 			{
-				case Notifications.ITEMS_SOURCE_CHANGED:
+				case Notifications.ItemsSourceChanged:
 					sortingModel.SetCollectionView(notification.Body as ICollectionView);
 					break;
-				case Notifications.SORTING_STATE:
+				case Notifications.SortingState:
 					sortingModel.CheckSortingState((string) notification.Body);
 					break;
-				case Notifications.SORTING_REQUESTED:
+				case Notifications.SortingRequested:
 					sortingModel.Sort((ExtendedSortDescription) notification.Body);
 					break;
-				case Notifications.ITEM_PROPERTY_CHANGED:
+				case Notifications.ItemPropertyChanged:
 					sortingModel.RefreshIfSorted((string) ((object[]) notification.Body)[1]);
 					break;
 			}

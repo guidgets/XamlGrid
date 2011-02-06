@@ -51,7 +51,7 @@ namespace Company.Widgets.Models
 				{
 					this.selectionMode = value;
 					this.SelectedItems.SelectionMode = this.selectionMode;
-					this.SendNotification(Notifications.SELECTION_MODE_CHANGED, this.selectionMode);
+					this.SendNotification(Notifications.SelectionModeChanged, this.selectionMode);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ namespace Company.Widgets.Models
 					break;
 				case NotifyCollectionChangedAction.Reset:
 					this.ranges.Clear();
-					this.SendNotification(Notifications.DESELECTED_ITEMS, new List<object>(0));
+					this.SendNotification(Notifications.DeselectedItems, new List<object>(0));
 					break;
 			}
 		}
@@ -210,7 +210,7 @@ namespace Company.Widgets.Models
 				int index = this.items.IndexOf(selectedRanges[0]);
 				this.ranges.AddRange(index, index + selectedRanges.Count);
 			}
-			this.SendNotification(Notifications.SELECTED_ITEMS, selectedRanges.Count > 0 ? selectedRanges : selectedItems);
+			this.SendNotification(Notifications.SelectedItems, selectedRanges.Count > 0 ? selectedRanges : selectedItems);
 		}
 
 		private void ProcessRemoval(NotifyCollectionChangedEventArgs e)
@@ -222,7 +222,7 @@ namespace Company.Widgets.Models
 				int index = this.items.IndexOf(selectedItem.Item);
 				this.ranges.RemoveRange(index, index);
 			}
-			this.SendNotification(Notifications.DESELECTED_ITEMS, deselectedItems);
+			this.SendNotification(Notifications.DeselectedItems, deselectedItems);
 		}
 
 		private void SelectionModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

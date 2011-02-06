@@ -22,16 +22,16 @@ namespace Company.Widgets.Controllers
 			NewItemModel newItemModel = (NewItemModel) DataGridFacade.Instance.RetrieveModel(NewItemModel.NAME);
 			switch (notification.Code)
 			{
-				case Notifications.ITEMS_SOURCE_CHANGED:
+				case Notifications.ItemsSourceChanged:
 					newItemModel.SetSource(notification.Body as ICollectionView);
 					break;
-				case Notifications.ITEM_TYPE_CHANGED:
+				case Notifications.ItemTypeChanged:
 					newItemModel.ItemType = (Type) notification.Body;
 					break;
-				case Notifications.NEW_ITEM_ADD:
+				case Notifications.NewItemAdd:
 					newItemModel.AddItem();
 					break;
-				case Notifications.NEW_ITEM_COMMIT:
+				case Notifications.NewItemCommit:
 					newItemModel.CommitItem();
 					break;
 			}

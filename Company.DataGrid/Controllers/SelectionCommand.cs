@@ -12,30 +12,30 @@ namespace Company.Widgets.Controllers
 			SelectionModel selectionModel = (SelectionModel) DataGridFacade.Instance.RetrieveModel(SelectionModel.NAME);
 			switch (notification.Code)
 			{
-				case Notifications.ITEMS_CHANGED:
+				case Notifications.ItemsChanged:
 					selectionModel.Items = notification.Body as IList<object>;
 					break;
-				case Notifications.SELECTING_ITEMS:
-					if (notification.Type == NotificationTypes.CLEAR_SELECTION)
+				case Notifications.SelectingItems:
+					if (notification.Type == NotificationTypes.ClearSelection)
 					{
 						selectionModel.SelectedItems.Clear();
 					}
 					selectionModel.Select(notification.Body);
 					break;
-				case Notifications.SELECT_ALL:
+				case Notifications.SelectAll:
 					selectionModel.SelectAll();
 					break;
-				case Notifications.SELECT_RANGE:
-					selectionModel.SelectRange(notification.Body, notification.Type == NotificationTypes.CLEAR_SELECTION);
+				case Notifications.SelectRange:
+					selectionModel.SelectRange(notification.Body, notification.Type == NotificationTypes.ClearSelection);
 					break;
-				case Notifications.DESELECTING_ITEMS:
+				case Notifications.DeselectingItems:
 					selectionModel.SelectedItems.Deselect(notification.Body);
 					break;
-				case Notifications.IS_ITEM_SELECTED:
-					selectionModel.SendNotification(Notifications.ITEM_IS_SELECTED, notification.Body,
+				case Notifications.IsItemSelected:
+					selectionModel.SendNotification(Notifications.ItemIsSelected, notification.Body,
 					                                selectionModel.SelectedItems.IsSelected(notification.Body).ToString());
 					break;
-				case Notifications.SELECTION_MODE_CHANGING:
+				case Notifications.SelectionModeChanging:
 					selectionModel.SelectionMode = (SelectionMode) notification.Body;
 					break;
 			}

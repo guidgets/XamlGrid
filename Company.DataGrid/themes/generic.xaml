@@ -248,6 +248,13 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
+						<interactivity:Interaction.Behaviors>
+							<controllers:DataStateBehavior DataBinding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True"
+														   TrueState="Focused" FalseState="Unfocused" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+							<controllers:DataStateBehavior DataBinding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"
+														   TrueState="Selected" FalseState="Deselected" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+
+						</interactivity:Interaction.Behaviors>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
@@ -402,6 +409,8 @@
 						<interactivity:Interaction.Behaviors>
 							<controllers:DataStateBehavior DataBinding="{Binding HasFocus, RelativeSource={RelativeSource Self}}" Value="True"
 														   TrueState="Focused" FalseState="Unfocused" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+							<controllers:DataStateBehavior DataBinding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"
+														   TrueState="Selected" FalseState="Deselected" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
 						</interactivity:Interaction.Behaviors>
 					</Border>
 				</ControlTemplate>

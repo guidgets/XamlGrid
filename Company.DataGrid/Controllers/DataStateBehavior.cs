@@ -1,41 +1,39 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Controls;
-using System.Collections;
 
 namespace Company.Widgets.Controllers
 {
 	public class DataStateBehavior : Behavior<FrameworkElement>
 	{
+		public static readonly DependencyProperty TargetProperty =
+			DependencyProperty.Register("Target", typeof(Control), typeof(DataStateBehavior), new PropertyMetadata(OnTargetChanged));
+
+		public static readonly DependencyProperty BindingProperty = 
+			DependencyProperty.Register("Binding", typeof(Binding), typeof(DataStateBehavior), new PropertyMetadata(null, HandleBindingChanged));
+
+		public static readonly DependencyProperty ValueProperty = 
+			DependencyProperty.Register("Value", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(null, HandleValueChanged));
+
+		public static readonly DependencyProperty TrueStateProperty = 
+			DependencyProperty.Register("TrueState", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(null));
+
+		public static readonly DependencyProperty FalseStateProperty = 
+			DependencyProperty.Register("FalseState", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(null));
+
+		private readonly BindingListener listener;
+
+		public DataStateBehavior()
+		{
+			this.listener = new BindingListener(this.HandleBindingValueChanged);
+		}
 
 
 		public Control Target
 		{
 			get { return (Control) GetValue(TargetProperty); }
 			set { SetValue(TargetProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for Target.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty TargetProperty =
-			DependencyProperty.Register("Target", typeof(Control), typeof(DataStateBehavior), new PropertyMetadata(OnTargetChanged));
-
-		private static void OnTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((DataStateBehavior) d).OnTargetChanged(e);
-		}
-
-		public static readonly DependencyProperty BindingProperty = DependencyProperty.Register("Binding", typeof(Binding), typeof(DataStateBehavior), new PropertyMetadata(null, HandleBindingChanged));
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(null, HandleValueChanged));
-		public static readonly DependencyProperty TrueStateProperty = DependencyProperty.Register("TrueState", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(null));
-		public static readonly DependencyProperty FalseStateProperty = DependencyProperty.Register("FalseState", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(null));
-
-		private BindingListener listener;
-
-		public DataStateBehavior()
-		{
-			this.listener = new BindingListener(this.HandleBindingValueChanged);
 		}
 
 		public Binding DataBinding
@@ -82,6 +80,11 @@ namespace Company.Widgets.Controllers
 			this.CheckState();
 		}
 
+		private static void OnTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataStateBehavior) d).OnTargetChanged(e);
+		}
+
 		protected virtual void OnTargetChanged(DependencyPropertyChangedEventArgs e)
 		{
 			this.listener.Element = (FrameworkElement) e.NewValue;
@@ -111,8 +114,7 @@ namespace Company.Widgets.Controllers
 			}
 			else
 			{
-				object convertedValue = ConverterHelper.ConvertToType(this.Value, this.listener.Value.GetType());
-				this.IsTrue = object.Equals(this.listener.Value, ConverterHelper.ConvertToType(this.Value, this.listener.Value.GetType()));
+				this.IsTrue = Equals(this.listener.Value, ConverterHelper.ConvertToType(this.Value, this.listener.Value.GetType()));
 			}
 		}
 
@@ -135,32 +137,6 @@ namespace Company.Widgets.Controllers
 					}
 				}
 			}
-		}
-
-		private static Control FindTargetControl(FrameworkElement element)
-		{
-			FrameworkElement parent = element;
-			bool foundVSM = false;
-
-			while (parent != null)
-			{
-				if (!foundVSM)
-				{
-					IList vsgs = VisualStateManager.GetVisualStateGroups(parent);
-					if (vsgs != null && vsgs.Count > 0)
-						foundVSM = true;
-				}
-
-				if (foundVSM)
-				{
-					Control parentControl = parent as Control;
-					if (parentControl != null)
-						return parentControl;
-				}
-				parent = parent.Parent as FrameworkElement;
-			}
-
-			return null;
 		}
 	}
 }

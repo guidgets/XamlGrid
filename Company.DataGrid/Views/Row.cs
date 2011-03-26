@@ -98,16 +98,6 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
-		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application, but see Remarks for more information.
-		/// </summary>
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
-			this.GoToFocused();
-			this.GoToSelected();
-		}
-
-		/// <summary>
 		/// Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
 		/// </summary>
 		/// <param name="e">The data for the event.</param>
@@ -211,13 +201,7 @@ namespace Company.Widgets.Views
 		private static void OnHasFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
-			row.GoToFocused();
 			row.OnHasFocusedChanged(e);
-		}
-
-		private void GoToFocused()
-		{
-			VisualStateManager.GoToState(this, this.IsFocused ? "Focused" : "Unfocused", false);
 		}
 
 		protected virtual void OnHasFocusedChanged(DependencyPropertyChangedEventArgs e)
@@ -232,13 +216,7 @@ namespace Company.Widgets.Views
 		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Row row = (Row) d;
-			row.GoToSelected();
 			row.OnIsSelectedChanged(e);
-		}
-
-		private void GoToSelected()
-		{
-			VisualStateManager.GoToState(this, this.IsSelected ? "Selected" : "Deselected", false);
 		}
 
 		protected virtual void OnIsSelectedChanged(DependencyPropertyChangedEventArgs e)

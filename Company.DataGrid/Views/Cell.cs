@@ -58,7 +58,7 @@ namespace Company.Widgets.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is selected.
 		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
-			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
+			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
@@ -211,7 +211,6 @@ namespace Company.Widgets.Views
 		{
 			base.OnApplyTemplate();
 			this.GoToSpecialView();
-			this.GoToSelected();
 			if (this.IsInEditMode)
 			{
 				this.GoToEdit();
@@ -342,11 +341,6 @@ namespace Company.Widgets.Views
 			}
 		}
 
-		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Cell) d).GoToSelected();
-		}
-
 		/// <summary>
 		/// Sets the <see cref="Cell"/> in edit mode.
 		/// </summary>
@@ -367,11 +361,6 @@ namespace Company.Widgets.Views
 			{
 				VisualStateManager.GoToState(this, "View", false);
 			}
-		}
-
-		private void GoToSelected()
-		{
-			VisualStateManager.GoToState(this, this.IsSelected ? "Selected" : "Deselected", false);
 		}
 
 		private bool GoToSpecialView()

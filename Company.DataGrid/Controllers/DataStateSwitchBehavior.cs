@@ -12,11 +12,12 @@ namespace Company.Widgets.Controllers
 	[ContentProperty("States")]
 	public class DataStateSwitchBehavior : Behavior<FrameworkElement>
 	{
+		public static readonly DependencyProperty BindingProperty = 
+			DependencyProperty.Register("Binding", typeof(Binding), typeof(DataStateSwitchBehavior), new PropertyMetadata(null, HandleBindingChanged));
+		public static readonly DependencyProperty StatesProperty = 
+			DependencyProperty.Register("States", typeof(List<DataStateSwitchCase>), typeof(DataStateSwitchBehavior), new PropertyMetadata(null));
 
-		public static readonly DependencyProperty BindingProperty = DependencyProperty.Register("Binding", typeof(Binding), typeof(DataStateSwitchBehavior), new PropertyMetadata(null, DataStateSwitchBehavior.HandleBindingChanged));
-		public static readonly DependencyProperty StatesProperty = DependencyProperty.Register("States", typeof(List<DataStateSwitchCase>), typeof(DataStateSwitchBehavior), new PropertyMetadata(null));
-
-		private BindingListener listener;
+		private readonly BindingListener listener;
 
 		public DataStateSwitchBehavior()
 		{
@@ -116,10 +117,10 @@ namespace Company.Widgets.Controllers
 		public bool IsValid(object targetValue)
 		{
 			if (targetValue == null || this.Value == null)
-				return object.Equals(targetValue, this.Value);
-
-			object convertedValue = ConverterHelper.ConvertToType(this.Value, targetValue.GetType());
-			return object.Equals(targetValue, ConverterHelper.ConvertToType(this.Value, targetValue.GetType()));
+			{
+				return Equals(targetValue, this.Value);
+			}
+			return Equals(targetValue, ConverterHelper.ConvertToType(this.Value, targetValue.GetType()));
 		}
 	}
 }

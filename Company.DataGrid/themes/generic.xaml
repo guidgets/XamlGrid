@@ -399,6 +399,10 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
+						<interactivity:Interaction.Behaviors>
+							<controllers:DataStateBehavior DataBinding="{Binding HasFocus, RelativeSource={RelativeSource Self}}" Value="True"
+														   TrueState="Focused" FalseState="Unfocused" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+						</interactivity:Interaction.Behaviors>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>

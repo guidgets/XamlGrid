@@ -237,7 +237,6 @@ namespace Company.Widgets.Views
 		{
 			this.HasFocus = true;
 			base.OnGotFocus(e);
-			VisualStateManager.GoToState(this, "Focused", false);
 		}
 
 		/// <summary>
@@ -250,7 +249,6 @@ namespace Company.Widgets.Views
 			{
 				this.HasFocus = false;
 				base.OnLostFocus(e);
-				VisualStateManager.GoToState(this, "Unfocused", false);
 			}
 		}
 

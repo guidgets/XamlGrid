@@ -248,13 +248,20 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
-						<interactivity:Interaction.Behaviors>
-							<controllers:DataStateBehavior DataBinding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True"
-														   TrueState="Focused" FalseState="Unfocused" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
-							<controllers:DataStateBehavior DataBinding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"
-														   TrueState="Selected" FalseState="Deselected" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
-
-						</interactivity:Interaction.Behaviors>
+						<interactivity:Interaction.Triggers>
+							<controllers:DataTrigger DataBinding="{Binding HasFocus}" Value="True">
+								<controllers:GoToStateAction StateName="Focused" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding HasFocus}" Value="False">
+								<controllers:GoToStateAction StateName="Unfocused" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding IsSelected}" Value="True">
+								<controllers:GoToStateAction StateName="Selected" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding IsSelected}" Value="False">
+								<controllers:GoToStateAction StateName="Deselected" />
+							</controllers:DataTrigger>
+						</interactivity:Interaction.Triggers>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
@@ -406,12 +413,20 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
-						<interactivity:Interaction.Behaviors>
-							<controllers:DataStateBehavior DataBinding="{Binding HasFocus, RelativeSource={RelativeSource Self}}" Value="True"
-														   TrueState="Focused" FalseState="Unfocused" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
-							<controllers:DataStateBehavior DataBinding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"
-														   TrueState="Selected" FalseState="Deselected" Target="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
-						</interactivity:Interaction.Behaviors>
+						<interactivity:Interaction.Triggers>
+							<controllers:DataTrigger DataBinding="{Binding HasFocus}" Value="True">
+								<controllers:GoToStateAction StateName="Focused" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding HasFocus}" Value="False">
+								<controllers:GoToStateAction StateName="Unfocused" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding IsSelected}" Value="True">
+								<controllers:GoToStateAction StateName="Selected" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding IsSelected}" Value="False">
+								<controllers:GoToStateAction StateName="Deselected" />
+							</controllers:DataTrigger>
+						</interactivity:Interaction.Triggers>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
@@ -521,6 +536,17 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
+						<interactivity:Interaction.Triggers>
+							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.String">
+								<controllers:GoToStateAction StateName="EditText" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.DateTime">
+								<controllers:GoToStateAction StateName="EditDate" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.Nullable`1[System.DateTime]">
+								<controllers:GoToStateAction StateName="EditDate" />
+							</controllers:DataTrigger>
+						</interactivity:Interaction.Triggers>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>

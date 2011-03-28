@@ -8,7 +8,7 @@ namespace Company.Widgets.Views
 	/// <summary>
 	/// Represents a visual element that provides means of editing a supplied value.
 	/// </summary>
-	public class Editor : ContentControl
+	public class Editor : ExtendedContentControl
 	{
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data an <see cref="Editor"/> edits.
@@ -127,17 +127,9 @@ namespace Company.Widgets.Views
 			{
 				return;
 			}
-			if (this.DataType == typeof(string))
-			{
-				VisualStateManager.GoToState(this, "EditText", false);
-			}
 			if (this.DataType.IsNumeric())
 			{
 				VisualStateManager.GoToState(this, "EditNumber", false);
-			}
-			if (this.DataType == typeof(DateTime) || this.DataType == typeof(DateTime?))
-			{
-				VisualStateManager.GoToState(this, "EditDate", false);
 			}
 		}
 

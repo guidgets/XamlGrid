@@ -8,7 +8,7 @@ namespace Company.Widgets.Views
 	/// <summary>
 	/// Represents a GUI element displaying a single characteristic of a data object, or a simple single value.
 	/// </summary>
-	public abstract class CellBase : ContentControl
+	public abstract class CellBase : ExtendedContentControl
 	{
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the column to which the <see cref="CellBase"/> belongs.

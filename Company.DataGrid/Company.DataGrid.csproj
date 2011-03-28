@@ -86,12 +86,11 @@
     <Compile Include="Controllers\CellController.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
-    <Compile Include="Controllers\ConverterHelper.cs" />
     <Compile Include="Controllers\DataBinder.cs" />
-    <Compile Include="Controllers\DataStateBehavior.cs" />
-    <Compile Include="Controllers\DataStateSwitchBehavior.cs" />
+    <Compile Include="Controllers\DataTrigger.cs" />
     <Compile Include="Controllers\EditorController.cs" />
     <Compile Include="Controllers\FooterCellController.cs" />
+    <Compile Include="Controllers\GoToStateAction.cs" />
     <Compile Include="Controllers\HandleNavigationBehaviour.cs" />
     <Compile Include="Controllers\NewItemCommand.cs" />
     <Compile Include="Controllers\NewRowController.cs" />
@@ -134,7 +133,10 @@
     <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
     <Compile Include="Models\StandardPropertyPathNode.cs" />
+    <Compile Include="Views\ExtendedContentControl.cs" />
+    <Compile Include="Views\ExtendedItemsControl.cs" />
     <Compile Include="Views\FooterRow.cs" />
+    <Compile Include="Views\ITemplateNotify.cs" />
     <Compile Include="Views\ItemsControlExtensions.cs" />
     <Compile Include="Views\Editor.cs" />
     <Compile Include="Views\DependencyObjectExtensions.cs" />

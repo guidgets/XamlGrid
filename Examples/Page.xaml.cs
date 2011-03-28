@@ -188,7 +188,7 @@ namespace Examples
 			}
 		}
 
-		public virtual DateTime HireDate
+		public virtual DateTime? HireDate
         {
             get;
             set;

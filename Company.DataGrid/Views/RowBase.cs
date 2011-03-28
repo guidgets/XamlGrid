@@ -1,10 +1,9 @@
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Company.Widgets.Views
 {
-	public abstract class RowBase : ItemsControl
+	public abstract class RowBase : ExtendedItemsControl
 	{
 		public event DependencyPropertyChangedEventHandler VisibilityChanged;
 

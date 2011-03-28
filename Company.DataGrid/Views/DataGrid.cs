@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
@@ -18,7 +17,7 @@ namespace Company.Widgets.Views
 	/// <summary>
 	/// Represents a control for displaying and manipulating data with a default tabular view.
 	/// </summary>
-	public class DataGrid : ItemsControl
+	public class DataGrid : ExtendedItemsControl
 	{
 		private event DependencyPropertyChangedEventHandler itemsSourceChanged;
 

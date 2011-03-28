@@ -195,10 +195,10 @@ namespace Company.Widgets.Controllers
 
 		private void DataGrid_LayoutUpdated(object sender, EventArgs e)
 		{
+			this.DataGrid.LayoutUpdated -= this.DataGrid_LayoutUpdated;
 			Column columnToFocus = this.DataGrid.CurrentColumn ?? this.DataGrid.Columns.FirstOrDefault();
 			this.DataGrid.CurrentColumn = null;
 			this.DataGrid.CurrentColumn = columnToFocus;
-			this.DataGrid.LayoutUpdated -= this.DataGrid_LayoutUpdated;
 		}
 
 		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
@@ -409,15 +409,15 @@ namespace Company.Widgets.Controllers
 
 		private void DataGrid_CurrentItemLayoutUpdated(object sender, EventArgs e)
 		{
+			this.DataGrid.LayoutUpdated -= this.DataGrid_CurrentItemLayoutUpdated;
 			int pageDown = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) + this.GetPageSize();
 			this.SendNotification(Notifications.CurrentItemToPosition, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
-			this.DataGrid.LayoutUpdated -= this.DataGrid_CurrentItemLayoutUpdated;
 		}
 
 		private void DataGrid_SelectionLayoutUpdated(object sender, EventArgs e)
 		{
-			this.SelectItems(this.DataGrid.CurrentItem, false, pressedKey);
 			this.DataGrid.LayoutUpdated -= this.DataGrid_SelectionLayoutUpdated;
+			this.SelectItems(this.DataGrid.CurrentItem, false, pressedKey);
 		}
 
 		private void SelectItems(object itemToSelect, bool clicked, Key key)

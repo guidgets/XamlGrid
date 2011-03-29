@@ -122,11 +122,6 @@ namespace Company.Widgets.Views
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
-
-			if (VisualStateManager.GoToState(this, "CustomEdit", false))
-			{
-				return;
-			}
 			if (this.DataType.IsNumeric())
 			{
 				VisualStateManager.GoToState(this, "EditNumber", false);

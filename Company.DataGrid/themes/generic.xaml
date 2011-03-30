@@ -432,6 +432,8 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+	
+	<controllers:IsTypeNumericConverter x:Key="isTypeNumericConverter" />
 
 	<Style TargetType="company:Editor">
 		<Setter Property="IsTabStop" Value="False" />
@@ -545,6 +547,9 @@
 							</controllers:DataTrigger>
 							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.Nullable`1[System.DateTime]">
 								<controllers:GoToStateAction StateName="EditDate" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding DataType, Converter={StaticResource isTypeNumericConverter}}" Value="True">
+								<controllers:GoToStateAction StateName="EditNumber" />
 							</controllers:DataTrigger>
 						</interactivity:Interaction.Triggers>
 					</Border>

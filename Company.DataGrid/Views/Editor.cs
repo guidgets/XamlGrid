@@ -117,18 +117,6 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
-		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application, but see Remarks for more information.
-		/// </summary>
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
-			if (this.DataType.IsNumeric())
-			{
-				VisualStateManager.GoToState(this, "EditNumber", false);
-			}
-		}
-
-		/// <summary>
 		/// Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
 		/// </summary>
 		/// <param name="e">The data for the event.</param>
@@ -197,11 +185,11 @@ namespace Company.Widgets.Views
 
 		private void Editor_LayoutUpdated(object sender, EventArgs e)
 		{
+			this.LayoutUpdated -= this.Editor_LayoutUpdated;
 			if (this.HasFocus)
 			{
 				this.Focus();
 			}
-			this.LayoutUpdated -= this.Editor_LayoutUpdated;
 		}
 	}
 }

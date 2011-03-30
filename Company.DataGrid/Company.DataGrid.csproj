@@ -92,6 +92,7 @@
     <Compile Include="Controllers\FooterCellController.cs" />
     <Compile Include="Controllers\GoToStateAction.cs" />
     <Compile Include="Controllers\HandleNavigationBehaviour.cs" />
+    <Compile Include="Controllers\IsTypeNumericConverter.cs" />
     <Compile Include="Controllers\NewItemCommand.cs" />
     <Compile Include="Controllers\NewRowController.cs" />
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />

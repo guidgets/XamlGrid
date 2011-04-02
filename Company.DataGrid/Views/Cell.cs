@@ -46,7 +46,7 @@ namespace Company.Widgets.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));		
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is in edit mode.
@@ -370,13 +370,9 @@ namespace Company.Widgets.Views
 
 		private bool GoToBoolean()
 		{
-			if (this.DataType == typeOfBoolean)
+			if (this.DataType == typeOfBoolean || this.DataType == typeOfNullableBoolean)
 			{
 				return VisualStateManager.GoToState(this, "Boolean", false);
-			}
-			if (this.DataType == typeOfNullableBoolean)
-			{
-				return VisualStateManager.GoToState(this, "NullableBoolean", false);
 			}
 			return false;
 		}

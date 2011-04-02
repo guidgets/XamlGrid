@@ -270,6 +270,7 @@
 
 	<controllers:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
 	<controllers:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
+	<controllers:IsTypeNullableConverter x:Key="isTypeNullableConverter" />
 
 	<Style TargetType="company:Cell">
 		<Setter Property="MinHeight" Value="22" />
@@ -351,24 +352,8 @@
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
 														<CheckBox IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                  IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-													</DataTemplate>
-												</DiscreteObjectKeyFrame.Value>
-											</DiscreteObjectKeyFrame>
-										</ObjectAnimationUsingKeyFrames>
-									</Storyboard>
-								</VisualState>
-								<VisualState Name="NullableBoolean">
-									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
-										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0">
-												<DiscreteObjectKeyFrame.Value>
-													<DataTemplate>
-														<CheckBox IsThreeState="True" 
-                                                                  IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+																  IsThreeState="{Binding Tag.DataType, RelativeSource={RelativeSource TemplatedParent},
+																						 Converter={StaticResource isTypeNullableConverter}}"
                                                                   IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
@@ -432,7 +417,7 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	
+
 	<controllers:IsTypeNumericConverter x:Key="isTypeNumericConverter" />
 
 	<ControlTemplate x:Key="numericUpDownTemplate" TargetType="toolkit:NumericUpDown">

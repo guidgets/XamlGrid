@@ -271,6 +271,7 @@
 	<controllers:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
 	<controllers:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
 	<controllers:IsTypeNullableConverter x:Key="isTypeNullableConverter" />
+	<controllers:IsImageUriConverter x:Key="isImageUriConverter" />
 
 	<Style TargetType="company:Cell">
 		<Setter Property="MinHeight" Value="22" />
@@ -418,6 +419,9 @@
 								<controllers:GoToStateAction StateName="Boolean" />
 							</controllers:DataTrigger>
 							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.Byte[]">
+								<controllers:GoToStateAction StateName="Image" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding Value, Converter={StaticResource isImageUriConverter}}" Value="True">
 								<controllers:GoToStateAction StateName="Image" />
 							</controllers:DataTrigger>
 							<controllers:DataTrigger DataBinding="{Binding IsInEditMode}" Value="True">

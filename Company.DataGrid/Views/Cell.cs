@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -24,7 +22,6 @@ namespace Company.Widgets.Views
 
 
 		private static readonly Type typeOfObject = typeof(object);
-		private static readonly Type typeOfUri = typeof(Uri);
 
 
 		/// <summary>
@@ -202,15 +199,6 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
-		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
-		/// </summary>
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
-			this.GoToSpecialView();
-		}
-
-		/// <summary>
 		/// Called before the <see cref="UIElement.MouseLeftButtonDown"/> event occurs.
 		/// </summary>
 		/// <param name="e">The data for the event.</param>
@@ -324,26 +312,6 @@ namespace Company.Widgets.Views
 			{
 				handler(this, e);
 			}
-		}
-
-		private bool GoToSpecialView()
-		{
-			return this.GoToImage();
-		}
-
-		private bool GoToImage()
-		{
-			if (this.DataType == typeOfUri && this.Value != null)
-			{
-				string uri = this.Value.ToString();
-				if ((from imageExtension in new[] { ".png", ".jpg", ".jpeg" }
-				     where string.Compare(Path.GetExtension(uri), imageExtension, StringComparison.OrdinalIgnoreCase) == 0
-				     select imageExtension).Any())
-				{
-					return VisualStateManager.GoToState(this, "Image", false);
-				}
-			}
-			return false;
 		}
 
 		private void UpdateDataType()

@@ -24,9 +24,6 @@ namespace Company.Widgets.Views
 
 
 		private static readonly Type typeOfObject = typeof(object);
-		private static readonly Type typeOfBoolean = typeof(bool);
-		private static readonly Type typeOfNullableBoolean = typeof(bool?);
-		private static readonly Type typeOfByteArray = typeof(byte[]);
 		private static readonly Type typeOfUri = typeof(Uri);
 
 
@@ -211,10 +208,6 @@ namespace Company.Widgets.Views
 		{
 			base.OnApplyTemplate();
 			this.GoToSpecialView();
-			if (this.IsInEditMode)
-			{
-				this.GoToEdit();
-			}
 		}
 
 		/// <summary>
@@ -322,14 +315,6 @@ namespace Company.Widgets.Views
 				return;
 			}
 			cell.OnIsInEditModeChanged(e);
-			if (editMode)
-			{
-				cell.GoToEdit();
-			}
-			else
-			{
-				cell.GoToView();
-			}
 		}
 
 		protected virtual void OnIsInEditModeChanged(DependencyPropertyChangedEventArgs e)
@@ -341,48 +326,13 @@ namespace Company.Widgets.Views
 			}
 		}
 
-		/// <summary>
-		/// Sets the <see cref="Cell"/> in edit mode.
-		/// </summary>
-		private void GoToEdit()
-		{
-			if (!this.GoToSpecialView())
-			{
-				VisualStateManager.GoToState(this, "Editor", false);
-			}
-		}
-
-		/// <summary>
-		/// Exits the edit mode of the <see cref="Cell"/>.
-		/// </summary>
-		private void GoToView()
-		{
-			if (!this.GoToSpecialView())
-			{
-				VisualStateManager.GoToState(this, "View", false);
-			}
-		}
-
 		private bool GoToSpecialView()
 		{
-			return this.GoToBoolean() || this.GoToImage();
-		}
-
-		private bool GoToBoolean()
-		{
-			if (this.DataType == typeOfBoolean || this.DataType == typeOfNullableBoolean)
-			{
-				return VisualStateManager.GoToState(this, "Boolean", false);
-			}
-			return false;
+			return this.GoToImage();
 		}
 
 		private bool GoToImage()
 		{
-			if (this.DataType == typeOfByteArray)
-			{
-				return VisualStateManager.GoToState(this, "Image", false);
-			}
 			if (this.DataType == typeOfUri && this.Value != null)
 			{
 				string uri = this.Value.ToString();

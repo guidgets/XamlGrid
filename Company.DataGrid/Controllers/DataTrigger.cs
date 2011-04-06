@@ -120,7 +120,7 @@ namespace Company.Widgets.Controllers
 					this.isTrue = value;
 					if (this.isTrue && this.templateApplied)
 					{
-						this.InvokeActions(this.listener.Element);
+						this.InvokeActions(null);
 					}
 				}
 			}
@@ -130,7 +130,7 @@ namespace Company.Widgets.Controllers
 		{
 			if (this.IsTrue)
 			{
-				this.InvokeActions(this.listener.Element);				
+				this.InvokeActions(null);				
 			}
 			this.templateApplied = true;
 		}

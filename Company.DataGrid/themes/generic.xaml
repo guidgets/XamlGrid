@@ -5,7 +5,7 @@
     xmlns:controllers="clr-namespace:Company.Widgets.Controllers"
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
     xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
-	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:widgets="clr-namespace:Company.Widgets">
+	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:widgets="clr-namespace:Company.Widgets" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
 	<SolidColorBrush x:Key="controlColor" company:OSBrush.OSColor="ControlColor" />
 	<SolidColorBrush x:Key="windowColor" company:OSBrush.OSColor="WindowColor" />
@@ -410,6 +410,27 @@
 							</controllers:DataTrigger>
 							<controllers:DataTrigger DataBinding="{Binding IsSelected}" Value="False">
 								<controllers:GoToStateAction StateName="Deselected" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.Boolean">
+								<controllers:GoToStateAction StateName="Boolean" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.Nullable`1[System.Boolean]">
+								<controllers:GoToStateAction StateName="Boolean" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding DataType}" Value="System.Byte[]">
+								<controllers:GoToStateAction StateName="Image" />
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding IsInEditMode}" Value="True">
+								<controllers:GoToStateAction StateName="Editor">
+									<sys:String>Boolean</sys:String>
+									<sys:String>Image</sys:String>
+								</controllers:GoToStateAction>
+							</controllers:DataTrigger>
+							<controllers:DataTrigger DataBinding="{Binding IsInEditMode}" Value="False">
+								<controllers:GoToStateAction StateName="View">
+									<sys:String>Boolean</sys:String>
+									<sys:String>Image</sys:String>
+								</controllers:GoToStateAction>
 							</controllers:DataTrigger>
 						</interactivity:Interaction.Triggers>
 					</Border>

@@ -8,74 +8,168 @@
 // For updated project information please visit http://projects.nikhilk.net/SilverlightFX.
 //
 
-using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
+using System.Windows.Markup;
+using Company.Widgets.Views;
 
 namespace Company.Widgets.Controllers
 {
 	/// <summary>
 	/// An action that transitions from one visual state to another.
 	/// </summary>
-	public sealed class GoToStateAction : TriggerAction<FrameworkElement>
+	[ContentProperty("LockedStates")]
+	public class GoToStateAction : TriggerAction<FrameworkElement>
 	{
-
 		/// <summary>
-		/// Represents the State property.
+		/// Identifies the dependency property which gets or sets the name of the state to navigate to.
 		/// </summary>
 		public static readonly DependencyProperty StateNameProperty =
 			DependencyProperty.Register("StateName", typeof(string), typeof(GoToStateAction), null);
 
 		/// <summary>
-		/// Represents the UseTransition property.
+		/// Identifies the dependency property which gets or sets whether the state navigation should be accompanied by a transition.
 		/// </summary>
 		public static readonly DependencyProperty UseTransitionProperty =
 			DependencyProperty.Register("UseTransition", typeof(bool), typeof(GoToStateAction), new PropertyMetadata(true));
 
+		private static readonly DependencyProperty lockedStatesProperty =
+			DependencyProperty.Register("LockedStates", typeof(List<string>), typeof(GoToStateAction), null);
+
+		private Control control;
+		private IList<VisualStateGroup> visualStateGroups;
+
+
+		/// <summary>
+		/// An action that transitions from one visual state to another.
+		/// </summary>
+		public GoToStateAction()
+		{
+			this.SetValue(lockedStatesProperty, new List<string>());
+		}
+
+
 		/// <summary>
 		/// Gets or sets the name of the state to navigate to.
 		/// </summary>
-		public string StateName
+		public virtual string StateName
 		{
 			get
 			{
-				return (string) GetValue(StateNameProperty);
+				return (string) this.GetValue(StateNameProperty);
 			}
 			set
 			{
-				SetValue(StateNameProperty, value);
+				this.SetValue(StateNameProperty, value);
 			}
 		}
 
 		/// <summary>
-		/// Gets or sets whether the state navigation should be accompanied with a transition.
+		/// Gets or sets whether the state navigation should be accompanied by a transition.
 		/// </summary>
-		public bool UseTransition
+		public virtual bool UseTransition
 		{
 			get
 			{
-				return (bool) GetValue(UseTransitionProperty);
+				return (bool) this.GetValue(UseTransitionProperty);
 			}
 			set
 			{
-				SetValue(UseTransitionProperty, value);
+				this.SetValue(UseTransitionProperty, value);
 			}
 		}
 
-		/// <internalonly />
+		/// <summary>
+		/// Gets the locked <see cref="VisualState"/>s, that is, states that must not be left for another state in the same <see cref="VisualStateGroup"/>.
+		/// </summary>
+		public virtual List<string> LockedStates
+		{
+			get
+			{
+				return (List<string>) this.GetValue(lockedStatesProperty);
+			}
+		}
+
+
+		/// <summary>
+		/// Called when the action is being detached from its AssociatedObject, but before it has actually occurred.
+		/// </summary>
+		protected override void OnDetaching()
+		{
+			this.control = null;
+			this.visualStateGroups = null;
+
+			base.OnDetaching();
+		}
+
+		/// <summary>
+		/// Invokes the action.
+		/// </summary>
+		/// <param name="parameter">The parameter to the action. If the action does not require a parameter, the parameter may be set to a <c>null</c> reference.</param>
 		protected override void Invoke(object parameter)
 		{
-			string stateName = StateName;
-			if (string.IsNullOrEmpty(stateName))
+			this.FindTargetControl();
+			if (this.LockedStates.Count > 0)
 			{
-				throw new InvalidOperationException("The StateName must be set on a GoToState action.");
+				this.FindVisualGroups();
+				VisualStateGroup stateGroup = (from visualStateGroup in this.visualStateGroups
+				                               where ((IList<VisualState>) visualStateGroup.States).Any(v => v.Name == this.StateName)
+				                               select visualStateGroup).First();
+				if ((from state in this.LockedStates
+				     where stateGroup.CurrentState != null && stateGroup.CurrentState.Name == state
+				     select state).Any())
+				{
+					return;
+				}
 			}
+			VisualStateManager.GoToState(this.control, this.StateName, this.UseTransition);
+		}
 
-			bool hasState = VisualStateManager.GoToState((Control) parameter, stateName, UseTransition);
-			if (hasState == false)
+
+		private void FindTargetControl()
+		{
+			if (this.control != null)
 			{
-				throw new InvalidOperationException("The state named '" + stateName + "' does not exist.");
+				return;
+			}
+			FrameworkElement parent = this.AssociatedObject;
+
+			while (parent != null)
+			{
+				Control parentControl = parent as Control;
+				if (parentControl != null)
+				{
+					this.control = parentControl;
+					return;
+				}
+				parent = parent.GetParent() as FrameworkElement;
+			}
+		}
+
+		private void FindVisualGroups()
+		{
+			if (this.visualStateGroups != null)
+			{
+				return;
+			}
+			FrameworkElement parent = this.AssociatedObject;
+
+			while (parent != null)
+			{
+				if (this.visualStateGroups == null)
+				{
+					IList groups = VisualStateManager.GetVisualStateGroups(parent);
+					if (groups.Count > 0)
+					{
+						this.visualStateGroups = (IList<VisualStateGroup>) groups;
+						return;
+					}
+				}
+				parent = parent.GetParent() as FrameworkElement;
 			}
 		}
 	}

@@ -3,9 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:company="clr-namespace:Company.Widgets.Views"
     xmlns:controllers="clr-namespace:Company.Widgets.Controllers"
-    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
-	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:widgets="clr-namespace:Company.Widgets" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+	xmlns:widgets="clr-namespace:Company.Widgets" xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+	xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit">
 
 	<SolidColorBrush x:Key="controlColor" company:OSBrush.OSColor="ControlColor" />
 	<SolidColorBrush x:Key="windowColor" company:OSBrush.OSColor="WindowColor" />

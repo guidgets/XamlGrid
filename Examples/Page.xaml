@@ -3,8 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:company="http://schemas.company.com"
     xmlns:Examples="clr-namespace:Examples" 
-    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=System.Windows" 
-    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit">
+	xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit">
 	<Grid Name="layoutRoot" Width="900" VerticalAlignment="Center">
 		<Grid.Resources>
 			<Style TargetType="Button">

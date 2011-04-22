@@ -72,7 +72,6 @@
     <Compile Include="Controllers\CellController.cs" />
     <Compile Include="Controllers\Column.cs" />
     <Compile Include="Controllers\ColumnResizingBehavior.cs" />
-    <Compile Include="Controllers\CounterModelToNumberConverter.cs" />
     <Compile Include="Controllers\DataBinder.cs" />
     <Compile Include="Controllers\DataTrigger.cs" />
     <Compile Include="Controllers\EditorController.cs" />
@@ -107,7 +106,6 @@
     <Compile Include="Models\PropertyNodeType.cs" />
     <Compile Include="Models\PropertyPathNode.cs" />
     <Compile Include="Models\PropertyPathWalker.cs" />
-    <Compile Include="Models\RowCounterModel.cs" />
     <Compile Include="Models\SelectedItem.cs" />
     <Compile Include="Controllers\CurrentItemCommand.cs" />
     <Compile Include="Controllers\DataCommand.cs" />
@@ -119,9 +117,6 @@
     <Compile Include="Controllers\SelectionCommand.cs" />
     <Compile Include="Controllers\SortDirectionToBooleanConverter.cs" />
     <Compile Include="Controllers\SortingCommand.cs" />
-    <Compile Include="Controllers\StyleBinder.cs" />
-    <Compile Include="Controllers\StyleBinding.cs" />
-    <Compile Include="Controllers\StyleBindingCollection.cs" />
     <Compile Include="Controllers\TypeExtensions.cs" />
     <Compile Include="Models\StandardPropertyPathNode.cs" />
     <Compile Include="Views\ExtendedContentControl.cs" />

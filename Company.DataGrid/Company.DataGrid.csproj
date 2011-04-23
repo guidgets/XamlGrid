@@ -60,11 +60,11 @@
       <HintPath>..\System.Windows.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Windows.Interactivity, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
-    <Compile Include="Controllers\BindingListener.cs" />
+    <Compile Include="Controllers\Behavior.cs" />
+    <Compile Include="Controllers\BehaviorCollection.cs" />
     <Compile Include="Controllers\ColumnsCollection.cs" />
     <Compile Include="Controllers\ControllerCollection.cs" />
     <Compile Include="Controllers\BooleanToVisibilityConverter.cs" />
@@ -78,6 +78,8 @@
     <Compile Include="Controllers\FooterCellController.cs" />
     <Compile Include="Controllers\GoToStateAction.cs" />
     <Compile Include="Controllers\HandleNavigationBehaviour.cs" />
+    <Compile Include="Controllers\IAttachedObject.cs" />
+    <Compile Include="Controllers\Interaction.cs" />
     <Compile Include="Controllers\IsImageUriConverter.cs" />
     <Compile Include="Controllers\IsTypeNullableConverter.cs" />
     <Compile Include="Controllers\IsTypeNumericConverter.cs" />
@@ -88,6 +90,10 @@
     <Compile Include="Controllers\SumAggregate.cs" />
     <Compile Include="Controllers\SyncScrollBehavior.cs" />
     <Compile Include="Controllers\ScrollOnHomeEndBehaviour.cs" />
+    <Compile Include="Controllers\Trigger.cs" />
+    <Compile Include="Controllers\TriggerAction.cs" />
+    <Compile Include="Controllers\TriggerActionCollection.cs" />
+    <Compile Include="Controllers\TriggerCollection.cs" />
     <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />
     <Compile Include="Models\DataWrapper.cs" />

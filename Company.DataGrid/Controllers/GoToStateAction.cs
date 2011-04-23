@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 using System.Windows.Markup;
 using Company.Widgets.Views;
 
@@ -98,19 +97,15 @@ namespace Company.Widgets.Controllers
 		/// <summary>
 		/// Called when the action is being detached from its AssociatedObject, but before it has actually occurred.
 		/// </summary>
-		protected override void OnDetaching()
+		protected override void OnDetach()
 		{
 			this.control = null;
 			this.visualStateGroups = null;
 
-			base.OnDetaching();
+			base.OnDetach();
 		}
 
-		/// <summary>
-		/// Invokes the action.
-		/// </summary>
-		/// <param name="parameter">The parameter to the action. If the action does not require a parameter, the parameter may be set to a <c>null</c> reference.</param>
-		protected override void Invoke(object parameter)
+		protected override void InvokeAction(System.EventArgs e)
 		{
 			this.FindTargetControl();
 			if (this.LockedStates.Count > 0)

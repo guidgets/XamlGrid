@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 
 namespace Company.Widgets.Controllers
 {
@@ -14,22 +13,22 @@ namespace Company.Widgets.Controllers
 		/// Called after the behaviour is attached to an AssociatedObject.
 		/// </summary>
 		/// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
-		protected override void OnAttached()
+		protected override void OnAttach()
 		{
-			base.OnAttached();
+			base.OnAttach();
 
-			this.AssociatedObject.AddHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.AssociatedObject_KeyDown), true);
+			this.AssociatedObject.AddHandler(KeyDownEvent, new KeyEventHandler(this.AssociatedObject_KeyDown), true);
 		}
 
 		/// <summary>
 		/// Called when the behaviour is being detached from its AssociatedObject, but before it has actually occurred.
 		/// </summary>
 		/// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
-		protected override void OnDetaching()
+		protected override void OnDetach()
 		{
-			base.OnDetaching();
+			base.OnDetach();
 
-			this.AssociatedObject.RemoveHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.AssociatedObject_KeyDown));
+			this.AssociatedObject.RemoveHandler(KeyDownEvent, new KeyEventHandler(this.AssociatedObject_KeyDown));
 		}
 
 		private void AssociatedObject_KeyDown(object sender, KeyEventArgs e)

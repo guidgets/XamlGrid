@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Interactivity;
-using Company.Widgets.Views;
 
 namespace Company.Widgets.Controllers
 {
-	public class DataTrigger : TriggerBase<FrameworkElement>
+	public class DataTrigger : Trigger<FrameworkElement>
 	{
-		private readonly BindingListener listener;
-		private bool templateApplied;
-
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(DataTrigger), new PropertyMetadata(null, HandleValueChanged));
-		public static readonly DependencyProperty BindingProperty = DependencyProperty.Register("Binding", typeof(Binding), typeof(DataTrigger), new PropertyMetadata(null, HandleBindingChanged));
-
-		private static readonly DependencyProperty templatedParentProperty =
-			DependencyProperty.RegisterAttached("TemplatedParent", typeof(Control), typeof(DataTrigger), null);
-
-		public DataTrigger()
+		public object BindingValue
 		{
-			this.listener = new BindingListener(this.HandleBindingValueChanged);
+			get { return this.GetValue(BindingValueProperty); }
+			set { SetValue(BindingValueProperty, value); }
 		}
+
+		// Using a DependencyProperty as the backing store for BindingValue.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty BindingValueProperty =
+			DependencyProperty.Register("BindingValue", typeof(object), typeof(DataTrigger), new PropertyMetadata(HandleBindingValueChanged));
+
+		
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(DataTrigger), new PropertyMetadata(null, HandleValueChanged));
 
 		public string Value
 		{
@@ -35,50 +30,30 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		public Binding DataBinding
+		protected override void OnAttach()
 		{
-			get
-			{
-				return (Binding) this.GetValue(BindingProperty);
-			}
-			set
-			{
-				this.SetValue(BindingProperty, value);
-			}
+			base.OnAttach();
+
+			//this.AssociatedObject.LayoutUpdated += this.AssociatedObject_LayoutUpdated;
 		}
 
-		protected override void OnAttached()
+		void AssociatedObject_LayoutUpdated(object sender, System.EventArgs e)
 		{
-			base.OnAttached();
-
-			Binding binding = new Binding { RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent) };
-			this.AssociatedObject.SetBinding(templatedParentProperty, binding);
-			this.listener.Element = (Control) this.AssociatedObject.GetValue(templatedParentProperty);
-			((ITemplateNotify) this.listener.Element).TemplateApplied += this.Target_TemplateApplied;
-		}
-
-		protected override void OnDetaching()
-		{
-			base.OnDetaching();
-
-			((ITemplateNotify) this.listener.Element).TemplateApplied -= this.Target_TemplateApplied;
-			this.listener.Element = null;
-		}
-
-		private void HandleBindingValueChanged(object sender, BindingChangedEventArgs e)
-		{
+			this.AssociatedObject.LayoutUpdated -= this.AssociatedObject_LayoutUpdated;
+			this.templateApplied = true;
 			this.CheckState();
 		}
 
-		private static void HandleBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		protected override void OnDetach()
 		{
-			((DataTrigger) sender).OnBindingChanged(e);
+			this.ClearValue(BindingValueProperty);
+
+			base.OnDetach();
 		}
 
-		protected virtual void OnBindingChanged(DependencyPropertyChangedEventArgs e)
+		private static void HandleBindingValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			this.DataBinding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
-			this.listener.Binding = this.DataBinding;
+			((DataTrigger) d).CheckState();
 		}
 
 
@@ -92,47 +67,38 @@ namespace Company.Widgets.Controllers
 			this.CheckState();
 		}
 
-		protected virtual void OnTargetChanged(DependencyPropertyChangedEventArgs e)
-		{
-			this.listener.Element = (FrameworkElement) e.NewValue;
-		}
-
 		private void CheckState()
 		{
-			if (this.Value == null || this.listener.Value == null)
+			if (!this.templateApplied)
 			{
-				this.IsTrue = Equals(this.listener.Value, this.Value);
+				return;
+			}
+			if (this.Value == null || this.BindingValue == null)
+			{
+				this.IsTrue = Equals(this.BindingValue, this.Value);
 			}
 			else
 			{
-				this.IsTrue = Equals(this.listener.Value.ToString(), this.Value);
+				this.IsTrue = Equals(this.BindingValue.ToString(), this.Value);
 			}
 		}
 
 		private bool isTrue;
+		private bool templateApplied;
+
 		private bool IsTrue
 		{
-			get { return this.isTrue; }
 			set
 			{
 				if (this.isTrue != value)
 				{
 					this.isTrue = value;
-					if (this.isTrue && this.templateApplied)
+					if (this.isTrue)
 					{
-						this.InvokeActions(null);
+						this.InvokeActions(EventArgs.Empty);
 					}
 				}
 			}
-		}
-
-		private void Target_TemplateApplied(object sender, EventArgs e)
-		{
-			if (this.IsTrue)
-			{
-				this.InvokeActions(null);				
-			}
-			this.templateApplied = true;
 		}
 	}
 }

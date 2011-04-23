@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Interactivity;
 
 namespace Company.Widgets.Controllers
 {
@@ -34,9 +33,9 @@ namespace Company.Widgets.Controllers
 		/// Called after the behaviour is attached to an AssociatedObject.
 		/// </summary>
 		/// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
-		protected override void OnAttached()
+		protected override void OnAttach()
 		{
-			base.OnAttached();
+			base.OnAttach();
 
 			this.AssociatedObject.SetBinding(verticalOffsetListenerProperty, verticalOffsetBinding);
 			this.AssociatedObject.SetBinding(horizontalOffsetListenerProperty, horizontalOffsetBinding);
@@ -46,12 +45,12 @@ namespace Company.Widgets.Controllers
 		/// Called when the behaviour is being detached from its AssociatedObject, but before it has actually occurred.
 		/// </summary>
 		/// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
-		protected override void OnDetaching()
+		protected override void OnDetach()
 		{
 			this.ClearValue(verticalOffsetListenerProperty);
 			this.ClearValue(horizontalOffsetListenerProperty);
 
-			base.OnDetaching();
+			base.OnDetach();
 		}
 
 

@@ -1,6 +1,5 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using Company.Widgets.Models;
 using Company.Widgets.Views;
 
@@ -15,9 +14,9 @@ namespace Company.Widgets.Controllers
 		/// Called after the behavior is attached to an AssociatedObject.
 		/// </summary>
 		/// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
-		protected override void OnAttached()
+		protected override void OnAttach()
 		{
-			base.OnAttached();
+			base.OnAttach();
 
 			this.AssociatedObject.DragDelta += this.AssociatedObject_DragDelta;
 			this.AssociatedObject.MouseLeftButtonUp += this.AssociatedObject_MouseLeftButtonUp;
@@ -27,9 +26,9 @@ namespace Company.Widgets.Controllers
 		/// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
 		/// </summary>
 		/// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
-		protected override void OnDetaching()
+		protected override void OnDetach()
 		{
-			base.OnDetaching();
+			base.OnDetach();
 
 			this.AssociatedObject.DragDelta -= this.AssociatedObject_DragDelta;
 			this.AssociatedObject.MouseLeftButtonUp -= this.AssociatedObject_MouseLeftButtonUp;

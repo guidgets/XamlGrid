@@ -29,12 +29,13 @@ namespace Company.Widgets.Views
 			{
 				return false;
 			}
-			if (state.Storyboard == null || state.Storyboard.GetCurrentState() != ClockState.Stopped || 
-				!string.IsNullOrEmpty(Storyboard.GetTargetName(state.Storyboard)))
+			Storyboard storyboard = state.Storyboard;
+			if (storyboard == null || storyboard.GetCurrentState() != ClockState.Stopped || 
+				!string.IsNullOrEmpty(Storyboard.GetTargetName(storyboard)))
 			{
 				return base.GoToStateCore(control, templateRoot, stateName, group, state, useTransitions);
 			}
-			foreach (Timeline timeline in state.Storyboard.Children.Where(timeline => string.IsNullOrEmpty(Storyboard.GetTargetName(timeline))))
+			foreach (Timeline timeline in storyboard.Children.Where(timeline => string.IsNullOrEmpty(Storyboard.GetTargetName(timeline))))
 			{
 				Storyboard.SetTarget(timeline, control);
 			}

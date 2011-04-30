@@ -210,11 +210,11 @@ namespace Company.Widgets.Views
 
 		private void Editor_LayoutUpdated(object sender, EventArgs e)
 		{
+			this.LayoutUpdated -= this.Editor_LayoutUpdated;
 			if (this.HasFocus)
 			{
 				this.Focus();
 			}
-			this.LayoutUpdated -= this.Editor_LayoutUpdated;
 		}
 	}
 }

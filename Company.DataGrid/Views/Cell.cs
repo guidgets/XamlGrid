@@ -14,10 +14,6 @@ namespace Company.Widgets.Views
 	public class Cell : CellBase
 	{
 		/// <summary>
-		/// Occurs when the data context of the <see cref="Cell"/> is changed.
-		/// </summary>
-		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
-		/// <summary>
 		/// Occurs when the edit mode of this <see cref="Cell"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler IsInEditModeChanged;
@@ -66,9 +62,6 @@ namespace Company.Widgets.Views
 		private static readonly DependencyProperty dataTypeProperty =
 			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeOfObject));
 
-		private static readonly DependencyProperty dataContextListenerProperty =
-			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Cell), new PropertyMetadata(OnDataContextListenerChanged));
-
 		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
 		                                                  {
 		                                                  		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
@@ -84,11 +77,6 @@ namespace Company.Widgets.Views
 														   RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 													   };
 
-		private static readonly Binding dataContextBinding = new Binding("DataContext")
-		                                                     {
-																RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-		                                                     };
-
 
 		/// <summary>
 		/// Represents an element that displays and manipulates a piece of a data object.
@@ -100,8 +88,6 @@ namespace Company.Widgets.Views
 			this.SetBinding(dataTypeProperty, dataTypeBinding);
 			this.SetBinding(IsEditableProperty, isEditableBinding);
 			this.SetBinding(StyleProperty, styleBinding);
-
-			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 		}
 
 
@@ -211,7 +197,10 @@ namespace Company.Widgets.Views
 		{
 			base.OnApplyTemplate();
 			this.GoToSpecialView();
-			this.GoToSelected();
+			if (this.IsSelected)
+			{
+				this.GoToSelected();
+			}
 			if (this.IsInEditMode)
 			{
 				this.GoToEdit();
@@ -251,21 +240,6 @@ namespace Company.Widgets.Views
 				this.HasFocus = false;
 				base.OnLostFocus(e);
 				VisualStateManager.GoToState(this, "Unfocused", false);
-			}
-		}
-
-		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Cell) d).OnDataContextChanged(e);
-		}
-
-		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
-		{
-			this.UpdateDataType();
-			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
-			if (handler != null)
-			{
-				handler(this, e);
 			}
 		}
 

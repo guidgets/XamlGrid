@@ -67,11 +67,8 @@ namespace Company.Widgets.Core
 		{
 			Type commandType;
 
-			lock (this.m_syncRoot)
-			{
-				if (!this.commandMap.ContainsKey(note.Code)) return;
-				commandType = this.commandMap[note.Code];
-			}
+			if (!this.commandMap.ContainsKey(note.Code)) return;
+			commandType = this.commandMap[note.Code];
 
 			object commandInstance = Activator.CreateInstance(commandType);
 
@@ -98,17 +95,14 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual void RegisterCommand(int notificationName, Type commandType)
 		{
-			lock (this.m_syncRoot)
+			if (!this.commandMap.ContainsKey(notificationName))
 			{
-				if (!this.commandMap.ContainsKey(notificationName))
-				{
-					// This call needs to be monitored carefully. Have to make sure that RegisterObserver
-					// doesn't call back into the controller, or a dead lock could happen.
-					this.mMainController.RegisterObserver(notificationName, new Observer(this.ExecuteCommand, this));
-				}
-
-				this.commandMap[notificationName] = commandType;
+				// This call needs to be monitored carefully. Have to make sure that RegisterObserver
+				// doesn't call back into the controller, or a dead lock could happen.
+				this.mMainController.RegisterObserver(notificationName, new Observer(this.ExecuteCommand, this));
 			}
+
+			this.commandMap[notificationName] = commandType;
 		}
 
 		/// <summary>
@@ -119,10 +113,7 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual bool HasCommand(int notificationName)
 		{
-			lock (this.m_syncRoot)
-			{
-				return this.commandMap.ContainsKey(notificationName);
-			}
+			return this.commandMap.ContainsKey(notificationName);
 		}
 
 		/// <summary>
@@ -132,17 +123,14 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual void RemoveCommand(int notificationName)
 		{
-			lock (this.m_syncRoot)
+			if (this.commandMap.ContainsKey(notificationName))
 			{
-				if (this.commandMap.ContainsKey(notificationName))
-				{
-					// remove the observer
+				// remove the observer
 
-					// This call needs to be monitored carefully. Have to make sure that RemoveObserver
-					// doesn't call back into the controller, or a dead lock could happen.
-					this.mMainController.RemoveObserver(notificationName, this);
-					this.commandMap.Remove(notificationName);
-				}
+				// This call needs to be monitored carefully. Have to make sure that RemoveObserver
+				// doesn't call back into the controller, or a dead lock could happen.
+				this.mMainController.RemoveObserver(notificationName, this);
+				this.commandMap.Remove(notificationName);
 			}
 		}
 
@@ -219,11 +207,6 @@ namespace Company.Widgets.Core
 		/// Singleton instance, can be sublcassed though....
 		/// </summary>
 		protected static volatile IMainCommand m_instance;
-
-		/// <summary>
-		/// Used for locking
-		/// </summary>
-		protected readonly object m_syncRoot = new object();
 
 		/// <summary>
 		/// Mapping of Notification names to Controller Class references

@@ -4,7 +4,7 @@
     xmlns:company="clr-namespace:Company.Widgets.Views"
     xmlns:controllers="clr-namespace:Company.Widgets.Controllers"
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
+    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit" 
 	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:widgets="clr-namespace:Company.Widgets">
 
 	<SolidColorBrush x:Key="controlColor" company:OSBrush.OSColor="ControlColor" />
@@ -109,18 +109,9 @@
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background" Value="{StaticResource controlColor}" />
 		<Setter Property="Padding" Value="6,3,6,3" />
-		<Setter Property="controllers:StyleBinder.Bindings">
-			<Setter.Value>
-				<controllers:StyleBindingCollection>
-					<controllers:StyleBinding Property="Content"
-                                              Binding="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-					<controllers:StyleBinding Property="Width" 
-                                              Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-					<controllers:StyleBinding Property="Visibility" 
-                                              Binding="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-				</controllers:StyleBindingCollection>
-			</Setter.Value>
-		</Setter>
+		<Setter Property="Content" Value="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+		<Setter Property="Width" Value="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+		<Setter Property="Visibility" Value="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="company:HeaderCell">
@@ -261,19 +252,10 @@
 		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
-		<Setter Property="controllers:StyleBinder.Bindings">
-			<Setter.Value>
-				<controllers:StyleBindingCollection>
-					<controllers:StyleBinding Property="Width" 
-                                              Binding="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-					<controllers:StyleBinding Property="HorizontalContentAlignment"
-                                              Binding="{Binding DataType, RelativeSource={RelativeSource Self}, 
-                                                        Converter={StaticResource typeToAlignmentConverter}}" />
-					<controllers:StyleBinding Property="Visibility" 
-                                              Binding="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-				</controllers:StyleBindingCollection>
-			</Setter.Value>
-		</Setter>
+		<Setter Property="Width" Value="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+		<Setter Property="HorizontalContentAlignment" Value="{Binding DataType, RelativeSource={RelativeSource Self}, 
+																	  Converter={StaticResource typeToAlignmentConverter}}" />
+		<Setter Property="Visibility" Value="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 		<Setter Property="ContentTemplate">
 			<Setter.Value>
 				<DataTemplate>

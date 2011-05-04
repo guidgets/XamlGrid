@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,6 +30,8 @@ namespace Company.Widgets.Views
 		public static readonly DependencyProperty HasFocusProperty =
 			DependencyProperty.Register("IsFocused", typeof(bool), typeof(Row), new PropertyMetadata(false, OnHasFocusedChanged));
 
+		private static readonly Type rowType = typeof(Row);
+
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Row"/> is selected.
 		/// </summary>
@@ -44,7 +47,10 @@ namespace Company.Widgets.Views
 	                                                     	 };
 
 
-		private readonly Binding isSelectedBinding;
+		private static readonly Binding isSelectedBinding = new Binding("IsSelected")
+															{
+																RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) { AncestorType = rowType }
+															};
 
 		/// <summary>
 		/// Represents a UI element that displays a data object.
@@ -52,8 +58,6 @@ namespace Company.Widgets.Views
 		public Row()
 		{
 			this.DefaultStyleKey = typeof(Row);
-
-			this.isSelectedBinding = new Binding("IsSelected") { Source = this, Mode = BindingMode.OneWay };
 
 			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 

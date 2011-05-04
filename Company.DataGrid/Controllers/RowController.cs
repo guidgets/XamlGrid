@@ -68,11 +68,11 @@ namespace Company.Widgets.Controllers
 		{
 			return new List<int>
 			       	{
-			       		Notifications.CurrentItemChanged,
-			       		Notifications.SelectedItems,
-			       		Notifications.DeselectedItems,
-			       		Notifications.ItemIsSelected,
-			       		Notifications.ItemsCollectionChanged
+						Notifications.CurrentItemChanged,
+						Notifications.SelectedItems,
+						Notifications.DeselectedItems,
+						Notifications.ItemIsSelected,
+						Notifications.ItemsCollectionChanged
 			       	};
 		}
 
@@ -118,8 +118,10 @@ namespace Company.Widgets.Controllers
 						case NotifyCollectionChangedAction.Reset:
 							if (args.Action == NotifyCollectionChangedAction.Reset || args.OldItems.Contains(this.Row.DataContext))
 							{
-								DataGridFacade.Instance.RemoveController(this.Name);
-								this.Row.ItemsSource = null;
+								// this releases all objects (cells, etc.) held by the row but slows down sorting significantly; what to do? release only when rebinding?
+								// also, why actually not setting to null causes leaks? the row is bound to the collection of columns, and they never change.
+								// only the data context of the row changes. May have to profile, most probably with WinDbg
+								//this.Row.ItemsSource = null;
 							}
 							break;
 					}

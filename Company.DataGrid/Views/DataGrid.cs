@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
@@ -191,8 +190,6 @@ namespace Company.Widgets.Views
 		private readonly List<Column> otherColumns;
 		private ScrollViewer scroll;
 		private readonly Queue<Row> cachedGUI = new Queue<Row>();
-		private readonly Queue<Row> currentCachedGUI = new Queue<Row>();
-		private bool reset;
 
 		/// <summary>
 		/// Represents a control for displaying and manipulating data with a default tabular view.
@@ -207,7 +204,6 @@ namespace Company.Widgets.Views
 			this.SetBinding(itemsSourceListenerProperty, itemsSourceBinding);
 
 			this.itemsSourceChanged += this.DataGrid_ItemsSourceChanged;
-			this.LayoutUpdated += (sender, e) => this.reset = false;
 
 			// TODO: move these to a startup Controller (page 19 and 20 of "Pure MVC - Best Practices")
 			DataGridFacade.Instance.RegisterController(new DataGridController(this));
@@ -495,17 +491,19 @@ namespace Company.Widgets.Views
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			if (this.cachedGUI.Count == 0 || !this.reset)
+			if (this.cachedGUI.Count == 0)
 			{
-				return new Row();
+				Row row = new Row();
+				row.Unloaded += (sender, e) =>
+				                {
+				                	if (!this.cachedGUI.Contains(row))
+				                	{
+										this.cachedGUI.Enqueue(row);
+				                	}
+				                };
+				return row;
 			}
-			Row row = this.cachedGUI.Dequeue();
-			// unparent or empty the row to release the memory
-			if (row.GetParent() != null)
-			{
-				return new Row();
-			}
-			return row;
+			return this.cachedGUI.Dequeue();
 		}
 
 		/// <summary>
@@ -533,30 +531,6 @@ namespace Company.Widgets.Views
 			{
 				row.ItemsSource = this.Columns;
 			}
-		}
-
-		protected override void ClearContainerForItemOverride(DependencyObject element, object item)
-		{
-			base.ClearContainerForItemOverride(element, item);
-			currentCachedGUI.Enqueue((Row) element);
-		}
-
-		/// <summary>
-		/// Called when the value of the <see cref="ItemsControl"/> property changes.
-		/// </summary>
-		/// <param name="e">A <see cref="NotifyCollectionChangedEventArgs"/> that contains the event data</param>
-		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
-		{
-			base.OnItemsChanged(e);
-			this.reset = e.Action == NotifyCollectionChangedAction.Reset;
-			if (this.reset)
-			{
-				foreach (Row row in currentCachedGUI)
-				{
-					cachedGUI.Enqueue(row);
-				}
-			}
-			currentCachedGUI.Clear();
 		}
 
 

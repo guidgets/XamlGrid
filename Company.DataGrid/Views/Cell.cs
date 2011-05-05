@@ -397,6 +397,7 @@ namespace Company.Widgets.Views
 				{
 					this.Column.DataType = propertyPathWalker.FinalNode.ValueType;
 				}
+				propertyPathWalker.Update(null);
 			}
 		}
 	}

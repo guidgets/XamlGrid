@@ -6,9 +6,7 @@ namespace Company.Widgets.Controllers
 	{
 		public static object GetValue(object dataItem, string propertyPath)
 		{
-			PropertyPathWalker propertyPathWalker = new PropertyPathWalker(propertyPath);
-			propertyPathWalker.Update(dataItem);
-			return propertyPathWalker.FinalNode.Value;
+			return new PropertyPathWalker(propertyPath).GetValue(dataItem);
 		}
 	}
 }

@@ -253,6 +253,7 @@ namespace Company.Widgets.Models
 				this.AddRemoveHandler(value, propertyPath, addHandler);
 				currentNode = currentNode.Next;
 			}
+			propertyPathWalker.Update(null);
 		}
 
 		private void AddRemoveHandler(object item, string propertyPath, bool add)

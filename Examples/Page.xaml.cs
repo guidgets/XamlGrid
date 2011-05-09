@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Company.Widgets.Controllers;
+using Company.Widgets.Models.Export;
 
 namespace Examples
 {
@@ -58,6 +59,8 @@ namespace Examples
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 			this.dataGrid.NewRowVisibility = Visibility.Visible;
+			ExcelXlsExporter excelXlsExporter = new ExcelXlsExporter();
+			excelXlsExporter.ExportAll(this.dataGrid);
 			//this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };

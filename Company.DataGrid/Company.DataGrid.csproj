@@ -66,6 +66,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lite.ExcelLibrary">
+      <HintPath>References\Lite.ExcelLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MyXls.SL2">
+      <HintPath>References\MyXls.SL2.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -100,6 +107,7 @@
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />
     <Compile Include="Models\DataWrapper.cs" />
     <Compile Include="Models\Export\ClipboardExporter.cs" />
+    <Compile Include="Models\Export\ExcelXlsExporter.cs" />
     <Compile Include="Models\Export\Exporter.cs" />
     <Compile Include="Controllers\KeyHelper.cs" />
     <Compile Include="Models\Export\CellInfo.cs" />

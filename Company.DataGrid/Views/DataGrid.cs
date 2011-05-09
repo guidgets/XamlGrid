@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
@@ -190,6 +191,7 @@ namespace Company.Widgets.Views
 		private readonly List<Column> otherColumns;
 		private ScrollViewer scroll;
 		private readonly Queue<Row> cachedGUI = new Queue<Row>();
+		private readonly Stack<Row> garbage = new Stack<Row>();
 
 		/// <summary>
 		/// Represents a control for displaying and manipulating data with a default tabular view.
@@ -491,19 +493,32 @@ namespace Company.Widgets.Views
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			if (this.cachedGUI.Count == 0)
+			while (this.cachedGUI.Count > 0)
 			{
-				Row row = new Row();
-				row.Unloaded += (sender, e) =>
-				                {
-				                	if (!this.cachedGUI.Contains(row))
-				                	{
-										this.cachedGUI.Enqueue(row);
-				                	}
-				                };
-				return row;
+				Row cachedRow = this.cachedGUI.Dequeue();
+				if (cachedRow.GetParent() != null)
+				{
+					garbage.Push(cachedRow);
+				}
+				else
+				{
+					return cachedRow;
+				}
 			}
-			return this.cachedGUI.Dequeue();
+			return this.GetRow();
+		}
+
+		private DependencyObject GetRow()
+		{
+			Row row = new Row();
+			row.Unloaded += (sender, e) =>
+			                {
+			                	if (!this.cachedGUI.Contains(row))
+			                	{
+			                		this.cachedGUI.Enqueue(row);
+			                	}
+			                };
+			return row;
 		}
 
 		/// <summary>
@@ -530,6 +545,21 @@ namespace Company.Widgets.Views
 			if (row.ItemsSource == null)
 			{
 				row.ItemsSource = this.Columns;
+			}
+		}
+
+		/// <summary>
+		/// Called when the value of the <see cref="ItemsControl.Items"/> property changes.
+		/// </summary>
+		/// <param name="e">A <see cref="NotifyCollectionChangedEventArgs"/> that contains the event data</param>
+		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
+		{
+			base.OnItemsChanged(e);
+			while (garbage.Count > 0)
+			{
+				Row row = garbage.Pop();
+				DataGridFacade.Instance.RemoveController(row.GetHashCode().ToString());
+				row.ItemsSource = null;
 			}
 		}
 

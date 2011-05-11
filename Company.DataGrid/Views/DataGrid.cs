@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using Company.Widgets.Controllers;
-using Company.Widgets.Core;
 using Company.Widgets.Models;
 using System.Windows.Controls.Primitives;
 using System.Linq;
@@ -71,24 +70,30 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the source that provides the data to display in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the source that provides the data to display in a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty DataSourceProperty =
 			DependencyProperty.Register("DataSource", typeof(object), typeof(DataGrid), new PropertyMetadata(OnDataSourceChanged));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the type of the items contained in the <see cref="DataGrid"/>.
+		/// Identifies the dependency property which gets or sets the type of the items contained in a <see cref="DataGrid"/>.
 		/// </summary>
 		public static readonly DependencyProperty ItemTypeProperty =
 			DependencyProperty.Register("ItemType", typeof(Type), typeof(DataGrid), new PropertyMetadata(typeof(object), OnItemTypeChanged));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets a value indicating whether the columns of the <see cref="DataGrid"/> must be 
+		/// Identifies the dependency property which gets or sets a value indicating whether the columns of a <see cref="DataGrid"/> must be 
 		/// automatically created according to the data source.
 		/// </summary>
 		public static readonly DependencyProperty AutoCreateColumnsProperty =
 			DependencyProperty.Register("AutoCreateColumns", typeof(bool), typeof(DataGrid),
 			                            new PropertyMetadata(true, OnAutoCreateColumnsChanged));
+
+		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="DataGrid"/> displays numbers for its rows.
+		/// </summary>
+		public static readonly DependencyProperty NumberRowsProperty =
+			DependencyProperty.Register("NumberRows", typeof(bool), typeof(DataGrid), new PropertyMetadata(false, OnNumberRowsChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the width of each of the <see cref="Columns"/> of the <see cref="DataGrid"/>.
@@ -190,6 +195,7 @@ namespace Company.Widgets.Views
 		private readonly SelectionModel selectionModel;
 		private readonly List<Column> otherColumns;
 		private ScrollViewer scroll;
+		private Column numberColumn;
 		private readonly Queue<Row> cachedGUI = new Queue<Row>();
 		private readonly Stack<Row> garbage = new Stack<Row>();
 
@@ -278,6 +284,24 @@ namespace Company.Widgets.Views
 			set
 			{
 				this.SetValue(AutoCreateColumnsProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the <see cref="DataGrid"/> displays numbers for its rows.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if the <see cref="DataGrid"/> displays numbers for its rows; otherwise, <c>false</c>.
+		/// </value>
+		public bool NumberRows
+		{
+			get
+			{
+				return (bool) this.GetValue(NumberRowsProperty);
+			}
+			set
+			{
+				this.SetValue(NumberRowsProperty, value);
 			}
 		}
 
@@ -541,7 +565,12 @@ namespace Company.Widgets.Views
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
 			base.PrepareContainerForItemOverride(element, item);
-			ItemsControl row = (ItemsControl) element;
+			if (!this.IsItemItsOwnContainerOverride(element))
+			{
+				return;
+			}
+			Row row = (Row) element;
+			row.Index = this.Items.IndexOf(item);
 			if (row.ItemsSource == null)
 			{
 				row.ItemsSource = this.Columns;
@@ -706,19 +735,47 @@ namespace Company.Widgets.Views
 
 		private static void OnAutoCreateColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			DataGrid dataGrid = (DataGrid) d;
-			List<Column> swap = new List<Column>(dataGrid.Columns);
-			dataGrid.Columns.Clear();
-			foreach (Column column in dataGrid.otherColumns)
+			// TODO: move to the controller?
+			((DataGrid) d).OnAutoCreateColumnsChanged(d);
+		}
+
+		protected virtual void OnAutoCreateColumnsChanged(DependencyObject d)
+		{
+			List<Column> swap = new List<Column>(this.Columns);
+			this.Columns.Clear();
+			foreach (Column column in this.otherColumns)
 			{
-				dataGrid.Columns.Add(column);
+				this.Columns.Add(column);
 			}
-			dataGrid.otherColumns.Clear();
-			dataGrid.otherColumns.AddRange(swap);
+			this.otherColumns.Clear();
+			this.otherColumns.AddRange(swap);
 			swap.Clear();
-			if (dataGrid.AutoCreateColumns && dataGrid.Columns.Count == 0)
+			if (this.AutoCreateColumns && this.Columns.Count == 0)
 			{
-				dataGrid.CreateAutomaticColumns();
+				this.CreateAutomaticColumns();
+			}
+		}
+
+		private static void OnNumberRowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((DataGrid) d).OnNumberRowsChanged(e);
+		}
+
+		protected virtual void OnNumberRowsChanged(DependencyPropertyChangedEventArgs e)
+		{
+			// TODO: move to the controller?
+			if ((bool) e.NewValue)
+			{
+				this.numberColumn = new Column("RowIndex", typeof(int), false);
+				this.numberColumn.Header = "¹";
+				this.numberColumn.Binding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
+				this.numberColumn.Binding.Converter = new IndexToNumberConverter();
+				this.numberColumn.Width = new ColumnWidth(SizeMode.Auto);
+				this.Columns.Insert(0, this.numberColumn);
+			}
+			else
+			{
+				this.Columns.Remove(this.numberColumn);
 			}
 		}
 

@@ -58,7 +58,8 @@ namespace Examples
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 			this.dataGrid.NewRowVisibility = Visibility.Visible;
-			//this.dataGrid.DataSource = this.collectionView;
+        	this.dataGrid.NumberRows = true;
+        	//this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
         	//((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });

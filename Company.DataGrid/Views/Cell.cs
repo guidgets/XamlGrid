@@ -25,7 +25,6 @@ namespace Company.Widgets.Views
 		private static readonly Type typeOfByteArray = typeof(byte[]);
 		private static readonly Type typeOfUri = typeof(Uri);
 
-
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
 		/// </summary>
@@ -243,12 +242,6 @@ namespace Company.Widgets.Views
 			}
 		}
 
-		public void SetValueBinding()
-		{
-			this.SetBinding(ValueProperty, this.Column.Binding);
-			this.UpdateDataType();
-		}
-
 		/// <summary>
 		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.
 		/// </summary>
@@ -270,6 +263,12 @@ namespace Company.Widgets.Views
 			this.UpdateDataType();
 			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
 			this.Content = this.Value;
+		}
+
+		public virtual void BindValue()
+		{
+			this.SetBinding(ValueProperty, this.Column.Binding);
+			this.UpdateDataType();
 		}
 
 		private static void OnHasFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

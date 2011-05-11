@@ -63,8 +63,8 @@ namespace Company.Widgets.Controllers
 		{
 			base.OnRegister();
 
-			this.DataGrid.ViewportSizeChanged += DataGrid_ViewportSizeChanged;
-			this.DataGrid.GotFocus += DataGrid_GotFocus;
+			this.DataGrid.ViewportSizeChanged += this.DataGrid_ViewportSizeChanged;
+			this.DataGrid.GotFocus += this.DataGrid_GotFocus;
 			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
 			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
 			this.DataGrid.ItemTypeChanged += this.DataGrid_ItemTypeChanged;

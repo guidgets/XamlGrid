@@ -38,6 +38,13 @@ namespace Company.Widgets.Views
 		public static readonly DependencyProperty IsSelectedProperty =
 			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Row), new PropertyMetadata(false, OnIsSelectedChanged));
 
+		/// <summary>
+		/// Identifies the dependency property which gets or sets the index of this <see cref="Row"/> in a collection of rows.
+		/// </summary>
+		public static readonly DependencyProperty IndexProperty =
+			DependencyProperty.Register("Index", typeof(int), typeof(Row), new PropertyMetadata(-1));
+
+
 		private static readonly DependencyProperty dataContextListenerProperty =
 			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Row), new PropertyMetadata(OnDataContextListenerChanged));
 
@@ -46,11 +53,15 @@ namespace Company.Widgets.Views
 	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 	                                                     	 };
 
-
 		private static readonly Binding isSelectedBinding = new Binding("IsSelected")
 															{
 																RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) { AncestorType = rowType }
 															};
+
+		private static readonly Binding indexBinding = new Binding("Index")
+														{
+															RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) { AncestorType = rowType }
+														};
 
 		/// <summary>
 		/// Represents a UI element that displays a data object.
@@ -100,6 +111,25 @@ namespace Company.Widgets.Views
 				this.SetValue(IsSelectedProperty, value);
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets the index of this <see cref="Row"/> in a collection of rows.
+		/// </summary>
+		/// <value>
+		/// The index to set to the row.
+		/// </value>
+		public int Index
+		{
+			get
+			{
+				return (int) this.GetValue(IndexProperty);
+			}
+			set
+			{
+				this.SetValue(IndexProperty, value);
+			}
+		}
+
 
 		/// <summary>
 		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application, but see Remarks for more information.
@@ -178,8 +208,9 @@ namespace Company.Widgets.Views
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 
 			cell.ClearValue(DataContextProperty);
-			cell.SetValueBinding();
+			cell.BindValue();
 			cell.SetBinding(Cell.IsSelectedProperty, isSelectedBinding);
+			cell.BindRowIndex(indexBinding);
 		}
 
 		/// <summary>

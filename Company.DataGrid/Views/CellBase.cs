@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Company.Widgets.Controllers;
 using Company.Widgets.Models;
 
@@ -15,6 +16,9 @@ namespace Company.Widgets.Views
 		/// </summary>
 		private static readonly DependencyProperty columnProperty =
 			DependencyProperty.Register("Column", typeof(Column), typeof(CellBase), new PropertyMetadata(null));
+
+		private static readonly DependencyProperty rowIndexProperty =
+			DependencyProperty.Register("RowIndex", typeof(int), typeof(Cell), new PropertyMetadata(-1));
 
 
 		/// <summary>
@@ -34,6 +38,17 @@ namespace Company.Widgets.Views
 			get
 			{
 				return (Column) this.GetValue(columnProperty);
+			}
+		}
+
+		/// <summary>
+		/// Gets the index of the <see cref="Row"/> to which this <see cref="Cell"/> belongs.
+		/// </summary>
+		public int RowIndex
+		{
+			get
+			{
+				return (int) this.GetValue(rowIndexProperty);
 			}
 		}
 
@@ -66,6 +81,10 @@ namespace Company.Widgets.Views
 			return this.Column.Width.SizeMode == SizeMode.Auto;
 		}
 
+		public virtual void BindRowIndex(Binding binding)
+		{
+			this.SetBinding(rowIndexProperty, binding);
+		}
 
 		private void Cell_SizeChanged(object sender, SizeChangedEventArgs e)
 		{

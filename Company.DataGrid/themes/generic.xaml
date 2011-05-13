@@ -126,7 +126,8 @@
 							<ToggleButton IsThreeState="True" Content="{TemplateBinding Content}" IsTabStop="False"
                                           ContentTemplate="{TemplateBinding ContentTemplate}" Padding="{TemplateBinding Padding}"
                                           IsChecked="{Binding SortDirection, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
-                                                              Converter={StaticResource sortDirectionToBooleanConverter}}">
+                                                              Converter={StaticResource sortDirectionToBooleanConverter}}"
+										  IsEnabled="{Binding Column.IsSortable, RelativeSource={RelativeSource TemplatedParent}}">
 								<ToggleButton.Template>
 									<ControlTemplate TargetType="ToggleButton">
 										<Grid Background="Transparent">
@@ -138,7 +139,9 @@
 											<Path Name="SortArrow" RenderTransformOrigin=".5,.5" HorizontalAlignment="Right" 
                                                   VerticalAlignment="Center" Opacity="0" Stretch="Uniform" Width="8" Margin="4,0,0,0" 
                                                   Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z " Grid.Column="1"
-												  Fill="{StaticResource controlDarkDarkColor}">
+												  Fill="{StaticResource controlDarkDarkColor}"
+												  Visibility="{Binding Column.IsSortable, RelativeSource={RelativeSource TemplatedParent}, 
+															   Converter={StaticResource booleanToVisibilityConverter}}">
 												<Path.RenderTransform>
 													<ScaleTransform ScaleX=".9" ScaleY=".9" />
 												</Path.RenderTransform>

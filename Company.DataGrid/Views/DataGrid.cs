@@ -768,6 +768,7 @@ namespace Company.Widgets.Views
 			{
 				this.numberColumn = new Column("RowIndex", typeof(int), false);
 				this.numberColumn.Header = "¹";
+				this.numberColumn.IsSortable = false;
 				this.numberColumn.Binding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
 				this.numberColumn.Binding.Converter = new IndexToNumberConverter();
 				this.numberColumn.Width = new ColumnWidth(SizeMode.Auto);

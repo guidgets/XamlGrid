@@ -61,6 +61,12 @@ namespace Company.Widgets.Controllers
 			DependencyProperty.Register("IsResizable", typeof(bool), typeof(Column), new PropertyMetadata(true));
 
 		/// <summary>
+		/// Identifies the dependency property which gets or sets a value indicating whether data can be sorted through a <see cref="Column"/>.
+		/// </summary>
+		public static readonly DependencyProperty IsSortableProperty =
+			DependencyProperty.Register("IsSortable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+
+		/// <summary>
 		/// Identifies the dependency property which gets or sets the visibility of a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty VisibilityProperty =
@@ -161,6 +167,24 @@ namespace Company.Widgets.Controllers
 			set
 			{
 				this.SetValue(IsResizableProperty, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether data can be sorted through this <see cref="Column"/>.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if data can be sorted through this <see cref="Column"/>; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsSortable
+		{
+			get
+			{
+				return (bool) this.GetValue(IsSortableProperty);
+			}
+			set
+			{
+				this.SetValue(IsSortableProperty, value);
 			}
 		}
 

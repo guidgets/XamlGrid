@@ -195,7 +195,6 @@ namespace Company.Widgets.Views
 		private readonly SelectionModel selectionModel;
 		private readonly List<Column> otherColumns;
 		private ScrollViewer scroll;
-		private Column numberColumn;
 		private readonly Queue<Row> cachedGUI = new Queue<Row>();
 		private readonly Stack<Row> garbage = new Stack<Row>();
 
@@ -303,6 +302,15 @@ namespace Company.Widgets.Views
 			{
 				this.SetValue(NumberRowsProperty, value);
 			}
+		}
+
+		/// <summary>
+		/// Gets the column, if any, that displays row numbers.
+		/// </summary>
+		public Column NumberColumn
+		{
+			get;
+			private set;
 		}
 
 		/// <summary>
@@ -766,17 +774,17 @@ namespace Company.Widgets.Views
 			// TODO: move to the controller?
 			if ((bool) e.NewValue)
 			{
-				this.numberColumn = new Column("RowIndex", typeof(int), false);
-				this.numberColumn.Header = "¹";
-				this.numberColumn.IsSortable = false;
-				this.numberColumn.Binding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
-				this.numberColumn.Binding.Converter = new IndexToNumberConverter();
-				this.numberColumn.Width = new ColumnWidth(SizeMode.Auto);
-				this.Columns.Insert(0, this.numberColumn);
+				this.NumberColumn = new Column("RowIndex", typeof(int), false);
+				this.NumberColumn.Header = "¹";
+				this.NumberColumn.IsSortable = false;
+				this.NumberColumn.Binding.RelativeSource = new RelativeSource(RelativeSourceMode.Self);
+				this.NumberColumn.Binding.Converter = new IndexToNumberConverter();
+				this.NumberColumn.Width = new ColumnWidth(SizeMode.Auto);
+				this.Columns.Insert(0, this.NumberColumn);
 			}
 			else
 			{
-				this.Columns.Remove(this.numberColumn);
+				this.Columns.Remove(this.NumberColumn);
 			}
 		}
 

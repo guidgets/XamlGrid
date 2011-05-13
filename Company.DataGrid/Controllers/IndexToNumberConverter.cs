@@ -18,7 +18,12 @@ namespace Company.Widgets.Controllers
 		/// </returns>
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (int) value + 1;
+			int index = (int) value;
+			if (index >= 0)
+			{
+				return index + 1;
+			}
+			return string.Empty;
 		}
 
 		/// <summary>
@@ -33,7 +38,7 @@ namespace Company.Widgets.Controllers
 		/// </returns>
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (int) value - 1;
+			return value is string ? -1 : (int) value - 1;
 		}
 	}
 }

@@ -62,6 +62,7 @@
 										  controllers:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
 								<interactivity:Interaction.Behaviors>
 									<controllers:ScrollOnHomeEndBehaviour />
+									<controllers:DragScrollBehavior />
 								</interactivity:Interaction.Behaviors>
 								<widgets:DataGridFacade.Controllers>
 									<controllers:ScrollIntoViewController />

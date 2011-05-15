@@ -44,7 +44,7 @@ namespace Company.Widgets.Controllers
 			this.Row.HasFocusChanged += this.Row_HasFocusedChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
 			this.Row.KeyDown += this.Row_KeyDown;
-			this.Row.MouseLeftButtonUp += this.Row_MouseLeftButtonUp;
+			this.Row.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp), true);
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace Company.Widgets.Controllers
 			this.Row.HasFocusChanged -= this.Row_HasFocusedChanged;
 			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
 			this.Row.KeyDown -= this.Row_KeyDown;
-			this.Row.MouseLeftButtonUp -= this.Row_MouseLeftButtonUp;
+			this.Row.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp));
 		}
 
 		/// <summary>

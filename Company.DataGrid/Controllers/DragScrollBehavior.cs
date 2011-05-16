@@ -247,7 +247,6 @@ namespace Company.Widgets.Controllers
 			this.AssociatedObject.MouseLeftButtonUp += this.AssociatedObject_MouseLeftButtonUp;
 			this.AssociatedObject.MouseMove += this.AssociatedObject_MouseMove;
 			this.AssociatedObject.MouseLeave += this.AssociatedObject_MouseLeave;
-			this.AssociatedObject.CaptureMouse();
 		}
 
 		private void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -363,6 +362,7 @@ namespace Company.Widgets.Controllers
 		private void AssociatedObject_MouseLeave(object sender, MouseEventArgs e)
 		{
 			this.ScrollUp = this.ScrollDown = this.ScrollLeft = this.ScrollRight = false;
+			this.AssociatedObject.CaptureMouse();
 		}
 	}
 }

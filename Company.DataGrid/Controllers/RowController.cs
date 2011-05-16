@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
 using Company.Widgets.Core;
@@ -44,7 +43,7 @@ namespace Company.Widgets.Controllers
 			this.Row.HasFocusChanged += this.Row_HasFocusedChanged;
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
 			this.Row.KeyDown += this.Row_KeyDown;
-			this.Row.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp), true);
+			this.Row.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown), true);
 		}
 
 		/// <summary>
@@ -57,7 +56,7 @@ namespace Company.Widgets.Controllers
 			this.Row.HasFocusChanged -= this.Row_HasFocusedChanged;
 			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
 			this.Row.KeyDown -= this.Row_KeyDown;
-			this.Row.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonUp));
+			this.Row.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown));
 		}
 
 		/// <summary>
@@ -71,8 +70,7 @@ namespace Company.Widgets.Controllers
 						Notifications.CurrentItemChanged,
 						Notifications.SelectedItems,
 						Notifications.DeselectedItems,
-						Notifications.ItemIsSelected,
-						Notifications.ItemsCollectionChanged
+						Notifications.ItemIsSelected
 			       	};
 		}
 
@@ -109,23 +107,6 @@ namespace Company.Widgets.Controllers
 						this.Row.IsSelected = bool.Parse(notification.Type);
 					}
 					break;
-				case Notifications.ItemsCollectionChanged:
-					NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs) notification.Body;
-					switch (args.Action)
-					{
-						case NotifyCollectionChangedAction.Remove:
-						case NotifyCollectionChangedAction.Replace:
-						case NotifyCollectionChangedAction.Reset:
-							if (args.Action == NotifyCollectionChangedAction.Reset || args.OldItems.Contains(this.Row.DataContext))
-							{
-								// this releases all objects (cells, etc.) held by the row but slows down sorting significantly; what to do? release only when rebinding?
-								// also, why actually not setting to null causes leaks? the row is bound to the collection of columns, and they never change.
-								// only the data context of the row changes. May have to profile, most probably with WinDbg
-								//this.Row.ItemsSource = null;
-							}
-							break;
-					}
-					break;
 			}
 		}
 
@@ -154,7 +135,7 @@ namespace Company.Widgets.Controllers
 			this.SendNotification(Notifications.ItemKeyDown, e);
 		}
 
-		private void Row_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		private void Row_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			this.SendNotification(Notifications.ItemClicked, this.Row.DataContext);
 		}

@@ -29,6 +29,7 @@ namespace Company.Widgets.Controllers
 			base.InsertItem(index, item);
 
 			item.ViewComponent = _associatedObject;
+			item.Name = item.ViewComponent.GetHashCode().ToString();
 
 			DataGridFacade.Instance.RegisterController(item);
 		}

@@ -6,6 +6,7 @@
 
 #region Using
 
+using System;
 using System.Collections.Generic;
 
 #endregion
@@ -115,6 +116,10 @@ namespace Company.Widgets.Core
 			get
 			{
 				return this.mName;
+			}
+			set
+			{
+				this.mName = value;
 			}
 		}
 

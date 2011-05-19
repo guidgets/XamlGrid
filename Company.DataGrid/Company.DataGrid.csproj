@@ -102,6 +102,7 @@
     <Compile Include="Controllers\SumAggregate.cs" />
     <Compile Include="Controllers\SyncScrollBehavior.cs" />
     <Compile Include="Controllers\ScrollOnHomeEndBehaviour.cs" />
+    <Compile Include="Controllers\ViewportWidthController.cs" />
     <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />
     <Compile Include="Models\DataWrapper.cs" />

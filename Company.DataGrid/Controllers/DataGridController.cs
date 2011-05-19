@@ -113,7 +113,8 @@ namespace Company.Widgets.Controllers
 						Notifications.CellEditModeChanged,
 						Notifications.CellEditingCancelled,
 						Notifications.IsColumnCurrent,
-						Notifications.NewItemCustom
+						Notifications.NewItemCustom,
+						Notifications.ViewportWidthChanged
 			       	};
 		}
 
@@ -171,6 +172,9 @@ namespace Company.Widgets.Controllers
 					break;
 				case Notifications.NewItemCustom:
 					this.DataGrid.OnNewItemAdding((NewItemEventArgs) notification.Body);
+					break;
+				case Notifications.ViewportWidthChanged:
+					this.DataGrid.Columns.CalculateRelativeWidths(((Size) notification.Body).Width);
 					break;
 			}
 		}
@@ -307,14 +311,14 @@ namespace Company.Widgets.Controllers
 			}
 			if (this.DataGrid.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
 			{
-				this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
+				this.DataGrid.Columns.CalculateRelativeWidths();
 			}
 			this.SendNotification(Notifications.ColumnsChanged, e);
 		}
 
 		private void Column_WidthAffected(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
+			this.DataGrid.Columns.CalculateRelativeWidths();
 		}
 
 		protected virtual void HandleCurrentItem(Key key)

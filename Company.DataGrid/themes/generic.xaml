@@ -191,7 +191,7 @@
 	</Style>
 
 	<Style TargetType="company:Row">
-		<Setter Property="BorderThickness" Value="0,0,0,1" />
+		<Setter Property="BorderThickness" Value="10,0,10,1" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
@@ -208,7 +208,11 @@
 				<ControlTemplate TargetType="company:Row">
 					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
-						<ItemsPresenter />
+						<ItemsPresenter>
+							<widgets:DataGridFacade.Controllers>
+								<controllers:ViewportWidthController />
+							</widgets:DataGridFacade.Controllers>
+						</ItemsPresenter>
 						<VisualStateManager.CustomVisualStateManager>
 							<company:CustomVSM />
 						</VisualStateManager.CustomVisualStateManager>

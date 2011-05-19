@@ -12,12 +12,28 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class ColumnsCollection : ObservableCollection<Column>
 	{
+		private double currentWholeWidth;
+
+		/// <summary>
+		/// Calculates the relative widths of columns in this <see cref="ColumnsCollection"/> using the last specified width.
+		/// </summary>
+		public void CalculateRelativeWidths()
+		{
+			this.CalculateRelativeWidths(this.currentWholeWidth);
+		}
+
 		/// <summary>
 		/// Calculates the relative widths of columns in this <see cref="ColumnsCollection"/> using the specified width.
 		/// </summary>
 		/// <param name="wholeWidth">The whole available width.</param>
 		public void CalculateRelativeWidths(double wholeWidth)
 		{
+			if (this.currentWholeWidth == wholeWidth)
+			{
+				return;
+			}
+			this.currentWholeWidth = wholeWidth;
+
 			if (this.Any(column => double.IsNaN(column.ActualWidth)))
 			{
 				return;

@@ -19,6 +19,13 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class DataGridController : Controller
 	{
+		private enum ItemState
+		{
+			MouseDown,
+			MouseEnter,
+			KeyDown
+		}
+
 		private Panel itemsHost;
 		private bool continuousEditing;
 		private bool fromFocusedCell;
@@ -109,6 +116,7 @@ namespace Company.Widgets.Controllers
 			       		Notifications.SelectionModeChanged,
 						Notifications.ItemKeyDown,
 						Notifications.ItemClicked,
+						Notifications.ItemEntered,
 						Notifications.CellFocused,
 						Notifications.CellEditModeChanged,
 						Notifications.CellEditingCancelled,
@@ -147,7 +155,10 @@ namespace Company.Widgets.Controllers
 					this.HandleSelection(e.Key);
 					break;
 				case Notifications.ItemClicked:
-					this.SelectItems(notification.Body, true, Key.None);
+					this.SelectItems(notification.Body, ItemState.MouseDown, Key.None);
+					break;
+				case Notifications.ItemEntered:
+					this.SelectItems(notification.Body, ItemState.MouseEnter, Key.None);
 					break;
 				case Notifications.IsColumnCurrent:
 					this.SendNotification(Notifications.CurrentColumnChanged, this.DataGrid.CurrentColumn);
@@ -380,7 +391,7 @@ namespace Company.Widgets.Controllers
 				case Key.PageUp:
 				case Key.Home:
 				case Key.End:
-					this.SelectItems(this.DataGrid.CurrentItem, false, key);
+					this.SelectItems(this.DataGrid.CurrentItem, ItemState.KeyDown, key);
 					break;
 				case Key.PageDown:
 					// make sure the new page is scrolled to before any MakeVisible is called
@@ -417,10 +428,10 @@ namespace Company.Widgets.Controllers
 		private void DataGrid_SelectionLayoutUpdated(object sender, EventArgs e)
 		{
 			this.DataGrid.LayoutUpdated -= this.DataGrid_SelectionLayoutUpdated;
-			this.SelectItems(this.DataGrid.CurrentItem, false, pressedKey);
+			this.SelectItems(this.DataGrid.CurrentItem, ItemState.KeyDown, pressedKey);
 		}
 
-		private void SelectItems(object itemToSelect, bool clicked, Key key)
+		private void SelectItems(object itemToSelect, ItemState itemState, Key key)
 		{
 			bool selected = this.DataGrid.SelectedItems.IsSelected(itemToSelect);
 			int notificationToSend = selected ? Notifications.DeselectingItems : Notifications.SelectingItems;
@@ -433,12 +444,17 @@ namespace Company.Widgets.Controllers
 					}
 					break;
 				case SelectionMode.Multiple:
-					this.ToggleSelection(notificationToSend, itemToSelect, clicked, key);
+					this.ToggleSelection(notificationToSend, itemToSelect, itemState, key);
 					break;
 				case SelectionMode.Extended:
 					switch (Keyboard.Modifiers)
 					{
 						case ModifierKeys.None:
+							// TODO: handle in the other selection 
+							if (itemState == ItemState.MouseEnter)
+							{
+								goto case ModifierKeys.Shift;
+							}
 							this.SendNotification(Notifications.SelectingItems, itemToSelect,
 							                      NotificationTypes.ClearSelection);
 							break;
@@ -449,7 +465,7 @@ namespace Company.Widgets.Controllers
 					}
 					if (Keyboard.Modifiers == KeyHelper.CommandModifier)
 					{
-						this.ToggleSelection(notificationToSend, itemToSelect, clicked, key);
+						this.ToggleSelection(notificationToSend, itemToSelect, itemState, key);
 					}
 					if (Keyboard.Modifiers == (KeyHelper.CommandModifier | ModifierKeys.Shift))
 					{
@@ -459,19 +475,23 @@ namespace Company.Widgets.Controllers
 			}
 		}
 
-		private void ToggleSelection(int notificationToSend, object itemToSelect, bool clickedItem, Key key)
+		private void ToggleSelection(int notificationToSend, object itemToSelect, ItemState itemState, Key key)
 		{
-			if (clickedItem)
+			switch (itemState)
 			{
-				this.SendNotification(notificationToSend, itemToSelect);
-			}
-			else
-			{
-				if (key == Key.Home || key == Key.End)
-				{
-					this.SendNotification(Notifications.SelectingItems, itemToSelect,
-					                      NotificationTypes.ClearSelection);
-				}
+				case ItemState.MouseDown:
+					this.SendNotification(notificationToSend, itemToSelect);
+					break;
+				case ItemState.MouseEnter:
+					this.SendNotification(Notifications.SelectingItems, itemToSelect);
+					break;
+				case ItemState.KeyDown:
+					if (key == Key.Home || key == Key.End)
+					{
+						this.SendNotification(Notifications.SelectingItems, itemToSelect,
+						                      NotificationTypes.ClearSelection);
+					}
+					break;
 			}
 		}
 

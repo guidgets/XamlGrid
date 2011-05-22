@@ -11,6 +11,8 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class RowController : Controller
 	{
+		private static bool mouseLeftButton;
+
 		/// <summary>
 		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
 		/// </summary>
@@ -44,6 +46,8 @@ namespace Company.Widgets.Controllers
 			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
 			this.Row.KeyDown += this.Row_KeyDown;
 			this.Row.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown), true);
+			this.Row.MouseLeftButtonUp += this.Row_MouseLeftButtonUp;
+			this.Row.MouseEnter += this.Row_MouseEnter;
 		}
 
 		/// <summary>
@@ -57,6 +61,8 @@ namespace Company.Widgets.Controllers
 			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
 			this.Row.KeyDown -= this.Row_KeyDown;
 			this.Row.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown));
+			this.Row.MouseLeftButtonUp -= this.Row_MouseLeftButtonUp;
+			this.Row.MouseEnter -= this.Row_MouseEnter;
 		}
 
 		/// <summary>
@@ -137,7 +143,24 @@ namespace Company.Widgets.Controllers
 
 		private void Row_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
+			mouseLeftButton = true;
 			this.SendNotification(Notifications.ItemClicked, this.Row.DataContext);
+		}
+
+		private void Row_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			// TODO: fix this - the mouse button may be released outside the grid and this handler won't notice
+			mouseLeftButton = false;
+		}
+
+		private void Row_MouseEnter(object sender, MouseEventArgs e)
+		{
+			// TODO: mouse enter is not enough because the cursor may be drag-scrolling outside the grid
+			if (!mouseLeftButton)
+			{
+				return;
+			}
+			this.SendNotification(Notifications.ItemEntered, this.Row.DataContext);
 		}
 	}
 }

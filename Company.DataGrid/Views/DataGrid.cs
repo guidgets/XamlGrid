@@ -195,8 +195,9 @@ namespace Company.Widgets.Views
 		private readonly SelectionModel selectionModel;
 		private readonly List<Column> otherColumns;
 		private ScrollViewer scroll;
-		private readonly Queue<Row> cachedGUI = new Queue<Row>();
-		private readonly Stack<Row> garbage = new Stack<Row>();
+		private readonly List<Row> cachedGUI = new List<Row>();
+		private int cacheIndex;
+		private bool resetting;
 
 		/// <summary>
 		/// Represents a control for displaying and manipulating data with a default tabular view.
@@ -525,31 +526,18 @@ namespace Company.Widgets.Views
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			while (this.cachedGUI.Count > 0)
+			if (this.cacheIndex < this.cachedGUI.Count && this.resetting)
 			{
-				Row cachedRow = this.cachedGUI.Dequeue();
-				if (cachedRow.GetParent() != null)
-				{
-					garbage.Push(cachedRow);
-				}
-				else
-				{
-					return cachedRow;
-				}
+				return this.cachedGUI[this.cacheIndex++];
 			}
+			this.cacheIndex++;
 			return this.GetRow();
 		}
 
 		private DependencyObject GetRow()
 		{
 			Row row = new Row();
-			row.Unloaded += (sender, e) =>
-			                {
-			                	if (!this.cachedGUI.Contains(row))
-			                	{
-			                		this.cachedGUI.Enqueue(row);
-			                	}
-			                };
+			this.cachedGUI.Add(row);
 			return row;
 		}
 
@@ -592,12 +580,8 @@ namespace Company.Widgets.Views
 		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
 		{
 			base.OnItemsChanged(e);
-			while (garbage.Count > 0)
-			{
-				Row row = garbage.Pop();
-				DataGridFacade.Instance.RemoveController(row.GetHashCode().ToString());
-				row.ItemsSource = null;
-			}
+			this.resetting = false;
+			this.cacheIndex = 0;
 		}
 
 
@@ -698,11 +682,26 @@ namespace Company.Widgets.Views
 		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
 		{
+			INotifyCollectionChanged oldValue = e.OldValue as INotifyCollectionChanged;
+			if (oldValue != null)
+			{
+				oldValue.CollectionChanged -= this.ItemsSource_CollectionChanged;
+			}
+			INotifyCollectionChanged newValue = this.ItemsSource as INotifyCollectionChanged;
+			if (newValue != null)
+			{
+				newValue.CollectionChanged += this.ItemsSource_CollectionChanged;
+			}
 			DependencyPropertyChangedEventHandler handler = this.itemsSourceChanged;
 			if (handler != null)
 			{
 				handler(this, e);
 			}
+		}
+
+		private void ItemsSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			resetting = e.Action == NotifyCollectionChangedAction.Reset;
 		}
 
 		private static void OnDataSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

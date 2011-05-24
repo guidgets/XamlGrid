@@ -197,7 +197,6 @@ namespace Company.Widgets.Views
 		private ScrollViewer scroll;
 		private readonly List<Row> cachedGUI = new List<Row>();
 		private int cacheIndex;
-		private bool resetting;
 
 		/// <summary>
 		/// Represents a control for displaying and manipulating data with a default tabular view.
@@ -526,7 +525,7 @@ namespace Company.Widgets.Views
 		/// </returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			if (this.cacheIndex < this.cachedGUI.Count && this.resetting)
+			if (this.cacheIndex < this.cachedGUI.Count)
 			{
 				return this.cachedGUI[this.cacheIndex++];
 			}
@@ -580,7 +579,6 @@ namespace Company.Widgets.Views
 		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
 		{
 			base.OnItemsChanged(e);
-			this.resetting = false;
 			this.cacheIndex = 0;
 		}
 
@@ -682,26 +680,11 @@ namespace Company.Widgets.Views
 		/// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
 		{
-			INotifyCollectionChanged oldValue = e.OldValue as INotifyCollectionChanged;
-			if (oldValue != null)
-			{
-				oldValue.CollectionChanged -= this.ItemsSource_CollectionChanged;
-			}
-			INotifyCollectionChanged newValue = this.ItemsSource as INotifyCollectionChanged;
-			if (newValue != null)
-			{
-				newValue.CollectionChanged += this.ItemsSource_CollectionChanged;
-			}
 			DependencyPropertyChangedEventHandler handler = this.itemsSourceChanged;
 			if (handler != null)
 			{
 				handler(this, e);
 			}
-		}
-
-		private void ItemsSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			resetting = e.Action == NotifyCollectionChangedAction.Reset;
 		}
 
 		private static void OnDataSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

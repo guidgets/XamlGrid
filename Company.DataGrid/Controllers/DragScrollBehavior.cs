@@ -232,19 +232,18 @@ namespace Company.Widgets.Controllers
 
 		private double GetOffset(Orientation orientation)
 		{
-			double offset = this.ScrollPixelsPerTick;
 			if (this.orientationProperty != null &&
 				(Orientation) this.orientationProperty.GetValue(this.panel, null) == orientation)
 			{
-				offset = 1;
+				return 1;
 			}
-			return offset;
+			return this.ScrollPixelsPerTick;
 		}
 
 
 		private void MouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e)
 		{
-			this.AssociatedObject.MouseLeftButtonUp += this.AssociatedObject_MouseLeftButtonUp;
+			this.AssociatedObject.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.AssociatedObject_MouseLeftButtonUp), true);
 			this.AssociatedObject.MouseMove += this.AssociatedObject_MouseMove;
 			this.AssociatedObject.MouseLeave += this.AssociatedObject_MouseLeave;
 		}
@@ -252,7 +251,7 @@ namespace Company.Widgets.Controllers
 		private void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			this.ScrollLeft = this.ScrollDown = this.ScrollUp = this.ScrollRight = false;
-			this.AssociatedObject.MouseLeftButtonUp -= this.AssociatedObject_MouseLeftButtonUp;
+			this.AssociatedObject.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.AssociatedObject_MouseLeftButtonUp));
 			this.AssociatedObject.MouseMove -= this.AssociatedObject_MouseMove;
 			this.AssociatedObject.MouseLeave -= this.AssociatedObject_MouseLeave;
 			this.AssociatedObject.ReleaseMouseCapture();

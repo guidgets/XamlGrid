@@ -12,6 +12,43 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class ColumnsCollection : ObservableCollection<Column>
 	{
+		protected override void InsertItem(int index, Column item)
+		{
+			base.InsertItem(index, item);
+			item.IndexChanged -= this.Item_IndexChanged;
+			item.Index = index;
+			item.IndexChanged += this.Item_IndexChanged;
+		}
+
+		protected override void SetItem(int index, Column item)
+		{
+			base.SetItem(index, item);
+			item.IndexChanged -= this.Item_IndexChanged;
+			item.Index = index;
+			item.IndexChanged += this.Item_IndexChanged;
+		}
+
+		protected override void RemoveItem(int index)
+		{
+			if (index >= 0 && index < this.Count)
+			{
+				this[index].IndexChanged -= this.Item_IndexChanged;
+				this[index].Index = -1;
+			}
+			base.RemoveItem(index);
+		}
+
+		protected override void ClearItems()
+		{
+			foreach (Column column in this.Items)
+			{
+				column.IndexChanged -= this.Item_IndexChanged;
+				column.Index = -1;
+			}
+			base.ClearItems();
+		}
+
+
 		/// <summary>
 		/// Calculates the relative widths of columns in this <see cref="ColumnsCollection"/> using the specified width.
 		/// </summary>
@@ -22,10 +59,10 @@ namespace Company.Widgets.Controllers
 			{
 				return;
 			}
-			IEnumerable<Column> relativeColumns = from column in this
-												  where column.Visibility == Visibility.Visible &&
-														column.Width.SizeMode == SizeMode.Fill
-												  select column;
+			IEnumerable<Column> relativeColumns = (from column in this
+			                                       where column.Visibility == Visibility.Visible &&
+			                                             column.Width.SizeMode == SizeMode.Fill
+			                                       select column).ToList();
 			double stars = relativeColumns.Sum(column => column.Width.Value);
 			double availableWidth = wholeWidth - (from column in this
 			                                      where column.Visibility == Visibility.Visible &&
@@ -45,6 +82,15 @@ namespace Company.Widgets.Controllers
 				                             select column.ActualWidth).Sum();
 				firstColumn.ActualWidth = Math.Max(width, 1);
 			}
+		}
+
+
+		private void Item_IndexChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			Column column = (Column) sender;
+			int index = column.Index;
+			this.Remove(column);
+			this.Insert(index, column);
 		}
 	}
 }

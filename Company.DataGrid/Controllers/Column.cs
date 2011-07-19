@@ -14,11 +14,18 @@ namespace Company.Widgets.Controllers
 		/// <summary>
 		/// Occurs when the <see cref="Width"/> of this <see cref="Column"/> is changed.
 		/// </summary>
+		public virtual event DependencyPropertyChangedEventHandler IndexChanged;
+
+		/// <summary>
+		/// Occurs when the <see cref="Width"/> of this <see cref="Column"/> is changed.
+		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler WidthChanged;
+
 		/// <summary>
 		/// Occurs when the <see cref="ActualWidth"/> of this <see cref="Column"/> is changed.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler ActualWidthChanged;
+
 		/// <summary>
 		/// Occurs when the <see cref="Visibility"/> of this <see cref="Column"/> is changed.
 		/// </summary>
@@ -30,72 +37,76 @@ namespace Company.Widgets.Controllers
 		/// displays visual information about a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty HeaderProperty =
-			DependencyProperty.Register("Header", typeof(object), typeof(Column), new PropertyMetadata(null));
+			DependencyProperty.Register("Header", typeof (object), typeof (Column), new PropertyMetadata(null));
 
 		public static readonly DependencyProperty DataBindingProperty =
-			DependencyProperty.Register("DataBinding", typeof(Binding), typeof(Column),
+			DependencyProperty.Register("DataBinding", typeof (Binding), typeof (Column),
 			                            new PropertyMetadata(null, OnBindingChanged));
 
 		public static readonly DependencyProperty FooterDataBindingProperty =
-			DependencyProperty.Register("FooterDataBinding", typeof(Binding), typeof(Column),
-										new PropertyMetadata(null, OnFooterBindingChanged));
+			DependencyProperty.Register("FooterDataBinding", typeof (Binding), typeof (Column),
+			                            new PropertyMetadata(null, OnFooterBindingChanged));
+
+		public static readonly DependencyProperty IndexProperty =
+			DependencyProperty.Register("Index", typeof (int), typeof (Column), new PropertyMetadata(-1, OnIndexChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the width of the cells in a <see cref="Column"/>.
 		/// </summary>		
 		public static readonly DependencyProperty WidthProperty =
-			DependencyProperty.Register("Width", typeof(ColumnWidth), typeof(Column),
+			DependencyProperty.Register("Width", typeof (ColumnWidth), typeof (Column),
 			                            new PropertyMetadata(new ColumnWidth(200), OnWidthChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the absolute width, in pixels, of a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty ActualWidthProperty =
-			DependencyProperty.Register("ActualWidth", typeof(double), typeof(Column),
+			DependencyProperty.Register("ActualWidth", typeof (double), typeof (Column),
 			                            new PropertyMetadata(200d, OnActualWidthChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Column"/> is resizable.
 		/// </summary>
 		public static readonly DependencyProperty IsResizableProperty =
-			DependencyProperty.Register("IsResizable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+			DependencyProperty.Register("IsResizable", typeof (bool), typeof (Column), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether data can be sorted through a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty IsSortableProperty =
-			DependencyProperty.Register("IsSortable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+			DependencyProperty.Register("IsSortable", typeof (bool), typeof (Column), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the visibility of a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty VisibilityProperty =
-			DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Column), new PropertyMetadata(Visibility.Visible, OnVisibilityChanged));
+			DependencyProperty.Register("Visibility", typeof (Visibility), typeof (Column),
+			                            new PropertyMetadata(Visibility.Visible, OnVisibilityChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating 
 		/// whether the <see cref="Cell"/>s in a <see cref="Column"/> are read-only.
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+			DependencyProperty.Register("IsEditable", typeof (bool), typeof (Column), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data in the <see cref="Cell"/>s in a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty DataTypeProperty =
-			DependencyProperty.Register("DataType", typeof(Type), typeof(Column), new PropertyMetadata(typeof(object)));
+			DependencyProperty.Register("DataType", typeof (Type), typeof (Column), new PropertyMetadata(typeof (object)));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Column"/> is selected.
 		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
-			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Column), new PropertyMetadata(false));
+			DependencyProperty.Register("IsSelected", typeof (bool), typeof (Column), new PropertyMetadata(false));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the style of the <see cref="Cell"/>s in a <see cref="Column"/>.
 		/// </summary>
 		public static readonly DependencyProperty CellStyleProperty =
-			DependencyProperty.Register("CellStyle", typeof(Style), typeof(Column), new PropertyMetadata(null));
+			DependencyProperty.Register("CellStyle", typeof (Style), typeof (Column), new PropertyMetadata(null));
 
 
 		/// <summary>
@@ -122,20 +133,20 @@ namespace Company.Widgets.Controllers
 		}
 
 
+		public int Index
+		{
+			get { return (int) this.GetValue(IndexProperty); }
+			set { this.SetValue(IndexProperty, value); }
+		}
+
 		/// <summary>
 		/// Gets or sets the width of the cells in the <see cref="Column"/>.
 		/// </summary>
 		/// <value>The width of the cells in the <see cref="Column"/>.</value>
 		public virtual ColumnWidth Width
 		{
-			get
-			{
-				return (ColumnWidth) this.GetValue(WidthProperty);
-			}
-			set
-			{
-				this.SetValue(WidthProperty, value);
-			}
+			get { return (ColumnWidth) this.GetValue(WidthProperty); }
+			set { this.SetValue(WidthProperty, value); }
 		}
 
 		/// <summary>
@@ -144,14 +155,8 @@ namespace Company.Widgets.Controllers
 		/// <value>The actual width.</value>
 		public virtual double ActualWidth
 		{
-			get
-			{
-				return (double) this.GetValue(ActualWidthProperty);
-			}
-			set
-			{
-				this.SetValue(ActualWidthProperty, value);
-			}
+			get { return (double) this.GetValue(ActualWidthProperty); }
+			set { this.SetValue(ActualWidthProperty, value); }
 		}
 
 		/// <summary>
@@ -160,14 +165,8 @@ namespace Company.Widgets.Controllers
 		/// <value><c>true</c> if resizable; otherwise, <c>false</c>.</value>
 		public virtual bool IsResizable
 		{
-			get
-			{
-				return (bool) this.GetValue(IsResizableProperty);
-			}
-			set
-			{
-				this.SetValue(IsResizableProperty, value);
-			}
+			get { return (bool) this.GetValue(IsResizableProperty); }
+			set { this.SetValue(IsResizableProperty, value); }
 		}
 
 		/// <summary>
@@ -178,14 +177,8 @@ namespace Company.Widgets.Controllers
 		/// </value>
 		public bool IsSortable
 		{
-			get
-			{
-				return (bool) this.GetValue(IsSortableProperty);
-			}
-			set
-			{
-				this.SetValue(IsSortableProperty, value);
-			}
+			get { return (bool) this.GetValue(IsSortableProperty); }
+			set { this.SetValue(IsSortableProperty, value); }
 		}
 
 		/// <summary>
@@ -194,14 +187,8 @@ namespace Company.Widgets.Controllers
 		/// <value>The visibility of this <see cref="Column"/>.</value>
 		public virtual Visibility Visibility
 		{
-			get
-			{
-				return (Visibility) this.GetValue(VisibilityProperty);
-			}
-			set
-			{
-				this.SetValue(VisibilityProperty, value);
-			}
+			get { return (Visibility) this.GetValue(VisibilityProperty); }
+			set { this.SetValue(VisibilityProperty, value); }
 		}
 
 		/// <summary>
@@ -210,14 +197,8 @@ namespace Company.Widgets.Controllers
 		/// <value>The header to display the information about this <see cref="Column"/>.</value>
 		public virtual object Header
 		{
-			get
-			{
-				return this.GetValue(HeaderProperty);
-			}
-			set
-			{
-				this.SetValue(HeaderProperty, value);
-			}
+			get { return this.GetValue(HeaderProperty); }
+			set { this.SetValue(HeaderProperty, value); }
 		}
 
 		/// <summary>
@@ -226,26 +207,14 @@ namespace Company.Widgets.Controllers
 		/// <value>The binding which the <see cref="Cell"/>s in this <see cref="Column"/> use to get the data they display.</value>
 		public virtual Binding Binding
 		{
-			get
-			{
-				return (Binding) this.GetValue(DataBindingProperty);
-			}
-			set
-			{
-				this.SetValue(DataBindingProperty, value);
-			}
+			get { return (Binding) this.GetValue(DataBindingProperty); }
+			set { this.SetValue(DataBindingProperty, value); }
 		}
 
 		public virtual Binding FooterBinding
 		{
-			get
-			{
-				return (Binding) this.GetValue(FooterDataBindingProperty);
-			}
-			set
-			{
-				this.SetValue(FooterDataBindingProperty, value);
-			}
+			get { return (Binding) this.GetValue(FooterDataBindingProperty); }
+			set { this.SetValue(FooterDataBindingProperty, value); }
 		}
 
 		/// <summary>
@@ -254,14 +223,8 @@ namespace Company.Widgets.Controllers
 		/// <value>The type of the data in the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
 		public virtual Type DataType
 		{
-			get
-			{
-				return (Type) this.GetValue(DataTypeProperty);
-			}
-			set
-			{
-				this.SetValue(DataTypeProperty, value);
-			}
+			get { return (Type) this.GetValue(DataTypeProperty); }
+			set { this.SetValue(DataTypeProperty, value); }
 		}
 
 		/// <summary>
@@ -272,14 +235,8 @@ namespace Company.Widgets.Controllers
 		/// </value>
 		public virtual bool IsSelected
 		{
-			get
-			{
-				return (bool) this.GetValue(IsSelectedProperty);
-			}
-			set
-			{
-				this.SetValue(IsSelectedProperty, value);
-			}
+			get { return (bool) this.GetValue(IsSelectedProperty); }
+			set { this.SetValue(IsSelectedProperty, value); }
 		}
 
 		/// <summary>
@@ -290,14 +247,8 @@ namespace Company.Widgets.Controllers
 		/// </value>
 		public virtual bool IsEditable
 		{
-			get
-			{
-				return (bool) this.GetValue(IsEditableProperty);
-			}
-			set
-			{
-				this.SetValue(IsEditableProperty, value);
-			}
+			get { return (bool) this.GetValue(IsEditableProperty); }
+			set { this.SetValue(IsEditableProperty, value); }
 		}
 
 		/// <summary>
@@ -306,14 +257,8 @@ namespace Company.Widgets.Controllers
 		/// <value>The style of the <see cref="Cell"/>s in this <see cref="Column"/>.</value>
 		public virtual Style CellStyle
 		{
-			get
-			{
-				return (Style) this.GetValue(CellStyleProperty);
-			}
-			set
-			{
-				this.SetValue(CellStyleProperty, value);
-			}
+			get { return (Style) this.GetValue(CellStyleProperty); }
+			set { this.SetValue(CellStyleProperty, value); }
 		}
 
 
@@ -355,6 +300,20 @@ namespace Company.Widgets.Controllers
 			if (this.FooterBinding != null && this.FooterBinding.ConverterParameter == null)
 			{
 				this.FooterBinding.ConverterParameter = this.Binding.Path.Path;
+			}
+		}
+
+		private static void OnIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Column) d).OnIndexChanged(e);
+		}
+
+		protected virtual void OnIndexChanged(DependencyPropertyChangedEventArgs e)
+		{
+			DependencyPropertyChangedEventHandler handler = this.IndexChanged;
+			if (handler != null)
+			{
+				handler(this, e);
 			}
 		}
 

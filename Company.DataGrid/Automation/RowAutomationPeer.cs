@@ -15,7 +15,7 @@ namespace Company.Widgets.Automation
 	/// <summary>
 	/// Exposes a <see cref="Views.Row"/> object to UI automation.
 	/// </summary>
-	public class RowAutomationPeer : ItemAutomationPeer, ITableProvider, ITableItemProvider, ISelectionItemProvider, IScrollItemProvider
+	public class RowAutomationPeer : ItemAutomationPeer, ITableProvider, ITableItemProvider, ISelectionItemProvider
 	{
 		/// <summary>
 		/// Exposes a <see cref="Views.Row"/> object to UI automation.
@@ -81,7 +81,7 @@ namespace Company.Widgets.Automation
 		{
 			get
 			{
-				return this.ProviderFromPeer(CreatePeerForElement(this.RowElement.DataGrid));
+				return this.ProviderFromPeer(this.ItemsControlAutomationPeer);
 			}
 		}
 
@@ -177,16 +177,8 @@ namespace Company.Widgets.Automation
 		{
 			get
 			{
-				return this.ProviderFromPeer(CreatePeerForElement(this.RowElement.DataGrid));
+				return this.ProviderFromPeer(this.ItemsControlAutomationPeer);
 			}
-		}
-
-		/// <summary>
-		/// Scrolls the content area of a container object in order to display the control within the visible region (view-port) of the container.
-		/// </summary>
-		public void ScrollIntoView()
-		{
-			throw new NotImplementedException();
 		}
 
 		/// <summary>

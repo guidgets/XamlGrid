@@ -159,8 +159,7 @@ namespace Company.Widgets.Automation
 		/// <returns>An array of UI automation providers.</returns>
 		public IRawElementProviderSimple[] GetColumnHeaders()
 		{
-			return (from column in this.DataGrid.Columns
-			        select this.ProviderFromPeer(CreatePeerForElement(column.HeaderCell))).ToArray();
+			return new IRawElementProviderSimple[0];
 		}
 
 		/// <summary>

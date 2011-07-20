@@ -60,12 +60,15 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual void RegisterObserver(int notificationName, IObserver observer)
 		{
-			if (!this.m_observerMap.ContainsKey(notificationName))
+			lock (this.m_syncRoot)
 			{
-				this.m_observerMap[notificationName] = new List<IObserver>();
-			}
+				if (!this.m_observerMap.ContainsKey(notificationName))
+				{
+					this.m_observerMap[notificationName] = new List<IObserver>();
+				}
 
-			this.m_observerMap[notificationName].Add(observer);
+				this.m_observerMap[notificationName].Add(observer);
+			}
 		}
 
 		/// <summary>
@@ -80,13 +83,16 @@ namespace Company.Widgets.Core
 		{
 			IList<IObserver> observers = null;
 
-			if (this.m_observerMap.ContainsKey(notification.Code))
+			lock (this.m_syncRoot)
 			{
-				// Get a reference to the observers list for this notification name
-				IList<IObserver> observers_ref = this.m_observerMap[notification.Code];
-				// Copy observers from reference array to working array, 
-				// since the reference array may change during the notification loop
-				observers = new List<IObserver>(observers_ref);
+				if (this.m_observerMap.ContainsKey(notification.Code))
+				{
+					// Get a reference to the observers list for this notification name
+					IList<IObserver> observers_ref = this.m_observerMap[notification.Code];
+					// Copy observers from reference array to working array, 
+					// since the reference array may change during the notification loop
+					observers = new List<IObserver>(observers_ref);
+				}
 			}
 
 			// Notify outside of the lock
@@ -109,28 +115,31 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual void RemoveObserver(int notificationName, object notifyContext)
 		{
-			// the observer list for the notification under inspection
-			if (this.m_observerMap.ContainsKey(notificationName))
+			lock (this.m_syncRoot)
 			{
-				IList<IObserver> observers = this.m_observerMap[notificationName];
-
-				// find the observer for the notifyContext
-				for (int i = 0; i < observers.Count; i++)
+				// the observer list for the notification under inspection
+				if (this.m_observerMap.ContainsKey(notificationName))
 				{
-					if (observers[i].CompareNotifyContext(notifyContext))
+					IList<IObserver> observers = this.m_observerMap[notificationName];
+
+					// find the observer for the notifyContext
+					for (int i = 0; i < observers.Count; i++)
 					{
-						// there can only be one Observer for a given notifyContext 
-						// in any given Observer list, so remove it and break
-						observers.RemoveAt(i);
-						break;
+						if (observers[i].CompareNotifyContext(notifyContext))
+						{
+							// there can only be one Observer for a given notifyContext 
+							// in any given Observer list, so remove it and break
+							observers.RemoveAt(i);
+							break;
+						}
 					}
-				}
 
-				// Also, when a Notification's Observer list length falls to 
-				// zero, delete the notification key from the observer map
-				if (observers.Count == 0)
-				{
-					this.m_observerMap.Remove(notificationName);
+					// Also, when a Notification's Observer list length falls to 
+					// zero, delete the notification key from the observer map
+					if (observers.Count == 0)
+					{
+						this.m_observerMap.Remove(notificationName);
+					}
 				}
 			}
 		}
@@ -150,25 +159,28 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual void RegisterController(IController controller)
 		{
-			// do not allow re-registration (you must to removeController fist)
-			if (this.m_ControllerMap.ContainsKey(controller.Name)) return;
-
-			// Register the Controller for retrieval by name
-			this.m_ControllerMap[controller.Name] = controller;
-
-			// Get Notification interests, if any.
-			IList<int> interests = controller.ListNotificationInterests();
-
-			// Register Controller as an observer for each of its notification interests
-			if (interests.Count > 0)
+			lock (this.m_syncRoot)
 			{
-				// Create Observer
-				IObserver observer = new Observer(controller.HandleNotification, controller);
+				// do not allow re-registration (you must to removeController fist)
+				if (this.m_ControllerMap.ContainsKey(controller.Name)) return;
 
-				// Register Controller as Observer for its list of Notification interests
-				for (int i = 0; i < interests.Count; i++)
+				// Register the Controller for retrieval by name
+				this.m_ControllerMap[controller.Name] = controller;
+
+				// Get Notification interests, if any.
+				IList<int> interests = controller.ListNotificationInterests();
+
+				// Register Controller as an observer for each of its notification interests
+				if (interests.Count > 0)
 				{
-					this.RegisterObserver(interests[i], observer);
+					// Create Observer
+					IObserver observer = new Observer(controller.HandleNotification, controller);
+
+					// Register Controller as Observer for its list of Notification interests
+					for (int i = 0; i < interests.Count; i++)
+					{
+						this.RegisterObserver(interests[i], observer);
+					}
 				}
 			}
 
@@ -184,8 +196,11 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual IController RetrieveController(string controllerName)
 		{
-			if (!this.m_ControllerMap.ContainsKey(controllerName)) return null;
-			return this.m_ControllerMap[controllerName];
+			lock (this.m_syncRoot)
+			{
+				if (!this.m_ControllerMap.ContainsKey(controllerName)) return null;
+				return this.m_ControllerMap[controllerName];
+			}
 		}
 
 		/// <summary>
@@ -197,22 +212,25 @@ namespace Company.Widgets.Core
 		{
 			IController controller;
 
-			// Retrieve the named Controller
-			if (!this.m_ControllerMap.ContainsKey(controllerName)) return null;
-			controller = this.m_ControllerMap[controllerName];
-
-			// for every notification this Controller is interested in...
-			IList<int> interests = controller.ListNotificationInterests();
-
-			for (int i = 0; i < interests.Count; i++)
+			lock (this.m_syncRoot)
 			{
-				// remove the observer linking the Controller 
-				// to the notification interest
-				this.RemoveObserver(interests[i], controller);
-			}
+				// Retrieve the named Controller
+				if (!this.m_ControllerMap.ContainsKey(controllerName)) return null;
+				controller = this.m_ControllerMap[controllerName];
 
-			// remove the Controller from the map		
-			this.m_ControllerMap.Remove(controllerName);
+				// for every notification this Controller is interested in...
+				IList<int> interests = controller.ListNotificationInterests();
+
+				for (int i = 0; i < interests.Count; i++)
+				{
+					// remove the observer linking the Controller 
+					// to the notification interest
+					this.RemoveObserver(interests[i], controller);
+				}
+
+				// remove the Controller from the map		
+				this.m_ControllerMap.Remove(controllerName);
+			}
 
 			// alert the Controller that it has been removed
 			controller.OnRemove();
@@ -227,7 +245,10 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual bool HasController(string controllerName)
 		{
-			return this.m_ControllerMap.ContainsKey(controllerName);
+			lock (this.m_syncRoot)
+			{
+				return this.m_ControllerMap.ContainsKey(controllerName);
+			}
 		}
 
 		#endregion
@@ -290,6 +311,11 @@ namespace Company.Widgets.Core
 		/// Singleton instance
 		/// </summary>
 		protected static volatile IMainController m_instance;
+
+		/// <summary>
+		/// Used for locking
+		/// </summary>
+		protected readonly object m_syncRoot = new object();
 
 		/// <summary>
 		/// Mapping of Controller names to Controller instances

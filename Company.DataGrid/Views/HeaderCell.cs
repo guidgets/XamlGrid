@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using Company.Widgets.Automation;
 using Company.Widgets.Controllers;
 using Company.Widgets.Models;
 
@@ -60,6 +62,17 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new HeaderCellAutomationPeer(this);
+		}
+
+		/// <summary>
 		/// Determines whether the <see cref="Cell"/> is automatically sized according to its contents.
 		/// </summary>
 		/// <returns>
@@ -69,7 +82,6 @@ namespace Company.Widgets.Views
 		{
 			return this.Column.Width.SizeMode == SizeMode.ToHeader || base.IsAutoSized();
 		}
-
 
 		protected virtual void OnSortDirectionChanged(SortDirectionEventArgs e)
 		{

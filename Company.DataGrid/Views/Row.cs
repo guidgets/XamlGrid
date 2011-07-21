@@ -1,7 +1,9 @@
 using System;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Company.Widgets.Automation;
 using Company.Widgets.Controllers;
 
 namespace Company.Widgets.Views
@@ -162,6 +164,17 @@ namespace Company.Widgets.Views
 				this.IsFocused = false;
 				base.OnLostFocus(e);
 			}
+		}
+
+		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new RowAutomationPeer(this);
 		}
 
 		/// <summary>

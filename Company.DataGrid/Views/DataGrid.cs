@@ -5,9 +5,11 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Company.Widgets.Automation;
 using Company.Widgets.Controllers;
 using Company.Widgets.Models;
 using System.Windows.Controls.Primitives;
@@ -515,6 +517,17 @@ namespace Company.Widgets.Views
 				this.Scroll.SetBinding(viewportWidthListenerProperty, viewportWidthBinding);
 				this.Scroll.SetBinding(viewportHeightListenerProperty, viewportHeightBinding);
 			}
+		}
+
+		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new DataGridAutomationPeer(this);
 		}
 
 		/// <summary>

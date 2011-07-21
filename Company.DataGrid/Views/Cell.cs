@@ -2,8 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Data;
 using System.Windows.Input;
+using Company.Widgets.Automation;
 using Company.Widgets.Models;
 
 namespace Company.Widgets.Views
@@ -240,6 +242,17 @@ namespace Company.Widgets.Views
 				base.OnLostFocus(e);
 				VisualStateManager.GoToState(this, "Unfocused", false);
 			}
+		}
+
+		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new CellAutomationPeer(this);
 		}
 
 		/// <summary>

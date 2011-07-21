@@ -47,6 +47,17 @@ namespace Company.Widgets.Automation
 
 
 		/// <summary>
+		/// Returns the control type for the item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+		/// </summary>
+		/// <returns>
+		/// A value of the enumeration.
+		/// </returns>
+		protected override AutomationControlType GetAutomationControlTypeCore()
+		{
+			return AutomationControlType.DataItem;
+		}
+
+		/// <summary>
 		/// Gets the ordinal number of the column that contains the cell or item.
 		/// </summary>
 		/// <value></value>

@@ -31,6 +31,17 @@ namespace Company.Widgets.Automation
 
 
 		/// <summary>
+		/// Returns the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+		/// </summary>
+		/// <returns>
+		/// A value of the enumeration.
+		/// </returns>
+		protected override AutomationControlType GetAutomationControlTypeCore()
+		{
+			return AutomationControlType.Header;
+		}
+
+		/// <summary>
 		/// Returns the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
 		/// </summary>
 		/// <returns>

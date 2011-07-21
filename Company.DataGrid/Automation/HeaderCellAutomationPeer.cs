@@ -38,6 +38,17 @@ namespace Company.Widgets.Automation
 
 
 		/// <summary>
+		/// Returns the control type for the item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+		/// </summary>
+		/// <returns>
+		/// A value of the enumeration.
+		/// </returns>
+		protected override AutomationControlType GetAutomationControlTypeCore()
+		{
+			return AutomationControlType.HeaderItem;
+		}
+
+		/// <summary>
 		/// Returns the class name of the item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
 		/// </summary>
 		/// <returns>

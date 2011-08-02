@@ -52,7 +52,11 @@ namespace Company.Widgets.Controllers
 					}
 					break;
                 case Notifications.ScrollIntoView:
-                    this.Scroll.ScrollToVerticalOffset((double) notification.Body);
+					double index = (double) notification.Body;
+					if (index < this.Scroll.VerticalOffset || this.Scroll.VerticalOffset + this.Scroll.ViewportHeight < index)
+					{
+						this.Scroll.ScrollToVerticalOffset(index);						
+					}
 			        break;
 			}
 		}

@@ -59,6 +59,7 @@ namespace Examples
         {
 			this.dataGrid.NewRowVisibility = Visibility.Visible;
         	this.dataGrid.NumberRows = true;
+            this.dataGrid.BringIntoView(this.dataGrid.Items[50]);
         	//this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };

@@ -45,6 +45,10 @@ namespace Company.Widgets.Views
 		/// Occurs when a new item is being added to the source the <see cref="DataGrid"/> is bound to.
 		/// </summary>
 		public virtual event EventHandler<NewItemEventArgs> NewItemAdding;
+		/// <summary>
+		/// Occurs when a new item of the <see cref="DataGrid"/> is being brought into view.
+		/// </summary>
+		public virtual event EventHandler<ScrollEventArgs> BringingIntoView;
 
 		/// <summary>
 		/// Occurs when the source of items for the <see cref="DataGrid"/> is changed.
@@ -543,11 +547,6 @@ namespace Company.Widgets.Views
 				return this.cachedGUI[this.cacheIndex++];
 			}
 			this.cacheIndex++;
-			return this.GetRow();
-		}
-
-		private DependencyObject GetRow()
-		{
 			Row row = new Row();
 			this.cachedGUI.Add(row);
 			return row;
@@ -599,7 +598,7 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Raises the <see cref="NewItemAdding"/> event.
 		/// </summary>
-		/// <param name="e">The <see cref="Company.Widgets.Models.NewItemEventArgs"/> instance containing the event data.</param>
+		/// <param name="e">The <see cref="NewItemEventArgs"/> instance containing the event data.</param>
 		public void OnNewItemAdding(NewItemEventArgs e)
 		{
 			EventHandler<NewItemEventArgs> handler = this.NewItemAdding;
@@ -609,8 +608,26 @@ namespace Company.Widgets.Views
 			}
 		}
 
+		public virtual void BringIntoView(object item)
+		{
+			this.BringIntoView(this.Items.IndexOf(item));
+		}
 
-		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
+	    public virtual void BringIntoView(int itemIndex)
+	    {
+	        if (itemIndex < 0)
+	        {
+	            return;
+	        }
+	        EventHandler<ScrollEventArgs> handler = this.BringingIntoView;
+	        if (handler != null)
+	        {
+	            handler(this, new ScrollEventArgs(ScrollEventType.ThumbPosition, itemIndex));
+	        }
+	    }
+
+
+	    private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			this.CreateAutomaticColumns();
 		}
@@ -780,6 +797,7 @@ namespace Company.Widgets.Views
 			else
 			{
 				this.Columns.Remove(this.NumberColumn);
+				this.NumberColumn = null;
 			}
 		}
 

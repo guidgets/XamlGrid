@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using Company.Widgets.Core;
@@ -72,6 +73,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
 			this.DataGrid.CurrentColumnChanged += this.DataGrid_CurrentColumnChanged;
 			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
+            this.DataGrid.BringingIntoView += this.DataGrid_BringingIntoView;
 			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged += this.DataGridItems_CollectionChanged;
 			this.DataGrid.Columns.CollectionChanged += this.DataGridColumns_CollectionChanged;
 		}
@@ -92,6 +94,7 @@ namespace Company.Widgets.Controllers
 			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
 			this.DataGrid.CurrentColumnChanged -= this.DataGrid_CurrentColumnChanged;
 			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
+		    this.DataGrid.BringingIntoView -= this.DataGrid_BringingIntoView;
 			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged -= this.DataGridItems_CollectionChanged;
 			this.DataGrid.Columns.CollectionChanged -= this.DataGridColumns_CollectionChanged;
 		}
@@ -246,6 +249,11 @@ namespace Company.Widgets.Controllers
 		{
 			this.SendNotification(Notifications.SelectionModeChanging, this.DataGrid.SelectionMode);
 		}
+
+	    private void DataGrid_BringingIntoView (object sender, ScrollEventArgs e)
+        {
+            this.SendNotification (Notifications.ScrollIntoView, e.NewValue);
+        }
 
 		private void DataGridItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{

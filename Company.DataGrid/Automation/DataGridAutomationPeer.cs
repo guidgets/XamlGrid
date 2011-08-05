@@ -112,16 +112,13 @@ namespace Company.Widgets.Automation
 		/// </returns>
 		public IRawElementProviderSimple GetItem(int row, int column)
 		{
-			if (row < this.DataGrid.Items.Count && column < this.DataGrid.Columns.Count)
+			if (row >= 0 && row < this.DataGrid.Items.Count && column >= 0 && column < this.DataGrid.Columns.Count)
 			{
 				DependencyObject rowElement = this.DataGrid.ItemContainerGenerator.ContainerFromIndex(row);
 				if (rowElement is ItemsControl)
 				{
 					DependencyObject cell = ((ItemsControl) rowElement).ItemContainerGenerator.ContainerFromIndex(column);
-					if (cell is UIElement)
-					{
-						return this.ProviderFromPeer(CreatePeerForElement((UIElement) cell));
-					}
+					return this.ProviderFromPeer(CreatePeerForElement((UIElement) cell));
 				}
 			}
 			return null;
@@ -237,11 +234,11 @@ namespace Company.Widgets.Automation
 			}
 			if (horizontalAmount != ScrollAmount.NoAmount && scrollInfo.ExtentWidth <= scrollInfo.ViewportWidth)
 			{
-				throw new InvalidOperationException("Trying to scroll horizontally with horizontal scrolling disabled.");
+				return;
 			}
 			if (horizontalAmount != ScrollAmount.NoAmount && scrollInfo.ExtentHeight <= scrollInfo.ViewportHeight)
 			{
-				throw new InvalidOperationException("Trying to scroll vertically with vertical scrolling disabled.");
+				return;
 			}
 			switch (horizontalAmount)
 			{
@@ -296,7 +293,7 @@ namespace Company.Widgets.Automation
 			{
 				if (scroll.ExtentWidth <= scroll.ViewportWidth)
 				{
-					throw new InvalidOperationException("Trying to scroll horizontally with horizontal scrolling disabled.");
+					return;
 				}
 				if (horizontalPercent < 0 || horizontalPercent > 100)
 				{
@@ -307,7 +304,7 @@ namespace Company.Widgets.Automation
 			{
 				if (scroll.ExtentHeight <= scroll.ViewportHeight)
 				{
-					throw new InvalidOperationException("Trying to scroll vertically with vertical scrolling disabled.");
+					return;
 				}
 				if (verticalPercent < 0 || verticalPercent > 100)
 				{

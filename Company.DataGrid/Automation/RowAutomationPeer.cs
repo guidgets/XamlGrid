@@ -289,6 +289,10 @@ namespace Company.Widgets.Automation
 		/// <returns>The collection of child elements.</returns>
 		protected override List<AutomationPeer> GetChildrenCore()
 		{
+			if (this.Owner == null)
+			{
+				return null;
+			}
 			List<AutomationPeer> list = null;
 			ItemsControl owner = (ItemsControl) this.Owner;
 			ItemCollection items = owner.Items;

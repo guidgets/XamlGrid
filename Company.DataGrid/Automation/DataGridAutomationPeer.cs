@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
@@ -6,6 +7,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Company.Widgets.Views;
 
 namespace Company.Widgets.Automation
@@ -52,6 +54,38 @@ namespace Company.Widgets.Automation
 		protected override string GetClassNameCore()
 		{
 			return this.Owner.GetType().Name;
+		}
+
+		/// <summary>
+		/// Gets the collection of child elements of the <see cref="T:System.Windows.Controls.ItemsControl"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemsControlAutomationPeer"/>.
+		/// </summary>
+		/// <returns>
+		/// The collection of child elements.
+		/// </returns>
+		protected override List<AutomationPeer> GetChildrenCore()
+		{
+			base.GetChildrenCore();
+			List<AutomationPeer> childPeers = new List<AutomationPeer>();
+			this.GetChildPeers(this.Owner, childPeers);
+			return childPeers;
+		}
+
+		private void GetChildPeers(DependencyObject parent, ICollection<AutomationPeer> childPeers)
+		{
+			int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+			for (int childIndex = 0; childIndex < childrenCount; ++childIndex)
+			{
+				UIElement child = (UIElement) VisualTreeHelper.GetChild(parent, childIndex);
+				AutomationPeer createAutomationPeer = CreatePeerForElement(child);
+				if (createAutomationPeer != null)
+				{
+					childPeers.Add(createAutomationPeer);
+				}
+				else
+				{
+					this.GetChildPeers(child, childPeers);
+				}
+			}
 		}
 
 		/// <summary>

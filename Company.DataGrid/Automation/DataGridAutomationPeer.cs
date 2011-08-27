@@ -223,6 +223,7 @@ namespace Company.Widgets.Automation
 		{
 			return (from item in this.DataGrid.SelectedItems
 			        let row = this.DataGrid.ItemContainerGenerator.ContainerFromItem(item)
+					where row != null
 			        let peer = CreatePeerForElement((UIElement) row)
 			        select this.ProviderFromPeer(peer)).ToArray();
 		}

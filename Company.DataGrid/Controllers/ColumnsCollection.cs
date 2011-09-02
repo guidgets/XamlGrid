@@ -12,6 +12,11 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class ColumnsCollection : ObservableCollection<Column>
 	{
+		/// <summary>
+		/// Inserts the item.
+		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <param name="item">The item.</param>
 		protected override void InsertItem(int index, Column item)
 		{
 			base.InsertItem(index, item);
@@ -20,6 +25,11 @@ namespace Company.Widgets.Controllers
 			item.IndexChanged += this.Item_IndexChanged;
 		}
 
+		/// <summary>
+		/// Sets the item.
+		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <param name="item">The item.</param>
 		protected override void SetItem(int index, Column item)
 		{
 			base.SetItem(index, item);
@@ -28,6 +38,10 @@ namespace Company.Widgets.Controllers
 			item.IndexChanged += this.Item_IndexChanged;
 		}
 
+		/// <summary>
+		/// Removes the item.
+		/// </summary>
+		/// <param name="index">The index.</param>
 		protected override void RemoveItem(int index)
 		{
 			if (index >= 0 && index < this.Count)
@@ -38,6 +52,9 @@ namespace Company.Widgets.Controllers
 			base.RemoveItem(index);
 		}
 
+		/// <summary>
+		/// Clears the items.
+		/// </summary>
 		protected override void ClearItems()
 		{
 			foreach (Column column in this.Items)

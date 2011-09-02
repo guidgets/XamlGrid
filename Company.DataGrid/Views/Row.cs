@@ -14,10 +14,6 @@ namespace Company.Widgets.Views
 	public class Row : RowBase
 	{
 		/// <summary>
-		/// Occurs when the data context of the <see cref="Row"/> is changed.
-		/// </summary>
-		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
-		/// <summary>
 		/// Occurs when the <see cref="Row"/> changes its currency.
 		/// </summary>
 		public virtual event DependencyPropertyChangedEventHandler HasFocusChanged;
@@ -47,14 +43,6 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("Index", typeof(int), typeof(Row), new PropertyMetadata(-1));
 
 
-		private static readonly DependencyProperty dataContextListenerProperty =
-			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Row), new PropertyMetadata(OnDataContextListenerChanged));
-
-		private static readonly Binding dataContextBinding = new Binding("DataContext")
-	                                                     	 {
-	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-	                                                     	 };
-
 		private static readonly Binding isSelectedBinding = new Binding("IsSelected")
 															{
 																RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) { AncestorType = rowType }
@@ -71,8 +59,6 @@ namespace Company.Widgets.Views
 		public Row()
 		{
 			this.DefaultStyleKey = typeof(Row);
-
-			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 
 			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}
@@ -240,20 +226,6 @@ namespace Company.Widgets.Views
 			cell.ClearValue(Cell.IsEditableProperty);
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.IsSelectedProperty);
-		}
-
-		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Row) d).OnDataContextChanged(e);
-		}
-
-		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
-		{
-			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
-			if (handler != null)
-			{
-				handler(this, e);
-			}
 		}
 
 		private static void OnHasFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

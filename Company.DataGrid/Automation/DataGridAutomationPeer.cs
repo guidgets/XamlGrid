@@ -148,6 +148,10 @@ namespace Company.Widgets.Automation
 		{
 			if (row >= 0 && row < this.DataGrid.Items.Count && column >= 0 && column < this.DataGrid.Columns.Count)
 			{
+				this.DataGrid.BringIntoView(row);
+				// TODO: calling UpdateLayout is almost always wrong but sometimes the row is not yet realized when needed; 
+				// what's the better way - BringIntoView to focus the shown item like the system ListBox?
+				this.DataGrid.UpdateLayout();
 				DependencyObject rowElement = this.DataGrid.ItemContainerGenerator.ContainerFromIndex(row);
 				if (rowElement is ItemsControl)
 				{

@@ -356,28 +356,34 @@ namespace Company.Widgets.Automation
 		/// </returns>
 		public override object GetPattern(PatternInterface patternInterface)
 		{
-			if (patternInterface == PatternInterface.Scroll)
+			switch (patternInterface)
 			{
-				ItemsControl owner = (ItemsControl) this.Owner;
-				UIElement itemsHost = owner.GetItemsHost();
-				ScrollViewer viewer = null;
-				while ((itemsHost != null) && (itemsHost != owner))
-				{
-					itemsHost = VisualTreeHelper.GetParent(itemsHost) as UIElement;
-					viewer = itemsHost as ScrollViewer;
-					if (viewer != null)
+				case PatternInterface.Scroll:
 					{
-						break;
+						ItemsControl owner = (ItemsControl) this.Owner;
+						UIElement itemsHost = owner.GetItemsHost();
+						ScrollViewer viewer = null;
+						while ((itemsHost != null) && (itemsHost != owner))
+						{
+							itemsHost = VisualTreeHelper.GetParent(itemsHost) as UIElement;
+							viewer = itemsHost as ScrollViewer;
+							if (viewer != null)
+							{
+								break;
+							}
+						}
+						if (viewer != null)
+						{
+							AutomationPeer automationPeer = CreatePeerForElement(viewer);
+							if ((automationPeer != null) && (automationPeer is IScrollProvider))
+							{
+								return (IScrollProvider) automationPeer;
+							}
+						}
 					}
-				}
-				if (viewer != null)
-				{
-					AutomationPeer automationPeer = CreatePeerForElement(viewer);
-					if ((automationPeer != null) && (automationPeer is IScrollProvider))
-					{
-						return (IScrollProvider) automationPeer;
-					}
-				}
+					break;
+				case PatternInterface.SelectionItem:
+					return this;
 			}
 			return base.GetPattern(patternInterface);
 		}

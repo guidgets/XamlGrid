@@ -57,7 +57,10 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual void RegisterModel(IModel model)
 		{
-			this.m_ModelMap[model.ModelName] = model;
+			lock (this.m_syncRoot)
+			{
+				this.m_ModelMap[model.ModelName] = model;
+			}
 
 			model.OnRegister();
 		}
@@ -70,8 +73,11 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual IModel RetrieveModel(string ModelName)
 		{
-			if (!this.m_ModelMap.ContainsKey(ModelName)) return null;
-			return this.m_ModelMap[ModelName];
+			lock (this.m_syncRoot)
+			{
+				if (!this.m_ModelMap.ContainsKey(ModelName)) return null;
+				return this.m_ModelMap[ModelName];
+			}
 		}
 
 		/// <summary>
@@ -82,7 +88,10 @@ namespace Company.Widgets.Core
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
 		public virtual bool HasModel(string ModelName)
 		{
-			return this.m_ModelMap.ContainsKey(ModelName);
+			lock (this.m_syncRoot)
+			{
+				return this.m_ModelMap.ContainsKey(ModelName);
+			}
 		}
 
 		/// <summary>
@@ -94,10 +103,13 @@ namespace Company.Widgets.Core
 		{
 			IModel model = null;
 
-			if (this.m_ModelMap.ContainsKey(ModelName))
+			lock (this.m_syncRoot)
 			{
-				model = this.RetrieveModel(ModelName);
-				this.m_ModelMap.Remove(ModelName);
+				if (this.m_ModelMap.ContainsKey(ModelName))
+				{
+					model = this.RetrieveModel(ModelName);
+					this.m_ModelMap.Remove(ModelName);
+				}
 			}
 
 			if (model != null) model.OnRemove();
@@ -161,6 +173,11 @@ namespace Company.Widgets.Core
 		/// Singleton instance
 		/// </summary>
 		protected static volatile IMainModel m_instance;
+
+		/// <summary>
+		/// Used for locking
+		/// </summary>
+		protected readonly object m_syncRoot = new object();
 
 		/// <summary>
 		/// Mapping of ModelNames to <c>IModel</c> instances

@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using Company.Widgets.Automation;
 using Company.Widgets.Controllers;
 using Company.Widgets.Models;
 
@@ -18,6 +20,17 @@ namespace Company.Widgets.Views
 			this.DefaultStyleKey = typeof(HeaderRow);
 		}
 
+
+		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new HeaderRowAutomationPeer(this);
+		}
 
 		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.

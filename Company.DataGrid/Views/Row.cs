@@ -1,7 +1,9 @@
 using System;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Company.Widgets.Automation;
 using Company.Widgets.Controllers;
 
 namespace Company.Widgets.Views
@@ -11,10 +13,6 @@ namespace Company.Widgets.Views
 	/// </summary>
 	public class Row : RowBase
 	{
-		/// <summary>
-		/// Occurs when the data context of the <see cref="Row"/> is changed.
-		/// </summary>
-		public virtual event DependencyPropertyChangedEventHandler DataContextChanged;
 		/// <summary>
 		/// Occurs when the <see cref="Row"/> changes its currency.
 		/// </summary>
@@ -45,14 +43,6 @@ namespace Company.Widgets.Views
 			DependencyProperty.Register("Index", typeof(int), typeof(Row), new PropertyMetadata(-1));
 
 
-		private static readonly DependencyProperty dataContextListenerProperty =
-			DependencyProperty.Register("dataContextListener", typeof(object), typeof(Row), new PropertyMetadata(OnDataContextListenerChanged));
-
-		private static readonly Binding dataContextBinding = new Binding("DataContext")
-	                                                     	 {
-	                                                     		 RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-	                                                     	 };
-
 		private static readonly Binding isSelectedBinding = new Binding("IsSelected")
 															{
 																RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) { AncestorType = rowType }
@@ -69,8 +59,6 @@ namespace Company.Widgets.Views
 		public Row()
 		{
 			this.DefaultStyleKey = typeof(Row);
-
-			this.SetBinding(dataContextListenerProperty, dataContextBinding);
 
 			DataGridFacade.Instance.RegisterController(new RowController(this));
 		}
@@ -165,6 +153,17 @@ namespace Company.Widgets.Views
 		}
 
 		/// <summary>
+		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// </summary>
+		/// <returns>
+		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// </returns>
+		protected override AutomationPeer OnCreateAutomationPeer()
+		{
+			return new RowAutomationPeer(this);
+		}
+
+		/// <summary>
 		/// Creates or identifies the element that is used to display the given item.
 		/// </summary>
 		/// <returns>
@@ -227,20 +226,6 @@ namespace Company.Widgets.Views
 			cell.ClearValue(Cell.IsEditableProperty);
 			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.IsSelectedProperty);
-		}
-
-		private static void OnDataContextListenerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Row) d).OnDataContextChanged(e);
-		}
-
-		protected virtual void OnDataContextChanged(DependencyPropertyChangedEventArgs e)
-		{
-			DependencyPropertyChangedEventHandler handler = this.DataContextChanged;
-			if (handler != null)
-			{
-				handler(this, e);
-			}
 		}
 
 		private static void OnHasFocusedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

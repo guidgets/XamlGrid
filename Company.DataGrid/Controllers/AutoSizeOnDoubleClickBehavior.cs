@@ -1,8 +1,7 @@
-using System;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using System.Windows.Threading;
 
 namespace Company.Widgets.Controllers
 {
@@ -11,21 +10,6 @@ namespace Company.Widgets.Controllers
 	/// </summary>
 	public class AutoSizeOnDoubleClickBehavior : Behavior<Thumb>
 	{
-		private const int TIME_BETWEEN_CLICKS = 500;
-
-		private readonly DispatcherTimer timer;
-		private bool waiting;
-		private DateTime waitingSince;
-
-		/// <summary>
-		/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to auto-size a <see cref="Column"/> of a <see cref="Company.Widgets"/>.
-		/// </summary>
-		public AutoSizeOnDoubleClickBehavior()
-		{
-			this.timer = new DispatcherTimer();
-			this.timer.Interval = new TimeSpan(0, 0, 0, 0, TIME_BETWEEN_CLICKS);
-		}
-
 		/// <summary>
 		/// Called after the behavior is attached to an AssociatedObject.
 		/// </summary>
@@ -33,8 +17,8 @@ namespace Company.Widgets.Controllers
 		protected override void OnAttached()
 		{
 			base.OnAttached();
-			this.timer.Tick += this.Timer_Tick;
-			this.AssociatedObject.MouseLeftButtonUp += AssociatedObject_MouseLeftButtonUp;
+			this.AssociatedObject.AddHandler(UIElement.MouseLeftButtonDownEvent,
+			                                 new MouseButtonEventHandler(AssociatedObject_MouseLeftButtonDown), true);
 		}
 
 		/// <summary>
@@ -43,40 +27,21 @@ namespace Company.Widgets.Controllers
 		/// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
 		protected override void OnDetaching()
 		{
-			this.timer.Tick -= this.Timer_Tick;
-			this.AssociatedObject.MouseLeftButtonUp -= this.AssociatedObject_MouseLeftButtonUp;
+			this.AssociatedObject.RemoveHandler(UIElement.MouseLeftButtonDownEvent,
+			                                    new MouseButtonEventHandler(this.AssociatedObject_MouseLeftButtonDown));
 			base.OnDetaching();
 		}
 
-		private void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		private void AssociatedObject_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			if (this.waiting)
+			if (e.ClickCount == 2)
 			{
-				if ((DateTime.Now - this.waitingSince).TotalMilliseconds < TIME_BETWEEN_CLICKS)
+				Column columnToResize = this.AssociatedObject.Tag as Column;
+				if (columnToResize != null && columnToResize.IsResizable)
 				{
-					this.waiting = false;
-					Column columnToResize = this.AssociatedObject.Tag as Column;
-					if (columnToResize != null && columnToResize.IsResizable)
-					{
-						columnToResize.AutoSize();
-					}
+					columnToResize.AutoSize();
 				}
 			}
-			else
-			{
-				this.waiting = true;
-				this.waitingSince = DateTime.Now;
-				timer.Start();
-			}
-		}
-
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			if (this.waiting)
-			{
-				timer.Stop();
-			}
-			this.waiting = false;
 		}
 	}
 }

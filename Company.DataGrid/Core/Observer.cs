@@ -59,7 +59,14 @@ namespace Company.Widgets.Core
 		/// <param name="notification">The <c>INotification</c> to pass to the interested object's notification method</param>
 		public virtual void NotifyObserver(INotification notification)
 		{
-			this.NotifyMethod(notification);
+			HandleNotification method;
+
+			// Retrieve the current state of the object, then notify outside of our thread safe block
+			lock (this.syncRoot)
+			{
+				method = this.NotifyMethod;
+			}
+			method(notification);
 		}
 
 		/// <summary>
@@ -70,8 +77,11 @@ namespace Company.Widgets.Core
 		/// <returns>Indicating if the object and the notification context are the same</returns>
 		public virtual bool CompareNotifyContext(object obj)
 		{
-			// Compare on the current state
-			return this.NotifyContext.Equals(obj);
+			lock (this.syncRoot)
+			{
+				// Compare on the current state
+				return this.NotifyContext.Equals(obj);
+			}
 		}
 
 		#endregion
@@ -111,6 +121,15 @@ namespace Company.Widgets.Core
 				this.notifyContext = value;
 			}
 		}
+
+		#endregion
+
+		#region Members
+
+		/// <summary>
+		/// Used for locking
+		/// </summary>
+		protected readonly object syncRoot = new object();
 
 		#endregion
 	}

@@ -27,7 +27,7 @@ namespace Company.Widgets.Controllers
 		/// <returns></returns>
 		public override IList<int> ListNotificationInterests()
 		{
-			return new List<int> { Notifications.CellFocused };
+			return new List<int> { Notifications.CellFocused, Notifications.ScrollIntoView };
 		}
 
 		/// <summary>
@@ -51,6 +51,13 @@ namespace Company.Widgets.Controllers
 						scrollInfo.MakeVisible(focusedElement, bounds);
 					}
 					break;
+                case Notifications.ScrollIntoView:
+					double index = (double) notification.Body;
+					if (index < this.Scroll.VerticalOffset || this.Scroll.VerticalOffset + this.Scroll.ViewportHeight < index)
+					{
+						this.Scroll.ScrollToVerticalOffset(index);						
+					}
+			        break;
 			}
 		}
 

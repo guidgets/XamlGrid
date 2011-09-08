@@ -142,7 +142,13 @@ namespace Company.Widgets.Automation
 		/// </summary>
 		public void AddToSelection()
 		{
+			if (this.RowElement.IsSelected)
+			{
+				return;
+			}
 			this.RowElement.IsSelected = true;
+			this.RaisePropertyChangedEvent(SelectionItemPatternIdentifiers.IsSelectedProperty, false, true);
+			this.RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementAddedToSelection);
 		}
 
 		/// <summary>
@@ -150,7 +156,13 @@ namespace Company.Widgets.Automation
 		/// </summary>
 		public void RemoveFromSelection()
 		{
+			if (this.RowElement.IsSelected)
+			{
+				return;
+			}
 			this.RowElement.IsSelected = false;
+			this.RaisePropertyChangedEvent(SelectionItemPatternIdentifiers.IsSelectedProperty, true, false);
+			this.RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementRemovedFromSelection);
 		}
 
 		/// <summary>
@@ -164,6 +176,8 @@ namespace Company.Widgets.Automation
 				return;
 			}
 			((INotifier) rowController).SendNotification(Notifications.SelectingItems, this.RowElement.DataContext, NotificationTypes.ClearSelection);
+			this.RaisePropertyChangedEvent(SelectionItemPatternIdentifiers.IsSelectedProperty, false, true);
+			this.RaiseAutomationEvent(AutomationEvents.SelectionItemPatternOnElementSelected);
 		}
 
 		/// <summary>

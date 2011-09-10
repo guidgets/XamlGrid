@@ -11,6 +11,7 @@ namespace Company.Widgets.Controllers
 	{
 		public override void Execute(INotification notification)
 		{
+			base.Execute(notification);
 			DataModel dataModel;
 			switch (notification.Code)
 			{

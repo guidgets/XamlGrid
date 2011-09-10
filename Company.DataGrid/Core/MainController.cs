@@ -7,6 +7,7 @@
 #region Using
 
 using System.Collections.Generic;
+using Company.Widgets.Aspects;
 
 #endregion
 
@@ -99,9 +100,8 @@ namespace Company.Widgets.Core
 			if (observers != null)
 			{
 				// Notify Observers from the working array				
-				for (int i = 0; i < observers.Count; i++)
+				foreach (IObserver observer in observers)
 				{
-					IObserver observer = observers[i];
 					observer.NotifyObserver(notification);
 				}
 			}
@@ -157,7 +157,8 @@ namespace Company.Widgets.Core
 		///     <para>If the <c>IController</c> returns any <c>INotification</c> names to be notified about, an <c>Observer</c> is created encapsulating the <c>IController</c> instance's <c>handleNotification</c> method and registering it as an <c>Observer</c> for all <c>INotifications</c> the <c>IController</c> is interested in</para>
 		/// </remarks>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RegisterController(IController controller)
+		[Validate]
+		public virtual void RegisterController([NotNull] IController controller)
 		{
 			lock (this.m_syncRoot)
 			{
@@ -221,11 +222,11 @@ namespace Company.Widgets.Core
 				// for every notification this Controller is interested in...
 				IList<int> interests = controller.ListNotificationInterests();
 
-				for (int i = 0; i < interests.Count; i++)
+				foreach (int t in interests)
 				{
 					// remove the observer linking the Controller 
 					// to the notification interest
-					this.RemoveObserver(interests[i], controller);
+					this.RemoveObserver(t, controller);
 				}
 
 				// remove the Controller from the map		

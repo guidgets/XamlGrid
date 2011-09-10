@@ -77,6 +77,7 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
+			base.HandleNotification(notification);
 			switch (notification.Code)
 			{
 				case Notifications.FocusCell:

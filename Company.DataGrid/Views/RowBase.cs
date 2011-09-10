@@ -26,7 +26,7 @@ namespace Company.Widgets.Views
 
 
 		/// <summary>
-		/// Undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+		/// Undoes the effects of the <see cref="ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
 		/// </summary>
 		/// <param name="element">The container element.</param>
 		/// <param name="item">The item.</param>

@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Media;
+using Company.Widgets.Aspects;
 
 namespace Company.Widgets.Views
 {
@@ -49,7 +50,8 @@ namespace Company.Widgets.Views
 		/// </summary>
 		/// <param name="brush">The brush to get the value from.</param>
 		/// <returns>The <see cref="OSColors"/> value of the specified brush.</returns>
-		public static OSColors GetOSColor(SolidColorBrush brush)
+		[Validate]
+		public static OSColors GetOSColor([NotNull] SolidColorBrush brush)
 		{
 			return (OSColors) brush.GetValue(OSColorProperty);
 		}
@@ -59,7 +61,8 @@ namespace Company.Widgets.Views
 		/// </summary>
 		/// <param name="brush">The brush to which to set the value.</param>
 		/// <param name="osColor">The corresponding to a system color value from the <see cref="OSColors"/> enumeration.</param>
-		public static void SetOSColor(SolidColorBrush brush, OSColors osColor)
+		[Validate]
+		public static void SetOSColor([NotNull] SolidColorBrush brush, OSColors osColor)
 		{
 			brush.SetValue(OSColorProperty, osColor);
 		}

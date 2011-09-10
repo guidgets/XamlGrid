@@ -98,14 +98,8 @@ namespace Company.Widgets.Views
 		/// <value>The value contained in the <see cref="Cell"/>.</value>
 		public virtual object Value
 		{
-			get
-			{
-				return this.GetValue(ValueProperty);
-			}
-			set
-			{
-				this.SetValue(ValueProperty, value);
-			}
+			get { return this.GetValue(ValueProperty); }
+			set { this.SetValue(ValueProperty, value); }
 		}
 
 		/// <summary>
@@ -114,14 +108,8 @@ namespace Company.Widgets.Views
 		/// <value><c>true</c> if this <see cref="Cell"/> has focus; otherwise, <c>false</c>.</value>
 		public bool HasFocus
 		{
-			get
-			{
-				return (bool) this.GetValue(HasFocusProperty);
-			}
-			set
-			{
-				this.SetValue(HasFocusProperty, value);
-			}
+			get { return (bool) this.GetValue(HasFocusProperty); }
+			set { this.SetValue(HasFocusProperty, value); }
 		}
 
 		/// <summary>
@@ -132,14 +120,8 @@ namespace Company.Widgets.Views
 		/// </value>
 		public virtual bool IsEditable
 		{
-			get
-			{
-				return (bool) this.GetValue(IsEditableProperty);
-			}
-			set
-			{
-				this.SetValue(IsEditableProperty, value);
-			}
+			get { return (bool) this.GetValue(IsEditableProperty); }
+			set { this.SetValue(IsEditableProperty, value); }
 		}
 
 		/// <summary>
@@ -150,14 +132,8 @@ namespace Company.Widgets.Views
 		/// </value>
 		public virtual bool IsInEditMode
 		{
-			get
-			{
-				return (bool) this.GetValue(IsInEditModeProperty);
-			}
-			set
-			{
-				this.SetValue(IsInEditModeProperty, value);
-			}
+			get { return (bool) this.GetValue(IsInEditModeProperty); }
+			set { this.SetValue(IsInEditModeProperty, value); }
 		}
 
 		/// <summary>
@@ -168,14 +144,8 @@ namespace Company.Widgets.Views
 		/// </value>
 		public virtual bool IsSelected
 		{
-			get
-			{
-				return (bool) this.GetValue(IsSelectedProperty);
-			}
-			set
-			{
-				this.SetValue(IsSelectedProperty, value);
-			}
+			get { return (bool) this.GetValue(IsSelectedProperty); }
+			set { this.SetValue(IsSelectedProperty, value); }
 		}
 
 		/// <summary>
@@ -184,10 +154,7 @@ namespace Company.Widgets.Views
 		/// <value>The type of the data this <see cref="Cell"/> represent.</value>
 		public virtual Type DataType
 		{
-			get
-			{
-				return (Type) this.GetValue(dataTypeProperty);
-			}
+			get { return (Type) this.GetValue(dataTypeProperty); }
 		}
 
 

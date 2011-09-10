@@ -7,6 +7,7 @@
 #region Using
 
 using System.Collections.Generic;
+using Company.Widgets.Aspects;
 
 #endregion
 
@@ -84,7 +85,8 @@ namespace Company.Widgets.Core
 		///        Typically this will be handled in a switch statement, with one 'case' entry per <c>INotification</c> the <c>Controller</c> is interested in. 
 		///     </para>
 		/// </remarks>
-		public virtual void HandleNotification(INotification notification)
+		[Validate]
+		public virtual void HandleNotification([NotNull] INotification notification)
 		{
 		}
 

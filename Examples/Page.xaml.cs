@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Company.Widgets.Controllers;
+using Company.Widgets.Views;
 
 namespace Examples
 {
@@ -60,6 +61,8 @@ namespace Examples
 			this.dataGrid.NewRowVisibility = Visibility.Visible;
         	this.dataGrid.NumberRows = true;
             this.dataGrid.BringIntoView(79);
+			CellController cellController = new CellController(new Cell());
+			cellController.HandleNotification(null);
         	//this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };

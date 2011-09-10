@@ -7,6 +7,7 @@
 #region Using
 
 using System.Collections.Generic;
+using Company.Widgets.Aspects;
 
 #endregion
 
@@ -55,7 +56,8 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="model">An <c>IModel</c> to be held by the <c>Model</c></param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void RegisterModel(IModel model)
+		[Validate]
+		public virtual void RegisterModel([NotNull] IModel model)
 		{
 			lock (this.m_syncRoot)
 			{

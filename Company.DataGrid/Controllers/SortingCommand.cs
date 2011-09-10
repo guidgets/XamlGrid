@@ -8,6 +8,7 @@ namespace Company.Widgets.Controllers
 	{
 		public override void Execute(INotification notification)
 		{
+			base.Execute(notification);
 			SortingModel sortingModel = (SortingModel) DataGridFacade.Instance.RetrieveModel(SortingModel.NAME);
 			switch (notification.Code)
 			{

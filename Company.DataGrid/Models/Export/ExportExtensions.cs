@@ -1,3 +1,4 @@
+using Company.Widgets.Aspects;
 using Company.Widgets.Views;
 
 namespace Company.Widgets.Models.Export
@@ -11,7 +12,8 @@ namespace Company.Widgets.Models.Export
 		/// Copies the selected items of the specified data grid.
 		/// </summary>
 		/// <param name="dataGrid">The data grid to copy the selected items of.</param>
-		public static void Copy(this DataGrid dataGrid)
+		[Validate]
+		public static void Copy([NotNull] this DataGrid dataGrid)
 		{
 			ClipboardExporter clipboardExporter = new ClipboardExporter();
 			if (!dataGrid.CopyHeaderToClipboard)

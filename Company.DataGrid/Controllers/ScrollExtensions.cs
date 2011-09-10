@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using Company.Widgets.Aspects;
 
 namespace Company.Widgets.Controllers
 {
@@ -19,22 +20,26 @@ namespace Company.Widgets.Controllers
 			                                    new PropertyMetadata(0d, OnHorizontalOffsetChanged));
 
 
-		public static double GetVerticalOffset(ScrollViewer scrollViewer)
+		[Validate]
+		public static double GetVerticalOffset([NotNull] ScrollViewer scrollViewer)
 		{
 			return (double) scrollViewer.GetValue(VerticalOffsetProperty);
 		}
 
-		public static void SetVerticalOffset(ScrollViewer scrollViewer, double value)
+		[Validate]
+		public static void SetVerticalOffset([NotNull] ScrollViewer scrollViewer, double value)
 		{
 			scrollViewer.SetValue(VerticalOffsetProperty, value);
 		}
 
-		public static double GetHorizontalOffset(ScrollViewer scrollViewer)
+		[Validate]
+		public static double GetHorizontalOffset([NotNull] ScrollViewer scrollViewer)
 		{
 			return (double) scrollViewer.GetValue(HorizontalOffsetProperty);
 		}
 
-		public static void SetHorizontalOffset(ScrollViewer scrollViewer, double value)
+		[Validate]
+		public static void SetHorizontalOffset([NotNull] ScrollViewer scrollViewer, double value)
 		{
 			scrollViewer.SetValue(HorizontalOffsetProperty, value);
 		}
@@ -49,15 +54,15 @@ namespace Company.Widgets.Controllers
 			((ScrollViewer) d).ScrollToHorizontalOffset((double) e.NewValue);
 		}
 
-		public static IScrollInfo GetScrollInfo(this ScrollViewer scroll)
+		[Validate]
+		public static IScrollInfo GetScrollInfo([NotNull] this ScrollViewer scroll)
 		{
 			ItemsPresenter itemsPresenter = scroll.Content as ItemsPresenter;
 			if (itemsPresenter != null)
 			{
-				return VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo ??
-				       scroll.Content as IScrollInfo;
+				return VisualTreeHelper.GetChild(itemsPresenter, 0) as IScrollInfo;
 			}
-			return null;
+			return scroll.Content as IScrollInfo;
 		}
 	}
 }

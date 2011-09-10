@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security;
 using System.Text;
 using System.Windows;
+using Company.Widgets.Aspects;
 using Company.Widgets.Views;
 
 namespace Company.Widgets.Models.Export
@@ -16,7 +17,8 @@ namespace Company.Widgets.Models.Export
 		/// Exports the specified information about the data, borders, colors, fonts, etc. of the <see cref="Cell"/>s of a <see cref="DataGrid"/>.
 		/// </summary>
 		/// <param name="exportInfo">The information to export.</param>
-		public override void Export(IEnumerable<List<CellInfo>> exportInfo)
+		[Validate]
+		public override void Export([NotNull] IEnumerable<List<CellInfo>> exportInfo)
 		{
 			StringBuilder copy = new StringBuilder();
 			foreach (List<CellInfo> rowInfo in exportInfo)

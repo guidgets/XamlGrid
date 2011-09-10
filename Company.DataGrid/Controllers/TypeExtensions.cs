@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Company.Widgets.Aspects;
 
 namespace Company.Widgets.Controllers
 {
@@ -18,7 +19,8 @@ namespace Company.Widgets.Controllers
 		/// <returns>
 		/// 	<c>true</c> if the specified <see cref="Type"/> is simple; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsSimple(this Type type)
+		[Validate]
+		public static bool IsSimple([NotNull] this Type type)
 		{
 			Type typeToCheck = Nullable.GetUnderlyingType(type) ?? type;
 			return typeToCheck.IsPrimitive || typeToCheck == typeof(decimal) || typeToCheck == typeof(string);
@@ -31,7 +33,8 @@ namespace Company.Widgets.Controllers
 		/// <returns>
 		/// 	<c>true</c> if the <see cref="Type"/> is a numeric type; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsNumeric(this Type type)
+		[Validate]
+		public static bool IsNumeric([NotNull] this Type type)
 		{
 			Type typeToCheck = Nullable.GetUnderlyingType(type) ?? type;
 			TypeCode typeCode = Type.GetTypeCode(typeToCheck);
@@ -44,7 +47,8 @@ namespace Company.Widgets.Controllers
 		/// <param name="enumerable">The <see cref="IEnumerable"/> to get the element type of.</param>
 		/// <returns>The type in the generic placeholder of the specified <see cref="IEnumerable"/> if the latter is generic;
 		/// otherwise, the type of the first non-<c>null</c> element, if any.</returns>
-		public static Type GetElementType(this IEnumerable enumerable)
+		[Validate]
+		public static Type GetElementType([NotNull] this IEnumerable enumerable)
 		{
 			Type enumerableType = null;
 			ICollectionView collectionView = enumerable as ICollectionView;

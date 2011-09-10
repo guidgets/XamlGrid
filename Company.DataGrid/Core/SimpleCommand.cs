@@ -10,6 +10,8 @@
 
 #endregion
 
+using Company.Widgets.Aspects;
+
 namespace Company.Widgets.Core
 {
 	/// <summary>
@@ -34,7 +36,8 @@ namespace Company.Widgets.Core
 		/// <remarks>
 		///     <para>In the Command Pattern, an application use-case typically begins with some user action, which results in an <c>INotification</c> being broadcast, which is handled by business logic in the <c>execute</c> method of an <c>ICommand</c></para>
 		/// </remarks>
-		public virtual void Execute(INotification notification)
+		[Validate]
+		public virtual void Execute([NotNull] INotification notification)
 		{
 		}
 

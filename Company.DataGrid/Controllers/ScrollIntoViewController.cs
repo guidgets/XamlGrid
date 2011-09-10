@@ -36,6 +36,7 @@ namespace Company.Widgets.Controllers
 		/// <param name="notification">The notification.</param>
 		public override void HandleNotification(INotification notification)
 		{
+			base.HandleNotification(notification);
 			switch (notification.Code)
 			{
 				case Notifications.CellFocused:

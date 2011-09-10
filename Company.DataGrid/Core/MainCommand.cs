@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using Company.Widgets.Aspects;
 
 #endregion
 
@@ -63,7 +64,8 @@ namespace Company.Widgets.Core
 		/// </summary>
 		/// <param name="note">An <c>INotification</c></param>
 		/// <remarks>This method is thread safe and needs to be thread safe in all implementations.</remarks>
-		public virtual void ExecuteCommand(INotification note)
+		[Validate]
+		public virtual void ExecuteCommand([NotNull] INotification note)
 		{
 			Type commandType;
 

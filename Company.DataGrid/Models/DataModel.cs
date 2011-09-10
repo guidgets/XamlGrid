@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Data;
 using Company.Widgets.Core;
 
 namespace Company.Widgets.Models
 {
 	public class DataModel : Model
 	{
-		public static readonly string NAME = typeof(DataModel).Name;
+		public new static readonly string NAME = typeof(DataModel).Name;
 
 		private readonly ObservableItemCollection<object> observableItemCollection;
 		private ICollectionView collectionView;

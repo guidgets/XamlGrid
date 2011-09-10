@@ -11,7 +11,7 @@ namespace Company.Widgets.Models
 	/// </summary>
 	public class SortingModel : Model
 	{
-		public static readonly string NAME = typeof(SortingModel).Name;
+		public new static readonly string NAME = typeof(SortingModel).Name;
 
 		private ICollectionView collectionView;
 		private readonly SortDescriptionCollection sortDescriptionsStore;

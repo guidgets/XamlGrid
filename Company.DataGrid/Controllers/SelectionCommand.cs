@@ -9,6 +9,7 @@ namespace Company.Widgets.Controllers
 	{
 		public override void Execute(INotification notification)
 		{
+			base.Execute(notification);
 			SelectionModel selectionModel = (SelectionModel) DataGridFacade.Instance.RetrieveModel(SelectionModel.NAME);
 			switch (notification.Code)
 			{

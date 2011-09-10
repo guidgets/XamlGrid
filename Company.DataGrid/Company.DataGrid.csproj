@@ -39,6 +39,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <EnableCodeAnalysisOnBuild>False</EnableCodeAnalysisOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,7 +69,7 @@
   <ItemGroup>
     <Reference Include="PostSharp.SL">
       <HintPath>..\PostSharp.SL.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
@@ -85,6 +86,9 @@
     <Reference Include="System.Windows.Interactivity, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aspects\ArgumentValidationAttribute.cs" />
+    <Compile Include="Aspects\NotNullAttribute.cs" />
+    <Compile Include="Aspects\Validate.cs" />
     <Compile Include="Automation\CellAutomationPeer.cs" />
     <Compile Include="Automation\DataGridAutomationPeer.cs" />
     <Compile Include="Automation\HeaderCellAutomationPeer.cs" />

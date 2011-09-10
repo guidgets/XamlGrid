@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Company.Widgets.Aspects;
 using Company.Widgets.Controllers;
 using Company.Widgets.Views;
 
@@ -45,7 +46,8 @@ namespace Company.Widgets.Models.Export
 		/// Exports all items of the specified <see cref="DataGrid"/>.
 		/// </summary>
 		/// <param name="dataGrid">The data grid to export the items of.</param>
-		public virtual void ExportAll(DataGrid dataGrid)
+		[Validate]
+		public virtual void ExportAll([NotNull] DataGrid dataGrid)
 		{
 			this.Export(this.GetDataToExport(dataGrid, dataGrid.Items));
 		}
@@ -54,7 +56,8 @@ namespace Company.Widgets.Models.Export
 		/// Exports the selected items of the specified <see cref="DataGrid"/>.
 		/// </summary>
 		/// <param name="dataGrid">The data grid to export the selected items of.</param>
-		public virtual void ExportSelected(DataGrid dataGrid)
+		[Validate]
+		public virtual void ExportSelected([NotNull] DataGrid dataGrid)
 		{
 			this.Export(this.GetDataToExport(dataGrid, from selectedItem in dataGrid.SelectedItems
 			                                           orderby selectedItem.Index
@@ -74,14 +77,16 @@ namespace Company.Widgets.Models.Export
 		/// <param name="dataGrid">The <see cref="DataGrid"/> to export.</param>
 		/// <param name="items">The items to export.</param>
 		/// <returns>The values of the data to export along with optional additional properties like borders, backgrounds and fonts.</returns>
-		protected virtual IEnumerable<List<CellInfo>> GetDataToExport(DataGrid dataGrid, IEnumerable<object> items)
+		[Validate]
+		protected virtual IEnumerable<List<CellInfo>> GetDataToExport([NotNull] DataGrid dataGrid, [NotNull] IEnumerable<object> items)
 		{
 			List<List<CellInfo>> dataToExport = new List<List<CellInfo>>(dataGrid.SelectedItems.Count + 1);
-			if (items.Count() == 0)
+			List<object> itemsList = items.ToList();
+			if (itemsList.Count == 0)
 			{
 				return dataToExport;
 			}
-			IEnumerable<Column> visibleColumns = dataGrid.Columns.Where(column => column.Visibility == Visibility.Visible);
+			List<Column> visibleColumns = dataGrid.Columns.Where(column => column.Visibility == Visibility.Visible).ToList();
 			int visibleColumnsCount = visibleColumns.Count();
 			if ((this.options & ExportOptions.Header) != ExportOptions.None)
 			{
@@ -93,7 +98,7 @@ namespace Company.Widgets.Models.Export
 					dataToExport[0].Add(header);
 				}
 			}
-			ItemsControl firstRow = (from object item in items
+			ItemsControl firstRow = (from object item in itemsList
 			                         let row = dataGrid.ItemContainerGenerator.ContainerFromItem(item)
 			                         where row != null
 			                         select row).OfType<ItemsControl>().FirstOrDefault() ??
@@ -116,7 +121,7 @@ namespace Company.Widgets.Models.Export
 				}
 				backups.Add(column, backup);
 			}
-			foreach (object item in items)
+			foreach (object item in itemsList)
 			{
 				List<CellInfo> rowInfo = new List<CellInfo>(visibleColumnsCount);
 				ItemsControl row = dataGrid.ItemContainerGenerator.ContainerFromItem(item) as ItemsControl;

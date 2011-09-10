@@ -19,6 +19,7 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void Execute(INotification notification)
 		{
+			base.Execute(notification);
 			NewItemModel newItemModel = (NewItemModel) DataGridFacade.Instance.RetrieveModel(NewItemModel.NAME);
 			switch (notification.Code)
 			{

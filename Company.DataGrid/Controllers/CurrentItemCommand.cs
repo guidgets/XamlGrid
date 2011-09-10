@@ -8,6 +8,7 @@ namespace Company.Widgets.Controllers
 	{
 		public override void Execute(INotification notification)
 		{
+			base.Execute(notification);
 			CurrentItemModel currentItemModel = (CurrentItemModel) DataGridFacade.Instance.RetrieveModel(CurrentItemModel.NAME);
 			switch (notification.Code)
 			{

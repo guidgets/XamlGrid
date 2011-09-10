@@ -75,6 +75,7 @@ namespace Company.Widgets.Controllers
 		/// </remarks>
 		public override void HandleNotification(INotification notification)
 		{
+			base.HandleNotification(notification);
 			SortDescription sortDescription = (SortDescription) notification.Body;
 			if (!string.IsNullOrEmpty(sortDescription.PropertyName) && sortDescription.PropertyName != this.HeaderCell.Column.Binding.Path.Path)
 			{

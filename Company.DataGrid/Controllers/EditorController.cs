@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Company.Widgets.Aspects;
 using Company.Widgets.Core;
 using Company.Widgets.Views;
 
@@ -54,7 +55,8 @@ namespace Company.Widgets.Controllers
 			this.Editor.Unloaded -= this.Editor_Unloaded;
 		}
 
-		public static bool SentFromMultilineTextBox(KeyEventArgs e)
+		[Validate]
+		public static bool SentFromMultilineTextBox([NotNull] RoutedEventArgs e)
 		{
 			TextBox textBox = e.OriginalSource as TextBox;
 			if (textBox != null && textBox.AcceptsReturn)

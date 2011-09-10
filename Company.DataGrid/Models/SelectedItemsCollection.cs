@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
+using Company.Widgets.Aspects;
 
 namespace Company.Widgets.Models
 {
@@ -102,11 +103,13 @@ namespace Company.Widgets.Models
 		/// Adds the elements of the specified range to the end of this <see cref="SelectedItemsCollection"/>.
 		/// </summary>
 		/// <param name="range">The range which elements should be added to the end of this <see cref="SelectedItemsCollection"/>.</param>
-		public virtual void AddRange(IEnumerable<SelectedItem> range)
+		[Validate]
+		public virtual void AddRange([NotNull] IEnumerable<SelectedItem> range)
 		{
+			List<SelectedItem> rangeList = range.ToList();
 			this.suspendNotifications = true;
 			int firstIndex = -1;
-			foreach (SelectedItem selectedItem in range)
+			foreach (SelectedItem selectedItem in rangeList)
 			{
 				if (firstIndex < 0)
 				{
@@ -120,7 +123,7 @@ namespace Company.Widgets.Models
 			}
 			this.suspendNotifications = false;
 			const NotifyCollectionChangedAction action = NotifyCollectionChangedAction.Add;
-			List<SelectedItem> selection = new List<SelectedItem>(range);
+			List<SelectedItem> selection = new List<SelectedItem>(rangeList);
 			this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, selection, firstIndex));
 		}
 

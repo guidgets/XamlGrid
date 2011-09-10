@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using Company.Widgets.Aspects;
 using Company.Widgets.Controllers;
 using Company.Widgets.Core;
 using Company.Widgets.Models;
@@ -46,7 +47,8 @@ namespace Company.Widgets
 		/// </summary>
 		/// <param name="o">The <see cref="DependencyObject"/> to lookup.</param>
 		/// <returns>The collection of associated controllers.</returns>
-		public static ControllerCollection GetControllers(DependencyObject o)
+		[Validate]
+		public static ControllerCollection GetControllers([NotNull] DependencyObject o)
 		{
 			ControllerCollection controllers = (ControllerCollection) o.GetValue(ControllersProperty);
 			if (controllers == null)
@@ -63,7 +65,8 @@ namespace Company.Widgets
 		/// </summary>
 		/// <param name="o">The <see cref="DependencyObject"/> to set.</param>
 		/// <param name="controllers">The collection of controllers to associate.</param>
-		public static void SetControllers(DependencyObject o, ControllerCollection controllers)
+		[Validate]
+		public static void SetControllers([NotNull] DependencyObject o, ControllerCollection controllers)
 		{
 			o.SetValue(ControllersProperty, controllers);
 		}

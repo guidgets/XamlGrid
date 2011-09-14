@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{8FAE592B-0C89-4FAF-B1CB-8FA3A9310F6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Company.DataGrid.ExportODF", "Company.DataGrid.ExportODF\Company.DataGrid.ExportODF.csproj", "{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{8FAE592B-0C89-4FAF-B1CB-8FA3A9310F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FAE592B-0C89-4FAF-B1CB-8FA3A9310F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FAE592B-0C89-4FAF-B1CB-8FA3A9310F6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

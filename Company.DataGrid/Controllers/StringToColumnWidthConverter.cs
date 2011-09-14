@@ -49,18 +49,19 @@ namespace Company.Widgets.Controllers
 			if (!string.IsNullOrEmpty(width))
 			{
 				double widthValue;
+				NumberFormatInfo numberFormat = CultureInfo.InvariantCulture.NumberFormat;
 				if (width[width.Length - 1] == '*')
 				{
 					if (width.Length == 1)
 					{
 						return new ColumnWidth(SizeMode.Fill);
 					}
-					if (double.TryParse(width.Remove(width.Length - 1), out widthValue))
+					if (double.TryParse(width.Remove(width.Length - 1), NumberStyles.Any, numberFormat, out widthValue))
 					{
 						return new ColumnWidth(widthValue, SizeMode.Fill);
 					}
 				}
-				if (double.TryParse(width, out widthValue))
+				if (double.TryParse(width, NumberStyles.Any, numberFormat, out widthValue))
 				{
 					return new ColumnWidth(widthValue);
 				}

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Company.Widgets.Aspects;
 using Company.Widgets.Models;
 
 namespace Company.Widgets.Controllers
@@ -32,7 +33,8 @@ namespace Company.Widgets.Controllers
 		/// <returns>The converted value.</returns>
 		/// <exception cref="T:System.NotImplementedException">
 		/// 	<see cref="M:System.ComponentModel.TypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)"/> not implemented in base <see cref="T:System.ComponentModel.TypeConverter"/>.</exception>
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		[Validate]
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, [NotEmpty] object value)
 		{
 			string width = (string) value;
 			switch (width)
@@ -46,27 +48,24 @@ namespace Company.Widgets.Controllers
 				case "Fill":
 					return new ColumnWidth(SizeMode.Fill);
 			}
-			if (!string.IsNullOrEmpty(width))
+			double widthValue;
+			NumberFormatInfo numberFormat = CultureInfo.InvariantCulture.NumberFormat;
+			if (width[width.Length - 1] == '*')
 			{
-				double widthValue;
-				NumberFormatInfo numberFormat = CultureInfo.InvariantCulture.NumberFormat;
-				if (width[width.Length - 1] == '*')
+				if (width.Length == 1)
 				{
-					if (width.Length == 1)
-					{
-						return new ColumnWidth(SizeMode.Fill);
-					}
-					if (double.TryParse(width.Remove(width.Length - 1), NumberStyles.Any, numberFormat, out widthValue))
-					{
-						return new ColumnWidth(widthValue, SizeMode.Fill);
-					}
+					return new ColumnWidth(SizeMode.Fill);
 				}
-				if (double.TryParse(width, NumberStyles.Any, numberFormat, out widthValue))
+				if (double.TryParse(width.Remove(width.Length - 1), NumberStyles.Any, numberFormat, out widthValue))
 				{
-					return new ColumnWidth(widthValue);
+					return new ColumnWidth(widthValue, SizeMode.Fill);
 				}
 			}
-			throw new ArgumentException("value");
+			if (double.TryParse(width, NumberStyles.Any, numberFormat, out widthValue))
+			{
+				return new ColumnWidth(widthValue);
+			}
+			return null;
 		}
 	}
 }

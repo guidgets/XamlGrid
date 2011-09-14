@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aspects\ArgumentValidationAttribute.cs" />
+    <Compile Include="Aspects\NotEmptyAttribute.cs" />
     <Compile Include="Aspects\NotNullAttribute.cs" />
     <Compile Include="Aspects\Validate.cs" />
     <Compile Include="Automation\CellAutomationPeer.cs" />

@@ -14,6 +14,7 @@ using Company.Widgets.Controllers;
 using Company.Widgets.Models;
 using System.Windows.Controls.Primitives;
 using System.Linq;
+using Company.Widgets.Models.Export;
 
 namespace Company.Widgets.Views
 {
@@ -162,8 +163,8 @@ namespace Company.Widgets.Views
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether to copy the header of a <see cref="DataGrid"/> to the clipboard.
 		/// </summary>
-		public static readonly DependencyProperty CopyHeaderProperty =
-			DependencyProperty.Register("CopyHeader", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
+		public static readonly DependencyProperty CopyOptionsProperty =
+			DependencyProperty.Register("CopyOptions", typeof(ExportOptions), typeof(DataGrid), new PropertyMetadata(ExportOptions.Header));
 
 
 		/// <summary>
@@ -496,15 +497,15 @@ namespace Company.Widgets.Views
 		/// <value>
 		/// 	<c>true</c> if the header should be copied to the clipboard; otherwise, <c>false</c>.
 		/// </value>
-		public bool CopyHeaderToClipboard
+		public ExportOptions CopyOptions
 		{
 			get
 			{
-				return (bool) this.GetValue(CopyHeaderProperty);
+				return (ExportOptions) this.GetValue(CopyOptionsProperty);
 			}
 			set
 			{
-				this.SetValue(CopyHeaderProperty, value);
+				this.SetValue(CopyOptionsProperty, value);
 			}
 		}
 

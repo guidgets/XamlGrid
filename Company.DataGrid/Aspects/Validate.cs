@@ -14,7 +14,7 @@ namespace Company.Widgets.Aspects
 			{
 				foreach (ArgumentValidationAttribute validator in GetCustomAttributes(info, typeof(ArgumentValidationAttribute)))
 				{
-					validator.Validate(eventArgs.Arguments[info.Position], info.Name);
+					validator.Validate(eventArgs.Arguments[info.Position], info.Name, info.ParameterType);
 				}
 			}
 			base.OnEntry(eventArgs);

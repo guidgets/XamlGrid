@@ -21,7 +21,7 @@ namespace Company.Widgets.Controllers
 		/// </returns>
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
-			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+			return sourceType == typeof(string);
 		}
 
 		/// <summary>

@@ -5,7 +5,7 @@ namespace Company.Widgets.Aspects
 	[AttributeUsage(AttributeTargets.Parameter)]
 	public class NotNullAttribute : ArgumentValidationAttribute
 	{
-		public override void Validate(object value, string argumentName)
+		public override void Validate(object value, string argumentName, Type parameterType)
 		{
 			if (value == null)
 			{

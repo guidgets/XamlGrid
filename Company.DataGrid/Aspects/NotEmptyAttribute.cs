@@ -13,12 +13,12 @@ namespace Company.Widgets.Aspects
 			set { this.checkTrimmed = value; }
 		}
 
-		public override void Validate(object value, string argumentName)
+		public override void Validate(object value, string argumentName, Type parameterType)
 		{
-			string @string = (string) value;
-			if (string.IsNullOrEmpty(@string) || (this.checkTrimmed && string.IsNullOrEmpty(@string.Trim())))
+			string source = (string) value;
+			if (string.IsNullOrEmpty(source) || (this.checkTrimmed && string.IsNullOrEmpty(source.Trim())))
 			{
-				throw new ArgumentException(argumentName, string.Format("{0} must not be empty.", argumentName));
+				throw new ArgumentException(string.Format("{0} must not be empty.", argumentName), argumentName);
 			}
 		}
 	}

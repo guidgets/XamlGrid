@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using Company.Widgets.Controllers;
 using Company.Widgets.Views;
 
 namespace Company.Widgets.Models.Export
@@ -6,7 +8,7 @@ namespace Company.Widgets.Models.Export
 	/// <summary>
 	/// Provides options to specify which additional properties except data itself to export.
 	/// </summary>
-	[Flags]
+	[Flags, TypeConverter(typeof(StringToExportOptionsConverter))]
 	public enum ExportOptions
 	{
 		/// <summary>

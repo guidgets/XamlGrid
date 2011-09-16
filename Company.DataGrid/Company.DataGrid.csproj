@@ -90,6 +90,7 @@
     <Compile Include="Aspects\NotEmptyAttribute.cs" />
     <Compile Include="Aspects\NotNullAttribute.cs" />
     <Compile Include="Aspects\Validate.cs" />
+    <Compile Include="Aspects\ValidStringEnumAttribute.cs" />
     <Compile Include="Automation\CellAutomationPeer.cs" />
     <Compile Include="Automation\DataGridAutomationPeer.cs" />
     <Compile Include="Automation\HeaderCellAutomationPeer.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Controllers\NewRowController.cs" />
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />
     <Compile Include="Controllers\ScrollIntoViewController.cs" />
+    <Compile Include="Controllers\StringToExportOptionsConverter.cs" />
     <Compile Include="Controllers\SumAggregate.cs" />
     <Compile Include="Controllers\SyncScrollBehavior.cs" />
     <Compile Include="Controllers\ScrollOnHomeEndBehaviour.cs" />

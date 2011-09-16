@@ -80,8 +80,8 @@ namespace Company.Widgets.Models.Export
 		[Validate]
 		protected virtual IEnumerable<List<CellInfo>> GetDataToExport([NotNull] DataGrid dataGrid, [NotNull] IEnumerable<object> items)
 		{
-			List<List<CellInfo>> dataToExport = new List<List<CellInfo>>(dataGrid.SelectedItems.Count + 1);
 			List<object> itemsList = items.ToList();
+			List<List<CellInfo>> dataToExport = new List<List<CellInfo>>(itemsList.Count + 1);
 			if (itemsList.Count == 0)
 			{
 				return dataToExport;

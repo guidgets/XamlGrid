@@ -25,8 +25,7 @@ namespace Company.Widgets.Models.Export
 			{
 				foreach (CellInfo cellInfo in rowInfo)
 				{
-					copy.Append(cellInfo.Value);
-					copy.Append('\t');
+					copy.Append(cellInfo.Value).Append('\t');
 				}
 				copy.Append(Environment.NewLine);
 			}

@@ -16,10 +16,7 @@ namespace Company.Widgets.Models.Export
 		public static void Copy([NotNull] this DataGrid dataGrid)
 		{
 			ClipboardExporter clipboardExporter = new ClipboardExporter();
-			if (!dataGrid.CopyHeaderToClipboard)
-			{
-				clipboardExporter.Options &= ~ExportOptions.Header;
-			}
+			clipboardExporter.Options = dataGrid.CopyOptions;
 			clipboardExporter.ExportSelected(dataGrid);
 		}
 	}

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Company.DataGrid.ExportODF;
 using Company.Widgets.Controllers;
 using Company.Widgets.Views;
 
@@ -62,7 +63,8 @@ namespace Examples
         	this.dataGrid.NumberRows = true;
             this.dataGrid.BringIntoView(79);
 			CellController cellController = new CellController(new Cell());
-			cellController.HandleNotification(null);
+			//cellController.HandleNotification(null);
+			new ODSExporter().ExportAll(this.dataGrid);
         	//this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };

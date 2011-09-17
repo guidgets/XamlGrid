@@ -121,12 +121,6 @@
     <Content Include="References\nunit.framework.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Company.DataGrid\Company.DataGrid.csproj">
-      <Project>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</Project>
-      <Name>Company.DataGrid</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -137,6 +131,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XamlGrid\XamlGrid.csproj">
+      <Project>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</Project>
+      <Name>XamlGrid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

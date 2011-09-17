@@ -4,7 +4,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 
-using Company.Widgets.Core;
+using XamlGrid.Core;
 
 
 namespace UnitTests.MVC
@@ -14,7 +14,7 @@ namespace UnitTests.MVC
   	 * 
   	 * @see org.puremvc.csharp.core.MainController.MainControllerTest MainControllerTest
   	 */
-    public class MainControllerTestNote : Notification, INotification
+    public class MainControllerTestNote : Notification
     {
         /**
 		 * The name of this Notification.

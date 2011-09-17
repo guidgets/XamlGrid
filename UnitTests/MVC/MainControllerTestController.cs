@@ -4,8 +4,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 using System.Collections.Generic;
-
-using Company.Widgets.Core;
+using XamlGrid.Core;
 
 
 namespace UnitTests.MVC

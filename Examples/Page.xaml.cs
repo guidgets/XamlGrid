@@ -5,11 +5,10 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using Company.DataGrid.ExportODF;
-using Company.Widgets.Controllers;
-using Company.Widgets.Views;
+using XamlGrid.Controllers;
+using XamlGrid.ExportODF;
+using XamlGrid.Views;
 
 namespace Examples
 {

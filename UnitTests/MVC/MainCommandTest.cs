@@ -5,10 +5,8 @@ using System.Collections.Generic;
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 using System.Threading;
-using Company.Widgets.Core;
 using NUnit.Framework;
-
-
+using XamlGrid.Core;
 
 
 namespace UnitTests.MVC

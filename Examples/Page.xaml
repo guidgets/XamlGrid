@@ -1,23 +1,23 @@
 <UserControl x:Class="Examples.Page"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:company="http://schemas.company.com"
-    xmlns:Examples="clr-namespace:Examples" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Examples="clr-namespace:Examples" 
     xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=System.Windows" 
-    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit">
+    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+             xmlns:Controllers="clr-namespace:XamlGrid.Controllers;assembly=XamlGrid"
+             xmlns:xaml="http://schemas.xamlgrid.com">
 	<Grid Name="layoutRoot" Width="900" VerticalAlignment="Center">
 		<Grid.Resources>
 			<Style TargetType="Button">
 				<Setter Property="Background" Value="Red" />
 			</Style>
 			<Examples:BooleanToYesNoConverter x:Key="booleanToYesNoConverter" />
-			<Style x:Key="cellStyleName" TargetType="company:Cell">
+			<Style x:Key="cellStyleName" TargetType="xaml:Cell">
 				<Setter Property="Background" Value="Blue" />
 			</Style>
-			<Style x:Key="cellStyleAge" TargetType="company:Cell">
+			<Style x:Key="cellStyleAge" TargetType="xaml:Cell">
 				<Setter Property="Background" Value="Red" />
 			</Style>
-			<Style x:Key="cellStyleIsSingle" TargetType="company:Cell">
+			<Style x:Key="cellStyleIsSingle" TargetType="xaml:Cell">
 				<Setter Property="Background" Value="Green" />
 				<Setter Property="ContentTemplate">
 					<Setter.Value>
@@ -28,12 +28,12 @@
 				</Setter>
 				<Setter Property="Template">
 					<Setter.Value>
-						<ControlTemplate TargetType="company:Cell">
+						<ControlTemplate TargetType="xaml:Cell">
 							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}">
 								<ContentPresenter />
 								<VisualStateManager.CustomVisualStateManager>
-									<company:CustomVSM />
+									<xaml:CustomVSM />
 								</VisualStateManager.CustomVisualStateManager>
 								<VisualStateManager.VisualStateGroups>
 									<VisualStateGroup>
@@ -60,10 +60,10 @@
 					</Setter.Value>
 				</Setter>
 			</Style>
-			<Style x:Key="cellStyleMaritalStatus" TargetType="company:Cell">
+			<Style x:Key="cellStyleMaritalStatus" TargetType="xaml:Cell">
 				<Setter Property="Background" Value="Yellow" />
 			</Style>
-			<company:SumAggregate x:Name="sumAggregate" />
+			<Controllers:SumAggregate x:Name="sumAggregate" />
 		</Grid.Resources>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -72,20 +72,20 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
-		<company:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="True" AutoCreateColumns="False">
-			<company:DataGrid.Columns>
-				<company:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
-				<company:Column Binding="{Binding Age, Mode=TwoWay}" FooterBinding="{Binding Converter={StaticResource sumAggregate}}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
-				<company:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Width="3*" IsEditable="True" Header="First Order Name" />
-				<company:Column Binding="{Binding IsSingle, Mode=TwoWay}" Width="*" />
-				<company:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleMaritalStatus}" />
-				<company:Column Binding="{Binding HireDate, Mode=TwoWay}" Width="2*" />
-				<!--<company:Column Binding="{Binding}" Width="Auto" />-->
-			</company:DataGrid.Columns>
-			<!--<company:DataGrid.SortDescriptions>
+		<xaml:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="True" AutoCreateColumns="False">
+			<xaml:DataGrid.Columns>
+				<Controllers:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
+				<Controllers:Column Binding="{Binding Age, Mode=TwoWay}" FooterBinding="{Binding Converter={StaticResource sumAggregate}}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
+				<Controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Width="3*" IsEditable="True" Header="First Order Name" />
+				<Controllers:Column Binding="{Binding IsSingle, Mode=TwoWay}" Width="*" />
+				<Controllers:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleMaritalStatus}" />
+				<Controllers:Column Binding="{Binding HireDate, Mode=TwoWay}" Width="2*" />
+				<!--<xaml:Column Binding="{Binding}" Width="Auto" />-->
+			</xaml:DataGrid.Columns>
+			<!--<xaml:DataGrid.SortDescriptions>
 				<ComponentModel:SortDescription PropertyName="Age" Direction="Descending" />
-			</company:DataGrid.SortDescriptions>-->
-		</company:DataGrid>
+			</xaml:DataGrid.SortDescriptions>-->
+		</xaml:DataGrid>
 		<Button Grid.Row="2" HorizontalAlignment="Stretch" Content="{Binding CurrentColumn.Header, ElementName=dataGrid}" Click="Button_Click" />
 		<toolkit:Expander Grid.Row="3">
 			<Grid>

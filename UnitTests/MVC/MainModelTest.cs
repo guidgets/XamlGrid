@@ -5,10 +5,8 @@
 */
 using System.Collections.Generic;
 using System.Threading;
-using Company.Widgets.Core;
 using NUnit.Framework;
-
-
+using XamlGrid.Core;
 
 
 namespace UnitTests.MVC

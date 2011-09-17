@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Company.Widgets.Models;
 using NUnit.Framework;
+using XamlGrid.Models;
 
 namespace UnitTests
 {

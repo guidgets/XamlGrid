@@ -74,9 +74,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Silverlight.SharpZipLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Company.DataGrid.ExportODF\References\Silverlight.SharpZipLib.dll</HintPath>
+    <Reference Include="Silverlight.SharpZipLib">
+      <HintPath>..\XamlGrid.ExportODF\References\Silverlight.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
@@ -99,7 +98,9 @@
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SamplePictures.cs" />
+    <Compile Include="SamplePictures.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -117,16 +118,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Company.DataGrid.ExportODF\Company.DataGrid.ExportODF.csproj">
-      <Project>{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}</Project>
-      <Name>Company.DataGrid.ExportODF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Company.DataGrid\Company.DataGrid.csproj">
-      <Project>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</Project>
-      <Name>Company.DataGrid</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\p0.png">
@@ -449,6 +440,16 @@
       <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XamlGrid.ExportODF\XamlGrid.ExportODF.csproj">
+      <Project>{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}</Project>
+      <Name>XamlGrid.ExportODF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XamlGrid\XamlGrid.csproj">
+      <Project>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</Project>
+      <Name>XamlGrid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -241,8 +241,9 @@ namespace XamlGrid.Views
 		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
 		{
 			this.UpdateDataType();
-			// TODO: this doesn't look good; must define what is content, what is a value and change the logic accordingly
-			this.Content = this.Value;
+			// HACK: the Value property is needed because a SL bug turns byte array content into a string when using the Content property (may mess up images)
+			// HACK: SL 5 beta and RC have an additional bug: setting Content to null ignores any visual states so nullable boolean cells come out empty
+			this.Content = this.Value ?? string.Empty;
 		}
 
 		public virtual void BindValue()

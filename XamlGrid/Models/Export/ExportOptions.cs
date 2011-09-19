@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using XamlGrid.Controllers;
-using XamlGrid.Views;
 
 namespace XamlGrid.Models.Export
 {
@@ -20,16 +19,20 @@ namespace XamlGrid.Models.Export
 		/// </summary>
 		Header = 1,
 		/// <summary>
-		/// Include the border colors of the <see cref="Cell"/>s.
+		/// Include the border colors of cells.
 		/// </summary>
 		Border = 2,
 		/// <summary>
-		/// Include the background colors of the <see cref="Cell"/>s. 
+		/// Include the border colors of cells.
 		/// </summary>
-		Background = 4,
+		BorderSizes = 4,
 		/// <summary>
-		/// Include the fonts of the <see cref="Cell"/>s.
+		/// Include the background colors of cells. 
 		/// </summary>
-		Font = 8
+		Background = 8,
+		/// <summary>
+		/// Include the fonts of the cells.
+		/// </summary>
+		Font = 16
 	}
 }

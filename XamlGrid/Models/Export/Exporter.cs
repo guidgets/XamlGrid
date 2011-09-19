@@ -116,7 +116,7 @@ namespace XamlGrid.Models.Export
 					if (cell != null)
 					{
 						Font font = new Font(cell.FontFamily, cell.FontSize, cell.FontStretch, cell.FontStyle, cell.FontWeight, cell.Foreground);
-						backup = new CellInfo(null, cell.Background, cell.BorderBrush, font);
+						backup = new CellInfo(null, cell.Background, cell.BorderBrush, cell.BorderThickness, font);
 					}
 				}
 				backups.Add(column, backup);
@@ -135,7 +135,7 @@ namespace XamlGrid.Models.Export
 						{
 							Font font = new Font(cell.FontFamily, cell.FontSize, cell.FontStretch, cell.FontStyle, cell.FontWeight,
 							                     cell.Foreground);
-							cellInfo = new CellInfo(null, cell.Background, cell.BorderBrush, font);
+							cellInfo = new CellInfo(null, cell.Background, cell.BorderBrush, cell.BorderThickness, font);
 						}
 					}
 					cellInfo.Value = DataBinder.GetValue(item, column.Binding.Path.Path);

@@ -28,12 +28,6 @@ namespace XamlGrid.Views
 		private static readonly Type typeOfUri = typeof(Uri);
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
-		/// </summary>
-		public static readonly DependencyProperty ValueProperty =
-			DependencyProperty.Register("Value", typeof(object), typeof(Cell), new PropertyMetadata(OnValueChanged));
-
-		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> has focus.
 		/// </summary>
 		public static readonly DependencyProperty HasFocusProperty =
@@ -43,7 +37,7 @@ namespace XamlGrid.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));		
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is in edit mode.
@@ -55,7 +49,8 @@ namespace XamlGrid.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is selected.
 		/// </summary>
 		public static readonly DependencyProperty IsSelectedProperty =
-			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsSelectedChanged));
+			DependencyProperty.Register("IsSelected", typeof(bool), typeof(Cell),
+			                            new PropertyMetadata(false, OnIsSelectedChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data a <see cref="Cell"/> represents.
@@ -64,19 +59,19 @@ namespace XamlGrid.Views
 			DependencyProperty.Register("DataType", typeof(Type), typeof(Cell), new PropertyMetadata(typeOfObject));
 
 		private static readonly Binding dataTypeBinding = new Binding("Column.DataType")
-		                                                  {
+		                                                  	{
 		                                                  		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-		                                                  };
+		                                                  	};
 
 		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
-															{
-																RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-															};
+		                                                    	{
+		                                                    		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                    	};
 
 		private static readonly Binding styleBinding = new Binding("Column.CellStyle")
-													   {
-														   RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-													   };
+		                                               	{
+		                                               		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                               	};
 
 
 		/// <summary>
@@ -91,16 +86,6 @@ namespace XamlGrid.Views
 			this.SetBinding(StyleProperty, styleBinding);
 		}
 
-
-		/// <summary>
-		/// Gets or sets the value contained in the <see cref="Cell"/>.
-		/// </summary>
-		/// <value>The value contained in the <see cref="Cell"/>.</value>
-		public virtual object Value
-		{
-			get { return this.GetValue(ValueProperty); }
-			set { this.SetValue(ValueProperty, value); }
-		}
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="Cell"/> has focus.
@@ -233,17 +218,9 @@ namespace XamlGrid.Views
 			return this.Column.Width.SizeMode == SizeMode.ToData || base.IsAutoSized();
 		}
 
-		private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Cell) d).OnValueChanged(e);
-		}
-
-		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
+		protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
 		{
 			this.UpdateDataType();
-			// HACK: the Value property is needed because a SL bug turns byte array content into a string when using the Content property (may mess up images)
-			// HACK: SL 5 beta and RC have an additional bug: setting Content to null ignores any visual states so nullable boolean cells come out empty
-			this.Content = this.Value ?? string.Empty;
 		}
 
 		public virtual void BindValue()

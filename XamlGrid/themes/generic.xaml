@@ -4,7 +4,7 @@
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit" 
 	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:controllers="clr-namespace:XamlGrid.Controllers" xmlns:xamlGrid="clr-namespace:XamlGrid" 
+	xmlns:xamlGrid="clr-namespace:XamlGrid" 
     xmlns:xaml="http://schemas.xamlgrid.com">
 
 	<SolidColorBrush x:Key="controlColor" xaml:OSBrush.OSColor="ControlColor" />
@@ -16,7 +16,7 @@
 	<SolidColorBrush x:Key="highlightTextColor" xaml:OSBrush.OSColor="HighlightTextColor" />
 	<SolidColorBrush x:Key="activeBorderColor" xaml:OSBrush.OSColor="ActiveBorderColor" />
 
-	<controllers:NumberToVisibilityConverter x:Key="numberToVisibilityConverter" />
+	<xaml:NumberToVisibilityConverter x:Key="numberToVisibilityConverter" />
 
 	<Style TargetType="xaml:DataGrid">
 		<Setter Property="IsTabStop" Value="False" />
@@ -59,17 +59,17 @@
 							</Grid>
 							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto"
 										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{StaticResource activeBorderColor}" 
-										  controllers:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
+										  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
 								<interactivity:Interaction.Behaviors>
-									<controllers:ScrollOnHomeEndBehaviour />
-									<controllers:DragScrollBehavior />
+									<xaml:ScrollOnHomeEndBehaviour />
+									<xaml:DragScrollBehavior />
 								</interactivity:Interaction.Behaviors>
 								<xamlGrid:DataGridFacade.Controllers>
-									<controllers:ScrollIntoViewController />
+									<xaml:ScrollIntoViewController />
 								</xamlGrid:DataGridFacade.Controllers>
 								<ItemsPresenter>
 									<interactivity:Interaction.Behaviors>
-										<controllers:HandleNavigationBehaviour />
+										<xaml:HandleNavigationBehaviour />
 									</interactivity:Interaction.Behaviors>
 								</ItemsPresenter>
 							</ScrollViewer>
@@ -102,15 +102,15 @@
 		</Setter>
 	</Style>
 
-	<controllers:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
-	<controllers:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+	<xaml:SortDirectionToBooleanConverter x:Key="sortDirectionToBooleanConverter" />
+	<xaml:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 
 	<Style TargetType="xaml:HeaderCell">
 		<Setter Property="MinHeight" Value="22" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background" Value="{StaticResource controlColor}" />
 		<Setter Property="Padding" Value="6,3,6,3" />
-		<Setter Property="Content" Value="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+		<Setter Property="Value" Value="{Binding Column.Header, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 		<Setter Property="Width" Value="{Binding Column.ActualWidth, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 		<Setter Property="Visibility" Value="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 		<Setter Property="Template">
@@ -124,7 +124,8 @@
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
-							<ToggleButton IsThreeState="True" Content="{TemplateBinding Content}" IsTabStop="False"
+							<ToggleButton IsThreeState="True" IsTabStop="False"
+										  Content="{TemplateBinding Value}" 
                                           ContentTemplate="{TemplateBinding ContentTemplate}" Padding="{TemplateBinding Padding}"
                                           IsChecked="{Binding SortDirection, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
                                                               Converter={StaticResource sortDirectionToBooleanConverter}}"
@@ -172,8 +173,8 @@
                                    Visibility="{Binding Tag.IsResizable, RelativeSource={RelativeSource Self}, 
                                                         Converter={StaticResource booleanToVisibilityConverter}}">
 								<interactivity:Interaction.Behaviors>
-									<controllers:ColumnResizingBehavior />
-									<controllers:AutoSizeOnDoubleClickBehavior />
+									<xaml:ColumnResizingBehavior />
+									<xaml:AutoSizeOnDoubleClickBehavior />
 								</interactivity:Interaction.Behaviors>
 								<Thumb.Template>
 									<ControlTemplate TargetType="Thumb">
@@ -249,8 +250,8 @@
 		</Setter>
 	</Style>
 
-	<controllers:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
-	<controllers:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
+	<xaml:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
+	<xaml:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
 
 	<Style TargetType="xaml:Cell">
 		<Setter Property="MinHeight" Value="22" />
@@ -275,7 +276,9 @@
 				<ControlTemplate TargetType="xaml:Cell">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-						<ContentPresenter Name="Content" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
+						<ContentPresenter Name="Content" Content="{TemplateBinding Value}" 
+										  ContentTemplate="{TemplateBinding ContentTemplate}"
+										  Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 						<VisualStateManager.CustomVisualStateManager>
@@ -318,7 +321,7 @@
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -335,7 +338,7 @@
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -350,7 +353,7 @@
 								</VisualState>
 								<VisualState Name="Image">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -370,7 +373,7 @@
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
@@ -452,7 +455,10 @@
 																			</VisualStateGroup>
 																		</VisualStateManager.VisualStateGroups>
 																		<toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-																			<TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
+																			<TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" 
+																					 FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" 
+																					 FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" 
+																					 x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
 																				<TextBox.Style>
 																					<Style TargetType="TextBox">
 																						<Setter Property="Template">
@@ -520,14 +526,14 @@
                             BorderBrush="{TemplateBinding BorderBrush}">
 						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
 									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
-									  controllers:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
+									  xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
 																							  RelativeSource={RelativeSource TemplatedParent},
 																							  Mode=TwoWay}">
 							<interactivity:Interaction.Behaviors>
-								<controllers:SyncScrollBehavior />
+								<xaml:SyncScrollBehavior />
 							</interactivity:Interaction.Behaviors>
 							<xamlGrid:DataGridFacade.Controllers>
-								<controllers:ScrollIntoViewController />
+								<xaml:ScrollIntoViewController />
 							</xamlGrid:DataGridFacade.Controllers>
 							<ItemsPresenter />
 						</ScrollViewer>

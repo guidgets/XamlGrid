@@ -125,7 +125,7 @@
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
 							<ToggleButton IsThreeState="True" IsTabStop="False"
-										  Content="{TemplateBinding Value}" 
+										  Content="{TemplateBinding Value}" Foreground="{TemplateBinding Foreground}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}" Padding="{TemplateBinding Padding}"
                                           IsChecked="{Binding SortDirection, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
                                                               Converter={StaticResource sortDirectionToBooleanConverter}}"

@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using XamlGrid.Core;
+using XamlGrid.Models;
 using XamlGrid.Views;
+using System.Linq;
 
 namespace XamlGrid.Controllers
 {
@@ -11,6 +13,13 @@ namespace XamlGrid.Controllers
 	/// </summary>
 	public class RowController : Controller
 	{
+		private static readonly CurrentItemModel currentItemModel =
+			(CurrentItemModel) MainModel.Instance.RetrieveModel(CurrentItemModel.NAME);
+
+		private static readonly SelectionModel selectionModel =
+			(SelectionModel) MainModel.Instance.RetrieveModel(SelectionModel.NAME);
+
+
 		/// <summary>
 		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
 		/// </summary>
@@ -26,10 +35,7 @@ namespace XamlGrid.Controllers
 		/// </summary>
 		public virtual Row Row
 		{
-			get
-			{
-				return (Row) this.ViewComponent;
-			}
+			get { return (Row) this.ViewComponent; }
 		}
 
 
@@ -67,10 +73,10 @@ namespace XamlGrid.Controllers
 		{
 			return new List<int>
 			       	{
-						Notifications.CurrentItemChanged,
-						Notifications.SelectedItems,
-						Notifications.DeselectedItems,
-						Notifications.ItemIsSelected
+			       		Notifications.CurrentItemChanged,
+			       		Notifications.SelectedItems,
+			       		Notifications.DeselectedItems,
+			       		Notifications.ItemIsSelected
 			       	};
 		}
 
@@ -113,8 +119,8 @@ namespace XamlGrid.Controllers
 
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.IsItemCurrent, this.Row.DataContext);
-			this.SendNotification(Notifications.IsItemSelected, this.Row.DataContext);
+			this.Row.IsFocused = this.Row.DataContext == currentItemModel.CurrentItem;
+			this.Row.IsSelected = selectionModel.SelectedItems.Any(s => s.Item == this.Row.DataContext);
 		}
 
 		private void Row_HasFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)

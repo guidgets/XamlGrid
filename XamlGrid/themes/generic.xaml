@@ -295,6 +295,9 @@
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="2" />
 										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0,-1,0,-1" />
+										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="4,1,5,1" />
 										</ObjectAnimationUsingKeyFrames>

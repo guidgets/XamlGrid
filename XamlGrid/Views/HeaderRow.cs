@@ -20,12 +20,11 @@ namespace XamlGrid.Views
 			this.DefaultStyleKey = typeof(HeaderRow);
 		}
 
-
 		/// <summary>
-		/// When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Silverlight automation infrastructure.
+		/// When implemented in a derived class, returns class-specific <see cref="AutomationPeer"/> implementations for the Silverlight automation infrastructure.
 		/// </summary>
 		/// <returns>
-		/// The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+		/// The class-specific <see cref="AutomationPeer"/> subclass to return.
 		/// </returns>
 		protected override AutomationPeer OnCreateAutomationPeer()
 		{
@@ -41,6 +40,17 @@ namespace XamlGrid.Views
 		protected override DependencyObject GetContainerForItemOverride()
 		{
 			return new HeaderCell();
+		}
+
+		/// <summary>
+		/// Prepares the specified element to display the specified item.
+		/// </summary>
+		/// <param name="element">The element used to display the specified item.</param>
+		/// <param name="item">The item to display.</param>
+		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+		{
+			((CellBase) element).Column = (Column) item;
+			base.PrepareContainerForItemOverride(element, item);
 		}
 
 		protected override void OnVisibilityChanged(DependencyPropertyChangedEventArgs e)

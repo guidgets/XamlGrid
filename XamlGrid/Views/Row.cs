@@ -194,15 +194,8 @@ namespace XamlGrid.Views
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
 			Cell cell = (Cell) element;
-			DataTemplate contentTemplate = cell.ContentTemplate;
-
+			cell.Column = (Column) item;
 			base.PrepareContainerForItemOverride(element, item);
-
-			if (this.ItemTemplate == null)
-			{
-				cell.ContentTemplate = contentTemplate;
-			}
-			cell.ClearValue(ContentControl.ContentProperty);
 
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 

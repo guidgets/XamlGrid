@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using XamlGrid.Aspects;
 using XamlGrid.Controllers;
 using XamlGrid.Views;
@@ -98,46 +97,12 @@ namespace XamlGrid.Models.Export
 					dataToExport[0].Add(header);
 				}
 			}
-			ItemsControl firstRow = (from object item in itemsList
-			                         let row = dataGrid.ItemContainerGenerator.ContainerFromItem(item)
-			                         where row != null
-			                         select row).OfType<ItemsControl>().FirstOrDefault() ??
-			                        (from item in dataGrid.Items
-			                         let row = dataGrid.ItemContainerGenerator.ContainerFromItem(item)
-			                         where row != null
-			                         select row).OfType<ItemsControl>().FirstOrDefault();
-			Dictionary<Column, CellInfo> backups = new Dictionary<Column, CellInfo>(visibleColumns.Count());
-			foreach (Column column in visibleColumns)
-			{
-				CellInfo backup = CellInfo.Default;
-				if (firstRow != null)
-				{
-					Control cell = firstRow.ItemContainerGenerator.ContainerFromItem(column) as Control;
-					if (cell != null)
-					{
-						Font font = new Font(cell.FontFamily, cell.FontSize, cell.FontStretch, cell.FontStyle, cell.FontWeight, cell.Foreground);
-						backup = new CellInfo(null, cell.Background, cell.BorderBrush, cell.BorderThickness, font);
-					}
-				}
-				backups.Add(column, backup);
-			}
 			foreach (object item in itemsList)
 			{
 				List<CellInfo> rowInfo = new List<CellInfo>(visibleColumnsCount);
-				ItemsControl row = dataGrid.ItemContainerGenerator.ContainerFromItem(item) as ItemsControl;
 				foreach (Column column in visibleColumns)
 				{
-					CellInfo cellInfo = backups[column];
-					if (row != null)
-					{
-						Control cell = row.ItemContainerGenerator.ContainerFromItem(column) as Control;
-						if (cell != null)
-						{
-							Font font = new Font(cell.FontFamily, cell.FontSize, cell.FontStretch, cell.FontStyle, cell.FontWeight,
-							                     cell.Foreground);
-							cellInfo = new CellInfo(null, cell.Background, cell.BorderBrush, cell.BorderThickness, font);
-						}
-					}
+					CellInfo cellInfo  = new CellInfo(null);
 					cellInfo.Value = DataBinder.GetValue(item, column.Binding.Path.Path);
 					rowInfo.Add(cellInfo);
 				}

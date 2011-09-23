@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Media;
 using AODL.Document;
 using AODL.Document.Content.Tables;
 using AODL.Document.Content.Text;
 using AODL.Document.Export.OpenDocument;
 using AODL.Document.SpreadsheetDocuments;
-using AODL.Document.Styles;
 using AODL.IO;
 using XamlGrid.Models.Export;
 
@@ -22,7 +19,6 @@ namespace XamlGrid.ExportODF
 			spreadsheetDocument.New();
 			Table table = new Table(spreadsheetDocument, "DataGrid", string.Empty);
 			int rowIndex = 0;
-			List<CellStyle> cellStyles = new List<CellStyle>();
 			foreach (List<CellInfo> cellInfos in exportInfo)
 			{
 				for (int columnIndex = 0; columnIndex < cellInfos.Count; columnIndex++)
@@ -33,17 +29,6 @@ namespace XamlGrid.ExportODF
 					SimpleText fText = new SimpleText(spreadsheetDocument, (cellInfo.Value ?? string.Empty).ToString());
 					paragraph.TextContent.Add(fText);
 					cell.Content.Add(paragraph);
-					string backgroundColor = ToHTMLColorNoAlpha(cellInfo.Background);
-					CellStyle cellStyle = (from style in cellStyles
-					                       where style.CellProperties.BackgroundColor == backgroundColor
-					                       select style).FirstOrDefault();
-					if (cellStyle == null)
-					{
-						cellStyles.Add(cellStyle = new CellStyle(spreadsheetDocument, "cell" + rowIndex + "_" + columnIndex));
-						cellStyle.CellProperties.BackgroundColor = backgroundColor;
-						spreadsheetDocument.Styles.Add(cellStyle);
-					}
-					cell.CellStyle = cellStyle;
 					table.InsertCellAt(rowIndex, columnIndex, cell);
 				}
 				rowIndex++;
@@ -68,11 +53,6 @@ namespace XamlGrid.ExportODF
 					}
 				}
 			}
-		}
-
-		private static string ToHTMLColorNoAlpha(Color color)
-		{
-			return ("#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2")).ToLowerInvariant();
 		}
 	}
 }

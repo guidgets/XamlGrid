@@ -33,7 +33,7 @@ using System.ComponentModel;
 
 namespace XamlGrid.Models
 {
-	public class PropertyPathWalker
+	public class PropertyPathWalker : IDisposable
 	{
 		static readonly PropertyInfo[] CollectionViewProperties = typeof(ICollectionView).GetProperties();
 
@@ -158,6 +158,11 @@ namespace XamlGrid.Models
 		public void Update(object source)
 		{
 			Node.SetSource(source);
+		}
+
+		public void Dispose()
+		{
+			this.Update(null);
 		}
 	}
 }

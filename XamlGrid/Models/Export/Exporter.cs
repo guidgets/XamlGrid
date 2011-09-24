@@ -94,6 +94,7 @@ namespace XamlGrid.Models.Export
 				{
 					CellInfo header = CellInfo.Default;
 					header.Value = column.Header;
+					header.DataType = column.DataType;
 					dataToExport[0].Add(header);
 				}
 			}
@@ -102,8 +103,9 @@ namespace XamlGrid.Models.Export
 				List<CellInfo> rowInfo = new List<CellInfo>(visibleColumnsCount);
 				foreach (Column column in visibleColumns)
 				{
-					CellInfo cellInfo  = new CellInfo(null);
+					CellInfo cellInfo = new CellInfo(null);
 					cellInfo.Value = DataBinder.GetValue(item, column.Binding.Path.Path);
+					cellInfo.DataType = column.DataType;
 					rowInfo.Add(cellInfo);
 				}
 				dataToExport.Add(rowInfo);

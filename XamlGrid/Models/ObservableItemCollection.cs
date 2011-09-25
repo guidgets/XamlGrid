@@ -230,29 +230,30 @@ namespace XamlGrid.Models
 			{
 				return;
 			}
-			PropertyPathWalker propertyPathWalker = new PropertyPathWalker(propertyPath);
-			propertyPathWalker.Update(value);
-			if (propertyPathWalker.IsPathBroken)
+			using (PropertyPathWalker propertyPathWalker = new PropertyPathWalker(propertyPath))
 			{
-				if (this.ThrowExceptionOnInvalidPath)
+				propertyPathWalker.Update(value);
+				if (propertyPathWalker.IsPathBroken)
 				{
-					throw new ArgumentException(string.Format("The property path {0} is broken", propertyPath));
+					if (this.ThrowExceptionOnInvalidPath)
+					{
+						throw new ArgumentException(string.Format("The property path {0} is broken", propertyPath));
+					}
+					return;
 				}
-				return;
-			}
 
-			IPropertyPathNode currentNode = propertyPathWalker.Node;
-			while (currentNode != null)
-			{
-				value = currentNode.Value;
-				if (value == null)
+				IPropertyPathNode currentNode = propertyPathWalker.Node;
+				while (currentNode != null)
 				{
-					break;
+					value = currentNode.Value;
+					if (value == null)
+					{
+						break;
+					}
+					this.AddRemoveHandler(value, propertyPath, addHandler);
+					currentNode = currentNode.Next;
 				}
-				this.AddRemoveHandler(value, propertyPath, addHandler);
-				currentNode = currentNode.Next;
 			}
-			propertyPathWalker.Update(null);
 		}
 
 		private void AddRemoveHandler(object item, string propertyPath, bool add)

@@ -348,13 +348,14 @@ namespace XamlGrid.Views
 		{
 			if (this.Column != null && this.Column.DataType == typeOfObject)
 			{
-				PropertyPathWalker propertyPathWalker = new PropertyPathWalker(this.Column.Binding.Path.Path, true);
-				propertyPathWalker.Update(this.DataContext);
-				if (!propertyPathWalker.IsPathBroken)
+				using (PropertyPathWalker propertyPathWalker = new PropertyPathWalker(this.Column.Binding.Path.Path, true))
 				{
-					this.Column.DataType = propertyPathWalker.FinalNode.ValueType;
+					propertyPathWalker.Update(this.DataContext);
+					if (!propertyPathWalker.IsPathBroken)
+					{
+						this.Column.DataType = propertyPathWalker.FinalNode.ValueType;
+					}
 				}
-				propertyPathWalker.Update(null);
 			}
 		}
 	}

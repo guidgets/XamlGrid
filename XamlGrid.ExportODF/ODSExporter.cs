@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
+using AODL.Document;
 using AODL.Document.Content.Tables;
 using AODL.Document.Content.Text;
 using AODL.Document.Export.OpenDocument;
 using AODL.Document.SpreadsheetDocuments;
+using AODL.Document.SpreadsheetDocuments.Tables.Style;
 using AODL.IO;
 using XamlGrid.Models.Export;
+using XamlGrid.Controllers;
 
 namespace XamlGrid.ExportODF
 {
@@ -33,6 +37,28 @@ namespace XamlGrid.ExportODF
 				rowIndex++;
 			}
 			spreadsheetDocument.TableCollection.Add(table);
+			Save(spreadsheetDocument);
+		}
+
+		private static string GetODSType(Type type)
+		{
+			if (type == typeof(DateTime) || type == typeof(DateTime?))
+			{
+				return OfficeValueTypes.Date;
+			}
+			if (type == typeof(bool) || type == typeof(bool?))
+			{
+				return OfficeValueTypes.Boolean;
+			}
+			if (type.IsNumeric())
+			{
+				return OfficeValueTypes.Float;
+			}
+			return OfficeValueTypes.String;
+		}
+
+		private static void Save(IDocument spreadsheetDocument)
+		{
 			SaveFileDialog saveFileDialog = new SaveFileDialog();
 			saveFileDialog.DefaultFileName = "DataGrid";
 			saveFileDialog.DefaultExt = ".ods";

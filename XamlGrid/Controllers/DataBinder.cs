@@ -8,7 +8,10 @@ namespace XamlGrid.Controllers
 		[Validate]
 		public static object GetValue(object dataItem, [NotNull] string propertyPath)
 		{
-			return new PropertyPathWalker(propertyPath).GetValue(dataItem);
+			using (PropertyPathWalker propertyPathWalker = new PropertyPathWalker(propertyPath))
+			{
+				return propertyPathWalker.GetValue(dataItem);
+			}
 		}
 	}
 }

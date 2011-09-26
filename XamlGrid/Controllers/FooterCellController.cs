@@ -77,10 +77,10 @@ namespace XamlGrid.Controllers
 
 		private void Update()
 		{
-			this.FooterCell.ClearValue(Cell.ValueProperty);
+			this.FooterCell.ClearValue(CellBase.ValueProperty);
 			if (this.FooterCell.Column.FooterBinding != null)
 			{
-				this.FooterCell.SetBinding(Cell.ValueProperty, this.FooterCell.Column.FooterBinding);
+				this.FooterCell.SetBinding(CellBase.ValueProperty, this.FooterCell.Column.FooterBinding);
 			}
 		}
 	}

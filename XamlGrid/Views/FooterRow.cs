@@ -23,12 +23,12 @@ namespace XamlGrid.Views
 			base.PrepareContainerForItemOverride(element, item);
 
 			Cell cell = (Cell) element;
-			cell.ClearValue(Cell.ValueProperty);
+			cell.ClearValue(CellBase.ValueProperty);
 			cell.IsEditable = false;
 
 			if (cell.Column.FooterBinding != null)
 			{
-				cell.SetBinding(Cell.ValueProperty, cell.Column.FooterBinding);
+				cell.SetBinding(CellBase.ValueProperty, cell.Column.FooterBinding);
 			}
 			DataGridFacade.Instance.RegisterController(new FooterCellController(cell));
 		}

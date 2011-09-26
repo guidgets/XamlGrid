@@ -40,6 +40,7 @@ namespace XamlGrid.Controllers
 		{
 			base.OnRegister();
 
+			this.Cell.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Cell_MouseLeftButtonDown), true);
 			this.Cell.GotFocus += this.Cell_GotFocus;
             this.Cell.LostFocus += this.Cell_LostFocus;
 			this.Cell.KeyDown += this.Cell_KeyDown;
@@ -53,6 +54,7 @@ namespace XamlGrid.Controllers
 		{
 			base.OnRemove();
 
+			this.Cell.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Cell_MouseLeftButtonDown));
 			this.Cell.GotFocus -= this.Cell_GotFocus;
 		    this.Cell.LostFocus -= this.Cell_LostFocus;
 			this.Cell.KeyDown -= this.Cell_KeyDown;
@@ -90,6 +92,14 @@ namespace XamlGrid.Controllers
 			}
 		}
 
+
+		private void Cell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ClickCount == 2)
+			{
+				this.Cell.IsInEditMode = true;
+			}
+		}
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{

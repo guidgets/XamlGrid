@@ -55,13 +55,17 @@ namespace XamlGrid.Views
 		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
 		/// </summary>
 		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true));
+			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true, OnIsEditableChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is in edit mode.
 		/// </summary>
 		public static readonly DependencyProperty IsInEditModeProperty =
 			DependencyProperty.Register("IsInEditMode", typeof(bool), typeof(Cell), new PropertyMetadata(OnIsInEditModeChanged));
+
+		public static readonly DependencyProperty AlwaysInEditModeProperty =
+			DependencyProperty.Register("AlwaysInEditMode", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnAlwaysInEditModeChanged));
+
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is selected.
@@ -137,6 +141,18 @@ namespace XamlGrid.Views
 		{
 			get { return (bool) this.GetValue(IsInEditModeProperty); }
 			set { this.SetValue(IsInEditModeProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Cell"/> is always in edit mode.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if this <see cref="Cell"/> is always in edit mode; otherwise, <c>false</c>.
+		/// </value>
+		public bool AlwaysInEditMode
+		{
+			get { return (bool) GetValue(AlwaysInEditModeProperty); }
+			set { SetValue(AlwaysInEditModeProperty, value); }
 		}
 
 		/// <summary>
@@ -264,33 +280,75 @@ namespace XamlGrid.Views
 			}
 		}
 
-		private static void OnIsInEditModeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
-		{
-			Cell cell = (Cell) dependencyObject;
-			bool editMode = (bool) e.NewValue;
-			if (!cell.IsEditable && editMode)
-			{
-				cell.IsInEditMode = false;
-				return;
-			}
-			cell.OnIsInEditModeChanged(e);
-			if (editMode)
-			{
-				cell.GoToEdit();
-			}
-			else
-			{
-				cell.GoToView();
-			}
-		}
-
 		protected virtual void OnIsInEditModeChanged(DependencyPropertyChangedEventArgs e)
 		{
+			if (!this.IsEditable && this.IsInEditMode)
+			{
+				this.IsInEditMode = false;
+				return;
+			}
+			if (this.AlwaysInEditMode && !this.IsInEditMode)
+			{
+				this.IsInEditMode = true;
+				return;
+			}
 			DependencyPropertyChangedEventHandler handler = this.IsInEditModeChanged;
 			if (handler != null)
 			{
 				handler(this, e);
 			}
+			if (this.IsInEditMode)
+			{
+				this.GoToEdit();
+			}
+			else
+			{
+				this.GoToView();
+			}
+		}
+
+		protected virtual void OnAlwaysInEditModeChanged(DependencyPropertyChangedEventArgs e)
+		{
+			if (!this.IsEditable && this.AlwaysInEditMode)
+			{
+				this.AlwaysInEditMode = false;
+				return;
+			}
+			if (this.AlwaysInEditMode && !this.IsInEditMode)
+			{
+				this.IsInEditMode = true;
+			}
+		}
+
+
+		private static void OnIsEditableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).OnIsEditableChanged(e);
+		}
+
+		protected virtual void OnIsEditableChanged(DependencyPropertyChangedEventArgs e)
+		{
+			if (!this.IsEditable)
+			{
+				if (this.IsInEditMode)
+				{
+					this.IsInEditMode = false;
+				}
+				if (this.AlwaysInEditMode)
+				{
+					this.AlwaysInEditMode = false;
+				}
+			}
+		}
+
+		private static void OnIsInEditModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).OnIsInEditModeChanged(e);
+		}
+
+		private static void OnAlwaysInEditModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).OnAlwaysInEditModeChanged(e);
 		}
 
 		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

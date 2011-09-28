@@ -25,7 +25,7 @@ Authors:	Dimitar Dobrev
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit" 
 	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 	xmlns:xamlGrid="clr-namespace:XamlGrid" 
-    xmlns:xaml="http://schemas.xamlgrid.com">
+    xmlns:xaml="http://schemas.xamlgrid.com" xmlns:System="clr-namespace:System;assembly=mscorlib">
 
 	<SolidColorBrush x:Key="controlColor" xaml:OSBrush.OSColor="ControlColor" />
 	<SolidColorBrush x:Key="windowColor" xaml:OSBrush.OSColor="WindowColor" />
@@ -344,6 +344,13 @@ Authors:	Dimitar Dobrev
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
 										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="AlwaysInEditMode">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<System:Boolean>True</System:Boolean>
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
+										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
@@ -360,6 +367,13 @@ Authors:	Dimitar Dobrev
 									<Storyboard>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="AlwaysInEditMode">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0">
+												<DiscreteObjectKeyFrame.Value>
+													<System:Boolean>True</System:Boolean>
+												</DiscreteObjectKeyFrame.Value>
+											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">

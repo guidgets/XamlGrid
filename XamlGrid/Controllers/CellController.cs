@@ -143,7 +143,7 @@ namespace XamlGrid.Controllers
 					if (!EditorController.SentFromMultilineTextBox(e))
 					{
 						this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
-						if (!this.Cell.IsInEditMode)
+						if (!this.Cell.IsInEditMode || this.Cell.AlwaysInEditMode)
 						{
 							this.Cell.FocusHorizontalNeighbour(true);
 						}

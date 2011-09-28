@@ -305,7 +305,10 @@ namespace XamlGrid.Controllers
 			{
 				this.Header = this.Binding.Path.Path;
 			}
-			this.IsEditable = this.Binding.Mode == BindingMode.TwoWay;
+			if (this.IsEditable != (this.Binding.Mode == BindingMode.TwoWay))
+			{
+				this.IsEditable = this.Binding.Mode == BindingMode.TwoWay;
+			}
 		}
 
 		private static void OnFooterBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

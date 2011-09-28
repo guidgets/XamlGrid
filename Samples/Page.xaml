@@ -72,7 +72,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
-		<xaml:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="True" AutoCreateColumns="False">
+		<xaml:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="False" AutoCreateColumns="False">
 			<xaml:DataGrid.Columns>
 				<Controllers:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
 				<Controllers:Column Binding="{Binding Age, Mode=TwoWay}" FooterBinding="{Binding Converter={StaticResource sumAggregate}}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />

@@ -390,13 +390,9 @@ namespace XamlGrid.Views
 
 		private bool GoToBoolean()
 		{
-			if (this.DataType == typeOfBoolean)
+			if (this.DataType == typeOfBoolean || this.DataType == typeOfNullableBoolean)
 			{
 				return VisualStateManager.GoToState(this, "Boolean", false);
-			}
-			if (this.DataType == typeOfNullableBoolean)
-			{
-				return VisualStateManager.GoToState(this, "NullableBoolean", false);
 			}
 			return false;
 		}

@@ -272,6 +272,7 @@ Authors:	Dimitar Dobrev
 
 	<xaml:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
 	<xaml:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
+	<xaml:IsNullableTypeConverter x:Key="isNullableTypeConverter" />
 
 	<Style TargetType="xaml:Cell">
 		<Setter Property="MinHeight" Value="22" />
@@ -355,31 +356,8 @@ Authors:	Dimitar Dobrev
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
-														<CheckBox IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                  IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
-													</DataTemplate>
-												</DiscreteObjectKeyFrame.Value>
-											</DiscreteObjectKeyFrame>
-										</ObjectAnimationUsingKeyFrames>
-									</Storyboard>
-								</VisualState>
-								<VisualState Name="NullableBoolean">
-									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
-										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="AlwaysInEditMode">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0">
-												<DiscreteObjectKeyFrame.Value>
-													<System:Boolean>True</System:Boolean>
-												</DiscreteObjectKeyFrame.Value>
-											</DiscreteObjectKeyFrame>
-										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0">
-												<DiscreteObjectKeyFrame.Value>
-													<DataTemplate>
-														<CheckBox IsThreeState="True" 
+														<CheckBox IsThreeState="{Binding Tag.DataType, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
+																						 Converter={StaticResource isNullableTypeConverter}}" 
                                                                   IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                   IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 													</DataTemplate>

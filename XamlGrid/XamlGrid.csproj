@@ -106,6 +106,7 @@
     <Compile Include="Controllers\FooterCellController.cs" />
     <Compile Include="Controllers\HandleNavigationBehaviour.cs" />
     <Compile Include="Controllers\IndexToNumberConverter.cs" />
+    <Compile Include="Controllers\IsNullableTypeConverter.cs" />
     <Compile Include="Controllers\NewItemCommand.cs" />
     <Compile Include="Controllers\NewRowController.cs" />
     <Compile Include="Controllers\NumberToVisibilityConverter.cs" />

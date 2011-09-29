@@ -112,6 +112,7 @@
     <Compile Include="Converters\BooleanToNegativeConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ByteArrayUriToImageConverter.cs" />
+    <Compile Include="Converters\DataItemToIndexConverter.cs" />
     <Compile Include="Converters\IndexToNumberConverter.cs" />
     <Compile Include="Converters\IsNullableTypeConverter.cs" />
     <Compile Include="Converters\NumberToVisibilityConverter.cs" />

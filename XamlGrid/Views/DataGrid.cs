@@ -610,6 +610,23 @@ namespace XamlGrid.Views
 		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
 		{
 			base.OnItemsChanged(e);
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Remove:
+				case NotifyCollectionChangedAction.Replace:
+					foreach (Row row in from row in this.cachedGUI 
+										from object oldItem in e.OldItems
+										where oldItem == row.DataContext
+										select row)
+					{
+						row.DataContext = null;
+						row.ItemsSource = null;
+						row.ClearValue(Row.IndexProperty);
+						DataGridFacade.Instance.RemoveController(row.GetHashCode().ToString());
+						this.cachedGUI.Remove(row);
+					}
+					break;
+			}
 			this.cacheIndex = 0;
 		}
 

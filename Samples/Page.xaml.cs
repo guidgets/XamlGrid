@@ -38,7 +38,7 @@ namespace Samples
 				customer.OrderThumbnail = new Uri(string.Format("/Images/p{0}.png", index), UriKind.Relative);
 				++index;
 			}
-			this.dataGrid.DataSource = new List<Customer>(list);
+			this.dataGrid.DataSource = new ObservableCollection<Customer>(list);
 			this.listBoxCustomers.ItemsSource = this.collectionView = new CollectionViewSource { Source = list }.View;
 
 			//this.dataGrid.Columns.CollectionChanged += this.Columns_CollectionChanged;
@@ -58,18 +58,18 @@ namespace Samples
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-			this.dataGrid.NewRowVisibility = Visibility.Visible;
-        	this.dataGrid.NumberRows = true;
-            this.dataGrid.BringIntoView(79);
-			CellController cellController = new CellController(new Cell());
+			//this.dataGrid.NewRowVisibility = Visibility.Visible;
+			//this.dataGrid.NumberRows = true;
+			//this.dataGrid.BringIntoView(79);
+			//CellController cellController = new CellController(new Cell());
 			//cellController.HandleNotification(null);
-			new ODSExporter().ExportAll(this.dataGrid);
+			//new ODSExporter().ExportAll(this.dataGrid);
         	//this.dataGrid.DataSource = this.collectionView;
         	//this.dataGrid.Columns[0].CellStyle = null;
         	////this.dataGrid.DataSource = new ObservableCollection<Customer> { new Customer { Age = 25 } };
         	//((ObservableCollection<Customer>) this.dataGrid.DataSource).Add(new Customer { Age = 25 });
         	//this.dataGrid.DataSource = new[] { "Ivan1", "Ivan2", "Ivan3", "Ivan4" };
-        	//((ObservableCollection<Customer>) this.dataGrid.DataSource).RemoveAt(3);
+			((IList<Customer>) this.dataGrid.DataSource).RemoveAt(3);
         	//this.dataGrid.Columns[1].Visibility = this.dataGrid.Columns[1].Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         	//this.dataGrid.ResizableColumns = !this.dataGrid.ResizableColumns;
         	//this.dataGrid.FooterVisibility = this.dataGrid.FooterVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;

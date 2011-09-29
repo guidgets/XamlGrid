@@ -233,7 +233,7 @@ namespace XamlGrid.Views
 
 			Cell cell = (Cell) element;
 
-			cell.ClearValue(Cell.IsEditableProperty);
+			cell.ClearValue(Cell.IsReadOnlyProperty);
 			cell.ClearValue(CellBase.ValueProperty);
 			cell.ClearValue(Cell.IsSelectedProperty);
 		}

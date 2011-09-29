@@ -168,9 +168,9 @@ namespace XamlGrid.Automation
 		/// <param name="value">The value to set. The provider is responsible for converting the value to the appropriate data type.</param>
 		public void SetValue(string value)
 		{
-			if (!this.Cell.IsEditable)
+			if (this.Cell.IsReadOnly)
 			{
-				throw new InvalidOperationException("Cannot change the value of a non-editable (read-only) cell.");
+				throw new InvalidOperationException("Cannot change the value of a read-only cell.");
 			}
 			this.Cell.Value = value;
 		}
@@ -184,7 +184,7 @@ namespace XamlGrid.Automation
 		{
 			get
 			{
-				return !this.Cell.IsEditable;
+				return this.Cell.IsReadOnly;
 			}
 		}
 

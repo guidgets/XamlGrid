@@ -42,7 +42,7 @@ namespace XamlGrid.Views
 
 			Cell cell = (Cell) element;
 			cell.ClearValue(CellBase.ValueProperty);
-			cell.IsEditable = false;
+			cell.IsReadOnly = true;
 
 			if (cell.Column.FooterBinding != null)
 			{

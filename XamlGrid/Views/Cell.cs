@@ -52,10 +52,10 @@ namespace XamlGrid.Views
 			DependencyProperty.Register("HasFocus", typeof(bool), typeof(Cell), new PropertyMetadata(OnHasFocusChanged));
 
 		/// <summary>
-		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is editable
+		/// Identifies the dependency property which gets or sets a value indicating whether the content of a <see cref="Cell"/> is read-only.
 		/// </summary>
-		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Cell), new PropertyMetadata(true, OnIsEditableChanged));
+		public static readonly DependencyProperty IsReadOnlyProperty =
+			DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(Cell), new PropertyMetadata(false, OnIsReadOnlyChanged));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> is in edit mode.
@@ -85,10 +85,10 @@ namespace XamlGrid.Views
 		                                                  		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 		                                                  	};
 
-		private static readonly Binding isEditableBinding = new Binding("Column.IsEditable")
-		                                                    	{
-		                                                    		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-		                                                    	};
+		private static readonly Binding isReadOnlyBinding = new Binding("Column.IsReadOnly")
+		                                                    {
+		                                                    	RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+		                                                    };
 
 		private static readonly Binding styleBinding = new Binding("Column.CellStyle")
 		                                               	{
@@ -104,7 +104,7 @@ namespace XamlGrid.Views
 			this.DefaultStyleKey = typeof(Cell);
 
 			this.SetBinding(dataTypeProperty, dataTypeBinding);
-			this.SetBinding(IsEditableProperty, isEditableBinding);
+			this.SetBinding(IsReadOnlyProperty, isReadOnlyBinding);
 			this.SetBinding(StyleProperty, styleBinding);
 		}
 
@@ -120,15 +120,15 @@ namespace XamlGrid.Views
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating whether the content of the <see cref="Cell"/> is editable.
+		/// Gets or sets a value indicating whether the content of the <see cref="Cell"/> is read-only.
 		/// </summary>
 		/// <value>
-		/// 	<c>true</c> if the content of the <see cref="Cell"/> is editable; otherwise, <c>false</c>.
+		/// 	<c>true</c> if the content of the <see cref="Cell"/> is read-only; otherwise, <c>false</c>.
 		/// </value>
-		public virtual bool IsEditable
+		public virtual bool IsReadOnly
 		{
-			get { return (bool) this.GetValue(IsEditableProperty); }
-			set { this.SetValue(IsEditableProperty, value); }
+			get { return (bool) this.GetValue(IsReadOnlyProperty); }
+			set { this.SetValue(IsReadOnlyProperty, value); }
 		}
 
 		/// <summary>
@@ -282,14 +282,17 @@ namespace XamlGrid.Views
 
 		protected virtual void OnIsInEditModeChanged(DependencyPropertyChangedEventArgs e)
 		{
-			if (!this.IsEditable && this.IsInEditMode)
+			if (this.IsReadOnly && this.IsInEditMode)
 			{
 				this.IsInEditMode = false;
 				return;
 			}
-			if (this.AlwaysInEditMode && !this.IsInEditMode)
+			if (this.AlwaysInEditMode)
 			{
-				this.IsInEditMode = true;
+				if (!this.IsInEditMode)
+				{
+					this.IsInEditMode = true;
+				}
 				return;
 			}
 			DependencyPropertyChangedEventHandler handler = this.IsInEditModeChanged;
@@ -309,7 +312,7 @@ namespace XamlGrid.Views
 
 		protected virtual void OnAlwaysInEditModeChanged(DependencyPropertyChangedEventArgs e)
 		{
-			if (!this.IsEditable && this.AlwaysInEditMode)
+			if (this.IsReadOnly && this.AlwaysInEditMode)
 			{
 				this.AlwaysInEditMode = false;
 				return;
@@ -321,14 +324,14 @@ namespace XamlGrid.Views
 		}
 
 
-		private static void OnIsEditableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			((Cell) d).OnIsEditableChanged(e);
+			((Cell) d).OnIsReadOnlyChanged(e);
 		}
 
-		protected virtual void OnIsEditableChanged(DependencyPropertyChangedEventArgs e)
+		protected virtual void OnIsReadOnlyChanged(DependencyPropertyChangedEventArgs e)
 		{
-			if (!this.IsEditable)
+			if (this.IsReadOnly)
 			{
 				if (this.IsInEditMode)
 				{

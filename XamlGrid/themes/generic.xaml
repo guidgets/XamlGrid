@@ -273,6 +273,7 @@ Authors:	Dimitar Dobrev
 	<xaml:ByteArrayUriToImageConverter x:Key="byteArrayToImageConverter" />
 	<xaml:TypeToAlignmentConverter x:Key="typeToAlignmentConverter" />
 	<xaml:IsNullableTypeConverter x:Key="isNullableTypeConverter" />
+	<xaml:BooleanToNegativeConverter x:Key="booleanToNegativeConverter" />
 
 	<Style TargetType="xaml:Cell">
 		<Setter Property="MinHeight" Value="22" />
@@ -343,7 +344,7 @@ Authors:	Dimitar Dobrev
 								<VisualState Name="Boolean">
 									<Storyboard>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" />
 										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="AlwaysInEditMode">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
@@ -359,7 +360,8 @@ Authors:	Dimitar Dobrev
 														<CheckBox IsThreeState="{Binding Tag.DataType, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
 																						 Converter={StaticResource isNullableTypeConverter}}" 
                                                                   IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                  IsEnabled="{Binding Tag.IsEditable, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+                                                                  IsEnabled="{Binding Tag.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
+																					  Converter={StaticResource booleanToNegativeConverter}}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>

@@ -105,8 +105,8 @@ namespace XamlGrid.Controllers
 		/// Identifies the dependency property which gets or sets a value indicating 
 		/// whether the <see cref="Cell"/>s in a <see cref="Column"/> are read-only.
 		/// </summary>
-		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(Column), new PropertyMetadata(true));
+		public static readonly DependencyProperty IsReadOnlyProperty =
+			DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(Column), new PropertyMetadata(false));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the type of the data in the <see cref="Cell"/>s in a <see cref="Column"/>.
@@ -263,10 +263,10 @@ namespace XamlGrid.Controllers
 		/// <value>
 		/// 	<c>true</c> if the <see cref="Cell"/>s in this <see cref="Column"/> are read-only; otherwise, <c>false</c>.
 		/// </value>
-		public virtual bool IsEditable
+		public virtual bool IsReadOnly
 		{
-			get { return (bool) this.GetValue(IsEditableProperty); }
-			set { this.SetValue(IsEditableProperty, value); }
+			get { return (bool) this.GetValue(IsReadOnlyProperty); }
+			set { this.SetValue(IsReadOnlyProperty, value); }
 		}
 
 		/// <summary>
@@ -305,9 +305,9 @@ namespace XamlGrid.Controllers
 			{
 				this.Header = this.Binding.Path.Path;
 			}
-			if (this.IsEditable != (this.Binding.Mode == BindingMode.TwoWay))
+			if (this.IsReadOnly != (this.Binding.Mode != BindingMode.TwoWay))
 			{
-				this.IsEditable = this.Binding.Mode == BindingMode.TwoWay;
+				this.IsReadOnly = this.Binding.Mode != BindingMode.TwoWay;
 			}
 		}
 

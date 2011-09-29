@@ -175,8 +175,8 @@ namespace XamlGrid.Views
 		/// Identifies the dependency property which gets or sets a value indicating 
 		/// whether the <see cref="DataGrid"/>s in a <see cref="Cell"/> are read-only.
 		/// </summary>
-		public static readonly DependencyProperty IsEditableProperty =
-			DependencyProperty.Register("IsEditable", typeof(bool), typeof(DataGrid), new PropertyMetadata(true));
+		public static readonly DependencyProperty IsReadOnlyProperty =
+			DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(DataGrid), new PropertyMetadata(false));
 
 		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether to copy the header of a <see cref="DataGrid"/> to the clipboard.
@@ -497,15 +497,15 @@ namespace XamlGrid.Views
 		/// <value>
 		/// 	<c>true</c> if the <see cref="Cell"/>s in this <see cref="DataGrid"/> are read-only; otherwise, <c>false</c>.
 		/// </value>
-		public virtual bool IsEditable
+		public virtual bool IsReadOnly
 		{
 			get
 			{
-				return (bool) this.GetValue(IsEditableProperty);
+				return (bool) this.GetValue(IsReadOnlyProperty);
 			}
 			set
 			{
-				this.SetValue(IsEditableProperty, value);
+				this.SetValue(IsReadOnlyProperty, value);
 			}
 		}
 

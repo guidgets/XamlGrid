@@ -72,11 +72,11 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<CheckBox Content="Switch from automatic to custom columns" IsChecked="{Binding AutoCreateColumns, ElementName=dataGrid, Mode=TwoWay}" />
-		<xaml:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsEditable="False" AutoCreateColumns="False">
+		<xaml:DataGrid x:Name="dataGrid" Grid.Row="1" SelectionMode="Extended" IsReadOnly="False" AutoCreateColumns="False">
 			<xaml:DataGrid.Columns>
 				<Controllers:Column Binding="{Binding Name, Mode=TwoWay}" Width="2*" CellStyle="{StaticResource cellStyleName}" />
-				<Controllers:Column Binding="{Binding Age, Mode=TwoWay}" FooterBinding="{Binding Converter={StaticResource sumAggregate}}" Width="*" IsEditable="True" CellStyle="{StaticResource cellStyleAge}" />
-				<Controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Width="3*" IsEditable="True" Header="First Order Name" />
+				<Controllers:Column Binding="{Binding Age, Mode=TwoWay}" FooterBinding="{Binding Converter={StaticResource sumAggregate}}" Width="*" CellStyle="{StaticResource cellStyleAge}" />
+				<Controllers:Column Binding="{Binding Orders[0].Name, Mode=TwoWay}" Width="3*" Header="First Order Name" />
 				<Controllers:Column Binding="{Binding IsSingle, Mode=TwoWay}" Width="*" />
 				<Controllers:Column Binding="{Binding MaritalStatus, Mode=TwoWay}" Width="*" CellStyle="{StaticResource cellStyleMaritalStatus}" />
 				<Controllers:Column Binding="{Binding HireDate, Mode=TwoWay}" Width="2*" />

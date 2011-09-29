@@ -299,10 +299,10 @@ namespace XamlGrid.Controllers
 						BindingOperations.SetBinding(column, Column.IsResizableProperty,
 						                             new Binding("ResizableColumns") { Source = this.DataGrid });
 					}
-					if (column.ReadLocalValue(Column.IsEditableProperty) == DependencyProperty.UnsetValue)
+					if (column.ReadLocalValue(Column.IsReadOnlyProperty) == DependencyProperty.UnsetValue)
 					{
-						BindingOperations.SetBinding(column, Column.IsEditableProperty,
-						                             new Binding("IsEditable") { Source = this.DataGrid });
+						BindingOperations.SetBinding(column, Column.IsReadOnlyProperty,
+						                             new Binding("IsReadOnly") { Source = this.DataGrid });
 					}
 					column.IsSelected = true;
 					column.ActualWidthChanged += this.Column_WidthAffected;
@@ -319,7 +319,7 @@ namespace XamlGrid.Controllers
 				{
 					column.ClearValue(Column.WidthProperty);
 					column.ClearValue(Column.IsResizableProperty);
-					column.ClearValue(Column.IsEditableProperty);
+					column.ClearValue(Column.IsReadOnlyProperty);
 					column.ActualWidthChanged -= this.Column_WidthAffected;
 					column.VisibilityChanged -= this.Column_WidthAffected;
 					if (this.DataGrid.CurrentColumn == column)

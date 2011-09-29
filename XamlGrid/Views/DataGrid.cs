@@ -31,6 +31,7 @@ using System.Windows.Controls.Primitives;
 using System.Linq;
 using XamlGrid.Automation;
 using XamlGrid.Controllers;
+using XamlGrid.Converters;
 using XamlGrid.Models;
 using XamlGrid.Models.Export;
 
@@ -214,7 +215,13 @@ namespace XamlGrid.Views
 		private static readonly Binding viewportHeightBinding = new Binding("ViewportHeight")
 		                                                        {
 		                                                        	RelativeSource = new RelativeSource(RelativeSourceMode.Self)
-		                                                        };
+																};
+
+		private readonly Binding dataItemToIndexBinding = new Binding("DataContext")
+		                                                  	{
+		                                                  		RelativeSource = new RelativeSource(RelativeSourceMode.Self),
+		                                                  		Converter = new DataItemToIndexConverter()
+		                                                  	};
 
 		private readonly SortingModel sortingModel;
 		private readonly SelectionModel selectionModel;
@@ -241,6 +248,8 @@ namespace XamlGrid.Views
 			DataGridFacade.Instance.RegisterController(new DataGridController(this));
 			DataGridFacade.Instance.RegisterModel(this.sortingModel = new SortingModel());
 			DataGridFacade.Instance.RegisterModel(this.selectionModel = new SelectionModel());
+
+			dataItemToIndexBinding.ConverterParameter = this.Items;
 		}
 
 		private ScrollViewer Scroll
@@ -567,6 +576,7 @@ namespace XamlGrid.Views
 			}
 			this.cacheIndex++;
 			Row row = new Row();
+			row.SetBinding(Row.IndexProperty, dataItemToIndexBinding);
 			this.cachedGUI.Add(row);
 			return row;
 		}
@@ -596,7 +606,6 @@ namespace XamlGrid.Views
 				return;
 			}
 			Row row = (Row) element;
-			row.Index = this.Items.IndexOf(item);
 			if (row.ItemsSource == null)
 			{
 				row.ItemsSource = this.Columns;

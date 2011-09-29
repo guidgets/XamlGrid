@@ -290,7 +290,7 @@ Authors:	Dimitar Dobrev
 				</DataTemplate>
 			</Setter.Value>
 		</Setter>
-		<Setter Property="Padding" Value="6,3,6,3" />
+		<Setter Property="Padding" Value="6,4,6,4" />
 		<Setter Property="BorderThickness" Value="0,0,1,0" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Template">
@@ -387,6 +387,9 @@ Authors:	Dimitar Dobrev
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
 										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding">
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0" />
+										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch" />
 										</ObjectAnimationUsingKeyFrames>
@@ -413,6 +416,7 @@ Authors:	Dimitar Dobrev
 
 	<Style TargetType="xaml:Editor">
 		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="BorderThickness" Value="0" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:Editor">
@@ -427,7 +431,8 @@ Authors:	Dimitar Dobrev
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
-														<TextBox Text="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+														<TextBox Text="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
+																 BorderThickness="0"
                                                                  SelectionLength="{Binding Text.Length, RelativeSource={RelativeSource Self}, Mode=OneTime}" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
@@ -443,7 +448,7 @@ Authors:	Dimitar Dobrev
 													<DataTemplate>
 														<toolkit:NumericUpDown Value="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
                                                                                     Minimum="-1000000000" Maximum="1000000000" IsTabStop="False" 
-																			   Background="{StaticResource windowColor}"
+																			   BorderThickness="0" Background="{StaticResource windowColor}"
 																			   Foreground="{StaticResource controlTextColor}">
 															<toolkit:NumericUpDown.Template>
 																<ControlTemplate TargetType="toolkit:NumericUpDown">
@@ -471,7 +476,9 @@ Authors:	Dimitar Dobrev
 																				<VisualState x:Name="Unfocused" />
 																			</VisualStateGroup>
 																		</VisualStateManager.VisualStateGroups>
-																		<toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+																		<toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" 
+																							   MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+																							   BorderThickness="{TemplateBinding BorderThickness}">
 																			<TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" 
 																					 FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" 
 																					 FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" 
@@ -508,7 +515,7 @@ Authors:	Dimitar Dobrev
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
 														<sdk:DatePicker SelectedDate="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-																		Foreground="{StaticResource controlTextColor}" />
+																		Foreground="{StaticResource controlTextColor}" BorderThickness="0" />
 													</DataTemplate>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>

@@ -14,7 +14,7 @@
 // Boston, MA 02111-1307, USA.
 // 
 // File:	CurrentItemCommand.cs
-// Authors:	Dimitar Dobrev
+// Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 
 using System.ComponentModel;
 using XamlGrid.Core;

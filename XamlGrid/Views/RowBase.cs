@@ -14,7 +14,7 @@
 // Boston, MA 02111-1307, USA.
 // 
 // File:	RowBase.cs
-// Authors:	Dimitar Dobrev
+// Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 
 using System.Windows;
 using System.Windows.Controls;

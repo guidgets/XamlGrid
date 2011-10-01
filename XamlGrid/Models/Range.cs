@@ -14,7 +14,7 @@
 // Boston, MA 02111-1307, USA.
 // 
 // File:	Range.cs
-// Authors:	Dimitar Dobrev
+// Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 // 
 namespace XamlGrid.Models
 {

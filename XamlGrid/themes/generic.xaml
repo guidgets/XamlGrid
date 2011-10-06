@@ -283,13 +283,6 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 		<Setter Property="HorizontalContentAlignment" Value="{Binding DataType, RelativeSource={RelativeSource Self}, 
 																	  Converter={StaticResource typeToAlignmentConverter}}" />
 		<Setter Property="Visibility" Value="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
-		<Setter Property="ContentTemplate">
-			<Setter.Value>
-				<DataTemplate>
-					<TextBlock Text="{Binding}" TextTrimming="WordEllipsis" />
-				</DataTemplate>
-			</Setter.Value>
-		</Setter>
 		<Setter Property="Padding" Value="6,4,6,4" />
 		<Setter Property="BorderThickness" Value="0,0,1,0" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
@@ -298,11 +291,12 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 				<ControlTemplate TargetType="xaml:Cell">
 					<Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-						<ContentPresenter Name="Content" Content="{TemplateBinding Value}" 
-										  ContentTemplate="{TemplateBinding ContentTemplate}"
-										  Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
+						<ContentPresenter Name="Content"  
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+							<TextBlock Language="{Binding Language, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" 
+									   DataContext="{TemplateBinding Value}" Text="{Binding}" TextTrimming="WordEllipsis" />
+						</ContentPresenter>
 						<VisualStateManager.CustomVisualStateManager>
 							<xaml:CustomVSM />
 						</VisualStateManager.CustomVisualStateManager>
@@ -353,16 +347,14 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<DataTemplate>
-														<CheckBox IsThreeState="{Binding Tag.DataType, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
-																						 Converter={StaticResource isNullableTypeConverter}}" 
-                                                                  IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                  IsEnabled="{Binding Tag.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
-																					  Converter={StaticResource booleanToNegativeConverter}}" />
-													</DataTemplate>
+													<CheckBox IsThreeState="{Binding DataType, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
+																					 Converter={StaticResource isNullableTypeConverter}}" 
+                                                              IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                              IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
+																				  Converter={StaticResource booleanToNegativeConverter}}" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
@@ -370,13 +362,11 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 								</VisualState>
 								<VisualState Name="Image">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<DataTemplate>
-														<Image Source="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, 
-																		Converter={StaticResource byteArrayToImageConverter}}" />
-													</DataTemplate>
+													<Image Source="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, 
+																			Converter={StaticResource byteArrayToImageConverter}}" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
@@ -390,14 +380,12 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="Content">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
-													<DataTemplate>
-														<xaml:Editor Content="{Binding}" HasFocus="{Binding Tag.HasFocus, RelativeSource={RelativeSource TemplatedParent}}"
-																		Value="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                                        DataType="{Binding Tag.DataType, RelativeSource={RelativeSource TemplatedParent}}" />
-													</DataTemplate>
+													<xaml:Editor HasFocus="True"
+																 Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                                 DataType="{Binding DataType, RelativeSource={RelativeSource TemplatedParent}}" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>

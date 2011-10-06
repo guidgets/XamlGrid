@@ -296,7 +296,7 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:Cell">
-					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+					<Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
 							BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
 						<ContentPresenter Name="Content" Content="{TemplateBinding Value}" 
 										  ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -384,10 +384,7 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 								</VisualState>
 								<VisualState Name="Editor">
 									<Storyboard>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
-										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="Padding">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0" />
 										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">

@@ -20,6 +20,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using XamlGrid.Controllers;
+using System.Windows.Controls.Primitives;
+using System.Linq;
 
 namespace XamlGrid.Views
 {
@@ -54,6 +56,7 @@ namespace XamlGrid.Views
 
 
 		private bool cancelled;
+		private Control parent;
 
 
 		/// <summary>
@@ -215,6 +218,7 @@ namespace XamlGrid.Views
 			{
 				this.Value = oldValue;
 			}
+			this.parent.Focus();
 		}
 
 		/// <summary>
@@ -223,12 +227,14 @@ namespace XamlGrid.Views
 		public virtual void Cancel()
 		{
 			this.cancelled = true;
+			this.parent.Focus();
 		}
 
 
 		private void Editor_LayoutUpdated(object sender, EventArgs e)
 		{
 			this.LayoutUpdated -= this.Editor_LayoutUpdated;
+			this.parent = this.GetVisualAncestors().OfType<Control>().First();
 			if (this.HasFocus)
 			{
 				this.Focus();

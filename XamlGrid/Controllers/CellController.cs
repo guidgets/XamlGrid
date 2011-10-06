@@ -153,8 +153,6 @@ namespace XamlGrid.Controllers
 					if (this.Cell.IsInEditMode)
 					{
 						this.Cell.IsInEditMode = false;
-						// HACK: moving from edit state to view state causes the cell to lose focus somehow
-						this.Cell.Focus();
 					}
 					break;
 				case Key.Left:

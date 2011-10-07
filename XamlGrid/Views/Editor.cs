@@ -218,7 +218,7 @@ namespace XamlGrid.Views
 			{
 				this.Value = oldValue;
 			}
-			this.parent.Focus();
+			//this.parent.Focus();
 		}
 
 		/// <summary>
@@ -227,18 +227,18 @@ namespace XamlGrid.Views
 		public virtual void Cancel()
 		{
 			this.cancelled = true;
-			this.parent.Focus();
+			//this.parent.Focus();
 		}
 
 
 		private void Editor_LayoutUpdated(object sender, EventArgs e)
 		{
 			this.LayoutUpdated -= this.Editor_LayoutUpdated;
-			this.parent = this.GetVisualAncestors().OfType<Control>().First();
-			if (this.HasFocus)
-			{
+			//this.parent = this.GetVisualAncestors().OfType<Control>().First();
+			//if (this.HasFocus)
+			//{
 				this.Focus();
-			}
+			//}
 		}
 	}
 }

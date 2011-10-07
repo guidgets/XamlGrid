@@ -46,6 +46,12 @@ namespace XamlGrid.Views
 		private static readonly Type typeOfUri = typeof(Uri);
 
 		/// <summary>
+		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
+		/// </summary>
+		public static readonly DependencyProperty ValueProperty =
+			DependencyProperty.Register("Value", typeof(object), typeof(Cell), new PropertyMetadata(OnValueChanged));
+
+		/// <summary>
 		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Cell"/> has focus.
 		/// </summary>
 		public static readonly DependencyProperty HasFocusProperty =
@@ -93,6 +99,11 @@ namespace XamlGrid.Views
 		private static readonly Binding styleBinding = new Binding("Column.CellStyle")
 		                                               	{
 		                                               		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+														};
+
+		private static readonly Binding valueBinding = new Binding("Value")
+		                                               	{
+		                                               		RelativeSource = new RelativeSource(RelativeSourceMode.Self)
 		                                               	};
 
 
@@ -108,6 +119,16 @@ namespace XamlGrid.Views
 			this.SetBinding(StyleProperty, styleBinding);
 		}
 
+
+		/// <summary>
+		/// Gets or sets the value contained in the <see cref="Cell"/>.
+		/// </summary>
+		/// <value>The value contained in the <see cref="Cell"/>.</value>
+		public virtual object Value
+		{
+			get { return this.GetValue(ValueProperty); }
+			set { this.SetValue(ValueProperty, value); }
+		}
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="Cell"/> has focus.
@@ -252,7 +273,12 @@ namespace XamlGrid.Views
 			return this.Column.Width.SizeMode == SizeMode.ToData || base.IsAutoSized();
 		}
 
-		protected override void OnValueChanged(DependencyPropertyChangedEventArgs e)
+		private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((Cell) d).OnValueChanged(e);
+		}
+
+		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
 		{
 			this.UpdateDataType();
 		}
@@ -260,6 +286,7 @@ namespace XamlGrid.Views
 		public virtual void BindValue()
 		{
 			this.SetBinding(ValueProperty, this.Column.Binding);
+			this.SetBinding(ContentProperty, valueBinding);
 			this.UpdateDataType();
 		}
 

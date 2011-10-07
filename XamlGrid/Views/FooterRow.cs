@@ -41,12 +41,12 @@ namespace XamlGrid.Views
 			base.PrepareContainerForItemOverride(element, item);
 
 			Cell cell = (Cell) element;
-			cell.ClearValue(CellBase.ValueProperty);
+			cell.ClearValue(Cell.ValueProperty);
 			cell.IsReadOnly = true;
 
 			if (cell.Column.FooterBinding != null)
 			{
-				cell.SetBinding(CellBase.ValueProperty, cell.Column.FooterBinding);
+				cell.SetBinding(Cell.ValueProperty, cell.Column.FooterBinding);
 			}
 			DataGridFacade.Instance.RegisterController(new FooterCellController(cell));
 		}

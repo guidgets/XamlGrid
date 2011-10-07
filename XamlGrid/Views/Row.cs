@@ -19,6 +19,7 @@
 using System;
 using System.Windows;
 using System.Windows.Automation.Peers;
+using System.Windows.Controls;
 using System.Windows.Data;
 using XamlGrid.Automation;
 using XamlGrid.Controllers;
@@ -211,8 +212,14 @@ namespace XamlGrid.Views
 		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
 		{
 			Cell cell = (Cell) element;
-			cell.Column = (Column) item;
+			DataTemplate contentTemplate = cell.ContentTemplate;
+
 			base.PrepareContainerForItemOverride(element, item);
+
+			if (this.ItemTemplate == null)
+			{
+				cell.ContentTemplate = contentTemplate;
+			}
 
 			DataGridFacade.Instance.RegisterController(new CellController(cell));
 
@@ -234,7 +241,7 @@ namespace XamlGrid.Views
 			Cell cell = (Cell) element;
 
 			cell.ClearValue(Cell.IsReadOnlyProperty);
-			cell.ClearValue(CellBase.ValueProperty);
+			cell.ClearValue(Cell.ValueProperty);
 			cell.ClearValue(Cell.IsSelectedProperty);
 		}
 

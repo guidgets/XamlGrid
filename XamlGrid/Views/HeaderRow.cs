@@ -60,17 +60,6 @@ namespace XamlGrid.Views
 			return new HeaderCell();
 		}
 
-		/// <summary>
-		/// Prepares the specified element to display the specified item.
-		/// </summary>
-		/// <param name="element">The element used to display the specified item.</param>
-		/// <param name="item">The item to display.</param>
-		protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-		{
-			((CellBase) element).Column = (Column) item;
-			base.PrepareContainerForItemOverride(element, item);
-		}
-
 		protected override void OnVisibilityChanged(DependencyPropertyChangedEventArgs e)
 		{
 			foreach (Column column in from Column item in this.Items

@@ -29,25 +29,23 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="xaml:Cell">
-							<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
-							BorderThickness="{TemplateBinding BorderThickness}">
-								<ContentPresenter />
+							<Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+							BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+								<ContentPresenter Name="Content" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}"  />
 								<VisualStateManager.CustomVisualStateManager>
 									<xaml:CustomVSM />
 								</VisualStateManager.CustomVisualStateManager>
 								<VisualStateManager.VisualStateGroups>
 									<VisualStateGroup>
-										<VisualState Name="Controller" />
-										<VisualState Name="CustomEditor">
+										<VisualState Name="View" />
+										<VisualState Name="Editor">
 											<Storyboard>
-												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ContentTemplate">
-													<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Null}" />
-												</ObjectAnimationUsingKeyFrames>
-												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Content">
+												<ObjectAnimationUsingKeyFrames Storyboard.TargetName="Content" Storyboard.TargetProperty="ContentTemplate">
 													<DiscreteObjectKeyFrame KeyTime="0:0:0">
 														<DiscreteObjectKeyFrame.Value>
-															<CheckBox IsChecked="{Binding EditorValue, RelativeSource={RelativeSource TemplatedParent}, 
-																				  Mode=TwoWay}" />
+															<DataTemplate>
+																<CheckBox IsChecked="{Binding Tag.Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+															</DataTemplate>
 														</DiscreteObjectKeyFrame.Value>
 													</DiscreteObjectKeyFrame>
 												</ObjectAnimationUsingKeyFrames>

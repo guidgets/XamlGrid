@@ -48,15 +48,8 @@ namespace XamlGrid.Views
 		public static readonly DependencyProperty EditedValueProperty =
 			DependencyProperty.Register("EditedValue", typeof(object), typeof(Editor), new PropertyMetadata(null));
 
-		/// <summary>
-		/// Identifies the dependency property which gets or sets a value indicating whether a <see cref="Editor"/> has focus.
-		/// </summary>
-		public static readonly DependencyProperty HasFocusProperty =
-			DependencyProperty.Register("HasFocus", typeof(bool), typeof(Editor), new PropertyMetadata(OnHasFocusChanged));
-
 
 		private bool cancelled;
-		private Control parent;
 
 
 		/// <summary>
@@ -120,22 +113,6 @@ namespace XamlGrid.Views
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="Editor"/> has focus.
-		/// </summary>
-		/// <value><c>true</c> if this <see cref="Editor"/> has focus; otherwise, <c>false</c>.</value>
-		public bool HasFocus
-		{
-			get
-			{
-				return (bool) this.GetValue(HasFocusProperty);
-			}
-			set
-			{
-				this.SetValue(HasFocusProperty, value);
-			}
-		}
-
 
 		/// <summary>
 		/// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application, but see Remarks for more information.
@@ -190,23 +167,6 @@ namespace XamlGrid.Views
 			this.EditedValue = this.Value;
 		}
 
-		private static void OnHasFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((Editor) d).OnHasFocusChanged(e);
-		}
-
-		/// <summary>
-		/// Called when the property indicating if the <see cref="Cell"/> has focus changes.
-		/// </summary>
-		/// <param name="e">The <see cref="System.Windows"/> instance containing the event data.</param>
-		protected virtual void OnHasFocusChanged(DependencyPropertyChangedEventArgs e)
-		{
-			if ((bool) e.NewValue)
-			{
-				this.Focus();
-			}
-		}
-
 		/// <summary>
 		/// Saves the changes to the value of this <see cref="Editor"/>.
 		/// </summary>
@@ -218,7 +178,6 @@ namespace XamlGrid.Views
 			{
 				this.Value = oldValue;
 			}
-			this.parent.Focus();
 		}
 
 		/// <summary>
@@ -227,18 +186,13 @@ namespace XamlGrid.Views
 		public virtual void Cancel()
 		{
 			this.cancelled = true;
-			this.parent.Focus();
 		}
 
 
 		private void Editor_LayoutUpdated(object sender, EventArgs e)
 		{
 			this.LayoutUpdated -= this.Editor_LayoutUpdated;
-			this.parent = this.GetVisualAncestors().OfType<Control>().First();
-			if (this.HasFocus)
-			{
-				this.Focus();
-			}
+			this.Focus();
 		}
 	}
 }

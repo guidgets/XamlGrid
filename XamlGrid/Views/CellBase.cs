@@ -28,25 +28,16 @@ namespace XamlGrid.Views
 	/// <summary>
 	/// Represents a GUI element displaying a single characteristic of a data object, or a simple single value.
 	/// </summary>
-	public abstract class CellBase : Control
+	public abstract class CellBase : ContentControl
 	{
 		/// <summary>
 		/// Identifies the dependency property which gets or sets the column to which the <see cref="CellBase"/> belongs.
 		/// </summary>
 		private static readonly DependencyProperty columnProperty =
-			DependencyProperty.Register("Column", typeof(Column), typeof(CellBase), new PropertyMetadata(null, OnColumnChanged));
+			DependencyProperty.Register("Column", typeof(Column), typeof(CellBase), new PropertyMetadata(null));
 
 		private static readonly DependencyProperty rowIndexProperty =
 			DependencyProperty.Register("RowIndex", typeof(int), typeof(Cell), new PropertyMetadata(-1));
-
-		/// <summary>
-		/// Identifies the dependency property which gets or sets the value contained in a <see cref="Cell"/>.
-		/// </summary>
-		public static readonly DependencyProperty ValueProperty =
-			DependencyProperty.Register("Value", typeof(object), typeof(CellBase), new PropertyMetadata(OnValueChanged));
-
-		public static readonly DependencyProperty ContentTemplateProperty =
-			DependencyProperty.Register("ContentTemplate", typeof(DataTemplate), typeof(CellBase), new PropertyMetadata(null));
 
 
 		/// <summary>
@@ -63,8 +54,10 @@ namespace XamlGrid.Views
 		/// </summary>
 		public virtual Column Column
 		{
-			get { return (Column) this.GetValue(columnProperty); }
-			set { this.SetValue(columnProperty, value); }
+			get
+			{
+				return (Column) this.GetValue(columnProperty);
+			}
 		}
 
 		/// <summary>
@@ -76,19 +69,21 @@ namespace XamlGrid.Views
 		}
 
 		/// <summary>
-		/// Gets or sets the value contained in the <see cref="Cell"/>.
+		/// Called when the value of the <see cref="ContentControl.Content"/> property changes.
 		/// </summary>
-		/// <value>The value contained in the <see cref="Cell"/>.</value>
-		public virtual object Value
+		/// <param name="oldContent">The old value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+		/// <param name="newContent">The new value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+		protected override void OnContentChanged(object oldContent, object newContent)
 		{
-			get { return this.GetValue(ValueProperty); }
-			set { this.SetValue(ValueProperty, value); }
-		}
-
-		public DataTemplate ContentTemplate
-		{
-			get { return (DataTemplate) GetValue(ContentTemplateProperty); }
-			set { SetValue(ContentTemplateProperty, value); }
+			base.OnContentChanged(oldContent, newContent);
+			if (this.Column == null)
+			{
+				Column column = newContent as Column;
+				if (column != null)
+				{
+					this.SetValue(columnProperty, column);
+				}
+			}
 		}
 
 
@@ -114,24 +109,6 @@ namespace XamlGrid.Views
 			{
 				this.Column.ActualWidth = e.NewSize.Width + 1;
 			}
-		}
-
-		private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (e.OldValue != null)
-			{
-				throw new InvalidOperationException("The colum of this cell is already set.");
-			}
-		}
-
-		private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((CellBase) d).OnValueChanged(e);
-		}
-
-		protected virtual void OnValueChanged(DependencyPropertyChangedEventArgs e)
-		{
-
 		}
 	}
 }

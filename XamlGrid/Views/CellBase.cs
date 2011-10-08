@@ -16,7 +16,6 @@
 // File:	CellBase.cs
 // Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

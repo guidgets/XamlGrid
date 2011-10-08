@@ -7,8 +7,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using XamlGrid.Controllers;
-using XamlGrid.ExportODF;
-using XamlGrid.Views;
 
 namespace Samples
 {

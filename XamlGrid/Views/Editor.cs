@@ -20,8 +20,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using XamlGrid.Controllers;
-using System.Windows.Controls.Primitives;
-using System.Linq;
 
 namespace XamlGrid.Views
 {

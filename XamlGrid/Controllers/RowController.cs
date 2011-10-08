@@ -17,12 +17,12 @@
 // Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using XamlGrid.Core;
 using XamlGrid.Models;
 using XamlGrid.Views;
-using System.Linq;
 
 namespace XamlGrid.Controllers
 {

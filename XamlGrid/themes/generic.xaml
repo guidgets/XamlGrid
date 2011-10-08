@@ -387,7 +387,7 @@ Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsTabStop">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="False" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="Padding">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0" />
 										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="HorizontalContentAlignment">

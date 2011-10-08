@@ -19,7 +19,6 @@
 using System;
 using System.Windows;
 using System.Windows.Automation.Peers;
-using System.Windows.Controls;
 using System.Windows.Data;
 using XamlGrid.Automation;
 using XamlGrid.Controllers;

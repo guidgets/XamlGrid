@@ -14,7 +14,7 @@
 // Boston, MA 02111-1307, USA.
 // 
 // File:	ControllerCollection.cs
-// Authors:	Dimitar Dobrev <dpldobrev at yahoo dot com>
+// Authors:	Dimitar Dobrev <dpldobrev@yahoo.com>
 
 using System.Collections.ObjectModel;
 using System.Windows;

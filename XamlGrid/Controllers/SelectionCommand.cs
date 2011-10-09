@@ -14,7 +14,7 @@
 // Boston, MA 02111-1307, USA.
 // 
 // File:	SelectionCommand.cs
-// Authors:	Dimitar Dobrev <dpldobrev@yahoo.com>
+// Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
 using System.Collections.Generic;
 using System.Windows.Controls;

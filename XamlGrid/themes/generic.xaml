@@ -284,8 +284,9 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 																	  Converter={StaticResource typeToAlignmentConverter}}" />
 		<Setter Property="Visibility" Value="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
 		<Setter Property="Padding" Value="6,4,6,4" />
-		<Setter Property="BorderThickness" Value="0,0,1,0" />
-		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
+		<Setter Property="BorderThickness" Value="0,1,1,1" />
+		<Setter Property="Margin" Value="0,-1,0,-1" />
+		<Setter Property="BorderBrush" Value="Transparent" />
 		<Setter Property="ContentTemplate">
 			<Setter.Value>
 				<DataTemplate>

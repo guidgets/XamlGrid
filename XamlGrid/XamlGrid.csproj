@@ -202,6 +202,7 @@
     <Compile Include="Views\OSColors.cs" />
     <Compile Include="Views\Row.cs" />
     <Compile Include="Views\RowBase.cs" />
+    <Compile Include="Views\StaticExtension.cs" />
     <Compile Include="VisualTreeVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>

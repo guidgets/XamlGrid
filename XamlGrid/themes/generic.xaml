@@ -577,7 +577,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	</Style>
 
 	<Style TargetType="xaml:HeaderRow" BasedOn="{StaticResource specialRow}" >
-		<Setter Property="BorderThickness" Value="1,1,0,1" />
+		<Setter Property="BorderThickness" Value="1,1,0,0" />
 	</Style>
 
 	<Style TargetType="xaml:NewRow" BasedOn="{StaticResource specialRow}">

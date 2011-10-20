@@ -331,7 +331,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0,-1,0,-1" />
 										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="4,1,5,1" />
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="5,1,4,1" />
 										</ObjectAnimationUsingKeyFrames>
 									</Storyboard>
 								</VisualState>

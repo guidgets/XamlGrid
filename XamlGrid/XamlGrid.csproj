@@ -115,6 +115,7 @@
     <Compile Include="Converters\SortDirectionToBooleanConverter.cs" />
     <Compile Include="Converters\StringToColumnWidthConverter.cs" />
     <Compile Include="Converters\StringToExportOptionsConverter.cs" />
+    <Compile Include="Converters\ThicknessToNegativeConverter.cs" />
     <Compile Include="Converters\TypeToAlignmentConverter.cs" />
     <Compile Include="Models\CollectionViewNode.cs" />
     <Compile Include="Models\CustomSizeChangedEventArgs.cs" />

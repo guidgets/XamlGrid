@@ -37,6 +37,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	<SolidColorBrush x:Key="activeBorderColor" xaml:OSBrush.OSColor="ActiveBorderColor" />
 
 	<xaml:NumberToVisibilityConverter x:Key="numberToVisibilityConverter" />
+	<xaml:ThicknessToNegativeConverter x:Key="thicknessToNegativeConverter" />
 
 	<Style TargetType="xaml:DataGrid">
 		<Setter Property="IsTabStop" Value="False" />
@@ -49,6 +50,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
+		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:DataGrid">
@@ -77,7 +79,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 												TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
 								<TextBlock Grid.Column="1" Grid.RowSpan="2" Width="18" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 							</Grid>
-							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto"
+							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
 										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{StaticResource activeBorderColor}" 
 										  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
 								<interactivity:Interaction.Behaviors>
@@ -87,7 +89,8 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 								<xamlGrid:DataGridFacade.Controllers>
 									<xaml:ScrollIntoViewController />
 								</xamlGrid:DataGridFacade.Controllers>
-								<ItemsPresenter>
+								<ItemsPresenter Margin="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay,
+																 Converter={StaticResource thicknessToNegativeConverter}}">
 									<interactivity:Interaction.Behaviors>
 										<xaml:HandleNavigationBehaviour />
 									</interactivity:Interaction.Behaviors>
@@ -574,7 +577,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	</Style>
 
 	<Style TargetType="xaml:HeaderRow" BasedOn="{StaticResource specialRow}" >
-		<Setter Property="BorderThickness" Value="1,1,0,0" />
+		<Setter Property="BorderThickness" Value="1,1,0,1" />
 	</Style>
 
 	<Style TargetType="xaml:NewRow" BasedOn="{StaticResource specialRow}">

@@ -27,7 +27,7 @@ namespace XamlGrid.Controllers
 	/// </summary>
 	public class ControllerCollection : ObservableCollection<Controller>
 	{
-		private DependencyObject _associatedObject;
+		private readonly DependencyObject associatedObject;
 
 		/// <summary>
 		/// Represents a collection of controllers associated with the same <see cref="DependencyObject"/>.
@@ -35,7 +35,7 @@ namespace XamlGrid.Controllers
 		/// <param name="o"></param>
 		public ControllerCollection(DependencyObject o)
 		{
-			_associatedObject = o;
+			this.associatedObject = o;
 		}
 
 		/// <summary>
@@ -46,7 +46,8 @@ namespace XamlGrid.Controllers
 		{
 			base.InsertItem(index, item);
 
-			item.ViewComponent = _associatedObject;
+			item.ViewComponent = this.associatedObject;
+			item.Name = this.associatedObject.GetHashCode().ToString();
 
 			DataGridFacade.Instance.RegisterController(item);
 		}

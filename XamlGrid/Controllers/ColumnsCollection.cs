@@ -103,19 +103,19 @@ namespace XamlGrid.Controllers
 			                                      where column.Visibility == Visibility.Visible &&
 			                                            column.Width.SizeMode != SizeMode.Fill
 			                                      select column.ActualWidth).Sum();
-			foreach (Column column in relativeColumns.Skip(1))
+			foreach (Column column in relativeColumns.Take(relativeColumns.Count() - 1))
 			{
 				double width = Math.Floor(column.Width.Value * availableWidth / stars);
 				column.ActualWidth = Math.Max(width, 1);
 			}
-			Column firstColumn = relativeColumns.FirstOrDefault();
-			if (firstColumn != null)
+			Column lastColumn = relativeColumns.LastOrDefault();
+			if (lastColumn != null)
 			{
 				double width = wholeWidth - (from column in this
 				                             where column.Visibility == Visibility.Visible &&
-				                                   column != firstColumn
+				                                   column != lastColumn
 				                             select column.ActualWidth).Sum();
-				firstColumn.ActualWidth = Math.Max(width, 1);
+				lastColumn.ActualWidth = Math.Max(width, 1);
 			}
 		}
 

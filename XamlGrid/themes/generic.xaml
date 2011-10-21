@@ -37,6 +37,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	<SolidColorBrush x:Key="activeBorderColor" xaml:OSBrush.OSColor="ActiveBorderColor" />
 
 	<xaml:NumberToVisibilityConverter x:Key="numberToVisibilityConverter" />
+	<xaml:ThicknessToNegativeConverter x:Key="thicknessToNegativeConverter" />
 
 	<Style TargetType="xaml:DataGrid">
 		<Setter Property="IsTabStop" Value="False" />
@@ -49,75 +50,76 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:DataGrid">
-					<Border Background="{TemplateBinding Background}">
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
-								<RowDefinition />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<xaml:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												   Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-												   Tag="{Binding ElementName=horizontalScrollBar}" />
-								<xaml:NewRow Grid.Row="1" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												Visibility="{Binding NewRowVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-												TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
-								<TextBlock Grid.Column="1" Grid.RowSpan="2" Width="18" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
-							</Grid>
-							<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto"
-										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{StaticResource activeBorderColor}" 
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <xaml:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
+											Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+											Tag="{Binding ElementName=horizontalScrollBar}" />
+                            <xaml:NewRow Grid.Row="1" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
+										 Visibility="{Binding NewRowVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+										 TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
+                            <Rectangle Grid.Column="1" Grid.RowSpan="2" Width="17" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
+                        </Grid>
+                        <ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
+										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
 										  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
-								<interactivity:Interaction.Behaviors>
-									<xaml:ScrollOnHomeEndBehaviour />
-									<xaml:DragScrollBehavior />
-								</interactivity:Interaction.Behaviors>
-								<xamlGrid:DataGridFacade.Controllers>
-									<xaml:ScrollIntoViewController />
-								</xamlGrid:DataGridFacade.Controllers>
-								<ItemsPresenter>
-									<interactivity:Interaction.Behaviors>
-										<xaml:HandleNavigationBehaviour />
-									</interactivity:Interaction.Behaviors>
-								</ItemsPresenter>
-							</ScrollViewer>
-							<Grid Grid.Row="2">
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<xaml:FooterRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
+                            <interactivity:Interaction.Behaviors>
+                                <xaml:ScrollOnHomeEndBehaviour />
+                                <xaml:DragScrollBehavior />
+                            </interactivity:Interaction.Behaviors>
+                            <xamlGrid:DataGridFacade.Controllers>
+                                <xaml:ScrollIntoViewController />
+                            </xamlGrid:DataGridFacade.Controllers>
+                            <ItemsPresenter Margin="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay,
+															 Converter={StaticResource thicknessToNegativeConverter}}">
+                                <interactivity:Interaction.Behaviors>
+                                    <xaml:HandleNavigationBehaviour />
+                                </interactivity:Interaction.Behaviors>
+                            </ItemsPresenter>
+                        </ScrollViewer>
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <xaml:FooterRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
 												   Visibility="{Binding FooterVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
 												   DataContext="{Binding Items, RelativeSource={RelativeSource TemplatedParent}}"
 												   Tag="{Binding ElementName=horizontalScrollBar}" />
-								<ScrollBar Name="horizontalScrollBar" Grid.Row="1" IsTabStop="False"
+                            <ScrollBar Name="horizontalScrollBar" Grid.Row="1" IsTabStop="False"
 										   DataContext="{Binding ElementName=mainScroll}"
 										   Visibility="{Binding Maximum, RelativeSource={RelativeSource Self},
 																Converter={StaticResource numberToVisibilityConverter}}"
 										   Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}"
 										   Maximum="{Binding ScrollableWidth}" Value="{Binding HorizontalOffset, Mode=TwoWay}" />
-								<TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="18"
-										   Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
-							</Grid>
-						</Grid>
-					</Border>
-				</ControlTemplate>
+                            <Rectangle Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="17"
+									   Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
@@ -212,7 +214,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	</Style>
 
 	<Style TargetType="xaml:Row">
-		<Setter Property="BorderThickness" Value="0,0,0,1" />
+		<Setter Property="BorderThickness" Value="0,0,1,1" />
 		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
 		<Setter Property="HorizontalAlignment" Value="Left" />
@@ -283,9 +285,17 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 		<Setter Property="HorizontalContentAlignment" Value="{Binding DataType, RelativeSource={RelativeSource Self}, 
 																	  Converter={StaticResource typeToAlignmentConverter}}" />
 		<Setter Property="Visibility" Value="{Binding Column.Visibility, RelativeSource={RelativeSource Self}, Mode=TwoWay}" />
+		<Setter Property="Margin" Value="0,0,0,-1" />
 		<Setter Property="Padding" Value="6,4,6,4" />
-		<Setter Property="BorderThickness" Value="0,0,1,0" />
-		<Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
+		<Setter Property="BorderThickness" Value="1,0,0,1" />
+		<Setter Property="BorderBrush">
+			<Setter.Value>
+				<LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="1,0">
+					<GradientStop Color="{xaml:Static Member=SystemColors.ActiveBorderColor}" Offset="0.999" />
+					<GradientStop Offset="1" />
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
 		<Setter Property="ContentTemplate">
 			<Setter.Value>
 				<DataTemplate>
@@ -320,7 +330,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0,-1,0,-1" />
 										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="4,1,5,1" />
+											<DiscreteObjectKeyFrame KeyTime="0:0:0" Value="5,1,4,1" />
 										</ObjectAnimationUsingKeyFrames>
 									</Storyboard>
 								</VisualState>
@@ -544,37 +554,42 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:RowBase">
-					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                    <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
-						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
+                        <xaml:MeasuringContentPresenter>
+                            <xamlGrid:DataGridFacade.Controllers>
+                                <xaml:AvailableSizeController />
+                            </xamlGrid:DataGridFacade.Controllers>
+                            <ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
 									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
 									  xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
-																							  RelativeSource={RelativeSource TemplatedParent},
-																							  Mode=TwoWay}">
-							<interactivity:Interaction.Behaviors>
-								<xaml:SyncScrollBehavior />
-							</interactivity:Interaction.Behaviors>
-							<xamlGrid:DataGridFacade.Controllers>
-								<xaml:ScrollIntoViewController />
-							</xamlGrid:DataGridFacade.Controllers>
-							<ItemsPresenter />
-						</ScrollViewer>
-					</Border>
-				</ControlTemplate>
+																					   RelativeSource={RelativeSource TemplatedParent},
+																					   Mode=TwoWay}">
+                                <interactivity:Interaction.Behaviors>
+                                    <xaml:SyncScrollBehavior />
+                                </interactivity:Interaction.Behaviors>
+                                <xamlGrid:DataGridFacade.Controllers>
+                                    <xaml:ScrollIntoViewController />
+                                </xamlGrid:DataGridFacade.Controllers>
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </xaml:MeasuringContentPresenter>
+                    </Border>
+                </ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
 
 	<Style TargetType="xaml:HeaderRow" BasedOn="{StaticResource specialRow}" >
-		<Setter Property="BorderThickness" Value="1,1,0,0" />
+		<Setter Property="BorderThickness" Value="1,1,1,0" />
 	</Style>
 
 	<Style TargetType="xaml:NewRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="1,1,0,0" />
+		<Setter Property="BorderThickness" Value="0,1,1,0" />
 	</Style>
 
 	<Style TargetType="xaml:FooterRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="1,0,0,1" />
+		<Setter Property="BorderThickness" Value="0,0,1,1" />
 	</Style>
 
 </ResourceDictionary>

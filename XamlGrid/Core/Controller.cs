@@ -114,10 +114,8 @@ namespace XamlGrid.Core
 		/// <remarks><para>You should override this in your subclass</para></remarks>
 		public virtual string Name
 		{
-			get
-			{
-				return this.mName;
-			}
+			get { return this.mName; }
+			set { this.mName = value; }
 		}
 
 		/// <summary>

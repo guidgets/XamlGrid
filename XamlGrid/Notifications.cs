@@ -15,12 +15,12 @@
 // 
 // File:	Notifications.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
-// 
+
 namespace XamlGrid
 {
 	public static class Notifications
 	{
-	    public const int IsColumnCurrent = 0;
+		public const int IsColumnCurrent = 0;
 		public const int CurrentColumnChanged = 1;
 		public const int FocusCell = 2;
 		public const int CellFocused = 3;
@@ -61,7 +61,8 @@ namespace XamlGrid
 		public const int ItemIsSelected = 38;
 		public const int SelectionModeChanging = 39;
 		public const int SelectionModeChanged = 40;
-	    public const int ScrollIntoView = 41;
+		public const int ScrollIntoView = 41;
+		public const int AvailableSizeChanged = 42;
 	}
 }
 

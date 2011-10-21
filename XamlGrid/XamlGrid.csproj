@@ -88,6 +88,7 @@
     <Compile Include="Automation\HeaderCellAutomationPeer.cs" />
     <Compile Include="Automation\HeaderRowAutomationPeer.cs" />
     <Compile Include="Automation\RowAutomationPeer.cs" />
+    <Compile Include="Controllers\AvailableSizeController.cs" />
     <Compile Include="Controllers\DragScrollBehavior.cs" />
     <Compile Include="Controllers\AutoSizeOnDoubleClickBehavior.cs" />
     <Compile Include="Controllers\ColumnsCollection.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Views\HeaderCell.cs" />
     <Compile Include="Views\HeaderRow.cs" />
+    <Compile Include="Views\MeasuringContentPresenter.cs" />
     <Compile Include="Views\NewRow.cs" />
     <Compile Include="Views\OSBrush.cs" />
     <Compile Include="Views\OSColors.cs" />

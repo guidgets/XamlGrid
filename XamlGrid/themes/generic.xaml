@@ -555,23 +555,28 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:RowBase">
-					<Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                    <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
-						<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
+                        <xaml:MeasuringContentPresenter>
+                            <xamlGrid:DataGridFacade.Controllers>
+                                <xaml:AvailableSizeController />
+                            </xamlGrid:DataGridFacade.Controllers>
+                            <ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
 									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
 									  xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
 																							  RelativeSource={RelativeSource TemplatedParent},
 																							  Mode=TwoWay}">
-							<interactivity:Interaction.Behaviors>
-								<xaml:SyncScrollBehavior />
-							</interactivity:Interaction.Behaviors>
-							<xamlGrid:DataGridFacade.Controllers>
-								<xaml:ScrollIntoViewController />
-							</xamlGrid:DataGridFacade.Controllers>
-							<ItemsPresenter />
-						</ScrollViewer>
-					</Border>
-				</ControlTemplate>
+                                <interactivity:Interaction.Behaviors>
+                                    <xaml:SyncScrollBehavior />
+                                </interactivity:Interaction.Behaviors>
+                                <xamlGrid:DataGridFacade.Controllers>
+                                    <xaml:ScrollIntoViewController />
+                                </xamlGrid:DataGridFacade.Controllers>
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </xaml:MeasuringContentPresenter>
+                    </Border>
+                </ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>

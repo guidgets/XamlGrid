@@ -50,7 +50,8 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
-		<Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource activeBorderColor}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="xaml:DataGrid">
@@ -71,15 +72,15 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <xaml:HeaderRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												   Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-												   Tag="{Binding ElementName=horizontalScrollBar}" />
+											Visibility="{Binding HeaderVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+											Tag="{Binding ElementName=horizontalScrollBar}" />
                             <xaml:NewRow Grid.Row="1" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												Visibility="{Binding NewRowVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-												TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
-                            <TextBlock Grid.Column="1" Grid.RowSpan="2" Width="18" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
+										 Visibility="{Binding NewRowVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+										 TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
+                            <Rectangle Grid.Column="1" Grid.RowSpan="2" Width="17" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
                         </Grid>
                         <ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
-										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{StaticResource activeBorderColor}" 
+										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
 										  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
                             <interactivity:Interaction.Behaviors>
                                 <xaml:ScrollOnHomeEndBehaviour />
@@ -89,7 +90,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
                                 <xaml:ScrollIntoViewController />
                             </xamlGrid:DataGridFacade.Controllers>
                             <ItemsPresenter Margin="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay,
-																 Converter={StaticResource thicknessToNegativeConverter}}">
+															 Converter={StaticResource thicknessToNegativeConverter}}">
                                 <interactivity:Interaction.Behaviors>
                                     <xaml:HandleNavigationBehaviour />
                                 </interactivity:Interaction.Behaviors>
@@ -114,8 +115,8 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 																Converter={StaticResource numberToVisibilityConverter}}"
 										   Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}"
 										   Maximum="{Binding ScrollableWidth}" Value="{Binding HorizontalOffset, Mode=TwoWay}" />
-                            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="18"
-										   Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
+                            <Rectangle Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="17"
+									   Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
                         </Grid>
                     </Grid>
                 </ControlTemplate>
@@ -580,15 +581,15 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	</Style>
 
 	<Style TargetType="xaml:HeaderRow" BasedOn="{StaticResource specialRow}" >
-		<Setter Property="BorderThickness" Value="1,1,0,0" />
+		<Setter Property="BorderThickness" Value="1,1,1,0" />
 	</Style>
 
 	<Style TargetType="xaml:NewRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="0,1,0,0" />
+		<Setter Property="BorderThickness" Value="0,1,1,0" />
 	</Style>
 
 	<Style TargetType="xaml:FooterRow" BasedOn="{StaticResource specialRow}">
-		<Setter Property="BorderThickness" Value="0,0,0,1" />
+		<Setter Property="BorderThickness" Value="0,0,1,1" />
 	</Style>
 
 </ResourceDictionary>

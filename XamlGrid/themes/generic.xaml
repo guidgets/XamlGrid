@@ -79,8 +79,8 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 							<Rectangle Grid.Column="1" Grid.RowSpan="2" Width="17" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 						</Grid>
 						<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
-										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
-										  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
+									  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
+									  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
 								<interactivity:Interaction.Behaviors>
 									<xaml:ScrollOnHomeEndBehaviour />
 									<xaml:DragScrollBehavior />
@@ -103,18 +103,17 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 								<ColumnDefinition />
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
-							<xaml:FooterRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												Visibility="{Binding FooterVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-												DataContext="{Binding Items, RelativeSource={RelativeSource TemplatedParent}}"
-												Tag="{Binding ElementName=horizontalScrollBar}" />
+							<xaml:FooterRow ItemsSource="{TemplateBinding Columns}"
+											Visibility="{Binding FooterVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+											DataContext="{TemplateBinding ItemsSource}" Tag="{Binding ElementName=horizontalScrollBar}" />
 							<ScrollBar Name="horizontalScrollBar" Grid.Row="1" IsTabStop="False"
-										DataContext="{Binding ElementName=mainScroll}"
-										Visibility="{Binding Maximum, RelativeSource={RelativeSource Self},
+									   DataContext="{Binding ElementName=mainScroll}"
+									   Visibility="{Binding Maximum, RelativeSource={RelativeSource Self},
 															Converter={StaticResource numberToVisibilityConverter}}"
-										Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}"
-										Maximum="{Binding ScrollableWidth}" Value="{Binding HorizontalOffset, Mode=TwoWay}" />
-							<TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="18"
-										Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
+									   Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}"
+									   Maximum="{Binding ScrollableWidth}" Value="{Binding HorizontalOffset, Mode=TwoWay}" />
+							<Rectangle Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="17"
+									   Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 						</Grid>
 					</Grid>
 				</ControlTemplate>
@@ -373,10 +372,10 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 											<DiscreteObjectKeyFrame KeyTime="0:0:0">
 												<DiscreteObjectKeyFrame.Value>
 													<CheckBox IsThreeState="{Binding DataType, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
-																						Converter={StaticResource isNullableTypeConverter}}" 
-																IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-																IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
-																					Converter={StaticResource booleanToNegativeConverter}}" />
+																					 Converter={StaticResource isNullableTypeConverter}}" 
+															  IsChecked="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+															  IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime,
+																				  Converter={StaticResource booleanToNegativeConverter}}" />
 												</DiscreteObjectKeyFrame.Value>
 											</DiscreteObjectKeyFrame>
 										</ObjectAnimationUsingKeyFrames>
@@ -454,12 +453,12 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 				</VisualStateGroup>
 			</VisualStateManager.VisualStateGroups>
 			<toolkit:ButtonSpinner Background="{TemplateBinding Background}" IsTabStop="{TemplateBinding IsTabStop}" x:Name="Spinner" 
-																							   MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-																							   BorderThickness="{TemplateBinding BorderThickness}">
+								   MinWidth="35" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+								   BorderThickness="{TemplateBinding BorderThickness}">
 				<TextBox BorderThickness="0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" 
-																					 FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" 
-																					 FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" 
-																					 x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
+						 FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" 
+						 FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" MinWidth="20" 
+						 x:Name="Text" AcceptsReturn="False" Text="{TemplateBinding Value}" TextAlignment="Right" TextWrapping="NoWrap">
 					<TextBox.Style>
 						<Style TargetType="TextBox">
 							<Setter Property="Template">
@@ -511,7 +510,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 												<DiscreteObjectKeyFrame.Value>
 													<DataTemplate>
 														<toolkit:NumericUpDown Value="{Binding Tag.EditedValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
-																					Minimum="-1000000000" Maximum="1000000000" IsTabStop="False" 
+																			   Minimum="-1000000000" Maximum="1000000000" IsTabStop="False" 
 																			   BorderThickness="0" Background="{StaticResource windowColor}"
 																			   Foreground="{StaticResource controlTextColor}" Template="{StaticResource numericUpDownTemplate}" />
 													</DataTemplate>
@@ -565,10 +564,10 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 								<xaml:AvailableSizeController />
 							</xamlGrid:DataGridFacade.Controllers>
 							<ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
-									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
-									  xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
-																					   RelativeSource={RelativeSource TemplatedParent},
-																					   Mode=TwoWay}">
+										  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+										  xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
+																						   RelativeSource={RelativeSource TemplatedParent},
+																						   Mode=TwoWay}">
 								<interactivity:Interaction.Behaviors>
 									<xaml:SyncScrollBehavior />
 								</interactivity:Interaction.Behaviors>

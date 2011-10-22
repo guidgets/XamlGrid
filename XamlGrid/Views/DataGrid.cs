@@ -186,6 +186,9 @@ namespace XamlGrid.Views
 			DependencyProperty.Register("CopyOptions", typeof(ExportOptions), typeof(DataGrid), new PropertyMetadata(ExportOptions.Header));
 
 
+		private static readonly DependencyProperty columnsProperty =
+			DependencyProperty.Register("Columns", typeof(ColumnsCollection), typeof(DataGrid), new PropertyMetadata(new ColumnsCollection()));
+
 		/// <summary>
 		/// The ItemsSourceListener Attached Dependency Property is a private property
 		/// used to silently bind to the <see cref="ItemsControl"/> ItemsSourceProperty.
@@ -237,7 +240,6 @@ namespace XamlGrid.Views
 		{
 			this.DefaultStyleKey = typeof(DataGrid);
 			this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.Name);
-			this.Columns = new ColumnsCollection();
 			this.otherColumns = new List<Column>();
 
 			this.SetBinding(itemsSourceListenerProperty, itemsSourceBinding);
@@ -280,7 +282,7 @@ namespace XamlGrid.Views
 		/// Gets or sets the type of the items contained in the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The type of the items contained in the <see cref="DataGrid"/>.</value>
-		public Type ItemType
+		public virtual Type ItemType
 		{
 			get
 			{
@@ -298,8 +300,7 @@ namespace XamlGrid.Views
 		/// <value>The <see cref="Column"/>s representing the properties of the objects the <see cref="DataGrid"/> displays.</value>
 		public virtual ColumnsCollection Columns
 		{
-			get;
-			private set;
+			get { return (ColumnsCollection) this.GetValue(columnsProperty); }
 		}
 
 		/// <summary>
@@ -326,7 +327,7 @@ namespace XamlGrid.Views
 		/// <value>
 		///   <c>true</c> if the <see cref="DataGrid"/> displays numbers for its rows; otherwise, <c>false</c>.
 		/// </value>
-		public bool NumberRows
+		public virtual bool NumberRows
 		{
 			get
 			{
@@ -341,7 +342,7 @@ namespace XamlGrid.Views
 		/// <summary>
 		/// Gets the column, if any, that displays row numbers.
 		/// </summary>
-		public Column NumberColumn
+		public virtual Column NumberColumn
 		{
 			get;
 			private set;
@@ -399,7 +400,7 @@ namespace XamlGrid.Views
 		/// Gets or sets the visibility of the new row of the <see cref="DataGrid"/>.
 		/// </summary>
 		/// <value>The visibility of the new row of the <see cref="DataGrid"/>.</value>
-		public Visibility NewRowVisibility
+		public virtual Visibility NewRowVisibility
 		{
 			get
 			{
@@ -524,7 +525,7 @@ namespace XamlGrid.Views
 		/// <value>
 		/// 	<c>true</c> if the header should be copied to the clipboard; otherwise, <c>false</c>.
 		/// </value>
-		public ExportOptions CopyOptions
+		public virtual ExportOptions CopyOptions
 		{
 			get
 			{

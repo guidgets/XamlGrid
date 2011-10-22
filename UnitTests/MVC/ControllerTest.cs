@@ -53,7 +53,7 @@ namespace UnitTests.MVC
 		public void NameAccessor()
         {
 			// Create a new Controller and use accessors to set the Controller name 
-   			IController Controller = new Controller("TestController");
+   			IController Controller = new Controller<object>("TestController");
    			
    			// test assertions
             Assert.IsTrue(Controller.Name == "TestController", "Expecting Controller.Name == 'TestController'");
@@ -70,10 +70,10 @@ namespace UnitTests.MVC
 			object MainController = new object();
 			
 			// Create a new Model and use accessors to set the Model name 
-            IController Controller = new Controller("TestController", MainController);
+            IController Controller = new Controller<object>("TestController", MainController);
 			   			
    			// test assertions
-   			Assert.IsNotNull(Controller.ViewComponent, "Expecting Controller.MainControllerComponent not null");
+   			Assert.IsNotNull(Controller.View, "Expecting Controller.MainControllerComponent not null");
    		}
     }
 }

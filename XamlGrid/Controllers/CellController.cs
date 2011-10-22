@@ -25,14 +25,14 @@ using XamlGrid.Views;
 namespace XamlGrid.Controllers
 {
 	/// <summary>
-	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Cell"/>.
+	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Cell"/>.
 	/// </summary>
-	public class CellController : Controller
+	public class CellController : Controller<Cell>
 	{
 		/// <summary>
-		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Cell"/>.
+		/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Cell"/>.
 		/// </summary>
-		/// <param name="cell">The cell for which functionality the <see cref="Controller"/> is responsible.</param>
+		/// <param name="cell">The cell for which functionality the <see cref="Controller{T}"/> is responsible.</param>
 		public CellController(Cell cell) : base(cell.GetHashCode().ToString(), cell)
 		{
 
@@ -40,43 +40,31 @@ namespace XamlGrid.Controllers
 
 
 		/// <summary>
-		/// Gets the cell for which functionality the <see cref="CellController"/> is responsible.
-		/// </summary>
-		public virtual Cell Cell
-		{
-			get
-			{
-				return (Cell) this.ViewComponent;
-			}
-		}
-
-
-		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 
-			this.Cell.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Cell_MouseLeftButtonDown), true);
-			this.Cell.GotFocus += this.Cell_GotFocus;
-            this.Cell.LostFocus += this.Cell_LostFocus;
-			this.Cell.KeyDown += this.Cell_KeyDown;
-			this.Cell.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
+			this.View.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Cell_MouseLeftButtonDown), true);
+			this.View.GotFocus += this.Cell_GotFocus;
+            this.View.LostFocus += this.Cell_LostFocus;
+			this.View.KeyDown += this.Cell_KeyDown;
+			this.View.IsInEditModeChanged += this.Cell_IsInEditModeChanged;
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
-			this.Cell.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Cell_MouseLeftButtonDown));
-			this.Cell.GotFocus -= this.Cell_GotFocus;
-		    this.Cell.LostFocus -= this.Cell_LostFocus;
-			this.Cell.KeyDown -= this.Cell_KeyDown;
-			this.Cell.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
+			this.View.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Cell_MouseLeftButtonDown));
+			this.View.GotFocus -= this.Cell_GotFocus;
+		    this.View.LostFocus -= this.Cell_LostFocus;
+			this.View.KeyDown -= this.Cell_KeyDown;
+			this.View.IsInEditModeChanged -= this.Cell_IsInEditModeChanged;
 		}
 
 		/// <summary>
@@ -102,9 +90,9 @@ namespace XamlGrid.Controllers
 			{
 				case Notifications.FocusCell:
 					object[] data = (object[]) notification.Body;
-					if (this.Cell.DataContext == data[0] && this.Cell.Column == data[1] && !this.Cell.HasFocus)
+					if (this.View.DataContext == data[0] && this.View.Column == data[1] && !this.View.HasFocus)
 					{
-						this.Cell.Focus();
+						this.View.Focus();
 					}
 					break;
 			}
@@ -115,20 +103,20 @@ namespace XamlGrid.Controllers
 		{
 			if (e.ClickCount == 2)
 			{
-				this.Cell.IsInEditMode = true;
+				this.View.IsInEditMode = true;
 			}
 		}
 
 		private void Cell_GotFocus(object sender, RoutedEventArgs e)
 		{
-			this.SendNotification(Notifications.CellFocused, this.Cell);
+			this.SendNotification(Notifications.CellFocused, this.View);
 		}
 
 		private void Cell_LostFocus(object sender, RoutedEventArgs e)
 		{
-			if (!this.Cell.HasFocus)
+			if (!this.View.HasFocus)
 			{
-				this.Cell.IsInEditMode = false;
+				this.View.IsInEditMode = false;
 			}
 		}
 
@@ -137,29 +125,29 @@ namespace XamlGrid.Controllers
 			switch (e.Key)
 			{
 				case Key.F2:
-					this.Cell.IsInEditMode = true;
+					this.View.IsInEditMode = true;
 					break;
 				case Key.Enter:
 					if (!EditorController.SentFromMultilineTextBox(e))
 					{
-						this.Cell.IsInEditMode = !this.Cell.IsInEditMode;
-						if (!this.Cell.IsInEditMode || this.Cell.AlwaysInEditMode)
+						this.View.IsInEditMode = !this.View.IsInEditMode;
+						if (!this.View.IsInEditMode || this.View.AlwaysInEditMode)
 						{
-							this.Cell.FocusHorizontalNeighbour(true);
+							this.View.FocusHorizontalNeighbour(true);
 						}
 					}
 					break;
 				case Key.Escape:
-					if (this.Cell.IsInEditMode)
+					if (this.View.IsInEditMode)
 					{
-						this.Cell.IsInEditMode = false;
+						this.View.IsInEditMode = false;
 					}
 					break;
 				case Key.Left:
 				case Key.Right:
 					if ((Keyboard.Modifiers & KeyHelper.CommandModifier) == ModifierKeys.None)
 					{
-						this.Cell.FocusHorizontalNeighbour(e.Key == Key.Right);
+						this.View.FocusHorizontalNeighbour(e.Key == Key.Right);
 					}
 					break;
 			}
@@ -167,7 +155,7 @@ namespace XamlGrid.Controllers
 
 		private void Cell_IsInEditModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.CellEditModeChanged, this.Cell.IsInEditMode);
+			this.SendNotification(Notifications.CellEditModeChanged, this.View.IsInEditMode);
 		}
 	}
 }

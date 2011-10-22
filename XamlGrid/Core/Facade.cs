@@ -126,12 +126,12 @@ namespace XamlGrid.Core
 	/// </remarks>
 	/// <see cref="MainCommand"/>
 	/// <see cref="MacroCommand"/>
-	/// <see cref="Controller"/>
+	/// <see cref="Controller{T}"/>
 	/// <see cref="Notification"/>
 	/// <see cref="Model"/>
 	/// <see cref="MainController"/>
 	/// <see cref="MainModel"/>
-	/// <see cref="Controller"/>
+	/// <see cref="Controller{T}"/>
 	public class Facade : IFacade
 	{
 		#region Constructors

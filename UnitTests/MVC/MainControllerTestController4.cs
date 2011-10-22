@@ -14,7 +14,7 @@ namespace UnitTests.MVC
   	 * 
   	 * @see org.puremvc.as3.core.MainController.MainControllerTest MainControllerTest
   	 */
-	public class MainControllerTestController4 : Controller 
+	public class MainControllerTestController4 : Controller<object>
 	{
 		/**
 		 * The Controller name
@@ -31,7 +31,7 @@ namespace UnitTests.MVC
 
         public MainControllerTest MainControllerTest
 		{
-			get { return (MainControllerTest) this.ViewComponent; }
+			get { return (MainControllerTest) this.View; }
 		}
 				
 		public override void OnRegister()

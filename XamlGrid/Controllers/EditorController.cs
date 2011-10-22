@@ -26,51 +26,40 @@ using XamlGrid.Views;
 namespace XamlGrid.Controllers
 {
 	/// <summary>
-	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Editor"/>.
+	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Editor"/>.
 	/// </summary>
-	public class EditorController : Controller
+	public class EditorController : Controller<Editor>
 	{
 		/// <summary>
-		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Editor"/>.
+		/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Editor"/>.
 		/// </summary>
-		/// <param name="editor">The editor for which functionality the <see cref="Controller"/> is responsible.</param>
+		/// <param name="editor">The editor for which functionality the <see cref="Controller{T}"/> is responsible.</param>
 		public EditorController(Editor editor) : base(editor.GetHashCode().ToString(), editor)
 		{
 
 		}
 
-		/// <summary>
-		/// Gets the editor for which functionality the <see cref="EditorController"/> is responsible.
-		/// </summary>
-		public virtual Editor Editor
-		{
-			get
-			{
-				return (Editor) this.ViewComponent;
-			}
-		}
-
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 
-			this.Editor.AddHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Editor_KeyDown), true);
-			this.Editor.Unloaded += this.Editor_Unloaded;
+			this.View.AddHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Editor_KeyDown), true);
+			this.View.Unloaded += this.Editor_Unloaded;
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
-			this.Editor.RemoveHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Editor_KeyDown));
-			this.Editor.Unloaded -= this.Editor_Unloaded;
+			this.View.RemoveHandler(UIElement.KeyDownEvent, new KeyEventHandler(this.Editor_KeyDown));
+			this.View.Unloaded -= this.Editor_Unloaded;
 		}
 
 		[Validate]
@@ -93,12 +82,12 @@ namespace XamlGrid.Controllers
 				case Key.Enter:
 					if (!SentFromMultilineTextBox(e))
 					{
-						this.Editor.Save();
+						this.View.Save();
 						e.Handled = false;
 					}
 					break;
 				case Key.Escape:
-					this.Editor.Cancel();
+					this.View.Cancel();
 					this.SendNotification(Notifications.CellEditingCancelled);
 					break;
 			}

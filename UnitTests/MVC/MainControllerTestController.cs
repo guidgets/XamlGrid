@@ -14,7 +14,7 @@ namespace UnitTests.MVC
   	 * 
   	 * @see org.puremvc.csharp.core.MainController.MainControllerTest MainControllerTest
   	 */
-    public class MainControllerTestController : Controller
+    public class MainControllerTestController : Controller<object>
     {
         /**
 		 * The Controller name

@@ -24,45 +24,36 @@ using XamlGrid.Views;
 
 namespace XamlGrid.Controllers
 {
-	public class NewRowController : Controller
+	public class NewRowController : Controller<NewRow>
 	{
-		public NewRowController(object viewComponent) : base(viewComponent.GetHashCode().ToString(), viewComponent)
+		public NewRowController(NewRow view) : base(view.GetHashCode().ToString(), view)
 		{
 
-		}
-
-
-		public NewRow NewRow
-		{
-			get
-			{
-				return (NewRow) this.ViewComponent;
-			}
 		}
 
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 
-			this.NewRow.Loaded += this.NewRow_Loaded;
-			this.NewRow.VisibilityChanged += this.NewRow_VisibilityChanged;
-			this.NewRow.KeyDown += this.NewRow_KeyDown;
+			this.View.Loaded += this.NewRow_Loaded;
+			this.View.VisibilityChanged += this.NewRow_VisibilityChanged;
+			this.View.KeyDown += this.NewRow_KeyDown;
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
-			this.NewRow.Loaded -= this.NewRow_Loaded;
-			this.NewRow.VisibilityChanged -= this.NewRow_VisibilityChanged;
-			this.NewRow.KeyDown -= this.NewRow_KeyDown;
+			this.View.Loaded -= this.NewRow_Loaded;
+			this.View.VisibilityChanged -= this.NewRow_VisibilityChanged;
+			this.View.KeyDown -= this.NewRow_KeyDown;
 		}
 
 		/// <summary>
@@ -87,7 +78,7 @@ namespace XamlGrid.Controllers
 			switch (notification.Code)
 			{
 				case Notifications.NewItemAdded:
-					this.NewRow.DataContext = notification.Body;
+					this.View.DataContext = notification.Body;
 					break;
 				case Notifications.ItemsSourceChanged:
 					this.EnsureNewItem();
@@ -98,7 +89,7 @@ namespace XamlGrid.Controllers
 
 		private void EnsureNewItem()
 		{
-			if (this.NewRow.Visibility == Visibility.Visible)
+			if (this.View.Visibility == Visibility.Visible)
 			{
 				this.SendNotification(Notifications.NewItemAdd);
 			}
@@ -123,7 +114,7 @@ namespace XamlGrid.Controllers
 					this.SendNotification(Notifications.NewItemCommit);
 					break;
 				case Key.Escape:
-					this.NewRow.FocusHorizontalNeighbour(true);
+					this.View.FocusHorizontalNeighbour(true);
 					break;
 			}
 		}

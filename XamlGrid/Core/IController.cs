@@ -83,17 +83,25 @@ namespace XamlGrid.Core
 	///     </example>
 	/// </remarks>
 	/// <see cref="INotification"/>
+	public interface IController<T> : IController where T : class
+	{
+		/// <summary>
+		/// The <c>IController</c>'s Controller component
+		/// </summary>
+		new T View { get; set; }
+	}
+
 	public interface IController
 	{
 		/// <summary>
 		/// Tthe <c>IController</c> instance name
 		/// </summary>
-		string Name { get; }
+		string Name { get; set; }
 
 		/// <summary>
 		/// The <c>IController</c>'s Controller component
 		/// </summary>
-		object ViewComponent { get; set; }
+		object View { get; set; }
 
 		/// <summary>
 		/// List <c>INotification interests</c>

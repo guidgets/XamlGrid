@@ -25,20 +25,8 @@ using XamlGrid.Core;
 
 namespace XamlGrid.Controllers
 {
-	public class ScrollIntoViewController : Controller
+	public class ScrollIntoViewController : Controller<ScrollViewer>
 	{
-		/// <summary>
-		/// Gets the row for which functionality the <see cref="RowController"/> is responsible.
-		/// </summary>
-		public virtual ScrollViewer Scroll
-		{
-			get
-			{
-				return (ScrollViewer) this.ViewComponent;
-			}
-		}
-
-
 		/// <summary>
 		/// Lists the notification interests.
 		/// </summary>
@@ -59,7 +47,7 @@ namespace XamlGrid.Controllers
 			{
 				case Notifications.CellFocused:
 					UIElement focusedElement = (UIElement) notification.Body;
-					IScrollInfo scrollInfo = this.Scroll.GetScrollInfo();
+					IScrollInfo scrollInfo = this.View.GetScrollInfo();
 					if (scrollInfo == null)
 					{
 						this.MakeVisible(focusedElement);
@@ -72,9 +60,9 @@ namespace XamlGrid.Controllers
 					break;
                 case Notifications.ScrollIntoView:
 					double index = (double) notification.Body;
-					if (index < this.Scroll.VerticalOffset || this.Scroll.VerticalOffset + this.Scroll.ViewportHeight < index)
+					if (index < this.View.VerticalOffset || this.View.VerticalOffset + this.View.ViewportHeight < index)
 					{
-						this.Scroll.ScrollToVerticalOffset(index);						
+						this.View.ScrollToVerticalOffset(index);						
 					}
 			        break;
 			}
@@ -82,34 +70,34 @@ namespace XamlGrid.Controllers
 
 		private void MakeVisible(UIElement focusedElement)
 		{
-			GeneralTransform generalTransform = focusedElement.TransformToVisual(this.Scroll);
+			GeneralTransform generalTransform = focusedElement.TransformToVisual(this.View);
 			Point point = generalTransform.Transform(new Point(0, 0));
 
-			double horizontalOffset = point.X + focusedElement.RenderSize.Width - this.Scroll.ViewportWidth;
+			double horizontalOffset = point.X + focusedElement.RenderSize.Width - this.View.ViewportWidth;
 			if (horizontalOffset > 0)
 			{
-				ScrollExtensions.SetHorizontalOffset(this.Scroll,
-				                                     this.Scroll.HorizontalOffset + horizontalOffset);
+				ScrollExtensions.SetHorizontalOffset(this.View,
+				                                     this.View.HorizontalOffset + horizontalOffset);
 			}
 			else
 			{
 				if (point.X < 0)
 				{
-					ScrollExtensions.SetHorizontalOffset(this.Scroll, this.Scroll.HorizontalOffset + point.X);
+					ScrollExtensions.SetHorizontalOffset(this.View, this.View.HorizontalOffset + point.X);
 				}
 			}
 
-			double verticalOffset = point.Y + focusedElement.RenderSize.Height - this.Scroll.ViewportHeight;
+			double verticalOffset = point.Y + focusedElement.RenderSize.Height - this.View.ViewportHeight;
 			if (verticalOffset > 0)
 			{
-				ScrollExtensions.SetVerticalOffset(this.Scroll,
-				                                   this.Scroll.VerticalOffset + verticalOffset);
+				ScrollExtensions.SetVerticalOffset(this.View,
+				                                   this.View.VerticalOffset + verticalOffset);
 			}
 			else
 			{
 				if (point.Y < 0)
 				{
-					ScrollExtensions.SetVerticalOffset(this.Scroll, this.Scroll.VerticalOffset + point.Y);
+					ScrollExtensions.SetVerticalOffset(this.View, this.View.VerticalOffset + point.Y);
 				}
 			}
 		}

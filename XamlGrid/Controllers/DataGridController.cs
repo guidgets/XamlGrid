@@ -34,9 +34,9 @@ using XamlGrid.Views;
 namespace XamlGrid.Controllers
 {
 	/// <summary>
-	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.DataGrid"/>.
+	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.DataGrid"/>.
 	/// </summary>
-	public class DataGridController : Controller
+	public class DataGridController : Controller<DataGrid>
 	{
 		private Panel itemsHost;
 		private bool continuousEditing;
@@ -55,67 +55,55 @@ namespace XamlGrid.Controllers
 		}
 
 
-		/// <summary>
-		/// Gets the <see cref="Views.DataGrid"/> for which functionality the <see cref="DataGridController"/> is responsible.
-		/// </summary>
-		public virtual DataGrid DataGrid
-		{
-			get
-			{
-				return (DataGrid) this.ViewComponent;
-			}
-		}
-
-
 		private Panel ItemsHost
 		{
 			get
 			{
-				return this.itemsHost ?? (this.itemsHost = this.DataGrid.GetItemsHost());
+				return this.itemsHost ?? (this.itemsHost = this.View.GetItemsHost());
 			}
 		}
 
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 
-			this.DataGrid.ViewportSizeChanged += this.DataGrid_ViewportSizeChanged;
-			this.DataGrid.GotFocus += this.DataGrid_GotFocus;
-			this.DataGrid.KeyDown += this.DataGrid_KeyDown;
-			this.DataGrid.DataSourceChanged += this.DataGrid_DataSourceChanged;
-			this.DataGrid.ItemTypeChanged += this.DataGrid_ItemTypeChanged;
-			this.DataGrid.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
-			this.DataGrid.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
-			this.DataGrid.CurrentColumnChanged += this.DataGrid_CurrentColumnChanged;
-			this.DataGrid.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
-            this.DataGrid.BringingIntoView += this.DataGrid_BringingIntoView;
-			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged += this.DataGridItems_CollectionChanged;
-			this.DataGrid.Columns.CollectionChanged += this.DataGridColumns_CollectionChanged;
+			this.View.ViewportSizeChanged += this.DataGrid_ViewportSizeChanged;
+			this.View.GotFocus += this.DataGrid_GotFocus;
+			this.View.KeyDown += this.DataGrid_KeyDown;
+			this.View.DataSourceChanged += this.DataGrid_DataSourceChanged;
+			this.View.ItemTypeChanged += this.DataGrid_ItemTypeChanged;
+			this.View.ItemsSourceChanged += this.DataGrid_ItemsSourceChanged;
+			this.View.CurrentItemChanged += this.DataGrid_CurrentItemChanged;
+			this.View.CurrentColumnChanged += this.DataGrid_CurrentColumnChanged;
+			this.View.SelectionModeChanged += this.DataGrid_SelectionModeChanged;
+            this.View.BringingIntoView += this.DataGrid_BringingIntoView;
+			((INotifyCollectionChanged) this.View.Items).CollectionChanged += this.DataGridItems_CollectionChanged;
+			this.View.Columns.CollectionChanged += this.DataGridColumns_CollectionChanged;
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
-			this.DataGrid.ViewportSizeChanged -= this.DataGrid_ViewportSizeChanged;
-			this.DataGrid.GotFocus -= this.DataGrid_GotFocus;
-			this.DataGrid.KeyDown -= this.DataGrid_KeyDown;
-			this.DataGrid.DataSourceChanged -= this.DataGrid_DataSourceChanged;
-			this.DataGrid.ItemTypeChanged -= this.DataGrid_ItemTypeChanged;
-			this.DataGrid.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
-			this.DataGrid.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
-			this.DataGrid.CurrentColumnChanged -= this.DataGrid_CurrentColumnChanged;
-			this.DataGrid.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
-		    this.DataGrid.BringingIntoView -= this.DataGrid_BringingIntoView;
-			((INotifyCollectionChanged) this.DataGrid.Items).CollectionChanged -= this.DataGridItems_CollectionChanged;
-			this.DataGrid.Columns.CollectionChanged -= this.DataGridColumns_CollectionChanged;
+			this.View.ViewportSizeChanged -= this.DataGrid_ViewportSizeChanged;
+			this.View.GotFocus -= this.DataGrid_GotFocus;
+			this.View.KeyDown -= this.DataGrid_KeyDown;
+			this.View.DataSourceChanged -= this.DataGrid_DataSourceChanged;
+			this.View.ItemTypeChanged -= this.DataGrid_ItemTypeChanged;
+			this.View.ItemsSourceChanged -= this.DataGrid_ItemsSourceChanged;
+			this.View.CurrentItemChanged -= this.DataGrid_CurrentItemChanged;
+			this.View.CurrentColumnChanged -= this.DataGrid_CurrentColumnChanged;
+			this.View.SelectionModeChanged -= this.DataGrid_SelectionModeChanged;
+		    this.View.BringingIntoView -= this.DataGrid_BringingIntoView;
+			((INotifyCollectionChanged) this.View.Items).CollectionChanged -= this.DataGridItems_CollectionChanged;
+			this.View.Columns.CollectionChanged -= this.DataGridColumns_CollectionChanged;
 		}
 
 		/// <summary>
@@ -153,17 +141,17 @@ namespace XamlGrid.Controllers
 			switch (notification.Code)
 			{
 				case Notifications.DataWrapped:
-					this.DataGrid.ItemsSource = (IEnumerable) notification.Body;
+					this.View.ItemsSource = (IEnumerable) notification.Body;
 					break;
 				case Notifications.CurrentItemChanged:
-					this.DataGrid.CurrentItem = notification.Body;
-					if (this.DataGrid.HasFocus())
+					this.View.CurrentItem = notification.Body;
+					if (this.View.HasFocus())
 					{
-						this.SendNotification(Notifications.FocusCell, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });						
+						this.SendNotification(Notifications.FocusCell, new[] { this.View.CurrentItem, this.View.CurrentColumn });						
 					}
 					break;
 				case Notifications.SelectionModeChanged:
-					this.DataGrid.SelectionMode = (SelectionMode) notification.Body;
+					this.View.SelectionMode = (SelectionMode) notification.Body;
 					break;
 				case Notifications.ItemKeyDown:
 					KeyEventArgs e = (KeyEventArgs) notification.Body;
@@ -174,12 +162,12 @@ namespace XamlGrid.Controllers
 					this.SelectItems(notification.Body, true, Key.None);
 					break;
 				case Notifications.IsColumnCurrent:
-					this.SendNotification(Notifications.CurrentColumnChanged, this.DataGrid.CurrentColumn);
+					this.SendNotification(Notifications.CurrentColumnChanged, this.View.CurrentColumn);
 					break;
 				case Notifications.CellFocused:
 					Cell cell = (Cell) notification.Body;
 					this.fromFocusedCell = true;
-					this.DataGrid.CurrentColumn = cell.Column;
+					this.View.CurrentColumn = cell.Column;
 					this.fromFocusedCell = false;
 					// TODO: this should be replaced by sending a notification because it tightens the coupling
 					cell.IsInEditMode = continuousEditing;
@@ -194,11 +182,11 @@ namespace XamlGrid.Controllers
 					continuousEditing = false;
 					break;
 				case Notifications.NewItemCustom:
-					this.DataGrid.OnNewItemAdding((NewItemEventArgs) notification.Body);
+					this.View.OnNewItemAdding((NewItemEventArgs) notification.Body);
 					break;
 				case Notifications.AvailableSizeChanged:
 					availableSize = (Size) notification.Body;
-					this.DataGrid.Columns.CalculateRelativeWidths(((Size) notification.Body).Width);
+					this.View.Columns.CalculateRelativeWidths(((Size) notification.Body).Width);
 					break;
 			}
 		}
@@ -214,25 +202,25 @@ namespace XamlGrid.Controllers
 
 		private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
 		{
-			if (e.OriginalSource == this.DataGrid)
+			if (e.OriginalSource == this.View)
 			{
-				this.SendNotification(Notifications.FocusCell, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
+				this.SendNotification(Notifications.FocusCell, new[] { this.View.CurrentItem, this.View.CurrentColumn });
 			}
 		}
 
 		private void DataGrid_LayoutUpdated(object sender, EventArgs e)
 		{
-			this.DataGrid.LayoutUpdated -= this.DataGrid_LayoutUpdated;
-			Column columnToFocus = this.DataGrid.CurrentColumn ?? this.DataGrid.Columns.FirstOrDefault();
-			this.DataGrid.CurrentColumn = null;
-			this.DataGrid.CurrentColumn = columnToFocus;
+			this.View.LayoutUpdated -= this.DataGrid_LayoutUpdated;
+			Column columnToFocus = this.View.CurrentColumn ?? this.View.Columns.FirstOrDefault();
+			this.View.CurrentColumn = null;
+			this.View.CurrentColumn = columnToFocus;
 		}
 
 		private void DataGrid_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (Keyboard.Modifiers == KeyHelper.CommandModifier && e.Key == Key.C)
 			{
-				this.DataGrid.Copy();
+				this.View.Copy();
 			}
 		}
 
@@ -246,32 +234,32 @@ namespace XamlGrid.Controllers
 
 		private void DataGrid_ItemTypeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.ItemTypeChanged, this.DataGrid.ItemType);
+			this.SendNotification(Notifications.ItemTypeChanged, this.View.ItemType);
 		}
 
 		private void DataGrid_ItemsSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.DataGrid.ItemType = this.DataGrid.ItemsSource != null ? this.DataGrid.ItemsSource.GetElementType() : null;
-			this.SendNotification(Notifications.ItemsSourceChanged, this.DataGrid.ItemsSource);
-			this.SendNotification(Notifications.ItemsChanged, this.DataGrid.Items);
+			this.View.ItemType = this.View.ItemsSource != null ? this.View.ItemsSource.GetElementType() : null;
+			this.SendNotification(Notifications.ItemsSourceChanged, this.View.ItemsSource);
+			this.SendNotification(Notifications.ItemsChanged, this.View.Items);
 		}
 
 		private void DataGrid_CurrentItemChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.CurrentItemChanging, this.DataGrid.CurrentItem);
+			this.SendNotification(Notifications.CurrentItemChanging, this.View.CurrentItem);
 		}
 
 		private void DataGrid_CurrentColumnChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (this.DataGrid.CurrentColumn != null && !this.fromFocusedCell && this.DataGrid.HasFocus())
+			if (this.View.CurrentColumn != null && !this.fromFocusedCell && this.View.HasFocus())
 			{
-				this.SendNotification(Notifications.FocusCell, new[] { this.DataGrid.CurrentItem, this.DataGrid.CurrentColumn });
+				this.SendNotification(Notifications.FocusCell, new[] { this.View.CurrentItem, this.View.CurrentColumn });
 			}
 		}
 
 		private void DataGrid_SelectionModeChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(Notifications.SelectionModeChanging, this.DataGrid.SelectionMode);
+			this.SendNotification(Notifications.SelectionModeChanging, this.View.SelectionMode);
 		}
 
 	    private void DataGrid_BringingIntoView (object sender, ScrollEventArgs e)
@@ -284,7 +272,7 @@ namespace XamlGrid.Controllers
 			this.SendNotification(Notifications.ItemsCollectionChanged, e);
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
+				this.View.LayoutUpdated += this.DataGrid_LayoutUpdated;
 			}
 		}
 
@@ -297,24 +285,24 @@ namespace XamlGrid.Controllers
 					if (column.ReadLocalValue(Column.WidthProperty) == DependencyProperty.UnsetValue)
 					{
 						BindingOperations.SetBinding(column, Column.WidthProperty,
-						                             new Binding("ColumnWidth") { Source = this.DataGrid });
+						                             new Binding("ColumnWidth") { Source = this.View });
 					}
 					if (column.ReadLocalValue(Column.IsResizableProperty) == DependencyProperty.UnsetValue)
 					{
 						BindingOperations.SetBinding(column, Column.IsResizableProperty,
-						                             new Binding("ResizableColumns") { Source = this.DataGrid });
+						                             new Binding("ResizableColumns") { Source = this.View });
 					}
 					if (column.ReadLocalValue(Column.IsReadOnlyProperty) == DependencyProperty.UnsetValue)
 					{
 						BindingOperations.SetBinding(column, Column.IsReadOnlyProperty,
-						                             new Binding("IsReadOnly") { Source = this.DataGrid });
+						                             new Binding("IsReadOnly") { Source = this.View });
 					}
 					column.IsSelected = true;
 					column.ActualWidthChanged += this.Column_WidthAffected;
 					column.VisibilityChanged += this.Column_WidthAffected;
-					if (this.DataGrid.Columns.Count == 1 && this.DataGrid.CurrentColumn == null)
+					if (this.View.Columns.Count == 1 && this.View.CurrentColumn == null)
 					{
-						this.DataGrid.LayoutUpdated += this.DataGrid_LayoutUpdated;
+						this.View.LayoutUpdated += this.DataGrid_LayoutUpdated;
 					}
 				}
 			}
@@ -327,26 +315,26 @@ namespace XamlGrid.Controllers
 					column.ClearValue(Column.IsReadOnlyProperty);
 					column.ActualWidthChanged -= this.Column_WidthAffected;
 					column.VisibilityChanged -= this.Column_WidthAffected;
-					if (this.DataGrid.CurrentColumn == column)
+					if (this.View.CurrentColumn == column)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
+						this.View.CurrentColumn = this.View.Columns.FirstOrDefault();
 					}
 				}
 			}
 			if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				this.DataGrid.CurrentColumn = null;
+				this.View.CurrentColumn = null;
 			}
-			if (this.DataGrid.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
+			if (this.View.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
 			{
-				this.DataGrid.Columns.CalculateRelativeWidths(this.availableSize.Width);
+				this.View.Columns.CalculateRelativeWidths(this.availableSize.Width);
 			}
 			this.SendNotification(Notifications.ColumnsChanged, e);
 		}
 
 		private void Column_WidthAffected(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.DataGrid.Columns.CalculateRelativeWidths(this.availableSize.Width);
+			this.View.Columns.CalculateRelativeWidths(this.availableSize.Width);
 		}
 
 		protected virtual void HandleCurrentItem(Key key)
@@ -358,13 +346,13 @@ namespace XamlGrid.Controllers
 				case Key.Left:
 					if (control)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
+						this.View.CurrentColumn = this.View.Columns.FirstOrDefault();
 					}
 					break;
 				case Key.Right:
 					if (control)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
+						this.View.CurrentColumn = this.View.Columns.LastOrDefault();
 					}
 					break;
 				case Key.Up:
@@ -374,28 +362,28 @@ namespace XamlGrid.Controllers
 					this.SendNotification(Notifications.CurrentItemDown);
 					break;
 				case Key.PageUp:
-					int pageUp = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) - this.GetPageSize();
+					int pageUp = this.View.Items.IndexOf(this.View.CurrentItem) - this.GetPageSize();
 					this.SendNotification(Notifications.CurrentItemToPosition, Math.Max(pageUp, 0));
 					break;
 				case Key.PageDown:
 					// make sure the new page is scrolled to before any MakeVisible is called
-					if (this.DataGrid.CurrentItem != this.DataGrid.Items.Last())
+					if (this.View.CurrentItem != this.View.Items.Last())
 					{
-						this.DataGrid.LayoutUpdated += this.DataGrid_CurrentItemLayoutUpdated;
+						this.View.LayoutUpdated += this.DataGrid_CurrentItemLayoutUpdated;
 					}
 					break;
 				case Key.Home:
-					this.SendNotification(Notifications.CurrentItemChanging, this.DataGrid.Items.First());
+					this.SendNotification(Notifications.CurrentItemChanging, this.View.Items.First());
 					if (control)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.FirstOrDefault();
+						this.View.CurrentColumn = this.View.Columns.FirstOrDefault();
 					}
 					break;
 				case Key.End:
-					this.SendNotification(Notifications.CurrentItemChanging, this.DataGrid.Items.Last());
+					this.SendNotification(Notifications.CurrentItemChanging, this.View.Items.Last());
 					if (control)
 					{
-						this.DataGrid.CurrentColumn = this.DataGrid.Columns.LastOrDefault();
+						this.View.CurrentColumn = this.View.Columns.LastOrDefault();
 					}
 					break;
 			}
@@ -412,26 +400,26 @@ namespace XamlGrid.Controllers
 				case Key.PageUp:
 				case Key.Home:
 				case Key.End:
-					this.SelectItems(this.DataGrid.CurrentItem, false, key);
+					this.SelectItems(this.View.CurrentItem, false, key);
 					break;
 				case Key.PageDown:
 					// make sure the new page is scrolled to before any MakeVisible is called
-					if (this.DataGrid.CurrentItem != this.DataGrid.Items.Last())
+					if (this.View.CurrentItem != this.View.Items.Last())
 					{
 						pressedKey = key;
-						this.DataGrid.LayoutUpdated += this.DataGrid_SelectionLayoutUpdated;	
+						this.View.LayoutUpdated += this.DataGrid_SelectionLayoutUpdated;	
 					}
 					break;
 				case Key.Space:
 					if (control)
 					{
-						bool currentItemSelected = this.DataGrid.SelectedItems.IsSelected(this.DataGrid.CurrentItem);
+						bool currentItemSelected = this.View.SelectedItems.IsSelected(this.View.CurrentItem);
 						this.SendNotification(currentItemSelected ? Notifications.DeselectingItems : Notifications.SelectingItems,
-						                      this.DataGrid.CurrentItem);
+						                      this.View.CurrentItem);
 					}
 					break;
 				case Key.A:
-					if (control && this.DataGrid.SelectionMode == SelectionMode.Extended)
+					if (control && this.View.SelectionMode == SelectionMode.Extended)
 					{
 						this.SendNotification(Notifications.SelectAll);
 					}
@@ -441,22 +429,22 @@ namespace XamlGrid.Controllers
 
 		private void DataGrid_CurrentItemLayoutUpdated(object sender, EventArgs e)
 		{
-			this.DataGrid.LayoutUpdated -= this.DataGrid_CurrentItemLayoutUpdated;
-			int pageDown = this.DataGrid.Items.IndexOf(this.DataGrid.CurrentItem) + this.GetPageSize();
-			this.SendNotification(Notifications.CurrentItemToPosition, Math.Min(pageDown, this.DataGrid.Items.Count - 1));
+			this.View.LayoutUpdated -= this.DataGrid_CurrentItemLayoutUpdated;
+			int pageDown = this.View.Items.IndexOf(this.View.CurrentItem) + this.GetPageSize();
+			this.SendNotification(Notifications.CurrentItemToPosition, Math.Min(pageDown, this.View.Items.Count - 1));
 		}
 
 		private void DataGrid_SelectionLayoutUpdated(object sender, EventArgs e)
 		{
-			this.DataGrid.LayoutUpdated -= this.DataGrid_SelectionLayoutUpdated;
-			this.SelectItems(this.DataGrid.CurrentItem, false, pressedKey);
+			this.View.LayoutUpdated -= this.DataGrid_SelectionLayoutUpdated;
+			this.SelectItems(this.View.CurrentItem, false, pressedKey);
 		}
 
 		private void SelectItems(object itemToSelect, bool clicked, Key key)
 		{
-			bool selected = this.DataGrid.SelectedItems.IsSelected(itemToSelect);
+			bool selected = this.View.SelectedItems.IsSelected(itemToSelect);
 			int notificationToSend = selected ? Notifications.DeselectingItems : Notifications.SelectingItems;
-			switch (this.DataGrid.SelectionMode)
+			switch (this.View.SelectionMode)
 			{
 				case SelectionMode.Single:
 					if (!selected || (Keyboard.Modifiers & KeyHelper.CommandModifier) != ModifierKeys.None)

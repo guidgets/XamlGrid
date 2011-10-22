@@ -42,6 +42,7 @@ namespace XamlGrid.Controllers
 		private bool continuousEditing;
 		private bool fromFocusedCell;
 		private Size viewportSize;
+		private Size availableSize;
 		private Key pressedKey;
 
 		/// <summary>
@@ -134,7 +135,8 @@ namespace XamlGrid.Controllers
 						Notifications.CellEditModeChanged,
 						Notifications.CellEditingCancelled,
 						Notifications.IsColumnCurrent,
-						Notifications.NewItemCustom
+						Notifications.NewItemCustom,
+						Notifications.AvailableSizeChanged
 			       	};
 		}
 
@@ -194,6 +196,10 @@ namespace XamlGrid.Controllers
 				case Notifications.NewItemCustom:
 					this.DataGrid.OnNewItemAdding((NewItemEventArgs) notification.Body);
 					break;
+				case Notifications.AvailableSizeChanged:
+					availableSize = (Size) notification.Body;
+					this.DataGrid.Columns.CalculateRelativeWidths(((Size) notification.Body).Width);
+					break;
 			}
 		}
 
@@ -203,7 +209,6 @@ namespace XamlGrid.Controllers
 			if (e.NewSize.Width != e.OldSize.Width)
 			{
 				this.viewportSize = e.NewSize;
-				this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
 			}
 		}
 
@@ -334,14 +339,14 @@ namespace XamlGrid.Controllers
 			}
 			if (this.DataGrid.Columns.Any(column => column.Width.SizeMode == SizeMode.Fill))
 			{
-				this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
+				this.DataGrid.Columns.CalculateRelativeWidths(this.availableSize.Width);
 			}
 			this.SendNotification(Notifications.ColumnsChanged, e);
 		}
 
 		private void Column_WidthAffected(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.DataGrid.Columns.CalculateRelativeWidths(this.viewportSize.Width);
+			this.DataGrid.Columns.CalculateRelativeWidths(this.availableSize.Width);
 		}
 
 		protected virtual void HandleCurrentItem(Key key)

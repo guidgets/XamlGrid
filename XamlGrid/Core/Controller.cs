@@ -17,7 +17,7 @@ namespace XamlGrid.Core
 	/// A base <c>IController</c> implementation
 	/// </summary>
 	/// <see cref="MainController"/>
-	public class Controller : Notifier, IController
+	public class Controller<T> : Notifier, IController<T> where T : class
 	{
 		#region Constants
 
@@ -31,7 +31,7 @@ namespace XamlGrid.Core
 
 		#endregion
 
-		private object viewComponent;
+		private T view;
 
 		#region Constructors
 
@@ -56,16 +56,22 @@ namespace XamlGrid.Core
 		/// Constructs a new Controller with the specified name and view component.
 		/// </summary>
 		/// <param name="controllerName">The name of the Controller.</param>
-		/// <param name="viewComponent">The view component to be controlled.</param>
-		public Controller(string controllerName, object viewComponent)
+		/// <param name="view">The view component to be controlled.</param>
+		public Controller(string controllerName, T view)
 		{
 			this.mName = controllerName ?? NAME;
-			this.viewComponent = viewComponent;
+			this.view = view;
 		}
 
 		#endregion
 
 		#region Public Methods
+
+		object IController.View
+		{
+			get { return this.View; }
+			set { this.View = (T) value; }
+		}
 
 		/// <summary>
 		/// List the <c>INotification</c> names this <c>Controller</c> is interested in being notified of.
@@ -91,14 +97,14 @@ namespace XamlGrid.Core
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public virtual void OnRegister()
 		{
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public virtual void OnRemove()
 		{
@@ -126,20 +132,20 @@ namespace XamlGrid.Core
 		///     <example>
 		///         <code>
 		///             private System.Windows.Form.ComboBox comboBox {
-		///                 get { return viewComponent as ComboBox; }
+		///                 get { return View as ComboBox; }
 		///             }
 		///         </code>
 		///     </example>
 		/// </remarks>
-		public virtual object ViewComponent
+		public virtual T View
 		{
 			get
 			{
-				return this.viewComponent;
+				return this.view;
 			}
 			set
 			{
-				this.viewComponent = value;
+				this.view = value;
 			}
 		}
 

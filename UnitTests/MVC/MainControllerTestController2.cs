@@ -14,7 +14,7 @@ namespace UnitTests.MVC
   	 * 
   	 * @see org.puremvc.csharp.core.MainController.MainControllerTest MainControllerTest
   	 */
-    public class MainControllerTestController2 : Controller
+    public class MainControllerTestController2 : Controller<object>
     {
         /**
 		 * The Controller name
@@ -43,7 +43,7 @@ namespace UnitTests.MVC
 
         public MainControllerTest MainControllerTest
 		{
-            get { return (MainControllerTest) this.ViewComponent; }
+            get { return (MainControllerTest) this.View; }
 		}
     }
 }

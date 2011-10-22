@@ -192,19 +192,19 @@ namespace UnitTests.MVC
         {  			
    			// register a Controller, remove it, then try to retrieve it
 			IFacade facade = Facade.Instance;
-			facade.RegisterController(new Controller(Controller.NAME, new object()));
+			facade.RegisterController(new Controller<object>(Controller<object>.NAME, new object()));
 			
 			// retrieve the Controller
-   			Assert.IsNotNull(facade.RetrieveController(Controller.NAME), "Expecting Controller is not null");
+   			Assert.IsNotNull(facade.RetrieveController(Controller<object>.NAME), "Expecting Controller is not null");
 
 			// remove the Controller
-			IController removedController = facade.RemoveController(Controller.NAME);
+			IController removedController = facade.RemoveController(Controller<object>.NAME);
 
 			// assert that we have removed the appropriate Controller
-   			Assert.IsTrue(removedController.Name == Controller.NAME, "Expecting removedController.Name == Controller.NAME");
+   			Assert.IsTrue(removedController.Name == Controller<object>.NAME, "Expecting removedController.Name == Controller.NAME");
 				
 			// assert that the Controller is no longer retrievable
-   			Assert.IsTrue(facade.RetrieveController( Controller.NAME ) == null, "Expecting facade.retrieveController(Controller.NAME) == null )");		  			
+   			Assert.IsTrue(facade.RetrieveController( Controller<object>.NAME ) == null, "Expecting facade.retrieveController(Controller.NAME) == null )");		  			
    		}
 
 	
@@ -233,7 +233,7 @@ namespace UnitTests.MVC
 		{
    			// register a Controller
 			IFacade facade = Facade.Instance;
-			facade.RegisterController( new Controller( "facadeHasControllerTest", new object() ) );
+			facade.RegisterController( new Controller<object>( "facadeHasControllerTest", new object() ) );
 			
    			// assert that the facade.hasController method returns true
    			// for that Controller name

@@ -25,7 +25,7 @@ namespace XamlGrid.Controllers
 	/// <summary>
 	/// Represents a collection of controllers associated with the same <see cref="DependencyObject"/>.
 	/// </summary>
-	public class ControllerCollection : ObservableCollection<Controller>
+	public class ControllerCollection : ObservableCollection<IController>
 	{
 		private readonly DependencyObject associatedObject;
 
@@ -42,11 +42,11 @@ namespace XamlGrid.Controllers
 		/// Inserts an item into the collection at the specified index.
 		/// </summary>
 		/// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param><param name="item">The object to insert.</param>
-		protected override void InsertItem(int index, Controller item)
+		protected override void InsertItem(int index, IController item)
 		{
 			base.InsertItem(index, item);
 
-			item.ViewComponent = this.associatedObject;
+			item.View = this.associatedObject;
 			item.Name = this.associatedObject.GetHashCode().ToString();
 
 			DataGridFacade.Instance.RegisterController(item);
@@ -58,9 +58,9 @@ namespace XamlGrid.Controllers
 		/// <param name="index">The zero-based index of the item to remove.</param>
 		protected override void RemoveItem(int index)
 		{
-			Controller controller = this[index];
+			IController controller = this[index];
 
-			controller.ViewComponent = null;
+			controller.View = null;
 
 			base.RemoveItem(index);
 

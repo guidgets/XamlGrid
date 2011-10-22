@@ -23,42 +23,35 @@ using XamlGrid.Views;
 
 namespace XamlGrid.Controllers
 {
-	public class FooterCellController : Controller
+	public class FooterCellController : Controller<Cell>
 	{
 		public const string FOOTER_PREFIX = "footer";
 
 
-		public FooterCellController(object viewComponent) : base(FOOTER_PREFIX + viewComponent.GetHashCode(), viewComponent)
+		public FooterCellController(Cell view) : base(FOOTER_PREFIX + view.GetHashCode(), view)
 		{
 
 		}
 
-		public virtual Cell FooterCell
-		{
-			get
-			{
-				return (Cell) this.ViewComponent;
-			}
-		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
 
-			((INotifyCollectionChanged) this.FooterCell.DataContext).CollectionChanged += this.FooterCellController_CollectionChanged;
+			((INotifyCollectionChanged) this.View.DataContext).CollectionChanged += this.FooterCellController_CollectionChanged;
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
 
-			((INotifyCollectionChanged) this.FooterCell.DataContext).CollectionChanged -= this.FooterCellController_CollectionChanged;
+			((INotifyCollectionChanged) this.View.DataContext).CollectionChanged -= this.FooterCellController_CollectionChanged;
 		}
 
 		/// <summary>
@@ -95,10 +88,10 @@ namespace XamlGrid.Controllers
 
 		private void Update()
 		{
-			this.FooterCell.ClearValue(Cell.ValueProperty);
-			if (this.FooterCell.Column.FooterBinding != null)
+			this.View.ClearValue(Cell.ValueProperty);
+			if (this.View.Column.FooterBinding != null)
 			{
-				this.FooterCell.SetBinding(Cell.ValueProperty, this.FooterCell.Column.FooterBinding);
+				this.View.SetBinding(Cell.ValueProperty, this.View.Column.FooterBinding);
 			}
 		}
 	}

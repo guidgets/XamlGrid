@@ -191,7 +191,7 @@ namespace UnitTests.MVC
 			
 			// Create and register the test Controller
 			string name = "HasControllerTest" + Thread.CurrentThread.Name;
-			Controller Controller = new Controller(name, this);
+			Controller<object> Controller = new Controller<object>(name, this);
 			mainController.RegisterController(Controller);
 			
    			// assert that the MainController.hasController method returns true
@@ -218,7 +218,7 @@ namespace UnitTests.MVC
 			// Create and register the test Controller, 
 			// but not so we have a reference to it
 			string name = "Testing" + Thread.CurrentThread.Name;
-			mainController.RegisterController(new Controller(name, this));
+			mainController.RegisterController(new Controller<object>(name, this));
 			
 			// Remove the component
 			IController removedController = mainController.RemoveController(name);

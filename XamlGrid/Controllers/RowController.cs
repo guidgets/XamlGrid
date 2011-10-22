@@ -27,9 +27,9 @@ using XamlGrid.Views;
 namespace XamlGrid.Controllers
 {
 	/// <summary>
-	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
+	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
 	/// </summary>
-	public class RowController : Controller
+	public class RowController : Controller<Row>
 	{
 		private static readonly CurrentItemModel currentItemModel =
 			(CurrentItemModel) MainModel.Instance.RetrieveModel(CurrentItemModel.NAME);
@@ -39,9 +39,9 @@ namespace XamlGrid.Controllers
 
 
 		/// <summary>
-		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
+		/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Row"/>.
 		/// </summary>
-		/// <param name="row">The row for which functionality the <see cref="Controller"/> is responsible.</param>
+		/// <param name="row">The row for which functionality the <see cref="Controller{T}"/> is responsible.</param>
 		public RowController(Row row) : base(row.GetHashCode().ToString(), row)
 		{
 
@@ -49,38 +49,29 @@ namespace XamlGrid.Controllers
 
 
 		/// <summary>
-		/// Gets the row for which functionality the <see cref="RowController"/> is responsible.
-		/// </summary>
-		public virtual Row Row
-		{
-			get { return (Row) this.ViewComponent; }
-		}
-
-
-		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is registered.
+		/// Called by the <see cref="Controller{T}"/> when it is registered.
 		/// </summary>
 		public override void OnRegister()
 		{
 			base.OnRegister();
-			this.Row.DataContextChanged += this.Row_DataContextChanged;
-			this.Row.HasFocusChanged += this.Row_HasFocusedChanged;
-			this.Row.IsSelectedChanged += this.Row_IsSelectedChanged;
-			this.Row.KeyDown += this.Row_KeyDown;
-			this.Row.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown), true);
+			this.View.DataContextChanged += this.Row_DataContextChanged;
+			this.View.HasFocusChanged += this.Row_HasFocusedChanged;
+			this.View.IsSelectedChanged += this.Row_IsSelectedChanged;
+			this.View.KeyDown += this.Row_KeyDown;
+			this.View.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown), true);
 		}
 
 		/// <summary>
-		/// Called by the <see cref="Controller"/> when it is removed.
+		/// Called by the <see cref="Controller{T}"/> when it is removed.
 		/// </summary>
 		public override void OnRemove()
 		{
 			base.OnRemove();
-			this.Row.DataContextChanged -= this.Row_DataContextChanged;
-			this.Row.HasFocusChanged -= this.Row_HasFocusedChanged;
-			this.Row.IsSelectedChanged -= this.Row_IsSelectedChanged;
-			this.Row.KeyDown -= this.Row_KeyDown;
-			this.Row.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown));
+			this.View.DataContextChanged -= this.Row_DataContextChanged;
+			this.View.HasFocusChanged -= this.Row_HasFocusedChanged;
+			this.View.IsSelectedChanged -= this.Row_IsSelectedChanged;
+			this.View.KeyDown -= this.Row_KeyDown;
+			this.View.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(this.Row_MouseLeftButtonDown));
 		}
 
 		/// <summary>
@@ -111,25 +102,25 @@ namespace XamlGrid.Controllers
 			switch (notification.Code)
 			{
 				case Notifications.CurrentItemChanged:
-					this.Row.IsFocused = this.Row.DataContext == notification.Body;
+					this.View.IsFocused = this.View.DataContext == notification.Body;
 					break;
 				case Notifications.SelectedItems:
-					if (((IList<object>) notification.Body).Contains(this.Row.DataContext))
+					if (((IList<object>) notification.Body).Contains(this.View.DataContext))
 					{
-						this.Row.IsSelected = true;
+						this.View.IsSelected = true;
 					}
 					break;
 				case Notifications.DeselectedItems:
 					IList<object> list = (IList<object>) notification.Body;
-					if (list.Contains(this.Row.DataContext) || list.Count == 0)
+					if (list.Contains(this.View.DataContext) || list.Count == 0)
 					{
-						this.Row.IsSelected = false;
+						this.View.IsSelected = false;
 					}
 					break;
 				case Notifications.ItemIsSelected:
-					if (this.Row.DataContext == notification.Body)
+					if (this.View.DataContext == notification.Body)
 					{
-						this.Row.IsSelected = bool.Parse(notification.Type);
+						this.View.IsSelected = bool.Parse(notification.Type);
 					}
 					break;
 			}
@@ -137,22 +128,22 @@ namespace XamlGrid.Controllers
 
 		private void Row_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.Row.IsFocused = this.Row.DataContext == currentItemModel.CurrentItem;
-			this.Row.IsSelected = selectionModel.SelectedItems.Any(s => s.Item == this.Row.DataContext);
+			this.View.IsFocused = this.View.DataContext == currentItemModel.CurrentItem;
+			this.View.IsSelected = selectionModel.SelectedItems.Any(s => s.Item == this.View.DataContext);
 		}
 
 		private void Row_HasFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if (this.Row.IsFocused)
+			if (this.View.IsFocused)
 			{
-				this.SendNotification(Notifications.CurrentItemChanging, this.Row.DataContext);
+				this.SendNotification(Notifications.CurrentItemChanging, this.View.DataContext);
 			}
 		}
 
 		private void Row_IsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			this.SendNotification(this.Row.IsSelected ? Notifications.SelectingItems : Notifications.DeselectingItems,
-			                      this.Row.DataContext);
+			this.SendNotification(this.View.IsSelected ? Notifications.SelectingItems : Notifications.DeselectingItems,
+			                      this.View.DataContext);
 		}
 
 		private void Row_KeyDown(object sender, KeyEventArgs e)
@@ -162,7 +153,7 @@ namespace XamlGrid.Controllers
 
 		private void Row_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			this.SendNotification(Notifications.ItemClicked, this.Row.DataContext);
+			this.SendNotification(Notifications.ItemClicked, this.View.DataContext);
 		}
 	}
 }

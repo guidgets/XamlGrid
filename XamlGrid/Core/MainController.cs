@@ -29,7 +29,7 @@ namespace XamlGrid.Core
 	/// </remarks>
 	/// <see cref="Notification"/>
 	/// <see cref="Observer"/>
-	/// <see cref="Controller"/>
+	/// <see cref="Controller{T}"/>
 	public class MainController : IMainController
 	{
 		#region Constructors

@@ -14,7 +14,7 @@ namespace UnitTests.MVC
   	 * 
   	 * @see org.puremvc.as3.core.MainController.MainControllerTest MainControllerTest
   	 */
-	public class MainControllerTestController5 :Controller 
+	public class MainControllerTestController5 :Controller<object> 
 	{
 		/**
 		 * The Controller name
@@ -24,8 +24,8 @@ namespace UnitTests.MVC
 		/**
 		 * Constructor
 		 */
-		public MainControllerTestController5(object viewComponent)
-			: base(NAME, viewComponent)
+		public MainControllerTestController5(object view)
+			: base(NAME, view)
 		{
 		}
 
@@ -41,7 +41,7 @@ namespace UnitTests.MVC
 
         public MainControllerTest MainControllerTest
 		{
-			get { return (MainControllerTest) this.ViewComponent; }
+			get { return (MainControllerTest) this.View; }
 		}
 	}
 }

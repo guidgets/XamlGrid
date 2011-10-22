@@ -27,29 +27,17 @@ using XamlGrid.Views;
 namespace XamlGrid.Controllers
 {
 	/// <summary>
-	/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="HeaderCell"/>.
+	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="HeaderCell"/>.
 	/// </summary>
-	public class HeaderCellController : Controller
+	public class HeaderCellController : Controller<HeaderCell>
 	{
 		/// <summary>
-		/// Represents a <see cref="Controller"/> which is responsible for the functionality of a <see cref="HeaderCell"/>.
+		/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="HeaderCell"/>.
 		/// </summary>
-		/// <param name="headerCell">The header cell for which functionality the <see cref="Controller"/> is responsible.</param>
+		/// <param name="headerCell">The header cell for which functionality the <see cref="Controller{T}"/> is responsible.</param>
 		public HeaderCellController(HeaderCell headerCell) : base(headerCell.GetHashCode().ToString(), headerCell)
 		{
 
-		}
-
-
-		/// <summary>
-		/// Gets the <see cref="HeaderCell"/> for which functionality the <see cref="Controller"/> is responsible.
-		/// </summary>
-		public virtual HeaderCell HeaderCell
-		{
-			get
-			{
-				return (HeaderCell) this.ViewComponent;
-			}
 		}
 
 
@@ -60,8 +48,8 @@ namespace XamlGrid.Controllers
 		{
 			base.OnRegister();
 
-			this.HeaderCell.Loaded += this.HeaderCell_Loaded;
-			this.HeaderCell.SortDirectionChanged += this.HeaderCell_SortDirectionChanged;
+			this.View.Loaded += this.HeaderCell_Loaded;
+			this.View.SortDirectionChanged += this.HeaderCell_SortDirectionChanged;
 		}
 
 		/// <summary>
@@ -71,8 +59,8 @@ namespace XamlGrid.Controllers
 		{
 			base.OnRemove();
 
-			this.HeaderCell.Loaded -= this.HeaderCell_Loaded;
-			this.HeaderCell.SortDirectionChanged -= this.HeaderCell_SortDirectionChanged;
+			this.View.Loaded -= this.HeaderCell_Loaded;
+			this.View.SortDirectionChanged -= this.HeaderCell_SortDirectionChanged;
 		}
 
 		/// <summary>
@@ -95,7 +83,7 @@ namespace XamlGrid.Controllers
 		{
 			base.HandleNotification(notification);
 			SortDescription sortDescription = (SortDescription) notification.Body;
-			if (!string.IsNullOrEmpty(sortDescription.PropertyName) && sortDescription.PropertyName != this.HeaderCell.Column.Binding.Path.Path)
+			if (!string.IsNullOrEmpty(sortDescription.PropertyName) && sortDescription.PropertyName != this.View.Column.Binding.Path.Path)
 			{
 				return;
 			}
@@ -104,11 +92,11 @@ namespace XamlGrid.Controllers
 				case Notifications.Sorted:
 					if (notification.Type == NotificationTypes.NoSorting)
 					{
-						this.HeaderCell.SortDirection = null;
+						this.View.SortDirection = null;
 					}
 					else
 					{
-						this.HeaderCell.SortDirection = sortDescription.Direction;
+						this.View.SortDirection = sortDescription.Direction;
 					}
 					break;
 			}
@@ -117,13 +105,13 @@ namespace XamlGrid.Controllers
 
 		private void HeaderCell_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.SendNotification(Notifications.SortingState, this.HeaderCell.Column.Binding.Path.Path);
+			this.SendNotification(Notifications.SortingState, this.View.Column.Binding.Path.Path);
 		}
 
 		private void HeaderCell_SortDirectionChanged(object sender, SortDirectionEventArgs e)
 		{
 			ExtendedSortDescription sortDescription = new ExtendedSortDescription();
-			sortDescription.Property = this.HeaderCell.Column.Binding.Path.Path;
+			sortDescription.Property = this.View.Column.Binding.Path.Path;
 			sortDescription.ClearPreviousSorting = (Keyboard.Modifiers & ModifierKeys.Shift) == 0;
 			sortDescription.SortDirection = e.SortDirection;
 			this.SendNotification(Notifications.SortingRequested, sortDescription);

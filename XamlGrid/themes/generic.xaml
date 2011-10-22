@@ -79,9 +79,10 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 										 TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
                             <Rectangle Grid.Column="1" Grid.RowSpan="2" Width="17" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
                         </Grid>
-                        <ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
-										  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
-										  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
+                        <ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto"
+                                      BorderThickness="{TemplateBinding BorderThickness}" 
+									  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
+									  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
                             <interactivity:Interaction.Behaviors>
                                 <xaml:ScrollOnHomeEndBehaviour />
                                 <xaml:DragScrollBehavior />
@@ -105,10 +106,10 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <xaml:FooterRow ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
-												   Visibility="{Binding FooterVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-												   DataContext="{Binding Items, RelativeSource={RelativeSource TemplatedParent}}"
-												   Tag="{Binding ElementName=horizontalScrollBar}" />
+                            <xaml:FooterRow ItemsSource="{TemplateBinding Columns}"
+											Visibility="{Binding FooterVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+											DataContext="{TemplateBinding ItemsSource}"
+											Tag="{Binding ElementName=horizontalScrollBar}" />
                             <ScrollBar Name="horizontalScrollBar" Grid.Row="1" IsTabStop="False"
 										   DataContext="{Binding ElementName=mainScroll}"
 										   Visibility="{Binding Maximum, RelativeSource={RelativeSource Self},
@@ -561,10 +562,10 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
                                 <xaml:AvailableSizeController />
                             </xamlGrid:DataGridFacade.Controllers>
                             <ScrollViewer IsTabStop="False" BorderThickness="0" Padding="0" 
-									  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
-									  xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
-																					   RelativeSource={RelativeSource TemplatedParent},
-																					   Mode=TwoWay}">
+									      VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+									      xaml:ScrollExtensions.HorizontalOffset="{Binding Tag.Value, 
+																					       RelativeSource={RelativeSource TemplatedParent},
+																					       Mode=TwoWay}">
                                 <interactivity:Interaction.Behaviors>
                                     <xaml:SyncScrollBehavior />
                                 </interactivity:Interaction.Behaviors>

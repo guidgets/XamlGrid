@@ -76,7 +76,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 							<xaml:NewRow Grid.Row="1" ItemsSource="{Binding Columns, RelativeSource={RelativeSource TemplatedParent}}"
 										 Visibility="{Binding NewRowVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
 										 TabNavigation="Cycle" Tag="{Binding ElementName=horizontalScrollBar}" />
-							<Rectangle Grid.Column="1" Grid.RowSpan="2" Width="17" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
+							<Rectangle Grid.Column="1" Grid.RowSpan="2" Width="18" Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 						</Grid>
 						<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
 									  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
@@ -112,7 +112,7 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 															Converter={StaticResource numberToVisibilityConverter}}"
 									   Orientation="Horizontal" ViewportSize="{Binding ViewportWidth}"
 									   Maximum="{Binding ScrollableWidth}" Value="{Binding HorizontalOffset, Mode=TwoWay}" />
-							<Rectangle Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="17"
+							<Rectangle Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="18"
 									   Visibility="{Binding ComputedVerticalScrollBarVisibility, ElementName=mainScroll}" />
 						</Grid>
 					</Grid>

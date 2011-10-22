@@ -268,11 +268,11 @@ namespace XamlGrid.Controllers
 
 		private void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			this.ScrollLeft = this.ScrollDown = this.ScrollUp = this.ScrollRight = false;
 			this.AssociatedObject.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(this.AssociatedObject_MouseLeftButtonUp));
+			this.AssociatedObject.ReleaseMouseCapture();
 			this.AssociatedObject.MouseMove -= this.AssociatedObject_MouseMove;
 			this.AssociatedObject.MouseLeave -= this.AssociatedObject_MouseLeave;
-			this.AssociatedObject.ReleaseMouseCapture();
+			this.ScrollLeft = this.ScrollDown = this.ScrollUp = this.ScrollRight = false;
 		}
 
 		private void Each_Tick(object o, EventArgs sender)

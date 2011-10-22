@@ -38,6 +38,49 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
 	<xaml:NumberToVisibilityConverter x:Key="numberToVisibilityConverter" />
 
+	<ControlTemplate x:Key="scrollTemplate" TargetType="ScrollViewer">
+		<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+			<Grid Background="{TemplateBinding Background}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+
+				<ScrollContentPresenter x:Name="ScrollContentPresenter"
+                                        Cursor="{TemplateBinding Cursor}"
+                                        Margin="{TemplateBinding Padding}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+				<Rectangle Grid.Column="1" Grid.Row="1" Fill="#FFE9EEF4"/>
+
+				<ScrollBar x:Name="VerticalScrollBar" Width="18"
+                           IsTabStop="False"
+                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                           Grid.Column="1" Grid.Row="0" Orientation="Vertical"
+                           ViewportSize="{TemplateBinding ViewportHeight}"
+                           Maximum="{TemplateBinding ScrollableHeight}"
+                           Minimum="0"
+                           Value="{TemplateBinding VerticalOffset}"
+                           Margin="0,-1,-1,-1"/>
+
+				<ScrollBar x:Name="HorizontalScrollBar" Height="18"
+                           IsTabStop="False"
+                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                           Grid.Column="0" Grid.Row="1" Orientation="Horizontal"
+                           ViewportSize="{TemplateBinding ViewportWidth}"
+                           Maximum="{TemplateBinding ScrollableWidth}"
+                           Minimum="0"
+                           Value="{TemplateBinding HorizontalOffset}"
+                           Margin="-1,0,-1,-1"/>
+
+			</Grid>
+		</Border>
+	</ControlTemplate>
+
 	<Style TargetType="xaml:DataGrid">
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Background" Value="{StaticResource windowColor}" />
@@ -80,7 +123,8 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 						</Grid>
 						<ScrollViewer Name="mainScroll" Grid.Row="1" IsTabStop="False" VerticalScrollBarVisibility="Auto" BorderThickness="{TemplateBinding BorderThickness}"
 									  HorizontalScrollBarVisibility="Hidden" Padding="0" BorderBrush="{TemplateBinding BorderBrush}" 
-									  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}">
+									  xaml:ScrollExtensions.HorizontalOffset="{Binding Value, ElementName=horizontalScrollBar}"
+									  Template="{StaticResource scrollTemplate}">
 								<interactivity:Interaction.Behaviors>
 									<xaml:ScrollOnHomeEndBehaviour />
 									<xaml:DragScrollBehavior />

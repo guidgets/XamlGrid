@@ -252,6 +252,9 @@ namespace XamlGrid.Views
 			DataGridFacade.Instance.RegisterModel(this.selectionModel = new SelectionModel());
 
 			dataItemToIndexBinding.ConverterParameter = this.Items;
+
+			// HACK: VS fails to copy references used only in XAML
+			NumericUpDown n;
 		}
 
 		private ScrollViewer Scroll

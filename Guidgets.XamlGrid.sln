@@ -8,9 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{8FAE592B-0C89-4FAF-B1CB-8FA3A9310F6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlGrid", "XamlGrid\XamlGrid.csproj", "{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlGrid", "Guidgets.XamlGrid\Guidgets.XamlGrid.csproj", "{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlGrid.ExportODF", "XamlGrid.ExportODF\XamlGrid.ExportODF.csproj", "{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlGrid.ExportODF", "Guidgets.XamlGrid.ExportODF\Guidgets.XamlGrid.ExportODF.csproj", "{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{6D97D80E-28E7-4F1C-B1AF-7713F49AA61E}"
 EndProject

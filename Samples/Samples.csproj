@@ -439,13 +439,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XamlGrid.ExportODF\XamlGrid.ExportODF.csproj">
+    <ProjectReference Include="..\Guidgets.XamlGrid.ExportODF\Guidgets.XamlGrid.ExportODF.csproj">
       <Project>{16CDC9D1-C15D-431D-AE6E-5ED4859328FD}</Project>
-      <Name>XamlGrid.ExportODF</Name>
+      <Name>Guidgets.XamlGrid.ExportODF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XamlGrid\XamlGrid.csproj">
+    <ProjectReference Include="..\Guidgets.XamlGrid\Guidgets.XamlGrid.csproj">
       <Project>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</Project>
-      <Name>XamlGrid</Name>
+      <Name>Guidgets.XamlGrid</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

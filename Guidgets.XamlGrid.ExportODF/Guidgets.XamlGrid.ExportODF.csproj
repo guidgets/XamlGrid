@@ -64,9 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XamlGrid\XamlGrid.csproj">
+    <ProjectReference Include="..\Guidgets.XamlGrid\Guidgets.XamlGrid.csproj">
       <Project>{C1183088-7A54-45C8-8FFE-C9EBD11FD2A8}</Project>
-      <Name>XamlGrid</Name>
+      <Name>Guidgets.XamlGrid</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

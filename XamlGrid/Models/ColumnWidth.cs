@@ -17,9 +17,9 @@
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
 using System.ComponentModel;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents different ways of specifying the width of a <see cref="Column"/>.

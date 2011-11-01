@@ -29,7 +29,7 @@
 using System.ComponentModel;
 using System.Windows.Data;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class CollectionViewNode : PropertyPathNode {
 

@@ -4,7 +4,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License 
 */
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	public delegate void HandleNotification(INotification notification);
 

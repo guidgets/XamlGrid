@@ -23,10 +23,10 @@ using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Data;
 using System.Windows.Input;
-using XamlGrid.Automation;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Automation;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents an element that displays and manipulates a piece of a data object.

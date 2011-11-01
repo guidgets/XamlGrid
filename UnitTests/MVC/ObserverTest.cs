@@ -5,7 +5,7 @@
 */
 
 using NUnit.Framework;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
 
 namespace UnitTests.MVC

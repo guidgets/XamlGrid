@@ -18,12 +18,12 @@
 
 using System;
 using System.Windows;
-using XamlGrid.Aspects;
-using XamlGrid.Controllers;
-using XamlGrid.Core;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid
+namespace Guidgets.XamlGrid
 {
 	public class DataGridFacade : Facade
 	{

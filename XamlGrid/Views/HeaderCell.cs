@@ -20,11 +20,11 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation.Peers;
-using XamlGrid.Automation;
-using XamlGrid.Controllers;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Automation;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents a cell that stays as a header for a <see cref="Column"/>.

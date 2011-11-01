@@ -16,7 +16,7 @@
 // File:	Range.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 // 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents a range of indices of items, for example items that participate in a selection.

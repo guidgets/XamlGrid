@@ -21,9 +21,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents a <see cref="Model"/> that executes the appropriate selection logic requested by different commands.

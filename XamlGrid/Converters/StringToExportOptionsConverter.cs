@@ -20,10 +20,10 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using XamlGrid.Aspects;
-using XamlGrid.Models.Export;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Models.Export;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class StringToExportOptionsConverter : TypeConverter
 	{

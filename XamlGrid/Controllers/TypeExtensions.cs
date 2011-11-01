@@ -20,9 +20,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using XamlGrid.Aspects;
+using Guidgets.XamlGrid.Aspects;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Contains methods that extend the functionality of <see cref="Type"/>.

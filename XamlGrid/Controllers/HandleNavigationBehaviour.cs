@@ -20,7 +20,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Marks events caused by the some navigation keys as handled.

@@ -18,7 +18,7 @@
 
 using System;
 
-namespace XamlGrid.Aspects
+namespace Guidgets.XamlGrid.Aspects
 {
 	public class ValidStringEnumAttribute : ArgumentValidationAttribute
 	{

@@ -20,9 +20,9 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to auto-size a <see cref="Column"/> of a <see cref="DataGrid"/>.

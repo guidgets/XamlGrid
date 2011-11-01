@@ -17,7 +17,7 @@
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
 using NUnit.Framework;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Models;
 
 namespace UnitTests.Selection
 {

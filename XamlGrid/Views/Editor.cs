@@ -19,9 +19,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents a visual element that provides means of editing a supplied value.

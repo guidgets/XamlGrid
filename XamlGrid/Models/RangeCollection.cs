@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents an <see cref="ObservableCollection{T}"/> of <see cref="Range"/> objects.

@@ -20,10 +20,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using XamlGrid.Core;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class DataCommand : SimpleCommand
 	{

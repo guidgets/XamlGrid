@@ -24,7 +24,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents an <see cref="ObservableCollection{T}"/> which fires an event when a 

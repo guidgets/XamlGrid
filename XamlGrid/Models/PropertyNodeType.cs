@@ -27,7 +27,7 @@
 //
 
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public enum PropertyNodeType
 	{

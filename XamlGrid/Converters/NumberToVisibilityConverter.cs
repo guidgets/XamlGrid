@@ -21,7 +21,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Converts a number to <see cref="Visibility"/>: <see cref="Visibility.Visible"/> 

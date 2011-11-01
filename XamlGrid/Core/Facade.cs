@@ -10,7 +10,7 @@ using System;
 
 #endregion
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// A base Singleton <c>IFacade</c> implementation

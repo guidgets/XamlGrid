@@ -10,7 +10,7 @@
 
 #endregion
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// A Base <c>INotifier</c> implementation

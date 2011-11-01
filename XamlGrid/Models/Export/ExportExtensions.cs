@@ -16,10 +16,10 @@
 // File:	ExportExtensions.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
-using XamlGrid.Aspects;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Models.Export
+namespace Guidgets.XamlGrid.Models.Export
 {
 	/// <summary>
 	/// Contains convenient methods to export the data of a <see cref="DataGrid"/>.

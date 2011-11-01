@@ -27,10 +27,10 @@ using AODL.Document.Export.OpenDocument;
 using AODL.Document.SpreadsheetDocuments;
 using AODL.Document.SpreadsheetDocuments.Tables.Style;
 using AODL.IO;
-using XamlGrid.Controllers;
-using XamlGrid.Models.Export;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Models.Export;
 
-namespace XamlGrid.ExportODF
+namespace Guidgets.XamlGrid.ExportODF
 {
 	public class ODSExporter : Exporter
 	{

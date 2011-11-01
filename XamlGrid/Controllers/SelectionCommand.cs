@@ -18,10 +18,10 @@
 
 using System.Collections.Generic;
 using System.Windows.Controls;
-using XamlGrid.Core;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class SelectionCommand : SimpleCommand
 	{

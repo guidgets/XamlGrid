@@ -24,7 +24,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Data;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class SumAggregate : IValueConverter
 	{

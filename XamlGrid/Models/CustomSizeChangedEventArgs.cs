@@ -19,7 +19,7 @@
 using System;
 using System.Windows;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class CustomSizeChangedEventArgs : EventArgs
 	{

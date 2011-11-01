@@ -18,7 +18,7 @@
 
 using System;
 
-namespace XamlGrid.Aspects
+namespace Guidgets.XamlGrid.Aspects
 {
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, AllowMultiple = false)]
 	public class Validate : Attribute

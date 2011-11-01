@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Markup;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	public class StaticExtension : MarkupExtension
 	{

@@ -10,7 +10,7 @@
 
 #endregion
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// A base <c>IModel</c> implementation

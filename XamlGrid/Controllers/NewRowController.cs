@@ -19,10 +19,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using XamlGrid.Core;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class NewRowController : Controller<NewRow>
 	{

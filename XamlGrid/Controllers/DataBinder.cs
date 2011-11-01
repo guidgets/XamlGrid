@@ -16,10 +16,10 @@
 // File:	DataBinder.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
-using XamlGrid.Aspects;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public static class DataBinder
 	{

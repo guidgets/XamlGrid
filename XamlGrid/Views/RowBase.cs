@@ -20,7 +20,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	public abstract class RowBase : ItemsControl
 	{

@@ -9,7 +9,7 @@
 
 #endregion
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// The interface definition for a PureMVC Command

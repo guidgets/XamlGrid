@@ -20,9 +20,9 @@ using System.Linq;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Automation
+namespace Guidgets.XamlGrid.Automation
 {
 	/// <summary>
 	/// Exposes a <see cref="Views.HeaderRow"/> object to UI automation.

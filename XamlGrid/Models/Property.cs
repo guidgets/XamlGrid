@@ -16,7 +16,7 @@
 // File:	Property.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 // 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public struct Property
 	{

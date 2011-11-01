@@ -19,9 +19,9 @@
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Automation
+namespace Guidgets.XamlGrid.Automation
 {
 	/// <summary>
 	/// Exposes a <see cref="Views.HeaderCell"/> object to UI automation.

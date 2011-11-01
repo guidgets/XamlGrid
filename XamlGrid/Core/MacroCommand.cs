@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// A base <c>ICommand</c> implementation that executes other <c>ICommand</c>s

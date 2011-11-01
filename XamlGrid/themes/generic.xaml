@@ -24,8 +24,8 @@ Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 	xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
 	xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit" 
 	xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-	xmlns:xamlGrid="clr-namespace:XamlGrid" 
-	xmlns:xaml="http://schemas.xamlgrid.com" xmlns:System="clr-namespace:System;assembly=mscorlib">
+	xmlns:xaml="http://schemas.xamlgrid.com" xmlns:System="clr-namespace:System;assembly=mscorlib"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+	xmlns:xamlGrid="clr-namespace:Guidgets.XamlGrid">
 
 	<SolidColorBrush x:Key="controlColor" xaml:OSBrush.OSColor="ControlColor" />
 	<SolidColorBrush x:Key="windowColor" xaml:OSBrush.OSColor="WindowColor" />

@@ -20,11 +20,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using XamlGrid.Core;
-using XamlGrid.Models;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.Row"/>.

@@ -18,9 +18,9 @@
 
 using System;
 using System.ComponentModel;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Models.Export
+namespace Guidgets.XamlGrid.Models.Export
 {
 	/// <summary>
 	/// Provides options to specify which additional properties except data itself to export.

@@ -19,11 +19,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using XamlGrid.Aspects;
-using XamlGrid.Controllers;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Models.Export
+namespace Guidgets.XamlGrid.Models.Export
 {
 	/// <summary>
 	/// Provides the base for exporting the items of a <see cref="DataGrid"/> to an outside source.

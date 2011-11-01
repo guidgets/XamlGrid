@@ -10,9 +10,9 @@
 
 #endregion
 
-using XamlGrid.Aspects;
+using Guidgets.XamlGrid.Aspects;
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// A base <c>ICommand</c> implementation

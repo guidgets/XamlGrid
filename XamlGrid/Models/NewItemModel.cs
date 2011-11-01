@@ -23,10 +23,10 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using XamlGrid.Controllers;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class NewItemModel : Model
 	{

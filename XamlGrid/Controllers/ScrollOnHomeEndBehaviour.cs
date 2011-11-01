@@ -21,7 +21,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Causes the associated <see cref="ScrollViewer"/> to scroll appropriately when the Home or End key is pressed.

@@ -20,9 +20,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using XamlGrid.Aspects;
+using Guidgets.XamlGrid.Aspects;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Contains methods that complement missing features of the <see cref="ScrollViewer"/>.

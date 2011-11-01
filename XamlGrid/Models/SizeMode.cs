@@ -16,7 +16,7 @@
 // File:	SizeMode.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 // 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Provides values for different types of sizing.

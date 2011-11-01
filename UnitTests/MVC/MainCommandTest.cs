@@ -6,7 +6,7 @@ using System.Collections.Generic;
 */
 using System.Threading;
 using NUnit.Framework;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
 
 namespace UnitTests.MVC

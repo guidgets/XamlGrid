@@ -28,7 +28,7 @@
 
 using System;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class PropertyPathParser
 	{

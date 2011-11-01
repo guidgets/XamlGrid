@@ -18,7 +18,7 @@
 
 using System;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Contains event data about events raised when an attempt is made to create a new item to be added to a list.

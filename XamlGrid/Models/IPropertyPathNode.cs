@@ -29,7 +29,7 @@
 using System;
 using System.Reflection;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public interface IPropertyPathNode
 	{

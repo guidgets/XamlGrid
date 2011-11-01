@@ -19,7 +19,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	public class MeasuringContentPresenter : ContentPresenter
 	{

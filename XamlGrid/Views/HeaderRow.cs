@@ -19,11 +19,11 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
-using XamlGrid.Automation;
-using XamlGrid.Controllers;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Automation;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents a header that contains explanatory information about the data in a <see cref="DataGrid"/>.

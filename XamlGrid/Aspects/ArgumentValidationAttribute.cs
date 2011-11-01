@@ -18,7 +18,7 @@
 
 using System;
 
-namespace XamlGrid.Aspects
+namespace Guidgets.XamlGrid.Aspects
 {
 	public abstract class ArgumentValidationAttribute : Attribute
 	{

@@ -21,10 +21,10 @@ using System.Collections.Generic;
 using System.Security;
 using System.Text;
 using System.Windows;
-using XamlGrid.Aspects;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Models.Export
+namespace Guidgets.XamlGrid.Models.Export
 {
 	/// <summary>
 	/// Represents an exporter to the system clipboard.

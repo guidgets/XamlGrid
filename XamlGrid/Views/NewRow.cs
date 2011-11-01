@@ -16,9 +16,9 @@
 // File:	NewRow.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents an empty <see cref="Row"/> that serves to fill in and enter new items to the set of <see cref="Row"/>s.

@@ -18,10 +18,10 @@
 
 using System;
 using System.ComponentModel;
-using XamlGrid.Core;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Delegates actions to models meant to create new items.

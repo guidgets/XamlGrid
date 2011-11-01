@@ -16,7 +16,7 @@
 // File:	SelectedItem.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 // 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents a selected from a list item.

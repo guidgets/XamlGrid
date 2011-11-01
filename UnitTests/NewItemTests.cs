@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Models;
 
 namespace UnitTests
 {

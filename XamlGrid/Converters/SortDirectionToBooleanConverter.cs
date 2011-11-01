@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Converts a sorting direction (ascending, descending or none) to a boolean value (<c>false</c>, <c>true</c> or <c>null</c>).

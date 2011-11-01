@@ -16,7 +16,7 @@
 // File:	NotificationTypes.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 // 
-namespace XamlGrid
+namespace Guidgets.XamlGrid
 {
 	public static class NotificationTypes
 	{

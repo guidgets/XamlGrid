@@ -21,7 +21,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Synchronizes the offsets of a <see cref="ScrollViewer"/> with the <see cref="ScrollExtensions"/> class which enables the proper binding to the offsets.

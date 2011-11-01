@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents a <see cref="Model"/> that executes all sorting logic over a given set of data.

@@ -19,7 +19,7 @@
 using System;
 using System.Windows.Input;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Contains common functionalities needed when working with the keys of a keyboard.

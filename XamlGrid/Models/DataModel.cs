@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class DataModel : Model
 	{

@@ -16,9 +16,9 @@
 // File:	ItemsSourceChangedCommand.cs
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class ItemsSourceChangedCommand : MacroCommand
 	{

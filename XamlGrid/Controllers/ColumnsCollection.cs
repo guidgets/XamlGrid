@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents an <see cref="ObservableCollection{T}"/> of <see cref="Column"/>s.

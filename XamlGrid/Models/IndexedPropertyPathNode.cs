@@ -32,9 +32,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Reflection;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class IndexedPropertyPathNode : PropertyPathNode
 	{

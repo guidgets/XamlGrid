@@ -20,10 +20,10 @@ using System;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Data;
-using XamlGrid.Automation;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Automation;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents a UI element that displays a data object.

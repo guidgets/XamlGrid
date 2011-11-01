@@ -18,10 +18,10 @@
 
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using XamlGrid.Core;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class FooterCellController : Controller<Cell>
 	{

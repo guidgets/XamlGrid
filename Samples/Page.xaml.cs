@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
 namespace Samples
 {

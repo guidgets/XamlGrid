@@ -19,7 +19,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Provides values corresponding to the colors from the <see cref="SystemColors"/> class.

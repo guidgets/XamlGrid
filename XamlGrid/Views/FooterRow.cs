@@ -18,9 +18,9 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using XamlGrid.Controllers;
+using Guidgets.XamlGrid.Controllers;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	public class FooterRow : Row
 	{

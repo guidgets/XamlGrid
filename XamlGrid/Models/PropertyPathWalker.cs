@@ -31,7 +31,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	public class PropertyPathWalker : IDisposable
 	{

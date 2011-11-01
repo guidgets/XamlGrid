@@ -19,10 +19,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using XamlGrid.Controllers;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents a GUI element displaying a single characteristic of a data object, or a simple single value.

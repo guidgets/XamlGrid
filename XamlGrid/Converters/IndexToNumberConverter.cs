@@ -20,7 +20,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class IndexToNumberConverter : IValueConverter
 	{

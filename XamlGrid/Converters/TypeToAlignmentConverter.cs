@@ -21,7 +21,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Obtains a <see cref="HorizontalAlignment"/> according to a supplied <see cref="Type"/>.

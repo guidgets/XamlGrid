@@ -22,9 +22,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
-using XamlGrid.Aspects;
+using Guidgets.XamlGrid.Aspects;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents a <see cref="ObservableCollection{T}"/> of items that are selected.

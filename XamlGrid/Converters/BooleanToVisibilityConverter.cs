@@ -21,7 +21,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Converts a boolean value to a <see cref="Visibility"/> object.

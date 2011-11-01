@@ -8,11 +8,11 @@
 
 using System;
 using System.Collections.Generic;
-using XamlGrid.Aspects;
+using Guidgets.XamlGrid.Aspects;
 
 #endregion
 
-namespace XamlGrid.Core
+namespace Guidgets.XamlGrid.Core
 {
 	/// <summary>
 	/// A Singleton <c>IMainCommand</c> implementation.

@@ -18,7 +18,7 @@
 
 using System;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Provides data for the <see cref="ObservableItemCollection{T}.ItemPropertyChanged"/> event.

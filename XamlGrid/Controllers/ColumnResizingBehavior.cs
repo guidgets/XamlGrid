@@ -19,10 +19,10 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using XamlGrid.Models;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Models;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Behavior{T}"/> for a <see cref="Thumb"/> which enables the thumb to resize a <see cref="Column"/> of a <see cref="DataGrid"/>.

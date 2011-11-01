@@ -19,10 +19,10 @@
 using System;
 using System.Windows;
 using System.Windows.Data;
-using XamlGrid.Models;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Models;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a controller that tells a <see cref="Cell"/> what data to display and how to display it.

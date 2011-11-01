@@ -18,7 +18,7 @@
 
 using System.ComponentModel;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Contains the property and the direction to use when sorting a collection.

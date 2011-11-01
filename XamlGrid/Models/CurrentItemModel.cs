@@ -18,9 +18,9 @@
 
 using System;
 using System.ComponentModel;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Represents a <see cref="Model"/> that manages the current item of a collection of items.

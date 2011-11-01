@@ -29,13 +29,13 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Markup;
-using XamlGrid.Automation;
-using XamlGrid.Controllers;
-using XamlGrid.Converters;
-using XamlGrid.Models;
-using XamlGrid.Models.Export;
+using Guidgets.XamlGrid.Automation;
+using Guidgets.XamlGrid.Controllers;
+using Guidgets.XamlGrid.Converters;
+using Guidgets.XamlGrid.Models;
+using Guidgets.XamlGrid.Models.Export;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Represents a control for displaying and manipulating data with a default tabular view.

@@ -54,7 +54,7 @@ using System.Windows.Markup;
 [assembly: AssemblyFileVersion("0.0.1.0")]
 
 [assembly: XmlnsPrefix("http://schemas.xamlgrid.com", "xaml")]
-[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "XamlGrid.Views")]
-[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "XamlGrid.Controllers")]
-[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "XamlGrid.Converters")]
-[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "XamlGrid.Models")]
+[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "Guidgets.XamlGrid.Views")]
+[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "Guidgets.XamlGrid.Controllers")]
+[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "Guidgets.XamlGrid.Converters")]
+[assembly: XmlnsDefinition("http://schemas.xamlgrid.com", "Guidgets.XamlGrid.Models")]

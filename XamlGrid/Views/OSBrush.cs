@@ -18,9 +18,9 @@
 
 using System.Windows;
 using System.Windows.Media;
-using XamlGrid.Aspects;
+using Guidgets.XamlGrid.Aspects;
 
-namespace XamlGrid.Views
+namespace Guidgets.XamlGrid.Views
 {
 	/// <summary>
 	/// Contains a mechanism which enables the color of a <see cref="SolidColorBrush"/> 

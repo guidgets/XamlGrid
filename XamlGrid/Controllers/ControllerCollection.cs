@@ -18,9 +18,9 @@
 
 using System.Collections.ObjectModel;
 using System.Windows;
-using XamlGrid.Core;
+using Guidgets.XamlGrid.Core;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a collection of controllers associated with the same <see cref="DependencyObject"/>.

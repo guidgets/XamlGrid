@@ -3,7 +3,7 @@ using System.Collections;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace XamlGrid.Converters
+namespace Guidgets.XamlGrid.Converters
 {
 	/// <summary>
 	/// Converts a data item to its index in its containing collection.

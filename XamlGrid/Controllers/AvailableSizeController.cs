@@ -16,10 +16,10 @@
 // File:	AvailableSizeController.cs
 // Authors:	Dimitar Dobrev
 
-using XamlGrid.Core;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class AvailableSizeController : Controller<MeasuringContentPresenter>
 	{

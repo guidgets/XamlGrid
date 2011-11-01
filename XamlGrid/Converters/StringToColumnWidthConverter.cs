@@ -19,10 +19,10 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using XamlGrid.Aspects;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Aspects;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Converts a <see cref="string"/> to a <see cref="ColumnWidth"/> object.

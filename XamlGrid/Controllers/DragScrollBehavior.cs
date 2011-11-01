@@ -26,7 +26,7 @@ using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Behavior{T}"/> that enables a <see cref="ScrollViewer"/> to scroll its contents while the pointing device performs dragging.

@@ -18,7 +18,7 @@
 
 using System;
 
-namespace XamlGrid.Aspects
+namespace Guidgets.XamlGrid.Aspects
 {
 	[AttributeUsage(AttributeTargets.Parameter)]
 	public class NotNullAttribute : ArgumentValidationAttribute

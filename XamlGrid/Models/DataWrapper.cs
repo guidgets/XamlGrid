@@ -20,7 +20,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Data;
 
-namespace XamlGrid.Models
+namespace Guidgets.XamlGrid.Models
 {
 	/// <summary>
 	/// Contains functionality to wrap a data source with the purpose of enabling it with advanced functionality.

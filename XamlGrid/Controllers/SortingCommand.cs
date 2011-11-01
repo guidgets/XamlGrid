@@ -17,10 +17,10 @@
 // Authors:	Dimitar Dobrev <dpldobrev@gmail.com>
 
 using System.ComponentModel;
-using XamlGrid.Core;
-using XamlGrid.Models;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	public class SortingCommand : SimpleCommand
 	{

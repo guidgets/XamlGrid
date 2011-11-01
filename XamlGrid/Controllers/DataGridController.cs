@@ -26,12 +26,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using XamlGrid.Core;
-using XamlGrid.Models;
-using XamlGrid.Models.Export;
-using XamlGrid.Views;
+using Guidgets.XamlGrid.Core;
+using Guidgets.XamlGrid.Models;
+using Guidgets.XamlGrid.Models.Export;
+using Guidgets.XamlGrid.Views;
 
-namespace XamlGrid.Controllers
+namespace Guidgets.XamlGrid.Controllers
 {
 	/// <summary>
 	/// Represents a <see cref="Controller{T}"/> which is responsible for the functionality of a <see cref="Views.DataGrid"/>.

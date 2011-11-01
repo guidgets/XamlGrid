@@ -19,7 +19,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace XamlGrid.Models.Export
+namespace Guidgets.XamlGrid.Models.Export
 {
 	public struct Font
 	{

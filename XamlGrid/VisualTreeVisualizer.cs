@@ -24,7 +24,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace XamlGrid
+namespace Guidgets.XamlGrid
 {
     /// <summary>
     /// Helper class to visualize the Silverlight Visual Tree as a textual-tree in the debugger. 
